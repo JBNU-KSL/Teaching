@@ -1,0 +1,780 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>00. OT</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(174, 130, 0, 0.223); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none;   /* 파이어폭스 등 */
+}
+
+
+
+summary::before {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  break-after: page; /* 인쇄 시 페이지 나눔 */
+}
+
+.properties {
+	display: none;
+}
+
+@media print {
+  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  
+  /* 페이지 가운데 정렬 영역 */
+  header{
+    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
+    display:flex;
+    position: relative;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* 본문 타이틀(원래의 00. OT) */
+  .page-title{
+    margin:0;
+    line-height:1.25;
+    font-weight:800;
+    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0; /* 상·하 여유 공간 */
+  }
+
+  /* 최상단 큰 제목 */
+  .page-title::before{
+    content: "초급프로젝트 (25-02)\A";
+    white-space: pre-line;     /* \A 줄바꿈 활성화 */
+    display:block;
+    font-weight:900;
+    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
+    letter-spacing:.02em;
+    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  }
+
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+	  white-space: pre-line;
+	  position: absolute;
+	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  font-size: 11pt;
+	  font-weight: 500;
+	  line-height: 1.6;
+	  text-align: center;
+}
+
+  
+}
+
+
+	
+</style></head><body><article id="2588e11f-9262-81bc-b022-cfb1a0460d06" class="page sans"><header><h1 class="page-title">00. OT</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td><span class="selected-value select-value-color-gray">25.09.02</span></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>1주차</td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 교수 소개</summary><div class="indented"><div id="2618e11f-9262-8088-aa28-c9b28811f513" class="column-list"><div id="2618e11f-9262-8040-bfc5-e784f41e8c1a" style="width:25%" class="column"><figure id="2618e11f-9262-8013-bad4-dff1b82cccbb" class="image"><a href="00%20OT%202588e11f926281bcb022cfb1a0460d06/image.png"><img style="width:144px" src="00%20OT%202588e11f926281bcb022cfb1a0460d06/image.png"/></a></figure></div><div id="2618e11f-9262-8007-a4df-fead1fe097e3" style="width:75%" class="column"><ul id="2618e11f-9262-8034-aa7a-ff97d1212959" class="bulleted-list"><li style="list-style-type:disc">전북대학교 컴퓨터인공지능학부 조교수</li></ul><ul id="2618e11f-9262-80f8-9a5f-e9448feefc60" class="bulleted-list"><li style="list-style-type:disc">(<strong>Research Interest</strong>: 인공지능/ 의료 AI/ 계산과학)</li></ul><ul id="2618e11f-9262-809a-bdab-dd125f4680e5" class="bulleted-list"><li style="list-style-type:disc"><strong>E-mail</strong>: ksl@jbnu.ac.kr</li></ul><ul id="2618e11f-9262-807a-9334-eff31dae1f28" class="bulleted-list"><li style="list-style-type:disc"><strong>Phone</strong>: 010-4703-8160</li></ul><ul id="2618e11f-9262-806f-82a0-e8175341d9d5" class="bulleted-list"><li style="list-style-type:disc"><strong>Office</strong>: 공대 7호관 626호</li></ul><ul id="2618e11f-9262-8088-b986-d17dde4aa94d" class="bulleted-list"><li style="list-style-type:disc"><strong>Office Hour</strong>: 언제든지? (사전 연락 요망/ 월수금 오전은 수업!)</li></ul></div></div><hr id="2618e11f-9262-8081-a9ba-d44b35fe8081"/><p id="2618e11f-9262-80d3-bd32-eefcdcd3c916" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 본 강의에서는…</summary><div class="indented"><div id="2618e11f-9262-8000-8407-c0b8d45eb7b2" class="column-list"><div id="2618e11f-9262-808c-92e9-f1d92d79dc68" style="width:50%" class="column"><ul id="2618e11f-9262-80ce-aa82-fdf982478f28" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>최신 개발 기술 기본 이해 및 실습</strong></mark><ul id="2618e11f-9262-801d-a65f-ce73421b2608" class="bulleted-list"><li style="list-style-type:circle">TypeScript 기초, Vue/React 프레임워크 활용</li></ul><ul id="2618e11f-9262-8048-a7cb-d7d8d0057fed" class="bulleted-list"><li style="list-style-type:circle">Git 및 GitHub을 통한 협업과 버전 관리</li></ul><ul id="2618e11f-9262-80dc-82ee-d2bf8d1d3792" class="bulleted-list"><li style="list-style-type:circle">Firebase 기반 인증 및 데이터베이스 연동</li></ul></li></ul><ul id="2618e11f-9262-802d-b12f-f033a9026d43" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>디자인 패턴 개념 및 적용</strong></mark><ul id="2618e11f-9262-802e-8f9f-c958aa00ad10" class="bulleted-list"><li style="list-style-type:circle">Singleton, Factory 등 주요 패턴 실습</li></ul><ul id="2618e11f-9262-80e9-bcad-d0f95fd7a9b3" class="bulleted-list"><li style="list-style-type:circle">구조적 프로그래밍 및 소프트웨어 설계 능력 강화</li></ul></li></ul><ul id="2618e11f-9262-8058-aff4-f7b63bae5db1" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>API 및 클라우드 서비스 활용</strong></mark><ul id="2618e11f-9262-80b1-9557-d7bf8a14e2e5" class="bulleted-list"><li style="list-style-type:circle">REST API 활용법 및 실습</li></ul><ul id="2618e11f-9262-8017-b22b-f2fd41dbfc31" class="bulleted-list"><li style="list-style-type:circle">Streamlit, AI 서비스 등 최신 기술 체험</li></ul></li></ul><p id="2618e11f-9262-80b8-8cbd-d595457f9e67" class="">
+</p></div><div id="2618e11f-9262-80d7-9c1b-ef7d38ac91e6" style="width:50%" class="column"><ul id="2618e11f-9262-80a5-bf96-c0b5b871b99d" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>웹/모바일 개발 기초</strong></mark><ul id="2618e11f-9262-80eb-bb8f-d41c3f72c64f" class="bulleted-list"><li style="list-style-type:circle">React/Vue 기초 및 심화 실습</li></ul><ul id="2618e11f-9262-80f9-b72e-f6a4b4296cd1" class="bulleted-list"><li style="list-style-type:circle">React Native 또는 Flutter 기반 모바일 개발(기초 → 심화, API/DB 연동, 소셜 로그인 등)</li></ul></li></ul><ul id="2618e11f-9262-8035-bc6b-eefe4271bd00" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>프로젝트 기반 실습 및 발표</strong></mark><ul id="2618e11f-9262-8008-b47b-d3f70349e925" class="bulleted-list"><li style="list-style-type:circle">소규모 개인 프로젝트 수행(12주차 이전)</li></ul><ul id="2618e11f-9262-8008-b70a-c919bb02b52d" class="bulleted-list"><li style="list-style-type:circle">개인 또는 2인 팀 프로젝트 진행 (선택)</li></ul><ul id="2618e11f-9262-80c5-a4fa-c99537c51301" class="bulleted-list"><li style="list-style-type:circle">중간 발표(프로젝트 Proposal), 최종 발표 및 결과물 제출</li></ul><p id="2618e11f-9262-807e-9bfd-fc292b77a9ba" class="">
+</p></li></ul></div></div><hr id="2618e11f-9262-802d-a2ef-e6db25585637"/><p id="2618e11f-9262-8025-a0c3-d4fd68aa3b82" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. 강의 계획서 살펴보기</summary><div class="indented"><figure id="2618e11f-9262-8037-a7f2-f0f486c974f2" class="image"><a href="00%20OT%202588e11f926281bcb022cfb1a0460d06/image%201.png"><img style="width:3386px" src="00%20OT%202588e11f926281bcb022cfb1a0460d06/image%201.png"/></a></figure><figure id="2618e11f-9262-809d-bdc5-e614eec40806" class="image"><a href="00%20OT%202588e11f926281bcb022cfb1a0460d06/image%202.png"><img style="width:3384px" src="00%20OT%202588e11f926281bcb022cfb1a0460d06/image%202.png"/></a></figure><h3 id="2618e11f-9262-807a-839c-d0c973c8df89" class=""><mark class="highlight-gray_background">* 미리 공지: 10/14 ~ 24일 (명절 다음 주/ 시험기간)에는 온라인 강의 제공 예정</mark></h3><p id="2618e11f-9262-80bf-ac26-e2e4eefc3bda" class="">
+</p><hr id="2618e11f-9262-8037-bd50-f2c6a0edf4fe"/></div></details><p id="2618e11f-9262-80ab-95de-f8d3582da75b" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. 기대효과</summary><div class="indented"><div id="2618e11f-9262-8028-a42e-f1e1807b3043" class="column-list"><div id="2618e11f-9262-80ec-beda-f928ac5946df" style="width:50%" class="column"><ul id="2618e11f-9262-803c-8ab0-d9d3aa757070" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>최신 개발 기술 습득 및 실무 적용 역량 강화</strong></mark><ul id="2618e11f-9262-80f8-acf7-fcdee2bab7d1" class="bulleted-list"><li style="list-style-type:circle">TypeScript, Vue/React, Git, Firebase 등 최신 개발 기술 학습</li></ul><ul id="2618e11f-9262-8022-bd2b-dc417864b8a8" class="bulleted-list"><li style="list-style-type:circle">웹/앱 서비스 개발을 위한 실습 중심 학습</li></ul></li></ul><ul id="2618e11f-9262-801a-af3c-c0c750fad351" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>협업 및 버전 관리 능력 향상</strong></mark><ul id="2618e11f-9262-80e6-b5d7-c5ed34ea079f" class="bulleted-list"><li style="list-style-type:circle">Git &amp; GitHub 기반의 협업 경험</li></ul><ul id="2618e11f-9262-80c7-895b-e3cbc94a243d" class="bulleted-list"><li style="list-style-type:circle">팀 단위 프로젝트 진행을 통한 실제 협업 능력 배양</li></ul></li></ul><ul id="2618e11f-9262-802d-a99f-cf316e029238" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>소프트웨어 설계 및 패턴 적용 경험 축적</strong></mark><ul id="2618e11f-9262-808b-beb7-d879b370ae41" class="bulleted-list"><li style="list-style-type:circle">Singleton, Factory, Observer 등 주요 디자인 패턴 실습</li></ul><ul id="2618e11f-9262-8076-86fb-fa1f98b96d73" class="bulleted-list"><li style="list-style-type:circle">구조적 프로그래밍과 효율적 코드 작성 능력 강화</li></ul></li></ul></div><div id="2618e11f-9262-80ab-a57c-f2c544ad147f" style="width:50%" class="column"><ul id="2618e11f-9262-8041-a920-feb573e7dda9" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>문제 해결력 및 프로젝트 수행 경험 확장</strong></mark><ul id="2618e11f-9262-80c9-9edf-ec1b4074fe51" class="bulleted-list"><li style="list-style-type:circle">개인 및 2인 팀 프로젝트 수행</li></ul><ul id="2618e11f-9262-806c-bbde-dad51a857269" class="bulleted-list"><li style="list-style-type:circle">중간 발표, 최종 발표를 통한 실전 프로젝트 경험 확보</li></ul></li></ul><ul id="2618e11f-9262-8017-8605-cc2d0093f2a9" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>웹/모바일 통합 개발 경험 제공</strong></mark><ul id="2618e11f-9262-80b6-b55e-d93d89018797" class="bulleted-list"><li style="list-style-type:circle">React/Vue를 활용한 웹 프론트엔드 개발</li></ul><ul id="2618e11f-9262-806e-8413-d640887d3cfc" class="bulleted-list"><li style="list-style-type:circle">React Native 또는 Flutter를 통한 모바일 앱 개발 경험</li></ul><p id="2618e11f-9262-80de-a691-f4dc1103369f" class="">
+</p></li></ul></div></div><hr id="2618e11f-9262-80b1-8224-dafb4c4b5a4d"/><p id="2618e11f-9262-8049-aa51-e08579875951" class="">
+</p></div></details><p id="2618e11f-9262-80b8-8f07-f27f158fe140" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 성적 평가 (학점 부여)</summary><div class="indented"><ul id="2618e11f-9262-8057-9552-c28ae3ba3c56" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-blue_background">본 수업은 </mark></mark><mark class="highlight-orange"><mark class="highlight-blue_background"><strong>절대평가</strong></mark></mark><mark class="highlight-orange"><mark class="highlight-blue_background">로 진행됨. (학점 구간 제한 X)</mark></mark></li></ul><p id="2618e11f-9262-801d-bfc1-cdca0f2a0ec7" class="">
+</p><ul id="2618e11f-9262-80cc-946d-c13e4fe80364" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background">평가 항목은 다음과 같이 구성</mark><ol type="1" id="2618e11f-9262-806e-bab9-d98e691eaf47" class="numbered-list" start="1"><li>2개의 개인 과제 (과제 1, 과제 2)</li></ol><ol type="1" id="2618e11f-9262-80ef-a119-e0b28faffe46" class="numbered-list" start="2"><li>1개의 Term Project (한 학기동안 진행/ 1명 또는 2명이 진행)</li></ol><ol type="1" id="2618e11f-9262-8075-99c1-fa4e66d3427b" class="numbered-list" start="3"><li>실습 항목 (매 주제마다 실습 제공 예정/ 진도에 따라 강의계획서와 일정이 다를 수 있음)</li></ol><ol type="1" id="2618e11f-9262-8064-b3d1-d7aa405b43f0" class="numbered-list" start="4"><li>기타 항목 (추가 점수 개념)</li></ol><ol type="1" id="2618e11f-9262-806c-9dc8-c8133a9ad4f1" class="numbered-list" start="5"><li>출석 (학칙 규정 준수)</li></ol><p id="2618e11f-9262-80e4-b0d4-c170895c00f9" class="">
+</p></li></ul><ul id="2618e11f-9262-80e6-9ee0-c8455669db13" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background">세부적인 내용은 다음과 같음.</mark><ol type="1" id="2618e11f-9262-8036-baa6-ec5c4a5cf027" class="numbered-list" start="1"><li><mark class="highlight-gray_background">[과제 1] 정적 페이지 배포: </mark>GitHub Actions를 활용한 개인 포트폴리오 페이지 만들기</li></ol><ol type="1" id="2618e11f-9262-8055-9124-c676a983dc5f" class="numbered-list" start="2"><li><mark class="highlight-gray_background">[과제 2] 프론트엔드 (웹) App 개발: </mark>TMDB를 활용한 웹페이지 만들기 (React or Vue 활용)</li></ol><ol type="1" id="2618e11f-9262-809e-85bc-ca27b7783b14" class="numbered-list" start="3"><li><mark class="highlight-gray_background">[Term Project (TP)] </mark>개인/2인이 함께 진행하며, 웹 + 앱 Front-End 개발을 진행해야 함. 주제는 아래 중 택 1:<ul id="2618e11f-9262-8052-aed0-fd8f33a5ba64" class="bulleted-list"><li style="list-style-type:disc">에타 게시판 + 앱 만들기</li></ul><ul id="2618e11f-9262-8082-b6e0-eca90912f755" class="bulleted-list"><li style="list-style-type:disc">To-do + Calendar App 만들기</li></ul><ul id="2618e11f-9262-800c-84ed-eab776d66faa" class="bulleted-list"><li style="list-style-type:disc">출석체크 관리 앱 만들기</li></ul><ul id="2618e11f-9262-804f-a6b4-fe6371770616" class="bulleted-list"><li style="list-style-type:disc">자유주제</li></ul><ul id="2618e11f-9262-8064-a1f6-da8a516eb4ec" class="bulleted-list"><li style="list-style-type:disc">(이 외에 추가될 수 있음/ 추후 공지)</li></ul></li></ol><ol type="1" id="2618e11f-9262-8046-8dfe-edb910011a4b" class="numbered-list" start="4"><li>[<mark class="highlight-gray_background">실습]</mark> 각 수업 차시 별로 학생들이 주제에 대해 학습할 수 있는 추가 영상을 제공할 예정임.<ul id="2618e11f-9262-8017-95dd-cb65a19470b4" class="bulleted-list"><li style="list-style-type:disc">진도에 따라, 강의 계획서에 있는 주차와 달라질 수 있음.</li></ul><ul id="2618e11f-9262-80eb-9776-c50b59502e81" class="bulleted-list"><li style="list-style-type:disc">영상에서 코드 실습을 함께 진행하며, 실습 결과물 및 코드를 제출</li></ul><ul id="2618e11f-9262-8095-8cab-cfe86eeb69fc" class="bulleted-list"><li style="list-style-type:disc">간단히 영상의 코드를 따라치면 되는 간단한 실습부터 특정 기능을 구현하는 실습까지 다양할 예정임.</li></ul><ul id="2618e11f-9262-80bd-beff-d3aac2312f92" class="bulleted-list"><li style="list-style-type:disc">e.g., Vue 실습에서 Vue.js의 문법이나 동작 원리 등을 코드와 함께 영상으로 제공 예정</li></ul><p id="2618e11f-9262-8093-9777-fcec066568ce" class="">
+</p></li></ol></li></ul><ul id="2618e11f-9262-80bb-a1b1-c2892c9964d1" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background">성적 평가 (학점 부여)</mark><ul id="2618e11f-9262-8004-a1ab-c969fb304c7f" class="bulleted-list"><li style="list-style-type:circle">각 과제 (과제 1, 과제 2, TP, 실습)에 대해 평가 결과에 따라 점수를 <mark class="highlight-gray_background">A+, A, B+, B, C+, C, D+, D, F</mark>로 부여.</li></ul><ul id="2618e11f-9262-80e7-8808-c4728a1e76c7" class="bulleted-list"><li style="list-style-type:circle"><strong>모든 과제의 학점을 합하여</strong> 최종 학점을 부여 예정. (<mark class="highlight-gray_background">예: 4.5 ~ 3.8 ⇒ A 부여</mark>)<ul id="2618e11f-9262-80a2-91a9-c150f67a49f9" class="bulleted-list"><li style="list-style-type:square">이는 예시이므로, 변경될 수 있으며, 학점 구간은 추후 공지 예정임.</li></ul></li></ul><ul id="2618e11f-9262-807b-bbc9-f37ae5be4c6f" class="bulleted-list"><li style="list-style-type:circle">다만, <mark class="highlight-gray_background"><strong>출석</strong></mark>은 다음과 같이 평가할 예정임.<ul id="2618e11f-9262-80ef-8091-f59bd0fcc7dd" class="bulleted-list"><li style="list-style-type:square"><strong>총 수업시간은 (15주 * 3시간 = 45시간)이며, 이 중 1/4 이상 결석일 시 F처리.</strong></li></ul><ul id="2618e11f-9262-8039-bbb5-dad09798fef0" class="bulleted-list"><li style="list-style-type:square">6시간까지는 감점 없음. </li></ul><ul id="2618e11f-9262-80f8-be2a-f7574b36208c" class="bulleted-list"><li style="list-style-type:square">6시간 초과 ~ 9시간 미만: 최종 학점으로부터 한 단계 (e.g., A+ → A / B → C+) 감점 예정.</li></ul><ul id="2618e11f-9262-801b-ab60-f4cdfbe98185" class="bulleted-list"><li style="list-style-type:square">9시간 이상 ~ 총 수업시간의 1/4까지: 최종 학점으로부터 두 단계 (e.g., A+ → B+ / B → C) 감점 예정.</li></ul><ul id="2618e11f-9262-8057-80c1-fb72af576e94" class="bulleted-list"><li style="list-style-type:square">기타 부득이한 사유 (병결/ 예비군 등)로 인한 결석은 출석으로 인정 (증빙 서류 메일로 제출)</li></ul></li></ul></li></ul><p id="2618e11f-9262-8061-bba7-d0e0af73e93c" class=""><div class="indented"><p id="2618e11f-9262-80d1-9428-c44e5e639bf3" class="">
+</p></div></p></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
