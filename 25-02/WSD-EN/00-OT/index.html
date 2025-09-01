@@ -1,0 +1,710 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>00. OT (EN)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(174, 130, 0, 0.223); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2618e11f-9262-802f-802e-daa9875793f5" class="page sans"><header><h1 class="page-title">00. OT (EN)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td><span class="selected-value select-value-color-gray">25.09.02</span></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>1주차</td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. Professor Profile</summary><div class="indented"><div id="2618e11f-9262-80f8-8354-db1adbf1cea3" class="column-list"><div id="2618e11f-9262-8095-9d9f-ec503adf4845" style="width:25%" class="column"><figure id="2618e11f-9262-801a-82c2-ea9c08864532" class="image"><a href="00%20OT%20(EN)%202618e11f9262802f802edaa9875793f5/image.png"><img style="width:144px" src="00%20OT%20(EN)%202618e11f9262802f802edaa9875793f5/image.png"/></a></figure></div><div id="2618e11f-9262-8094-acd6-ce8e345156ff" style="width:75%" class="column"><ul id="2618e11f-9262-80c4-bedd-ec5c0cd982d9" class="bulleted-list"><li style="list-style-type:disc">Assistant Professor, Department of Computer Science and Artificial Intelligence, Chonbuk National University</li></ul><ul id="2618e11f-9262-80e4-9c94-ebcb1fd497d5" class="bulleted-list"><li style="list-style-type:disc"><strong>(Research Interest</strong>: Artificial Intelligence/ Medical AI/ Computational Science)</li></ul><ul id="2618e11f-9262-80ea-9ae4-c9ffd97ed60c" class="bulleted-list"><li style="list-style-type:disc"><strong>E-mail</strong>: ksl@jbnu.ac.kr</li></ul><ul id="2618e11f-9262-8034-a31d-c05ce90d333b" class="bulleted-list"><li style="list-style-type:disc"><strong>Phone</strong>: 010-4703-8160</li></ul><ul id="2618e11f-9262-801a-b255-fbf8f13ef8ff" class="bulleted-list"><li style="list-style-type:disc"><strong>Office</strong>: College of Engineering, Building 7, Room 626</li></ul><ul id="2618e11f-9262-8069-a97a-f2fdae3664de" class="bulleted-list"><li style="list-style-type:disc"><strong>Office Hour</strong>: Anytime (Please contact in advance)</li></ul><p id="2618e11f-9262-80f7-bbf6-d82dd513f164" class="">
+</p></div></div><hr id="2618e11f-9262-806e-9c4e-e6be0f221a24"/><p id="2618e11f-9262-8001-b1e3-c6ac876a9b33" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. In this lecture, we will...</summary><div class="indented"><div id="2618e11f-9262-80ac-b519-e8ba7102a201" class="column-list"><div id="2618e11f-9262-808c-8da2-f81f0e8a6356" style="width:50%" class="column"><ul id="2618e11f-9262-8019-8772-c06dedfda646" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Class Objectives</strong></mark><ul id="2618e11f-9262-80fb-ad30-ee599db3e5df" class="bulleted-list"><li style="list-style-type:circle">Understand modern web service structure and backend development</li></ul><ul id="2618e11f-9262-8043-b312-c454568f7b53" class="bulleted-list"><li style="list-style-type:circle">Practice hands-on backend frameworks (Node.js, Express, Spring Boot, FastAPI, Flask)</li></ul><ul id="2618e11f-9262-800c-8a5f-fcb15778d937" class="bulleted-list"><li style="list-style-type:circle">Experience with authentication and security (OAuth2, JWT, Firebase) and deployment automation (CI/CD, Docker, Kubernetes)</li></ul><ul id="2618e11f-9262-803e-8ded-d183b1ce3b4a" class="bulleted-list"><li style="list-style-type:circle">Proficiency with DB/ORM (MySQL, PostgreSQL, MongoDB, Redis, JPA, MyBatis, Prisma, SQLAlchemy)</li></ul></li></ul><ul id="2618e11f-9262-8036-8c07-dab1a752503f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Course Content (Key Learning Topics)</strong></mark><ul id="2618e11f-9262-8043-a5a0-f0039441fc14" class="bulleted-list"><li style="list-style-type:circle">How web services are structured and designed</li></ul><ul id="2618e11f-9262-8014-a5dd-c1ce1b85ea61" class="bulleted-list"><li style="list-style-type:circle">REST API design and authentication and documentation (Swagger, Postman)</li></ul><ul id="2618e11f-9262-8060-82c5-d645700aa068" class="bulleted-list"><li style="list-style-type:circle">Utilizing DB/RDB/NoSQL and ORMs</li></ul><ul id="2618e11f-9262-80a0-9087-e4c49463c7fa" class="bulleted-list"><li style="list-style-type:circle">Communication protocols (WebSocket, MQTT)</li></ul><ul id="2618e11f-9262-8034-96e9-f31d3ad41da0" class="bulleted-list"><li style="list-style-type:circle">Deployment and operations (CI/CD, Docker, Kubernetes)</li></ul><ul id="2618e11f-9262-80a6-a0e3-c7d68174a465" class="bulleted-list"><li style="list-style-type:circle">Project-based labs (individual/team)</li></ul></li></ul><p id="2618e11f-9262-8087-96c9-da25f2bc5419" class="">
+</p></div><div id="2618e11f-9262-80a3-9f18-ea2a1a71b417" style="width:50%" class="column"><ul id="2618e11f-9262-806c-bb6b-e8058f0dd6d6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>What you&#x27;ll learn in each week</strong></mark><ul id="2618e11f-9262-80d0-a061-c8f54f5de3bb" class="bulleted-list"><li style="list-style-type:circle">Weeks<strong>1-3</strong>: Web service structure, server types, and architecture design</li></ul><ul id="2618e11f-9262-80b8-9657-e60b7a88129e" class="bulleted-list"><li style="list-style-type:circle"><strong>Weeks 4-5</strong>: Node.js &amp; Express, HTTP/REST APIs, Authentication (JWT), Swagger-Postman</li></ul><ul id="2618e11f-9262-80ab-8f9a-f59be053f392" class="bulleted-list"><li style="list-style-type:circle"><strong>Weeks 6-7</strong>: Learning backend frameworks (Spring Boot, Flask, FastAPI)</li></ul><ul id="2618e11f-9262-8053-b5f9-f76d0ded2e8e" class="bulleted-list"><li style="list-style-type:circle"><strong>Week 8</strong>: Finalize Term Project I (build API server)</li></ul><ul id="2618e11f-9262-805a-a40e-d45deabed4df" class="bulleted-list"><li style="list-style-type:circle"><strong>Weeks 9-10</strong>: DB/RDB/NoSQL + ORM, OAuth2 - Social Login (Google/Cakao), Firebase integration</li></ul><ul id="2618e11f-9262-8056-9de1-e31aafb13a7f" class="bulleted-list"><li style="list-style-type:circle"><strong>Week 11</strong>: Communication protocols (WebSocket, MQTT) + Term Project II due</li></ul><ul id="2618e11f-9262-80e0-ad0f-fa3b897a9877" class="bulleted-list"><li style="list-style-type:circle"><strong>Weeks 12-14</strong>: Service maintenance, testing-logging-documentation, CI/CD, Docker, Kubernetes</li></ul><ul id="2618e11f-9262-80ad-b326-fb729dca5bc5" class="bulleted-list"><li style="list-style-type:circle"><strong>Week 15</strong>: Term Project III due (server deployment)</li></ul></li></ul><ul id="2618e11f-9262-8001-ac9a-d050fa06ede3" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Tips for taking the class</strong></mark><ul id="2618e11f-9262-80a7-90ab-c20f2cc3688b" class="bulleted-list"><li style="list-style-type:circle"><strong>Focus on practice</strong> over theory</li></ul><ul id="2618e11f-9262-8002-b66b-e9efb7741eba" class="bulleted-list"><li style="list-style-type:circle">All assignments <strong>require GitHub commit/Swagger documentation</strong></li></ul><ul id="2618e11f-9262-80b8-a4cf-ff1d51e39048" class="bulleted-list"><li style="list-style-type:circle">Projects can be utilized for personal portfolio</li></ul><ul id="2618e11f-9262-8024-9db3-c0717c4ad232" class="bulleted-list"><li style="list-style-type:circle">Active participation and other activities (competitions, seminars, open source activities) encouraged!</li></ul><p id="2618e11f-9262-80de-89f3-eac14056e1f9" class="">
+</p></li></ul></div></div><hr id="2618e11f-9262-8098-ba74-cba922e91d23"/><p id="2618e11f-9262-80bb-a6b8-d6c2c2fea4b8" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. syllabus overview</summary><div class="indented"><figure id="2618e11f-9262-8032-9117-d83dfda295c8" class="image"><a href="00%20OT%20(EN)%202618e11f9262802f802edaa9875793f5/image%201.png"><img style="width:3244px" src="00%20OT%20(EN)%202618e11f9262802f802edaa9875793f5/image%201.png"/></a></figure><figure id="2618e11f-9262-8041-a8b5-df1489e4b5c6" class="image"><a href="00%20OT%20(EN)%202618e11f9262802f802edaa9875793f5/image%202.png"><img style="width:3240px" src="00%20OT%20(EN)%202618e11f9262802f802edaa9875793f5/image%202.png"/></a></figure><h3 id="2618e11f-9262-8016-85fe-dfc93818e419" class=""><mark class="highlight-gray_background">* Advance notice: online lectures will be available 10/14-24 (week after holidays/exams)</mark></h3><p id="2618e11f-9262-80db-9ece-c5d800c5a6fd" class="">
+</p><hr id="2618e11f-9262-8033-b0a3-f417ddc0c684"/></div></details><p id="2618e11f-9262-800a-b5ce-d036148be70d" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. expected outcomes</summary><div class="indented"><div id="2618e11f-9262-8085-9553-f4ded9daf193" class="column-list"><div id="2618e11f-9262-8050-8436-f01b7c7f4737" style="width:50%" class="column"><ul id="2618e11f-9262-8075-98bc-f3a9f3770324" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Acquire the latest development technologies and strengthen practical application skills</strong></mark><ul id="2618e11f-9262-8093-8444-f9ceaf48ab08" class="bulleted-list"><li style="list-style-type:circle">Practice various <strong>backend frameworks</strong> such as Node.js, Express, Spring Boot, Flask, FastAPI, etc.</li></ul><ul id="2618e11f-9262-8010-a0ae-f111c9b9d573" class="bulleted-list"><li style="list-style-type:circle"><strong>Experience</strong> designing and implementing REST APIs and <strong>documenting APIs</strong> with Swagger/Postman</li></ul><ul id="2618e11f-9262-8025-98eb-ecbd591b4420" class="bulleted-list"><li style="list-style-type:circle">Experience with <strong>deployment and operations automation</strong>, including Docker, Kubernetes, CI/CD (GitHub Actions), etc.</li></ul></li></ul><ul id="2618e11f-9262-8085-9ba7-c9864094d47d" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Collaboration and version control skills</strong></mark><ul id="2618e11f-9262-80bc-80bb-df76c554c429" class="bulleted-list"><li style="list-style-type:circle">Practice Git &amp; GitHub-based collaboration methods</li></ul><ul id="2618e11f-9262-80bb-bdb1-de2a749d89d3" class="bulleted-list"><li style="list-style-type:circle"><strong>Experience real-world collaboration</strong> (code sharing, issue management, API integration) by conducting term projects (1-3)</li></ul></li></ul><ul id="2618e11f-9262-808b-96dd-e5ab25844b79" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Accumulate experience in software design and pattern application</strong></mark><ul id="2618e11f-9262-8030-8665-c0fc75e59a27" class="bulleted-list"><li style="list-style-type:circle">Design server structure and architecture, apply DB/ORM (MySQL, PostgreSQL, MongoDB, JPA, MyBatis, etc.)</li></ul><ul id="2618e11f-9262-807f-bbf1-c18b1782407d" class="bulleted-list"><li style="list-style-type:circle"><strong>Strengthen structural programming skills</strong> by experiencing the entire process of service design → implementation → testing → deployment</li></ul></li></ul></div><div id="2618e11f-9262-801e-90ef-cbf0dbe72261" style="width:50%" class="column"><ul id="2618e11f-9262-8092-bf26-f06494520b16" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Expand problem-solving skills and project execution experience</strong></mark><ul id="2618e11f-9262-808f-b573-f064d8cd892a" class="bulleted-list"><li style="list-style-type:circle">Practical backend development experience through a total of 3 <strong>term projects</strong><ul id="2618e11f-9262-807c-b798-c15bbb3a930c" class="bulleted-list"><li style="list-style-type:square">DB and service design (Project I)</li></ul><ul id="2618e11f-9262-809a-8e4e-debb4f4bc4e7" class="bulleted-list"><li style="list-style-type:square">Create backend server (Task II)</li></ul><ul id="2618e11f-9262-80c3-8e61-d12714f25ae4" class="bulleted-list"><li style="list-style-type:square">Server deployment and operation (TP)</li></ul></li></ul><ul id="2618e11f-9262-804c-8777-fbb97122d390" class="bulleted-list"><li style="list-style-type:circle"><strong>Experience</strong> the <strong>actual service development process</strong> through mid-term proposal presentation and final presentation</li></ul><p id="2618e11f-9262-8032-9dbe-ef9fb4bc282d" class="">
+</p></li></ul><ul id="2618e11f-9262-8016-b99d-cd91685ad793" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Provide integrated service development experience</strong></mark><ul id="2618e11f-9262-80ab-b455-c30313a243f2" class="bulleted-list"><li style="list-style-type:circle">Acquire practical competencies such as<strong>authentication and security (OAuth2, JWT, Firebase integration</strong> )</li></ul><ul id="2618e11f-9262-8003-81d9-ed32034d71b9" class="bulleted-list"><li style="list-style-type:circle">Experience with various network technologies such as<strong>communication protocols (WebSocket, MQTT</strong> )</li></ul><ul id="2618e11f-9262-8068-add2-f77ca4582fad" class="bulleted-list"><li style="list-style-type:circle">Complete projects that can be utilized as a personal portfolio and strengthen developer capabilities</li></ul><p id="2618e11f-9262-80b9-8eed-dad2690705e3" class="">
+</p></li></ul></div></div><hr id="2618e11f-9262-8055-9be1-fdb834ed80a4"/><p id="2618e11f-9262-80d0-ba00-f23de19316b0" class="">
+</p></div></details><p id="2618e11f-9262-8037-9017-c29c3f6d1dfb" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. Grade Evaluation (Credit)</summary><div class="indented"><ul id="2618e11f-9262-801e-9270-d62e88e910e4" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-blue_background"><strong>This class is conducted as an absolute evaluation. (Credit band limit X)</strong></mark></mark></li></ul><p id="2618e11f-9262-80cc-82e1-eb8a5803babc" class="">
+</p><ul id="2618e11f-9262-801f-be27-c51ee864505f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background"><strong>Evaluation items consist of</strong></mark><ol type="1" id="2618e11f-9262-80bd-9994-ff154a373e83" class="numbered-list" start="1"><li>2 Individual Assignments (Assignment 1, Assignment 2)</li></ol><ol type="1" id="2618e11f-9262-8091-850d-e6c8cdfdc79a" class="numbered-list" start="2"><li>1 Term Project (one semester long/one or two people)</li></ol><ol type="1" id="2618e11f-9262-80bf-ac15-d8230472a8f6" class="numbered-list" start="3"><li>Lab items (labs will be offered for every topic/ syllabus and schedule may vary depending on progression)</li></ol><ol type="1" id="2618e11f-9262-8086-b836-dd91e7c8407a" class="numbered-list" start="4"><li>Other items (extra credit concept)</li></ol><ol type="1" id="2618e11f-9262-80a4-9a0a-d29641885e4d" class="numbered-list" start="5"><li>Attendance (academic discipline compliance)</li></ol><p id="2618e11f-9262-80ec-b942-c19de444f319" class="">
+</p></li></ul><ul id="2618e11f-9262-80a9-a22c-db902e202cbc" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background"><strong>The details are as follows.</strong></mark><ol type="1" id="2618e11f-9262-80db-91fc-ddd28ca67a7d" class="numbered-list" start="1"><li><mark class="highlight-gray_background">[Assignment 1] Create an online bookstore using Kyobo Bunko as a reference: </mark> <strong>Design DB and API configuration for developing an online bookstore service</strong></li></ol><ol type="1" id="2618e11f-9262-80bc-872c-f7c37bc054f5" class="numbered-list" start="2"><li><mark class="highlight-gray_background">[Assignment 2] Create an online bookstore using Kyobo Bookstore: </mark><strong>Develop an online bookstore service</strong></li></ol><ol type="1" id="2618e11f-9262-80ff-9d11-c2e5e419112e" class="numbered-list" start="3"><li><mark class="highlight-gray_background">[Term Project (TP)] </mark>Individual/2-person team, must develop a backend service. <strong>Topics can be chosen from the following 1:</strong><ul id="2618e11f-9262-805d-8c57-d03bdb92ac20" class="bulleted-list"><li style="list-style-type:disc">Online real estate (feat. open api),</li></ul><ul id="2618e11f-9262-80b8-afe7-ddb99e3d498d" class="bulleted-list"><li style="list-style-type:disc">Music streaming service (feat. spotify),</li></ul><ul id="2618e11f-9262-8034-9a32-c13a44b8b48a" class="bulleted-list"><li style="list-style-type:disc">Movie database service (feat. TMDB),</li></ul><ul id="2618e11f-9262-8041-8e8c-db3c1b9e6ade" class="bulleted-list"><li style="list-style-type:disc">Computer assembly service (feat. Danawa)</li></ul><ul id="2618e11f-9262-8030-95e3-c9c743652af1" class="bulleted-list"><li style="list-style-type:disc"><strong>Open Topic</strong></li></ul><ul id="2618e11f-9262-8006-9c83-f8458c734794" class="bulleted-list"><li style="list-style-type:disc"><strong>(Other topics may be added/announced later)</strong></li></ul></li></ol><ol type="1" id="2618e11f-9262-8067-bace-e3ad15a7344e" class="numbered-list" start="4"><li>[Hands-on<mark class="highlight-gray_background">]</mark> For each class period, we will provide <strong>additional videos (in the LMS or other platforms</strong>) for students to learn about the topic.<ul id="2618e11f-9262-807e-a49b-c799c8e95588" class="bulleted-list"><li style="list-style-type:disc">Depending on your progress, this <strong>may vary from the number of weeks in the syllabus.</strong></li></ul><ul id="2618e11f-9262-80e3-b034-d130d58b88cc" class="bulleted-list"><li style="list-style-type:disc">Code walkthroughs from the videos and <mark class="highlight-yellow"><strong>submission of lab results and code</strong></mark></li></ul><ul id="2618e11f-9262-8037-a98a-fdc7f73a064c" class="bulleted-list"><li style="list-style-type:disc">These will range from simple labs where you simply follow along with the code in the video to labs where you implement a specific feature.</li></ul><ul id="2618e11f-9262-80d3-abc8-fd09e491d42a" class="bulleted-list"><li style="list-style-type:disc">For example, in the Vue labs, you&#x27;ll see videos with code that explain the syntax and behavior of Vue.js.</li></ul><p id="2618e11f-9262-807b-8cb5-c3cc3eab740b" class="">
+</p></li></ol></li></ul><ul id="2618e11f-9262-804a-9d54-f38268df58db" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background"><strong>Grading (for credit)</strong></mark><ul id="2618e11f-9262-804f-b755-fca682aeb431" class="bulleted-list"><li style="list-style-type:circle">For each assignment (Task 1, Task 2, TP, Lab, Other), you will receive a grade <mark class="highlight-gray_background"><strong>of A+, A, B+, B, C+, C, D+, D, or F</strong></mark>based on the evaluation results.</li></ul><ul id="2618e11f-9262-80d0-855e-ff81734f1ac7" class="bulleted-list"><li style="list-style-type:circle">The final grade will be assigned<strong>by summing the grades from all assignments</strong>. <strong>(</strong><mark class="highlight-gray_background"><strong>Example: 4.5 to 3.8 ⇒ A</strong></mark><strong>)</strong><ul id="2618e11f-9262-80e6-814e-e4907dc7b7eb" class="bulleted-list"><li style="list-style-type:square">This is an example, subject to change, and the grade scale will be announced at a later date.</li></ul></li></ul><ul id="2618e11f-9262-809a-87cf-dfefa79d2fde" class="bulleted-list"><li style="list-style-type:circle">However, <mark class="highlight-gray_background"><strong>attendance</strong></mark>will be evaluated as follows<ul id="2618e11f-9262-80fb-9842-f054006e0054" class="bulleted-list"><li style="list-style-type:square"><strong>Total class time is (15 weeks * 3 hours = 45 hours), of which more than 1/4 of the time you are absent, you will receive an F.</strong></li></ul><ul id="2618e11f-9262-801d-a478-f985a6c0b245" class="bulleted-list"><li style="list-style-type:square">Up to 6 hours, no penalty. </li></ul><ul id="2618e11f-9262-800e-8920-ef3990e956d3" class="bulleted-list"><li style="list-style-type:square">More than 6 hours to less than 9 hours: One level (e.g., A+ → A/B → C+) will be deducted from the final grade.</li></ul><ul id="2618e11f-9262-80d3-9dc5-f5a0e8fe77d2" class="bulleted-list"><li style="list-style-type:square">9+ hours to 1/4 of the total class time: Two levels (e.g., A+ → B+ / B → C) will be deducted from the final grade.</li></ul><ul id="2618e11f-9262-80fe-89cc-c6bf682d0b0b" class="bulleted-list"><li style="list-style-type:square">Absences due to other unavoidable reasons (sickness/reserve, etc.) will be counted as attendance (with supporting documentation via email).</li></ul></li></ul><ul id="2618e11f-9262-8080-82c0-c749107fd523" class="bulleted-list"><li style="list-style-type:circle"><strong>The miscellaneous score will be applied to 2 items (10 points total)</strong><ul id="2618e11f-9262-8025-8bf8-df2d77e248ea" class="bulleted-list"><li style="list-style-type:square"><mark class="highlight-orange">If the extra credit score is 6 or more, a &quot;+&quot; will be added to the final grade (6 or less, + X).</mark></li></ul><ul id="2618e11f-9262-8069-94f0-f0c0c65219bf" class="bulleted-list"><li style="list-style-type:square">Other scores will be calculated as follows<div id="2618e11f-9262-8025-ab26-fdddfe57674b" class="column-list"><div id="2618e11f-9262-8008-ab55-e7be1d61413b" style="width:50%" class="column"><table id="2618e11f-9262-809d-8d9c-df16dabe6988" class="simple-table"><tbody><tr id="2618e11f-9262-80a1-9e2e-c8b697e4998e"><td id="YCRd" class="" style="width:239px">Extra Credit</td><td id="gmzM" class="" style="width:239px">Points awarded</td></tr><tr id="2618e11f-9262-804a-800f-d1122d0263ae"><td id="YCRd" class="" style="width:239px">10 points</td><td id="gmzM" class="" style="width:239px">A+</td></tr><tr id="2618e11f-9262-8065-9eea-eeba08565e39"><td id="YCRd" class="" style="width:239px">8 or more points</td><td id="gmzM" class="" style="width:239px">A</td></tr><tr id="2618e11f-9262-805c-a54d-e95bed230781"><td id="YCRd" class="" style="width:239px">6 or more points</td><td id="gmzM" class="" style="width:239px">B</td></tr><tr id="2618e11f-9262-8093-ad66-dc98f15e3391"><td id="YCRd" class="" style="width:239px">5 points</td><td id="gmzM" class="" style="width:239px">B</td></tr><tr id="2618e11f-9262-80f2-84e3-d4e3ba4af6ea"><td id="YCRd" class="" style="width:239px">4 points</td><td id="gmzM" class="" style="width:239px">C</td></tr></tbody></table></div><div id="2618e11f-9262-8000-a821-de9f73552aaa" style="width:50%" class="column"><table id="2618e11f-9262-8000-b76f-c6abc39b0e03" class="simple-table"><tbody><tr id="2618e11f-9262-8024-b407-e97c04b243b0"><td id="YCRd" class="" style="width:239px">Other</td><td id="gmzM" class="" style="width:239px">Extra Credit</td></tr><tr id="2618e11f-9262-80c6-9f02-e52bf0d4572f"><td id="YCRd" class="" style="width:239px">3 points</td><td id="gmzM" class="" style="width:239px">C</td></tr><tr id="2618e11f-9262-801d-9159-e3d303a71ffc"><td id="YCRd" class="" style="width:239px">2 points</td><td id="gmzM" class="" style="width:239px">D</td></tr><tr id="2618e11f-9262-8025-a806-cf8204ef8ae9"><td id="YCRd" class="" style="width:239px">1 point</td><td id="gmzM" class="" style="width:239px">D</td></tr><tr id="2618e11f-9262-8004-9bc5-e7edb5b1cf09"><td id="YCRd" class="" style="width:239px">0 points</td><td id="gmzM" class="" style="width:239px">F</td></tr><tr id="2618e11f-9262-8009-9915-e2b98ca89d2e"><td id="YCRd" class="" style="width:239px"></td><td id="gmzM" class="" style="width:239px"></td></tr></tbody></table></div></div></li></ul><ul id="2618e11f-9262-800a-9912-fca24b24b85b" class="bulleted-list"><li style="list-style-type:square">Other points can be fulfilled through activities such as (example) below~ (details to be announced later)<ul id="2618e11f-9262-80c5-9d2e-c87e94d46a4c" class="bulleted-list"><li style="list-style-type:disc"><strong>[9 points] </strong>Entering an external competition and winning an award (1-3)</li></ul><ul id="2618e11f-9262-807a-9041-d14cbee4e11a" class="bulleted-list"><li style="list-style-type:disc"><strong>[6 points] </strong>Entering an external competition and winning an honorable mention (less than 3rd place) or winning a capstone competition (1st or 2nd place)</li></ul><ul id="2618e11f-9262-8033-a01b-f19e91d92a5a" class="bulleted-list"><li style="list-style-type:disc"><strong>[3 points] </strong>Participate in an external competition (1 time MAX) or finalist in a capstone competition <em><mark class="highlight-yellow"><span style="border-bottom:0.05em solid">(competition must be development related! (contest/hackathon/etc.))</span></mark></em></li></ul><ul id="2618e11f-9262-8073-9eae-d74d35e77878" class="bulleted-list"><li style="list-style-type:disc"><strong>[3 points] </strong>Attend an online lecture (1 / 3)</li></ul><ul id="2618e11f-9262-809f-a06a-c7c848e7c9fe" class="bulleted-list"><li style="list-style-type:disc"><strong>[3 points] </strong>Complete a short additional assignment</li></ul><ul id="2618e11f-9262-80e2-858e-ef9301dcdb24" class="bulleted-list"><li style="list-style-type:disc"><strong>[3 points] </strong>Simple quiz during midterm (1 point for participation / 2 points for 50+ points / 3 points for 70+ points)</li></ul><ul id="2618e11f-9262-8029-9bc2-d4acaecc0865" class="bulleted-list"><li style="list-style-type:disc"><strong>[3 points] </strong>Attendance without missing a single class (0-2 hours: 3 points / 2-4 hours: 2 points / 4-8 hours: 1 point / below 0 points)</li></ul><ul id="2618e11f-9262-80e0-9eeb-ca7cbf15f324" class="bulleted-list"><li style="list-style-type:disc">[<strong>3 points] </strong>Git Commit more than a certain number of times (including all assignments, below is an example, exact number will be announced later) (e.g., 50+: 1 point / 100+: 2 points / 150+: 3 points)</li></ul><ul id="2618e11f-9262-8036-9db5-cdb774c85ca9" class="bulleted-list"><li style="list-style-type:disc"><strong>[2 points] </strong>Participation in on-campus/off-campus seminars (related to technology development) (1 point/1 time)</li></ul><ul id="2618e11f-9262-80ba-817c-cdd8243ef240" class="bulleted-list"><li style="list-style-type:disc">[<strong>2 points] </strong>Write a development/bug/test report (2 points for any assignment) (1 point/time)</li></ul><ul id="2618e11f-9262-8080-a4ea-ca55863acdb4" class="bulleted-list"><li style="list-style-type:disc"><strong>[2 points] </strong>Create a personal repository and publish it on Github (2 points for 1 time for any assignment)</li></ul></li></ul><ul id="2618e11f-9262-8085-ad37-f2283ac94251" class="bulleted-list"><li style="list-style-type:square">Example)<ul id="2618e11f-9262-80f5-adde-dd2c4bc4556e" class="bulleted-list"><li style="list-style-type:disc">Participate in a competition<strong>(3 points)</strong>+ Apply a public API<strong>(1 point)</strong>=&gt; 4 points (+ credit)</li></ul><ul id="2618e11f-9262-80fd-ae42-e37e0f25bbf6" class="bulleted-list"><li style="list-style-type:disc">Video lecture (3 points) + Meet with professor (2 points) + 1 technical seminar (1 point) + Submit all assignments (2 points) + All attendance (3 points) = 11 points (out of a possible 10)</li></ul><ul id="2618e11f-9262-80ad-9d80-f441666eac26" class="bulleted-list"><li style="list-style-type:disc">All assignments submitted (2 points) + Commit count filled (3 points) + additional development tools (1 point) + workflow (2 points) + attendance (2 points) = 10 points</li></ul></li></ul><ul id="2618e11f-9262-80a0-997c-efa75de857f3" class="bulleted-list"><li style="list-style-type:square"><mark class="highlight-yellow"><strong>It&#x27;s a point system, so be sure to fill it out~!</strong></mark></li></ul><hr id="2618e11f-9262-805d-8d19-e3215cf23888"/></li></ul><p id="2618e11f-9262-8089-b45a-c8ddb006bddf" class="">
+</p></li></ul></div></details><p id="2618e11f-9262-8071-af8b-cc4e80d6a894" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">6. Class related announcements</summary><div class="indented"><div id="2618e11f-9262-80f5-bb3d-ee39569ef334" class="column-list"><div id="2618e11f-9262-8003-9790-dd52601e2ef9" style="width:50%" class="column"><ul id="2618e11f-9262-8085-bc95-e80daa1524fb" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>TA Session</strong></mark><ul id="2618e11f-9262-8071-b4c9-fb9cfdf2c998" class="bulleted-list"><li style="list-style-type:circle"><strong>For students who need help during development or don&#x27;t know basic html/css/javascript grammar, TA will run sessions to give basic lectures and answer questions.</strong></li></ul><ul id="2618e11f-9262-8052-8057-df028d6cf3eb" class="bulleted-list"><li style="list-style-type:circle">Time to be announced later (weekday evenings)</li></ul><p id="2618e11f-9262-80d3-b3d3-d2f39d7fd84d" class="">
+</p></li></ul><ul id="2618e11f-9262-80e0-b404-fecc1bc1c012" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>Class times</strong></mark><ul id="2618e11f-9262-80c4-b434-c86172c6cd39" class="bulleted-list"><li style="list-style-type:circle">English class: Class starts at 09:15 (because 9:00 is hard...?)</li></ul><ul id="2618e11f-9262-80ab-a6ae-db18ba0afb19" class="bulleted-list"><li style="list-style-type:circle">Korean class: class time stays the same (you can finish early depending on your progress)</li></ul><p id="2618e11f-9262-80c6-9639-e68bee68951b" class="">
+</p></li></ul><ul id="2618e11f-9262-8013-8f81-e65edcfd701e" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>Lecture Materials</strong></mark><ul id="2618e11f-9262-8027-a9e9-d0c7aaddaa0c" class="bulleted-list"><li style="list-style-type:circle">Lecture materials (PPT/ Notion) and lecture videos will be provided.</li></ul><ul id="2618e11f-9262-80f2-88c0-e686d89be1d6" class="bulleted-list"><li style="list-style-type:circle">No books are required. (PPT, etc. will be provided if necessary)</li></ul><ul id="2618e11f-9262-802c-bb80-def25e68fcec" class="bulleted-list"><li style="list-style-type:circle">This semester will utilize materials created with Notion</li></ul></li></ul></div><div id="2618e11f-9262-80c1-90b4-e2dcaa8b5cde" style="width:50%" class="column"><ul id="2618e11f-9262-8043-b813-cbb9542f8951" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>English ↔ Korean class</strong></mark><ul id="2618e11f-9262-80c8-b763-c3cd5611bebf" class="bulleted-list"><li style="list-style-type:circle">Since both classes will be based on absolute assessment, students enrolled in the Korean/English class can take classes in the other class (if space is available) at their convenience.</li></ul><p id="2618e11f-9262-80af-8908-cd8ea9720534" class="">
+</p></li></ul><ul id="2618e11f-9262-8077-8adc-dc26efc1e84c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>Backend Class</strong></mark><ul id="2618e11f-9262-807e-9bd3-e18b652cd667" class="bulleted-list"><li style="list-style-type:circle">This is a backend class!</li></ul><ul id="2618e11f-9262-80db-8f60-db69f9b2a7d5" class="bulleted-list"><li style="list-style-type:circle"><strong>If you are interested in the frontend, please join a different class!</strong></li></ul><p id="2618e11f-9262-8086-a9fe-f629b59f7a47" class="">
+</p></li></ul><ul id="2618e11f-9262-801d-b254-e50a10501c89" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>Questions</strong></mark><ul id="2618e11f-9262-80cd-8aa5-e6009157220d" class="bulleted-list"><li style="list-style-type:circle">If you have any questions, feel free to email/text me!</li></ul><ul id="2618e11f-9262-8096-8641-ceef3434df76" class="bulleted-list"><li style="list-style-type:circle">In addition, we will have Google Classroom and Discord, so it&#x27;s okay to ask questions through those channels~!</li></ul></li></ul></div></div></div></details><p id="2618e11f-9262-8085-a882-eb90fa309bc9" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
