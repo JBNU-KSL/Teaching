@@ -1,0 +1,785 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>00. OT</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(174, 130, 0, 0.223); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none;   /* 파이어폭스 등 */
+}
+
+
+
+summary::before {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  break-after: page; /* 인쇄 시 페이지 나눔 */
+}
+
+.properties {
+	display: none;
+}
+
+@media print {
+  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  
+  /* 페이지 가운데 정렬 영역 */
+  header{
+    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
+    display:flex;
+    position: relative;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* 본문 타이틀(원래의 00. OT) */
+  .page-title{
+    margin:0;
+    line-height:1.25;
+    font-weight:800;
+    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0; /* 상·하 여유 공간 */
+  }
+
+  /* 최상단 큰 제목 */
+  .page-title::before{
+    content: "초급프로젝트 (25-02)\A";
+    white-space: pre-line;     /* \A 줄바꿈 활성화 */
+    display:block;
+    font-weight:900;
+    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
+    letter-spacing:.02em;
+    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  }
+
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+	  white-space: pre-line;
+	  position: absolute;
+	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  font-size: 11pt;
+	  font-weight: 500;
+	  line-height: 1.6;
+	  text-align: center;
+} 
+}
+	
+</style></head><body><article id="2618e11f-9262-8049-a5a8-df16483da1bd" class="page sans"><header><h1 class="page-title">00. OT</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td><span class="selected-value select-value-color-gray">25.09.02</span></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>1주차</td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 교수 소개</summary><div class="indented"><div id="2618e11f-9262-8086-b60b-f93df30d3871" class="column-list"><div id="2618e11f-9262-809f-b66d-d4fa26097c71" style="width:25%" class="column"><figure id="2618e11f-9262-8058-b148-cdb9c7979b4f" class="image"><a href="00%20OT%202618e11f92628049a5a8df16483da1bd/image.png"><img style="width:144px" src="00%20OT%202618e11f92628049a5a8df16483da1bd/image.png"/></a></figure></div><div id="2618e11f-9262-8059-9c54-c72dbb5a4ef9" style="width:75%" class="column"><ul id="2618e11f-9262-80bc-8513-c43118e183d7" class="bulleted-list"><li style="list-style-type:disc">전북대학교 컴퓨터인공지능학부 조교수</li></ul><ul id="2618e11f-9262-802a-ae01-e5127be2fd0e" class="bulleted-list"><li style="list-style-type:disc">(<strong>Research Interest</strong>: 인공지능/ 의료 AI/ 계산과학)</li></ul><ul id="2618e11f-9262-8012-bf8c-f27feb0fa119" class="bulleted-list"><li style="list-style-type:disc"><strong>E-mail</strong>: ksl@jbnu.ac.kr</li></ul><ul id="2618e11f-9262-80ce-a0fe-e58ab5ea5bfb" class="bulleted-list"><li style="list-style-type:disc"><strong>Phone</strong>: 010-4703-8160</li></ul><ul id="2618e11f-9262-8007-b82c-f741038aa6c4" class="bulleted-list"><li style="list-style-type:disc"><strong>Office</strong>: 공대 7호관 626호</li></ul><ul id="2618e11f-9262-8071-99da-eaeef3039cec" class="bulleted-list"><li style="list-style-type:disc"><strong>Office Hour</strong>: 언제든지? (사전 연락 요망)</li></ul><p id="2618e11f-9262-8050-8be5-dcc6c8d716ac" class="">
+</p></div></div><hr id="2618e11f-9262-80b4-baf9-ddd4d0b108eb"/><p id="2618e11f-9262-801b-93b7-e67cef1df64c" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 본 강의에서는…</summary><div class="indented"><div id="2618e11f-9262-806a-98d2-cfaf11a84d44" class="column-list"><div id="2618e11f-9262-8019-abb5-ce673d951692" style="width:50%" class="column"><ul id="2618e11f-9262-804f-bf96-d47c989e55fb" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>수업 목표</strong></mark><ul id="2618e11f-9262-802b-be89-ebf1b99574e7" class="bulleted-list"><li style="list-style-type:circle">현대 웹서비스 구조 및 백엔드 개발 이해</li></ul><ul id="2618e11f-9262-802c-88aa-d8d85352b82f" class="bulleted-list"><li style="list-style-type:circle">실전 중심의 백엔드 프레임워크(Node.js, Express, Spring Boot, FastAPI, Flask) 실습</li></ul><ul id="2618e11f-9262-8080-a801-e4b3704e935c" class="bulleted-list"><li style="list-style-type:circle">인증·보안(OAuth2, JWT, Firebase) 및 배포 자동화(CI/CD, Docker, Kubernetes) 경험</li></ul><ul id="2618e11f-9262-806c-938e-ebbb2f0af9b6" class="bulleted-list"><li style="list-style-type:circle">DB/ORM(MySQL, PostgreSQL, MongoDB, Redis, JPA, MyBatis, Prisma, SQLAlchemy) 활용 능력 강화</li></ul></li></ul><ul id="2618e11f-9262-8018-8c99-c5297a66fac6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>수업 내용 (주요 학습 주제)</strong></mark><ul id="2618e11f-9262-8061-ac2b-e01f2242b6ba" class="bulleted-list"><li style="list-style-type:circle">웹 서비스 구조 및 설계 방법</li></ul><ul id="2618e11f-9262-80c8-91de-d55f452fddd1" class="bulleted-list"><li style="list-style-type:circle">REST API 설계와 인증·문서화(Swagger, Postman)</li></ul><ul id="2618e11f-9262-8080-a85a-fa643cff32f9" class="bulleted-list"><li style="list-style-type:circle">DB/RDB/NoSQL과 ORM 활용</li></ul><ul id="2618e11f-9262-807e-947e-ffd405fd5596" class="bulleted-list"><li style="list-style-type:circle">통신 프로토콜(WebSocket, MQTT)</li></ul><ul id="2618e11f-9262-802d-8cd7-e57b01447b91" class="bulleted-list"><li style="list-style-type:circle">배포 및 운영(CI/CD, Docker, Kubernetes)</li></ul><ul id="2618e11f-9262-804c-9073-d84e5bfcc2fc" class="bulleted-list"><li style="list-style-type:circle">프로젝트 기반 실습 (개인/팀)</li></ul></li></ul><p id="2618e11f-9262-805d-a45d-fe68581c1307" class="">
+</p></div><div id="2618e11f-9262-8069-ae88-d8d685f92e1b" style="width:50%" class="column"><ul id="2618e11f-9262-80f7-815d-fd2a5ddbc978" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>주차별 학습 내용</strong></mark><ul id="2618e11f-9262-8052-836b-ef452b8e4a88" class="bulleted-list"><li style="list-style-type:circle"><strong>1–3주</strong>: 웹서비스 구조, 서버 종류, 아키텍처 설계</li></ul><ul id="2618e11f-9262-80ff-991c-d181eae429cc" class="bulleted-list"><li style="list-style-type:circle"><strong>4–5주</strong>: Node.js &amp; Express, HTTP/REST API, 인증(JWT), Swagger·Postman</li></ul><ul id="2618e11f-9262-80fc-9b10-df825d169f96" class="bulleted-list"><li style="list-style-type:circle"><strong>6–7주</strong>: 백엔드 프레임워크 학습 (Spring Boot, Flask, FastAPI)</li></ul><ul id="2618e11f-9262-8083-a344-c9064d02373d" class="bulleted-list"><li style="list-style-type:circle"><strong>8주</strong>: Term Project I 마감 (API 서버 제작)</li></ul><ul id="2618e11f-9262-80aa-9491-ddce8c7655bb" class="bulleted-list"><li style="list-style-type:circle"><strong>9–10주</strong>: DB/RDB/NoSQL + ORM, OAuth2·소셜 로그인(구글/카카오), Firebase 연동</li></ul><ul id="2618e11f-9262-803e-b423-e844e7333430" class="bulleted-list"><li style="list-style-type:circle"><strong>11주</strong>: 통신 프로토콜(WebSocket, MQTT) + Term Project II 마감</li></ul><ul id="2618e11f-9262-801e-a157-f3d2cfe89b05" class="bulleted-list"><li style="list-style-type:circle"><strong>12–14주</strong>: 서비스 유지보수, 테스트·로깅·문서화, CI/CD, Docker, Kubernetes</li></ul><ul id="2618e11f-9262-809c-9154-c04b8f9c121b" class="bulleted-list"><li style="list-style-type:circle"><strong>15주</strong>: Term Project III 마감 (서버 배포)</li></ul></li></ul><ul id="2618e11f-9262-8009-b524-c093f77a9b15" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>수업 운영 팁</strong></mark><ul id="2618e11f-9262-80db-860e-dee564badbcd" class="bulleted-list"><li style="list-style-type:circle">이론보다 <strong>실습 중심</strong></li></ul><ul id="2618e11f-9262-80c8-bd39-d169eafaf6d6" class="bulleted-list"><li style="list-style-type:circle">모든 과제는 <strong>GitHub 커밋/Swagger 문서화 필수</strong></li></ul><ul id="2618e11f-9262-8042-8009-c93ec8876975" class="bulleted-list"><li style="list-style-type:circle">프로젝트는 개인 포트폴리오 활용 가능</li></ul><ul id="2618e11f-9262-80a7-8f52-e71e026ffd8b" class="bulleted-list"><li style="list-style-type:circle">적극적인 참여와 기타 활동(공모전, 세미나, 오픈소스 활동) 장려!</li></ul><p id="2618e11f-9262-8026-81ba-e9704c75b6aa" class="">
+</p></li></ul></div></div><hr id="2618e11f-9262-8063-8b88-e92532d10625"/><p id="2618e11f-9262-80aa-925d-edd777f25a0d" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. 강의 계획서 살펴보기</summary><div class="indented"><figure id="2618e11f-9262-8009-ab4c-ee08b257be0b" class="image"><a href="00%20OT%202618e11f92628049a5a8df16483da1bd/image%201.png"><img style="width:3244px" src="00%20OT%202618e11f92628049a5a8df16483da1bd/image%201.png"/></a></figure><figure id="2618e11f-9262-802f-93bc-c50eee112f82" class="image"><a href="00%20OT%202618e11f92628049a5a8df16483da1bd/image%202.png"><img style="width:3240px" src="00%20OT%202618e11f92628049a5a8df16483da1bd/image%202.png"/></a></figure><h3 id="2618e11f-9262-800e-a5a6-cb66db182af6" class=""><mark class="highlight-gray_background">* 미리 공지: 10/14 ~ 24일 (명절 다음 주/ 시험기간)에는 온라인 강의 제공 예정</mark></h3><p id="2618e11f-9262-800f-8752-e8377ed7449d" class="">
+</p><hr id="2618e11f-9262-80d2-9ce3-e6449e1a3ba0"/></div></details><p id="2618e11f-9262-8029-a2a4-e7ab45da5091" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. 기대효과</summary><div class="indented"><div id="2618e11f-9262-8072-ba27-d3cf2b287b18" class="column-list"><div id="2618e11f-9262-8094-9190-e93c23072e43" style="width:50%" class="column"><ul id="2618e11f-9262-8062-aa60-e6087a2513e9" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>최신 개발 기술 습득 및 실무 적용 역량 강화</strong></mark><ul id="2618e11f-9262-803f-baa2-d855f547a913" class="bulleted-list"><li style="list-style-type:circle">Node.js, Express, Spring Boot, Flask, FastAPI 등 다양한 <strong>백엔드 프레임워크</strong> 실습</li></ul><ul id="2618e11f-9262-8059-b8af-f29ae1b38281" class="bulleted-list"><li style="list-style-type:circle">REST API 설계·구현, Swagger/Postman을 통한 <strong>API 문서화 경험</strong></li></ul><ul id="2618e11f-9262-80e2-b769-cec55d62fedc" class="bulleted-list"><li style="list-style-type:circle">Docker, Kubernetes, CI/CD(GitHub Actions) 등 <strong>배포 및 운영 자동화</strong> 경험</li></ul></li></ul><ul id="2618e11f-9262-804e-b507-e7cb3c8ddf49" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>협업 및 버전 관리 능력 향상</strong></mark><ul id="2618e11f-9262-80ca-9750-dc83f94f7db9" class="bulleted-list"><li style="list-style-type:circle">Git &amp; GitHub 기반 협업 방식 실습</li></ul><ul id="2618e11f-9262-806b-a693-ea5efb717f4d" class="bulleted-list"><li style="list-style-type:circle">Term Project(1~3차) 수행을 통한 <strong>실제 협업 경험</strong> (코드 공유, 이슈 관리, API 통합)</li></ul></li></ul><ul id="2618e11f-9262-800b-a4a6-f7ba8429f186" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>소프트웨어 설계 및 패턴 적용 경험 축적</strong></mark><ul id="2618e11f-9262-80d4-b3d7-e1e4b0d56932" class="bulleted-list"><li style="list-style-type:circle">서버 구조 및 아키텍처 설계, DB/ORM(MySQL, PostgreSQL, MongoDB, JPA, MyBatis 등) 적용</li></ul><ul id="2618e11f-9262-8062-b042-c63b80a0a9c8" class="bulleted-list"><li style="list-style-type:circle">서비스 설계 → 구현 → 테스트 → 배포 전 과정을 경험하며 <strong>구조적 프로그래밍 능력 강화</strong></li></ul></li></ul></div><div id="2618e11f-9262-80f0-80ea-c63233ab87d2" style="width:50%" class="column"><ul id="2618e11f-9262-80ef-a684-f71d9cd1d667" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>문제 해결력 및 프로젝트 수행 경험 확장</strong></mark><ul id="2618e11f-9262-80ad-8db0-db506fb46fc1" class="bulleted-list"><li style="list-style-type:circle">총 3회의 <strong>Term Project 수행</strong>을 통한 실전 백엔드 개발 경험<ul id="2618e11f-9262-806a-93ca-de45a49c9553" class="bulleted-list"><li style="list-style-type:square">DB 및 서비스 설계 (과제 I)</li></ul><ul id="2618e11f-9262-80cc-95ec-cc56972a6c83" class="bulleted-list"><li style="list-style-type:square">백엔드 서버 만들기 (과제 II)</li></ul><ul id="2618e11f-9262-8087-83d9-fc320eb0dd41" class="bulleted-list"><li style="list-style-type:square">서버 배포 및 운영 (TP)</li></ul></li></ul><ul id="2618e11f-9262-80b6-9270-d3f1b2de154d" class="bulleted-list"><li style="list-style-type:circle">중간 Proposal 발표, 최종 발표를 통한 <strong>실제 서비스 개발 프로세스 체험</strong></li></ul><p id="2618e11f-9262-80ac-afb1-d8f80569d6c8" class="">
+</p></li></ul><ul id="2618e11f-9262-8043-a504-e36e391ca826" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>통합적인 서비스 개발 경험 제공</strong></mark><ul id="2618e11f-9262-8091-a7f5-ed1a0d80bd4a" class="bulleted-list"><li style="list-style-type:circle"><strong>인증·보안(OAuth2, JWT, Firebase 연동)</strong> 등 실무 필수 역량 습득</li></ul><ul id="2618e11f-9262-80e1-9b51-d5f00ba70dd6" class="bulleted-list"><li style="list-style-type:circle"><strong>통신 프로토콜(WebSocket, MQTT)</strong> 등 다양한 네트워크 기술 경험</li></ul><ul id="2618e11f-9262-80f7-80fa-e490793d4fd2" class="bulleted-list"><li style="list-style-type:circle">개인 포트폴리오로 활용 가능한 프로젝트 완성 및 개발자 역량 강화</li></ul><p id="2618e11f-9262-800e-bfdd-def6500a2c44" class="">
+</p></li></ul></div></div><hr id="2618e11f-9262-804a-a571-fd81d1a9ae4f"/><p id="2618e11f-9262-8085-b460-c9dd12c33d67" class="">
+</p></div></details><p id="2618e11f-9262-80b6-81f4-cafa53ffca1b" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 성적 평가 (학점 부여)</summary><div class="indented"><ul id="2618e11f-9262-80c1-ac69-c5704bb0e9e5" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-blue_background"><strong>본 수업은 절대평가로 진행됨. (학점 구간 제한 X)</strong></mark></mark></li></ul><p id="2618e11f-9262-8065-bf00-ff1db2cbfc4b" class="">
+</p><ul id="2618e11f-9262-80c7-b8c0-cd5ccdff1ad7" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background"><strong>평가 항목은 다음과 같이 구성</strong></mark><ol type="1" id="2618e11f-9262-8015-bd5d-d687799793d7" class="numbered-list" start="1"><li>2개의 개인 과제 (과제 1, 과제 2)</li></ol><ol type="1" id="2618e11f-9262-80cb-b8d2-f2a387f94571" class="numbered-list" start="2"><li>1개의 Term Project (한 학기동안 진행/ 1명 또는 2명이 진행)</li></ol><ol type="1" id="2618e11f-9262-8031-9b87-c4b9792ab1df" class="numbered-list" start="3"><li>실습 항목 (매 주제마다 실습 제공 예정/ 진도에 따라 강의계획서와 일정이 다를 수 있음)</li></ol><ol type="1" id="2618e11f-9262-80bd-a0f0-c38db4cfc409" class="numbered-list" start="4"><li>기타 항목 (추가 점수 개념)</li></ol><ol type="1" id="2618e11f-9262-80bc-be8f-d7505149af32" class="numbered-list" start="5"><li>출석 (학칙 규정 준수)</li></ol><p id="2618e11f-9262-80ca-bd92-d8d378964805" class="">
+</p></li></ul><ul id="2618e11f-9262-80af-9bec-dd5a1c8c381b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background"><strong>세부적인 내용은 다음과 같음.</strong></mark><ol type="1" id="2618e11f-9262-808b-8af6-ff9597bcb877" class="numbered-list" start="1"><li><mark class="highlight-gray_background">[과제 1] 교보문고를 참고하여 온라인 서점 만들기: </mark> <strong>온라인 서점 서비스 개발을 위한 DB 및 API 구성 설계</strong></li></ol><ol type="1" id="2618e11f-9262-80b2-b266-d84504549ac8" class="numbered-list" start="2"><li><mark class="highlight-gray_background">[과제 2] 교보문고를 참고하여 온라인 서점 만들기: </mark><strong>온라인 서점 서비스 개발</strong></li></ol><ol type="1" id="2618e11f-9262-80ec-9555-d3883a793d74" class="numbered-list" start="3"><li><mark class="highlight-gray_background">[Term Project (TP)] </mark>개인/2인이 함께 진행하며, 백엔드 서비스 개발을 진행해야 함. <strong>주제는 아래 중 택 1:</strong><ul id="2618e11f-9262-8045-9eb3-f8362296b36e" class="bulleted-list"><li style="list-style-type:disc">온라인 부동산 (feat. open api),</li></ul><ul id="2618e11f-9262-80c4-8373-dcd3f14a0c87" class="bulleted-list"><li style="list-style-type:disc">음악 스트리밍 서비스 (feat. spotify),</li></ul><ul id="2618e11f-9262-802f-8b8d-f4b891cb727f" class="bulleted-list"><li style="list-style-type:disc">영화 데이터베이스 서비스 (feat. TMDB),</li></ul><ul id="2618e11f-9262-80a8-b116-f4e5949300b8" class="bulleted-list"><li style="list-style-type:disc">컴퓨터 조립 서비스 (feat. 다나와)</li></ul><ul id="2618e11f-9262-8026-90f8-c305802bd5d3" class="bulleted-list"><li style="list-style-type:disc"><strong>자유주제</strong></li></ul><ul id="2618e11f-9262-8080-97ac-e89489507cb5" class="bulleted-list"><li style="list-style-type:disc"><strong>(이 외에 추가될 수 있음/ 추후 공지)</strong></li></ul></li></ol><ol type="1" id="2618e11f-9262-80c5-ae5f-c1aad24c5421" class="numbered-list" start="4"><li>[<mark class="highlight-gray_background">실습]</mark> 각 수업 차시 별로 학생들이 주제에 대해 학습할 수 있는 <strong>추가 영상(LMS 또는 다른 플랫폼)</strong>을 제공할 예정임.<ul id="2618e11f-9262-80a2-9f08-d96783942d56" class="bulleted-list"><li style="list-style-type:disc">진도에 따라, <strong>강의 계획서에 있는 주차와 달라질 수 있음.</strong></li></ul><ul id="2618e11f-9262-807a-8288-fb6d1e03d9eb" class="bulleted-list"><li style="list-style-type:disc">영상에서 코드 실습을 함께 진행하며, <mark class="highlight-yellow"><strong>실습 결과물 및 코드를 제출</strong></mark></li></ul><ul id="2618e11f-9262-8053-8e1d-cd112fa66267" class="bulleted-list"><li style="list-style-type:disc">간단히 영상의 코드를 따라치면 되는 간단한 실습부터 특정 기능을 구현하는 실습까지 다양할 예정임.</li></ul><ul id="2618e11f-9262-80e3-9c41-e94c5294bcaa" class="bulleted-list"><li style="list-style-type:disc">e.g., Vue 실습에서 Vue.js의 문법이나 동작 원리 등을 코드와 함께 영상으로 제공 예정</li></ul><p id="2618e11f-9262-80d0-b8cd-e7297f193cf4" class="">
+</p></li></ol></li></ul><ul id="2618e11f-9262-8054-bab0-e6e793086a2e" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-blue_background"><strong>성적 평가 (학점 부여)</strong></mark><ul id="2618e11f-9262-8080-adab-f7c220d8830c" class="bulleted-list"><li style="list-style-type:circle">각 과제 (과제 1, 과제 2, TP, 실습, 기타)에 대해 평가 결과에 따라 점수를 <mark class="highlight-gray_background"><strong>A+, A, B+, B, C+, C, D+, D, F</strong></mark>로 부여.</li></ul><ul id="2618e11f-9262-8045-a8ec-d76f952ebff8" class="bulleted-list"><li style="list-style-type:circle"><strong>모든 과제의 학점을 합하여</strong> 최종 학점을 부여 예정. <strong>(</strong><mark class="highlight-gray_background"><strong>예: 4.5 ~ 3.8 ⇒ A 부여</strong></mark><strong>)</strong><ul id="2618e11f-9262-80be-83d6-fd50817ac1ea" class="bulleted-list"><li style="list-style-type:square">이는 예시이므로, 변경될 수 있으며, 학점 구간은 추후 공지 예정임.</li></ul></li></ul><ul id="2618e11f-9262-801d-b18c-f5d683414bbf" class="bulleted-list"><li style="list-style-type:circle">다만, <mark class="highlight-gray_background"><strong>출석</strong></mark>은 다음과 같이 평가할 예정임.<ul id="2618e11f-9262-8047-85c1-c8f26327e085" class="bulleted-list"><li style="list-style-type:square"><strong>총 수업시간은 (15주 * 3시간 = 45시간)이며, 이 중 1/4 이상 결석일 시 F처리.</strong></li></ul><ul id="2618e11f-9262-8073-80b0-dcf9e856e27a" class="bulleted-list"><li style="list-style-type:square">6시간까지는 감점 없음. </li></ul><ul id="2618e11f-9262-8089-b246-e10b086c7a24" class="bulleted-list"><li style="list-style-type:square">6시간 초과 ~ 9시간 미만: 최종 학점으로부터 한 단계 (e.g., A+ → A / B → C+) 감점 예정.</li></ul><ul id="2618e11f-9262-80f4-a18c-fd5b33fc46c2" class="bulleted-list"><li style="list-style-type:square">9시간 이상 ~ 총 수업시간의 1/4까지: 최종 학점으로부터 두 단계 (e.g., A+ → B+ / B → C) 감점 예정.</li></ul><ul id="2618e11f-9262-804b-9c19-dbc274bc1f36" class="bulleted-list"><li style="list-style-type:square">기타 부득이한 사유 (병결/ 예비군 등)로 인한 결석은 출석으로 인정 (증빙 서류 메일로 제출)</li></ul></li></ul><ul id="2618e11f-9262-8078-9421-ec929864ef5e" class="bulleted-list"><li style="list-style-type:circle"><strong>기타 점수는 2개의 항목에 반영 예정 (총 10점)</strong><ul id="2618e11f-9262-801a-8c0f-e919502fa85d" class="bulleted-list"><li style="list-style-type:square"><mark class="highlight-orange">기타 점수가 6점 이상일 경우, 최종 학점에 “+”를 함께 부여. (6점 이하일 경우 + 점수 X)</mark></li></ul><ul id="2618e11f-9262-807c-86ec-e6df5668859c" class="bulleted-list"><li style="list-style-type:square">기타점수는 다음와 같이 학점을 산출할 예정임.<div id="2618e11f-9262-8002-bdf2-d0e5eddf5cb8" class="column-list"><div id="2618e11f-9262-8092-a069-fafcd1f62a42" style="width:50%" class="column"><table id="2618e11f-9262-8040-8c0d-dc139058ad67" class="simple-table"><tbody><tr id="2618e11f-9262-8072-b288-d0ece0a68a47"><td id="YCRd" class="" style="width:239px">기타점수</td><td id="gmzM" class="" style="width:239px">부여학점</td></tr><tr id="2618e11f-9262-806c-bd55-c5c8588b8a81"><td id="YCRd" class="" style="width:239px">10점</td><td id="gmzM" class="" style="width:239px">A+</td></tr><tr id="2618e11f-9262-804d-85aa-e77b913e6f96"><td id="YCRd" class="" style="width:239px">8점 이상</td><td id="gmzM" class="" style="width:239px">A</td></tr><tr id="2618e11f-9262-8026-9707-f1c178b29300"><td id="YCRd" class="" style="width:239px">6점 이상</td><td id="gmzM" class="" style="width:239px">B+</td></tr><tr id="2618e11f-9262-8027-a6d2-e5cfdbf6c9f4"><td id="YCRd" class="" style="width:239px">5점</td><td id="gmzM" class="" style="width:239px">B</td></tr><tr id="2618e11f-9262-80b8-a36e-dc6d44ac3ed1"><td id="YCRd" class="" style="width:239px">4점</td><td id="gmzM" class="" style="width:239px">C+</td></tr></tbody></table></div><div id="2618e11f-9262-8071-b262-f8344d47063e" style="width:50%" class="column"><table id="2618e11f-9262-80b1-954a-ec2ccd7400cc" class="simple-table"><tbody><tr id="2618e11f-9262-8015-a284-e856c0c82141"><td id="YCRd" class="" style="width:239px">기타점수</td><td id="gmzM" class="" style="width:239px">부여학점</td></tr><tr id="2618e11f-9262-80d3-9589-c71f1c24befe"><td id="YCRd" class="" style="width:239px">3점</td><td id="gmzM" class="" style="width:239px">C</td></tr><tr id="2618e11f-9262-80e5-96be-cc0dff25abd6"><td id="YCRd" class="" style="width:239px">2점</td><td id="gmzM" class="" style="width:239px">D+</td></tr><tr id="2618e11f-9262-80fe-bc3f-f7bd2e77dbcf"><td id="YCRd" class="" style="width:239px">1점</td><td id="gmzM" class="" style="width:239px">D</td></tr><tr id="2618e11f-9262-803c-95f2-d34d3cdf2075"><td id="YCRd" class="" style="width:239px">0점</td><td id="gmzM" class="" style="width:239px">F</td></tr><tr id="2618e11f-9262-809f-9d97-e7a94c622ee8"><td id="YCRd" class="" style="width:239px"></td><td id="gmzM" class="" style="width:239px"></td></tr></tbody></table></div></div></li></ul><ul id="2618e11f-9262-804c-b24e-f3eff60dc23c" class="bulleted-list"><li style="list-style-type:square">기타 점수는 아래 (예시)와 같은 활동을 통해 점수를 채울 수 있습니다~ (자세한 내용은 추후 공지)<ul id="2618e11f-9262-80b5-bea8-f420ab15ab45" class="bulleted-list"><li style="list-style-type:disc"><strong>[9점] </strong>대외 공모전 나가서 수상 시 (1~3등)</li></ul><ul id="2618e11f-9262-8028-9f7e-ccc3fa237ab7" class="bulleted-list"><li style="list-style-type:disc"><strong>[6점] </strong>대외 공모전 나가서 입상 (3등 미만) 또는 캡스톤 경진대회 수상 (1~2등)</li></ul><ul id="2618e11f-9262-80a7-9772-f2a138c97726" class="bulleted-list"><li style="list-style-type:disc"><strong>[3점] </strong>대외 공모전 참가 (1회 max) 또는 캡스톤 경진대회 본선 <em><mark class="highlight-yellow"><span style="border-bottom:0.05em solid">(공모전은 개발 관련이어야 합니다! (경진대회/ 해커톤 등))</span></mark></em></li></ul><ul id="2618e11f-9262-80f8-ab14-d2af6bfb13ba" class="bulleted-list"><li style="list-style-type:disc"><strong>[3점] </strong>온라인 강의 듣기 (1점 / 3개)</li></ul><ul id="2618e11f-9262-80a3-ba39-e03dd1a0edb2" class="bulleted-list"><li style="list-style-type:disc"><strong>[3점] </strong>간단한 추가 과제 수행</li></ul><ul id="2618e11f-9262-806b-b011-cff558c17fa1" class="bulleted-list"><li style="list-style-type:disc"><strong>[3점] </strong>중간고사 기간 때 간단한 퀴즈 (참가 1점/ 50점 이상 2점/ 70점 이상 3점)</li></ul><ul id="2618e11f-9262-807f-85d5-d0315ed56d09" class="bulleted-list"><li style="list-style-type:disc"><strong>[3점] </strong>한 번도 안 빠지고 출석 (0~2시간: 3점 / 2~4시간: 2점 / 4~8시간 1점 / 이하 0점)</li></ul><ul id="2618e11f-9262-801a-a56a-e88c34a37eb9" class="bulleted-list"><li style="list-style-type:disc"><strong>[3점] </strong>Git Commit 개수 일정 이상 (모든 과제 포함, 아래는 예시이며, 정확한 개수는 추후 공지) (E.g., 50개 이상: 1점 / 100개 이상: 2점 / 150개 이상: 3점)</li></ul><ul id="2618e11f-9262-801e-bc0f-c6fcd6c85563" class="bulleted-list"><li style="list-style-type:disc"><strong>[2점] </strong>교내/외부 세미나 참여 (기술 개발 관련) (1점/1회)</li></ul><ul id="2618e11f-9262-8067-a941-dde37ff677d5" class="bulleted-list"><li style="list-style-type:disc"><strong>[2점] </strong>개발/버그/테스트 리포트 작성 (어떤 과제 든 1회 수행 시 2점)</li></ul><ul id="2618e11f-9262-80df-bc2a-f1b370c80c3d" class="bulleted-list"><li style="list-style-type:disc"><strong>[2점] </strong>개인 포폴 만들어 Github에 공개 (어떤 과제 든 1회 수행 시 2점)</li></ul></li></ul><ul id="2618e11f-9262-80e0-a46d-c8bb96eb2ea9" class="bulleted-list"><li style="list-style-type:square">예시)<ul id="2618e11f-9262-8046-b073-ff70b125627a" class="bulleted-list"><li style="list-style-type:disc">공모전 참가 (<strong>3점</strong>) + 공공 API 적용 (<strong>1점</strong>) =&gt; 4점 (+ 학점)</li></ul><ul id="2618e11f-9262-805f-bfb8-d3c574cac87d" class="bulleted-list"><li style="list-style-type:disc">영상 강의 (3점) + 교수님 면담 (2점) + 기술 세미나 1회 (1점) + 모든 과제 제출 (2점) + 모든 출석 (3점) = 11점 (만점 10점 반영)</li></ul><ul id="2618e11f-9262-8056-9e9b-de204819faa6" class="bulleted-list"><li style="list-style-type:disc">모든 과제 제출 (2점) + Commit 개수 채우기 (3점) + 추가 개발 도구 (1점) + workflow (2점) + 출석 (2점) = 10점</li></ul></li></ul><ul id="2618e11f-9262-80b3-86b6-e01a40895509" class="bulleted-list"><li style="list-style-type:square"><mark class="highlight-yellow"><strong>점수를 드린다는 개념이니, 꼭 채우시길 바랍니다~</strong></mark></li></ul><hr id="2618e11f-9262-80d1-8061-eaf43f9bb064"/></li></ul><p id="2618e11f-9262-8054-a62a-c1744b322c75" class="">
+</p></li></ul></div></details><p id="2618e11f-9262-807a-88ed-c47b0646a02f" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">6. 수업 관련 공지</summary><div class="indented"><div id="2618e11f-9262-80d2-8c95-c4dc63c184a4" class="column-list"><div id="2618e11f-9262-8036-8c5f-e9f82c6e640f" style="width:50%" class="column"><ul id="2618e11f-9262-80fb-bd61-f5401a3708bc" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>TA 세션 운영</strong></mark><ul id="2618e11f-9262-8070-8699-e1631fef93ea" class="bulleted-list"><li style="list-style-type:circle"><strong>개발 중 도움이 필요한 부분이나 기본 html/css/javascript 문법 등을 모르는 학생들을 위해 TA가 세션을 운영하여, 기본적인 강의나 질문을 받을 예정</strong></li></ul><ul id="2618e11f-9262-8039-bd8d-f383518953d0" class="bulleted-list"><li style="list-style-type:circle">시간은 추후 공지 (평일 저녁 예정)</li></ul><p id="2618e11f-9262-80ea-93bb-e5cc9f2dd4a5" class="">
+</p></li></ul><ul id="2618e11f-9262-80d6-a9a5-c715ce06f98e" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>수업 시간</strong></mark><ul id="2618e11f-9262-805d-ac65-f4f96ef595cc" class="bulleted-list"><li style="list-style-type:circle">영어 분반: 09시 15분에 수업 시작 (9시는 힘드니까..?)</li></ul><ul id="2618e11f-9262-8082-b8b6-df8a81023873" class="bulleted-list"><li style="list-style-type:circle">한국어 분반: 수업시간 그대로 진행 (진도에 따라 일찍 마칠 수 있음)</li></ul><p id="2618e11f-9262-8017-b5e5-d32f9b3c4808" class="">
+</p></li></ul><ul id="2618e11f-9262-8013-9279-c6d01ba68968" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>강의 자료</strong></mark><ul id="2618e11f-9262-80eb-8bd8-d0041ed425fe" class="bulleted-list"><li style="list-style-type:circle">강의자료 (PPT/ Notion) 및 강의 영상 제공 예정</li></ul><ul id="2618e11f-9262-8095-8979-e5e6db64ea59" class="bulleted-list"><li style="list-style-type:circle">책은 따로 필요 없음. (필요시 PPT 등 제공 예정)</li></ul><ul id="2618e11f-9262-807c-bf05-e84ba733da0c" class="bulleted-list"><li style="list-style-type:circle">이번 학기는 Notion으로 만든 자료를 활용할 예정</li></ul></li></ul></div><div id="2618e11f-9262-80fb-bff8-e4aed9abf0c2" style="width:50%" class="column"><ul id="2618e11f-9262-80ca-a7fa-c5504155ccb2" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>영어 ↔ 한국어 분반</strong></mark><ul id="2618e11f-9262-80f7-802f-dd386093c149" class="bulleted-list"><li style="list-style-type:circle">두 분반 모두 절대 평가로 진행할 예정이기에, 한국어/영어 분반에 등록한 학생도 편한대로 (자리가 있으면) 다른 분반에서 수업을 수강해도 괜찮음.</li></ul><p id="2618e11f-9262-8046-bc55-eae1cf2567d1" class="">
+</p></li></ul><ul id="2618e11f-9262-800f-a210-fef3555a21e9" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>백엔드 분반</strong></mark><ul id="2618e11f-9262-802a-be4d-faef79ddd871" class="bulleted-list"><li style="list-style-type:circle">본 강의는 백엔드를 강의하는 분반임!</li></ul><ul id="2618e11f-9262-80a9-bca7-fe7f4675bf57" class="bulleted-list"><li style="list-style-type:circle"><strong>프론트엔드에 관심이 있는 학생은 다른 분반으로!</strong></li></ul><p id="2618e11f-9262-8096-9fe0-cc53425259bc" class="">
+</p></li></ul><ul id="2618e11f-9262-80e0-a122-de0265ee37e2" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-yellow"><strong>문의사항</strong></mark><ul id="2618e11f-9262-80ce-b537-d187c24fbeb8" class="bulleted-list"><li style="list-style-type:circle">질문이 있으면, 언제든지 메일/ 문자 등등으로 질문!</li></ul><ul id="2618e11f-9262-80ae-9761-edf42e6197aa" class="bulleted-list"><li style="list-style-type:circle">추가로, Google Classroom 및 Discord를 운영할 예정이니, 해당 채널을 통해 질문을 해도 괜찮습니다~!</li></ul></li></ul></div></div></div></details><p id="2618e11f-9262-8086-996b-ebd84a91b7f1" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
