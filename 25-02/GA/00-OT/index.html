@@ -1,0 +1,772 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>00. OT</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(174, 130, 0, 0.223); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none;   /* 파이어폭스 등 */
+}
+
+
+
+summary::before {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  break-after: page; /* 인쇄 시 페이지 나눔 */
+}
+
+.properties {
+	display: none;
+}
+
+@media print {
+  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  
+  /* 페이지 가운데 정렬 영역 */
+  header{
+    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
+    display:flex;
+    position: relative;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* 본문 타이틀(원래의 00. OT) */
+  .page-title{
+    margin:0;
+    line-height:1.25;
+    font-weight:800;
+    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0; /* 상·하 여유 공간 */
+  }
+
+  /* 최상단 큰 제목 */
+  .page-title::before{
+    content: "유전 알고리즘과 응용 (25-02)\A";
+    white-space: pre-line;     /* \A 줄바꿈 활성화 */
+    display:block;
+    font-weight:900;
+    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
+    letter-spacing:.02em;
+    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  }
+
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+	  white-space: pre-line;
+	  position: absolute;
+	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  font-size: 11pt;
+	  font-weight: 500;
+	  line-height: 1.6;
+	  text-align: center;
+} 
+}
+	
+</style></head><body><article id="2588e11f-9262-8122-a84b-e40d034967fd" class="page sans"><header><h1 class="page-title">00. OT</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td><span class="selected-value select-value-color-gray">25.09.02</span></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>1주차</td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 교수 소개</summary><div class="indented"><div id="2638e11f-9262-8047-aca7-cffd431262c5" class="column-list"><div id="2638e11f-9262-807b-a2a7-c1b3178a9332" style="width:25%" class="column"><figure id="2638e11f-9262-807f-a1dd-f34a5a93ecf5" class="image"><a href="00%20OT%202588e11f92628122a84be40d034967fd/image.png"><img style="width:144px" src="00%20OT%202588e11f92628122a84be40d034967fd/image.png"/></a></figure></div><div id="2638e11f-9262-804e-80df-e9cca8a3e09d" style="width:75%" class="column"><ul id="2638e11f-9262-8011-ae43-f01f6f1dfdce" class="bulleted-list"><li style="list-style-type:disc">전북대학교 컴퓨터인공지능학부 조교수</li></ul><ul id="2638e11f-9262-8026-9b27-d2fd6ecfaae6" class="bulleted-list"><li style="list-style-type:disc">(<strong>Research Interest</strong>: 인공지능/ 의료 AI/ 계산과학)</li></ul><ul id="2638e11f-9262-802f-b2d0-dda11bfe69b6" class="bulleted-list"><li style="list-style-type:disc"><strong>E-mail</strong>: ksl@jbnu.ac.kr</li></ul><ul id="2638e11f-9262-805c-a1c2-d24a435d5e9a" class="bulleted-list"><li style="list-style-type:disc"><strong>Phone</strong>: 010-4703-8160</li></ul><ul id="2638e11f-9262-8080-822d-f73dcd32fb6e" class="bulleted-list"><li style="list-style-type:disc"><strong>Office</strong>: 공대 7호관 626호</li></ul><ul id="2638e11f-9262-8047-86b7-f8535ac96af9" class="bulleted-list"><li style="list-style-type:disc"><strong>Office Hour</strong>: 언제든지? (사전 연락 요망/ 월수금 오전은 수업!)</li></ul></div></div><hr id="2638e11f-9262-80eb-9f68-cc7ae9670b68"/></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 본 강의에서는…</summary><div class="indented"><ul id="2638e11f-9262-8043-95c8-c08b09e78d8b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>유전알고리즘 기본 개념 이해 및 실습</strong></mark><ul id="2638e11f-9262-807c-82cf-df94c3036a25" class="bulleted-list"><li style="list-style-type:circle">수학적 모델링 및 적합도 함수(Fitness Function) 설계</li></ul><ul id="2638e11f-9262-80f6-ae66-f03ec224bb6b" class="bulleted-list"><li style="list-style-type:circle">선택(Selection), 교차(Crossover), 돌연변이(Mutation) 연산 실습</li></ul><ul id="2638e11f-9262-80d2-b79b-fc5a09b22aec" class="bulleted-list"><li style="list-style-type:circle">단일/다중 목적 최적화와 파라미터 튜닝</li></ul></li></ul><ul id="2638e11f-9262-8039-9812-c0c688144fb0" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>진화 알고리즘 확장 학습</strong></mark><ul id="2638e11f-9262-807e-aca3-edeb39776474" class="bulleted-list"><li style="list-style-type:circle">ES, GP, DE 등 진화연산 기법 비교</li></ul><ul id="2638e11f-9262-80fe-89a4-cc40dbde074a" class="bulleted-list"><li style="list-style-type:circle">기존 GA와의 차이점 및 응용 가능성 탐구</li></ul></li></ul><ul id="2638e11f-9262-80e9-83af-f3294c882f9b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>시뮬레이션 및 프로그래밍 실습</strong></mark><ul id="2638e11f-9262-8045-b7e6-cebf77e2c6b6" class="bulleted-list"><li style="list-style-type:circle">Unity 기반 시뮬레이션 환경에서 GA 적용</li></ul><ul id="2638e11f-9262-8051-a07c-f42a673b13e4" class="bulleted-list"><li style="list-style-type:circle">C# 기초 → 유니티 객체 제어 및 알고리즘 연동</li></ul><ul id="2638e11f-9262-8031-91f0-d807b5441d8d" class="bulleted-list"><li style="list-style-type:circle">시뮬레이션 결과 시각화 및 데이터 연동</li></ul></li></ul><ul id="2638e11f-9262-8062-892f-fe5433a18da3" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>딥러닝 융합 및 최신 연구 동향</strong></mark><ul id="2638e11f-9262-8083-8345-dddc5fc53a78" class="bulleted-list"><li style="list-style-type:circle">GA 기반 하이퍼파라미터 최적화</li></ul><ul id="2638e11f-9262-8073-9145-e5588d8212bd" class="bulleted-list"><li style="list-style-type:circle">딥러닝 모델 학습 효율 향상 적용</li></ul><ul id="2638e11f-9262-8090-805c-cb3782e7f542" class="bulleted-list"><li style="list-style-type:circle">관련 논문 분석 및 구현 실습</li></ul></li></ul><ul id="2638e11f-9262-8092-97fb-eb5c2014a148" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>프로젝트 기반 실습 및 발표</strong></mark><ul id="2638e11f-9262-80d0-bcaf-ee701c898a87" class="bulleted-list"><li style="list-style-type:circle">소규모 프로젝트 수행 및 결과 발표</li></ul><ul id="2638e11f-9262-802e-a87e-e0c7d937da8e" class="bulleted-list"><li style="list-style-type:circle">구현 결과 및 개선 아이디어 제안</li></ul><ul id="2638e11f-9262-8014-bf57-ec1e3d120a6e" class="bulleted-list"><li style="list-style-type:circle">최종 프로젝트 발표 및 결과물 제출</li></ul></li></ul><p id="2638e11f-9262-8069-810f-dc01e2b7535e" class="">
+</p><ul id="2638e11f-9262-80c2-8363-ca069deff150" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>What is Genetic Algorithm?</strong></mark><figure id="2638e11f-9262-8004-a73f-c91afc196424"><div class="source"><a href="https://youtu.be/-kpcAa-qKwY?si=INd8TahL77x0RqcC">https://youtu.be/-kpcAa-qKwY?si=INd8TahL77x0RqcC</a></div></figure></li></ul><p id="2638e11f-9262-8030-9ceb-c3563cc33c01" class="">
+</p><p id="2638e11f-9262-80f3-9448-f9229288d5bd" class="">
+</p><hr id="2638e11f-9262-804f-9fef-ce14770f03d0"/><p id="2638e11f-9262-80ee-bfd9-cbcbf2cd1f52" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. 강의 계획서 살펴보기</summary><div class="indented"><figure id="2638e11f-9262-809a-8d9c-f4cd68ed28f4" class="image"><a href="00%20OT%202588e11f92628122a84be40d034967fd/image%201.png"><img style="width:2460px" src="00%20OT%202588e11f92628122a84be40d034967fd/image%201.png"/></a></figure><figure id="2638e11f-9262-8026-b5f2-d57017fa3961" class="image"><a href="00%20OT%202588e11f92628122a84be40d034967fd/image%202.png"><img style="width:2462px" src="00%20OT%202588e11f92628122a84be40d034967fd/image%202.png"/></a></figure><h3 id="2638e11f-9262-8088-b3af-f270c283c734" class=""><mark class="highlight-gray_background">* 미리 공지: 10/14 ~ 24일 (명절 다음 주/ 시험기간)에는 온라인 강의 제공 예정</mark></h3><p id="2638e11f-9262-8005-9a57-ef1ab8d0e0a4" class=""><strong>* 중간고사 이후에는 논문 발표 및 실습을 위주로 진행할 예정임.</strong></p><hr id="2638e11f-9262-8087-9b5d-d3fcd2b708fb"/></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. 수업 진행 및 과제</summary><div class="indented"><h2 id="2638e11f-9262-8075-b667-ff2000ac6c80" class=""><mark class="highlight-gray_background"><strong>* 본 수업에서는 시험이 없으며, 과제로만 평가를 수행할 예정임!</strong></mark></h2><p id="2638e11f-9262-80d3-ba8e-fe8d5bddaa62" class="">
+</p><h3 id="2638e11f-9262-803c-9e92-e1c0c93aa2ca" class="">A. 과제 진행</h3><ul id="2638e11f-9262-80a2-80fc-da0c62fc55ea" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-gray_background"><strong>수업에서는 총 2개의 과제 진행 예정</strong></mark></mark><ul id="2638e11f-9262-801a-b8d2-c8dfd573c5ef" class="bulleted-list"><li style="list-style-type:circle"><strong>(과제 1) GA + AI 방법론이 적용된 </strong><strong><span style="border-bottom:0.05em solid">논문 발표</span></strong></li></ul><ul id="2638e11f-9262-8031-be30-d8fcc6ad96d8" class="bulleted-list"><li style="list-style-type:circle"><strong>(과제 2) Unity를 활용한 GA </strong><strong><span style="border-bottom:0.05em solid">시뮬레이션 개발</span></strong><figure id="2638e11f-9262-809e-951e-c3792419f38f"><div class="source"><a href="https://youtu.be/Yr_nRnqeDp0?si=Ww-IgkwGH1OQw8qk">https://youtu.be/Yr_nRnqeDp0?si=Ww-IgkwGH1OQw8qk</a></div></figure><figure id="2638e11f-9262-800d-9657-e6e8b72c8075"><div class="source"><a href="https://youtu.be/Aut32pR5PQA?si=h-FpF1_ofmwF0qX_">https://youtu.be/Aut32pR5PQA?si=h-FpF1_ofmwF0qX_</a></div></figure><figure id="2638e11f-9262-80ed-b8cb-fb8ee87ef8bf"><div class="source"><a href="https://youtu.be/v3UBlEJDXR0?si=L8Ndb289pRM2YYfa">https://youtu.be/v3UBlEJDXR0?si=L8Ndb289pRM2YYfa</a></div></figure></li></ul></li></ul><p id="2638e11f-9262-80a9-9634-d79d42821381" class="">
+</p><h3 id="2638e11f-9262-80f3-82ee-c7ec2bec389f" class="">B. 수업 진행</h3><ul id="2638e11f-9262-80e7-929d-d17442745251" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-gray_background"><strong>중간고사 기간 이전</strong></mark></mark><ul id="2638e11f-9262-8006-b7be-d04ba0703424" class="bulleted-list"><li style="list-style-type:circle">GA에 대한 이론적인 강의 진행</li></ul><ul id="2638e11f-9262-8030-821d-fe7643dd9504" class="bulleted-list"><li style="list-style-type:circle">최신 논문에 적용된 GA 알고리즘 분석</li></ul><ul id="2638e11f-9262-80f2-83b1-cf41ee8f0964" class="bulleted-list"><li style="list-style-type:circle">Unity 활용을 위한 기본적인 C# 문법 및 Unity 활용 강의</li></ul></li></ul><ul id="2638e11f-9262-805c-8858-e44f4e93f94e" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-gray_background"><strong>중간고사 기간 이후</strong></mark></mark><ul id="2638e11f-9262-804f-9d68-c4e374afb992" class="bulleted-list"><li style="list-style-type:circle">과제 1번에 대한 발표 수행 (3~5팀 / 1주)</li></ul><ul id="2638e11f-9262-8074-a108-d100dc323a6c" class="bulleted-list"><li style="list-style-type:circle">Unity를 활용한 GA + ML 시뮬레이션 개발 점검 (각 팀별로 면담)</li></ul><ul id="2638e11f-9262-8075-801f-e4b21c8cfbd8" class="bulleted-list"><li style="list-style-type:circle">수업은 진행하지 않을 계획 (예정)</li></ul></li></ul><ul id="2638e11f-9262-808a-a5dc-e787abd5e8f4" class="bulleted-list"><li style="list-style-type:disc">책은 굳이 구입하지 않으셔도 되나, <strong>도서관 등에서 Unity 개발과 관련된 도서를 대여</strong>하여 개발 환경 세팅 및 기초 지식은 습득하는 것을 권장함.</li></ul><ul id="2638e11f-9262-8081-bfea-ce930039c6ca" class="bulleted-list"><li style="list-style-type:disc"><strong>PPT/ 강의자료 등 제공 예정.</strong></li></ul><p id="2638e11f-9262-8007-b121-e8133624585e" class="">
+</p><h3 id="2638e11f-9262-8066-a9bc-db78af9e2269" class="">C. 평가 내용</h3><ul id="2638e11f-9262-80ae-a918-f5a89b8d0da9" class="bulleted-list"><li style="list-style-type:disc">과제 1 (40%) + 과제 2 (60%)</li></ul><ul id="2638e11f-9262-807c-bc1c-e937119476cf" class="bulleted-list"><li style="list-style-type:disc">각 과제 별 평가 내용은 과제 출제 시 공개 예정.</li></ul><ul id="2638e11f-9262-80ee-87f6-eb1b90973f38" class="bulleted-list"><li style="list-style-type:disc"><strong>구간별로 학점을 다르게 부여</strong><table id="2638e11f-9262-8005-ad1b-e98bc7bdc83c" class="simple-table"><tbody><tr id="2638e11f-9262-80a6-87cc-c3c311064827"><td id="drMb" class="" style="width:157.25px"><strong>점수</strong></td><td id="Lv:P" class="" style="width:157.25px"><strong>학점</strong></td><td id="DW{q" class="" style="width:157.25px"><strong>점수</strong></td><td id="k~L}" class="" style="width:157.25px"><strong>학점</strong></td></tr><tr id="2638e11f-9262-8029-89e3-d0505016faff"><td id="drMb" class="" style="width:157.25px">80이상</td><td id="Lv:P" class="" style="width:157.25px">A+</td><td id="DW{q" class="" style="width:157.25px">55 ~ 59점</td><td id="k~L}" class="" style="width:157.25px">C+</td></tr><tr id="2638e11f-9262-80a2-b4d5-f636a6cc41f3"><td id="drMb" class="" style="width:157.25px">70 ~ 79점</td><td id="Lv:P" class="" style="width:157.25px">A</td><td id="DW{q" class="" style="width:157.25px">50 ~ 54점</td><td id="k~L}" class="" style="width:157.25px">C</td></tr><tr id="2638e11f-9262-8081-b75d-d5630752cf28"><td id="drMb" class="" style="width:157.25px">65 ~ 69점</td><td id="Lv:P" class="" style="width:157.25px">B+</td><td id="DW{q" class="" style="width:157.25px">31 ~ 49점</td><td id="k~L}" class="" style="width:157.25px">D+</td></tr><tr id="2638e11f-9262-808d-a4c3-e25505147c1d"><td id="drMb" class="" style="width:157.25px">60 ~ 64점</td><td id="Lv:P" class="" style="width:157.25px">B</td><td id="DW{q" class="" style="width:157.25px">30점 이하</td><td id="k~L}" class="" style="width:157.25px">F</td></tr></tbody></table></li></ul><hr id="2638e11f-9262-80ba-95bc-eaf34f659bd8"/><p id="2638e11f-9262-8087-91d4-e5036d65fb1c" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 참고 논문</summary><div class="indented"><p id="2638e11f-9262-8094-9e5a-cf80cfd17504" class="">* 아래는 참고 논문들이니, 한 번 읽어보시면 좋을 것 같습니다.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="2638e11f-9262-8089-977c-d4ceb70856cd"><div style="width:100%"><ul id="2638e11f-9262-80ff-a9c5-e61fecf2dbe8" class="bulleted-list"><li style="list-style-type:disc">Kumar, Manoj, et al. &quot;Genetic algorithm: Review and application.&quot; <em>Available at SSRN 3529843</em> (2010).</li></ul><ul id="2638e11f-9262-8028-9ff8-faabc00b4320" class="bulleted-list"><li style="list-style-type:disc">Alam, Tanweer, et al. &quot;Genetic algorithm: Reviews, implementations, and applications.&quot; arXiv preprint arXiv:2007.12673 (2020).</li></ul><ul id="2638e11f-9262-8052-9558-fd5fdb305f5f" class="bulleted-list"><li style="list-style-type:disc">Lambora, Annu, Kunal Gupta, and Kriti Chopra. &quot;Genetic algorithm-A literature review.&quot; 2019 international conference on machine learning, big data, cloud and parallel computing (COMITCon). IEEE, 2019.</li></ul><ul id="2638e11f-9262-8050-b078-eee8a28e19e7" class="bulleted-list"><li style="list-style-type:disc">Holland, John H. &quot;Genetic algorithms.&quot; <em>Scientific american</em> 267.1 (1992): 66-73.</li></ul><ul id="2638e11f-9262-8081-9b79-c56f32ea5e4f" class="bulleted-list"><li style="list-style-type:disc">Lee, Kyungsu, et al. &quot;Fine-tuning network in federated learning for personalized skin diagnosis.&quot; International Conference on Medical Image Computing and Computer-Assisted Intervention. Cham: Springer Nature Switzerland, 2023.</li></ul><ul id="2638e11f-9262-8052-80ff-e066936f3aea" class="bulleted-list"><li style="list-style-type:disc">Lee, Kyungsu, et al. &quot;Multi-task and few-shot learning-based fully automatic deep learning platform for mobile diagnosis of skin diseases.&quot; IEEE Journal of Biomedical and Health Informatics 27.1 (2022): 176-187.</li></ul></div></figure></div></details><p id="2638e11f-9262-80dc-b169-e47de514d71e" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
