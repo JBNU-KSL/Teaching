@@ -1,0 +1,849 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>01. Back-End Developer</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none;   /* 파이어폭스 등 */
+}
+
+
+.properties {
+	display: none;
+}
+
+@media print {
+@page {
+  size: 338.67mm 190.5mm;  /* 16:9 비율, A4보다 큼 */
+  margin: 10mm 10mm 9mm 10mm;
+}
+
+  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  
+  /* 페이지 가운데 정렬 영역 */
+  header{
+    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
+    display:flex;
+    position: relative;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* 본문 타이틀(원래의 00. OT) */
+  .page-title{
+    margin:0;
+    line-height:1.25;
+    font-weight:800;
+    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0; /* 상·하 여유 공간 */
+  }
+
+  /* 최상단 큰 제목 */
+  .page-title::before{
+    content: "Web Service Design (25-02)\A";
+    white-space: pre-line;     /* \A 줄바꿈 활성화 */
+    display:block;
+    font-weight:900;
+    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
+    letter-spacing:.02em;
+    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  }
+
+  body::after {
+	  content: "Prof. Kyungsu Lee\A Computer Science & Artificial Intelligence, JBNU\AMedical AI & Computational Science (MacsLAB)";
+	  white-space: pre-line;
+	  position: absolute;
+	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  font-size: 11pt;
+	  font-weight: 500;
+	  line-height: 1.6;
+	  text-align: center;
+	}
+
+:root{
+  --logo-w: 20mm;   /* 로고 너비/높이 */
+  --gap-r: 0mm;     /* 로고 오른쪽 여백(라인 잘라낼 폭에 포함됨) */
+  --line-t: #B0411D;
+  --line-b: #7A1B7A;
+}
+
+
+  
+  summary{
+    break-before: page;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    /* 위/아래 라인: 오른쪽(로고+여백)만큼 길이 축소 */
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+        calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+        calc(70%) 4px no-repeat;
+
+    padding: 3mm 0;
+    margin: 0;
+  }
+
+  /* 로고: 오른쪽 가운데 */
+  summary::after{
+    content:"";
+    position:absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+                center/contain no-repeat;
+  }
+
+    summary::before{
+    content:"";
+    position:absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+                center/contain no-repeat;
+  }
+
+
+/* summary 다음 요소와의 간격을 확실히 보장 */
+summary + *{
+  margin-top: 15mm !important;   /* margin-bottom이 먹지 않을 때도 확실히 간격 생김 */
+}
+}
+
+	
+</style></head><body><article id="2648e11f-9262-80a3-9b1a-f08228d290a4" class="page sans"><header><h1 class="page-title">01. Back-End Developer</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td><span class="selected-value select-value-color-default">25.09.04</span></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>2주차</td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. Back-End</summary><div class="indented"><blockquote id="2648e11f-9262-80bc-90be-eb37fc226e85" class=""><mark class="highlight-orange"><strong>Back-End is</strong></mark> <strong>a server-side</strong> role <strong>that stores, processes, and responds to data and rules in an area that is not directly visible to the user.</strong></blockquote><h3 id="2648e11f-9262-8078-b685-d5fa0303e7bf" class="">A. Definition of Back-End Developer</h3><ul id="2648e11f-9262-8003-9dd5-f2dca5274240" class="bulleted-list"><li style="list-style-type:disc">A back-end developer is a <strong>role that processes data and implements the core logic of a service in an area that is not directly visible to the user.</strong> </li></ul><ul id="2648e11f-9262-80d1-ac95-f2ab050f6b3c" class="bulleted-list"><li style="list-style-type:disc">While the frontend is responsible for the screens of the web and apps, the backend is responsible for the invisible behaviors that validate login results, store posts, and process payments.</li></ul><ul id="2648e11f-9262-8043-8014-fed0dd4957b3" class="bulleted-list"><li style="list-style-type:disc">The backend is therefore <mark class="highlight-orange"><mark class="highlight-blue_background"><strong>the heart and brain of the service.</strong></mark></mark></li></ul><p id="2648e11f-9262-80ee-855f-c9d39752a8ec" class="">
+</p><h3 id="2648e11f-9262-8085-9b40-c81a18ade97c" class="">B. Frontend vs Backend</h3><div id="2648e11f-9262-8019-944e-cf0da865f4fb" class="column-list"><div id="2648e11f-9262-803a-80d3-fa889a8856f9" style="width:31.25%" class="column"><figure id="2648e11f-9262-80be-93af-cf13e3cb2e2f" class="image"><a href="01%20Back-End%20Developer%202648e11f926280a39b1af08228d290a4/image.png"><img style="width:443.7421875px" src="01%20Back-End%20Developer%202648e11f926280a39b1af08228d290a4/image.png"/></a></figure></div><div id="2648e11f-9262-8065-b9e0-d125e5cecfcc" style="width:68.75%" class="column"><table id="2648e11f-9262-805f-a394-e24f787aea84" class="simple-table"><thead class="simple-table-header"><tr id="2648e11f-9262-80b5-b20b-f573fe3e30eb"><th id="NwX;" class="simple-table-header-color simple-table-header" style="width:241.33333333333334px">구분</th><th id="b}&gt;c" class="simple-table-header-color simple-table-header" style="width:241.33333333333334px">Frontend</th><th id="&lt;SAf" class="simple-table-header-color simple-table-header" style="width:241.33333333333334px">Backend</th></tr></thead><tbody><tr id="2648e11f-9262-8014-9308-d4ae8f1b3378"><td id="NwX;" class="" style="width:241.33333333333334px">What you can see</td><td id="b}&gt;c" class="" style="width:241.33333333333334px">Buttons, screens, images</td><td id="&lt;SAf" class="" style="width:241.33333333333334px">Area that is not directly visible</td></tr><tr id="2648e11f-9262-806a-bb28-ca3f4712d907"><td id="NwX;" class="" style="width:241.33333333333334px">Key tools</td><td id="b}&gt;c" class="" style="width:241.33333333333334px">HTML, CSS, React</td><td id="&lt;SAf" class="" style="width:241.33333333333334px">Java, Python, Node.js, Spring</td></tr><tr id="2648e11f-9262-806c-a20f-c9efcf5b6bd2"><td id="NwX;" class="" style="width:241.33333333333334px">Roles</td><td id="b}&gt;c" class="" style="width:241.33333333333334px">UI/UX, user input processing</td><td id="&lt;SAf" class="" style="width:241.33333333333334px">Data processing, authentication, security, business logic</td></tr><tr id="2648e11f-9262-806f-8c09-cb4c3483a039"><td id="NwX;" class="" style="width:241.33333333333334px">Example</td><td id="b}&gt;c" class="" style="width:241.33333333333334px">Clicking the login button</td><td id="&lt;SAf" class="" style="width:241.33333333333334px">Login validation, DB check, token issuance</td></tr></tbody></table><p id="2648e11f-9262-8009-b12f-d1d9632b98c5" class="">
+</p></div></div><h3 id="2648e11f-9262-80af-beb0-dcecd0fc9fa8" class="">C. Backend roles</h3><figure id="2648e11f-9262-80f2-a56d-e15615d72b4d" class="image"><a href="01%20Back-End%20Developer%202648e11f926280a39b1af08228d290a4/image%201.png"><img style="width:2212px" src="01%20Back-End%20Developer%202648e11f926280a39b1af08228d290a4/image%201.png"/></a></figure><h3 id="2648e11f-9262-80b4-95ce-ca7c0b7ef912" class="">A. User → Frontend</h3><p id="2648e11f-9262-80c5-8b6f-dd2fb34e7188" class="">User enters email and password on the login screen and clicks the login button<strong>The frontend receives user input data and passes it to the server.</strong></p><hr id="2648e11f-9262-808c-8125-f73450ef4511"/><h3 id="2648e11f-9262-8083-b142-f062333acb5e" class="">B. Frontend → Backend Server</h3><p id="2648e11f-9262-8093-9690-de0bd5e8a2bb" class="">The front-end <strong>delivers</strong>the input data to <strong>the back-end server in the form of a login request (Request)</strong>. This request is mainly sent via <mark class="highlight-orange"><strong>HTTP POST</strong></mark>, which is secured via <mark class="highlight-orange"><strong>HTTPS</strong></mark>.</p><hr id="2648e11f-9262-8020-b895-e3d6d1da2652"/><h3 id="2648e11f-9262-8023-a4ed-d2e35a687cdd" class="">C. Backend Server → Database</h3><p id="2648e11f-9262-801f-821a-e1b07a647226" class="">When the backend server receives the request, it first checks <mark class="highlight-orange"><strong>the database to see</strong></mark>if the entered email actually exists and compares the password hash value.</p><hr id="2648e11f-9262-800e-a594-ecb833917168"/><h3 id="2648e11f-9262-8032-9fe7-caddae820306" class="">d. DB result return → Backend server</h3><p id="2648e11f-9262-8068-b097-e5855a6b0755" class="">The database <mark class="highlight-orange"><strong>returns the search results to the backend server.</strong></mark></p><ul id="2648e11f-9262-80a3-9a02-eba789820b48" class="bulleted-list"><li style="list-style-type:disc">If the account does not exist → Prepare to return a failure response</li></ul><ul id="2648e11f-9262-807a-8700-f5b0b20fa7af" class="bulleted-list"><li style="list-style-type:disc">If the password does not match → Prepare to return a failure response</li></ul><ul id="2648e11f-9262-8004-8455-f5bfbd5d64af" class="bulleted-list"><li style="list-style-type:disc">If it matches → Prepare to return a success response</li></ul><hr id="2648e11f-9262-8040-ba0c-c3c2bc4db810"/><h3 id="2648e11f-9262-8090-b738-f5b9be92a4c2" class="">e. Issuing JWT token</h3><p id="2648e11f-9262-8022-bfc0-cb46366bd04d" class="">Upon successful authentication, the backend server issues a <mark class="highlight-orange"><strong>JWT (Json Web Token)</strong></mark> The token contains user identification information, permissions, expiration time, etc. and includes a signature to <mark class="highlight-orange"><strong>prevent forgery</strong></mark>.</p><hr id="2648e11f-9262-80fb-8f09-d61731baf6ad"/><h3 id="2648e11f-9262-80a0-8faf-fac017e6896c" class="">f. Login success response</h3><p id="2648e11f-9262-801a-b5cc-ef1600fad052" class="">The backend server delivers the issued token to the frontend, which stores it in browser storage or cookies and includes it in the header of every subsequent request to maintain authentication.</p><hr id="2648e11f-9262-80f1-9e0f-ff4a65b1c7b4"/><h3 id="2648e11f-9262-80c4-9632-ee8fd3b6880d" class="">G. User Experience</h3><p id="2648e11f-9262-807f-9cb0-def586b7c9db" class="">The user successfully connects to the service with a successful login response and is able to use personalized screens and features.</p><p id="2648e11f-9262-80fd-85cd-e3939f5bafa0" class="">
+</p><h3 id="2648e11f-9262-80c5-8bd0-c56d4cbc4884" class="">D. Why You Need a Backend</h3><ul id="2648e11f-9262-8040-a57b-f40c129c0a74" class="bulleted-list"><li style="list-style-type:disc">Need to <mark class="highlight-orange"><strong>ensure the authenticity and reliability of the information</strong></mark> displayed on the screen</li></ul><ul id="2648e11f-9262-8090-b0f5-e1504cb599be" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Persistence requirements for features with statuses</strong></mark>such as login, payment, referrals, notifications, etc.</li></ul><ul id="2648e11f-9262-8025-a603-e2bc9c2b900d" class="bulleted-list"><li style="list-style-type:disc">The need to maintain <mark class="highlight-orange"><strong>response time and availability</strong></mark> with thousands of concurrent users</li></ul><ul id="2648e11f-9262-80e4-999b-c1fff8c6f5c6" class="bulleted-list"><li style="list-style-type:disc">Need for <mark class="highlight-orange"><strong>security and privacy</strong></mark>to meet legal and ethical requirements<h3 id="2648e11f-9262-8090-bce0-e971ec5a5411" class=""> (Service examples)</h3><ul id="2648e11f-9262-80c6-a89c-e456ed9a367c" class="bulleted-list"><li style="list-style-type:circle"><strong>Instagram scenario:</strong> upload photo → save original, generate thumbnail, record post metadata, and update follower feeds</li></ul><ul id="2648e11f-9262-809c-ba51-ccad41f4cb2a" class="bulleted-list"><li style="list-style-type:circle"><strong>Delivery app scenario: </strong>Enter address → search for store, check inventory, calculate cart price, authorize payment, call delivery agency</li></ul><ul id="2648e11f-9262-8040-b328-c6a59be484ab" class="bulleted-list"><li style="list-style-type:circle"><strong>Streaming service scenario: </strong>user authentication → validate subscription rights, select CDN route, record viewing history, input recommendation model</li></ul></li></ul><p id="2648e11f-9262-80cb-8dcf-fa6d787b7dab" class="">
+</p><hr id="2648e11f-9262-8004-93a5-f0665757c647"/></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. Back-End Developer</summary><div class="indented"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="2648e11f-9262-807d-9872-cd3dce89da04"><div style="width:100%"><ul id="2648e11f-9262-8003-855b-f957cb6c249e" class="bulleted-list"><li style="list-style-type:disc">The back-end developer is <strong>the central role player responsible for the core logic and data flow of the service</strong>.</li></ul><ul id="2648e11f-9262-80d9-9dd8-d0ee53e53d67" class="bulleted-list"><li style="list-style-type:disc">Back-end developers are not just people who write code, but <strong>experts who manage data, are responsible for security, and ensure that the service operates reliably.</strong></li></ul><ul id="2648e11f-9262-8038-a8fc-f450027232e5" class="bulleted-list"><li style="list-style-type:disc">Learning backend is a staged journey that starts with programming fundamentals, then moves on to web principles, frameworks, databases, security, deployment, and operations.</li></ul><ul id="2648e11f-9262-805c-a835-d870fa61e33e" class="bulleted-list"><li style="list-style-type:disc">Repetition through constant learning and experience with small projects is the surest way to grow</li></ul></div></figure><p id="2648e11f-9262-800f-b340-e30ac78cfc1d" class="">
+</p><h3 id="2648e11f-9262-80b7-9361-d11a2c6508c9" class="">A. Main tasks of a backend developer</h3><div id="2648e11f-9262-80d0-97d5-ce52f728eea8" class="column-list"><div id="2648e11f-9262-802c-88e9-fba12241e08d" style="width:50%" class="column"><ul id="2648e11f-9262-8068-9dc4-f4c91dde72d7" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>a. Data processing</strong></mark><ul id="2648e11f-9262-80e1-ae78-da9f19f49809" class="bulleted-list"><li style="list-style-type:circle">Safely storing information in the database when a membership request comes in</li></ul><ul id="2648e11f-9262-802b-aa96-d78c30fd2012" class="bulleted-list"><li style="list-style-type:circle">Perform authentication by comparing database information with the information entered at the time of login</li></ul><ul id="2648e11f-9262-80c3-8d7c-d509c12bc2a3" class="bulleted-list"><li style="list-style-type:circle">Accurately managing all service data such as posts, comments, order history, payment history, etc.</li></ul></li></ul></div><div id="2648e11f-9262-8079-b394-fc50320031bb" style="width:50%" class="column"><p id="2648e11f-9262-806d-8078-e105fb9726d9" class=""><strong>Example) </strong></p><ul id="2648e11f-9262-80f5-85d7-e060ce1ca784" class="bulleted-list"><li style="list-style-type:disc">Storing email and password entered by users in the MySQL <code>users</code> table</li></ul><ul id="2648e11f-9262-807f-9b4d-e1815509882a" class="bulleted-list"><li style="list-style-type:disc">Encrypt the entered password <code>with bcrypt</code>and compare it with the stored hash</li></ul><ul id="2648e11f-9262-800e-974a-ee96534b7e32" class="bulleted-list"><li style="list-style-type:disc">When a post is created, save it to the <code>posts</code> table and retrieve it with comments <code>by JOIN</code>when viewing it</li></ul></div></div><p id="2648e11f-9262-8068-9bc7-e77300b363e4" class=""><div class="indented"><div id="2648e11f-9262-80c0-ab12-cefd388259f4" class="column-list"><div id="2648e11f-9262-808d-9dd7-e576b7853ed3" style="width:50%" class="column"><ul id="2648e11f-9262-803d-921c-cee6207561c4" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>B. Implement business logic</strong></mark><ul id="2648e11f-9262-80c7-a0de-d0326a5ed1b1" class="bulleted-list"><li style="list-style-type:circle">Implementing a procedure to check inventory and record it in the database when a user adds a product to the cart</li></ul><ul id="2648e11f-9262-8057-a537-daf3f69101dc" class="bulleted-list"><li style="list-style-type:circle">Implement procedures to authorize payment, deduct inventory, create an order, and issue a receipt when clicking the checkout button</li></ul><ul id="2648e11f-9262-8048-adae-f73bbb263896" class="bulleted-list"><li style="list-style-type:circle">Writing rules in code for service operation</li></ul></li></ul></div><div id="2648e11f-9262-8064-906d-d4d7f69c3a48" style="width:50%" class="column"><p id="2648e11f-9262-8043-9a9b-c6628963712c" class=""><strong>Example) </strong></p><ul id="2648e11f-9262-80f6-bb73-df60ee47d280" class="bulleted-list"><li style="list-style-type:disc">Check <code>inventory</code> in <code>inventory</code> table and write to <code>cart_items</code> table when &quot;Add to cart&quot; is clicked</li></ul><ul id="2648e11f-9262-8034-bb84-f07f46534c78" class="bulleted-list"><li style="list-style-type:disc">After payment authorization, create order in <code>orders</code> table, subtract quantity from <code>inventory</code> table, and record receipt in <code>receipts</code> table</li></ul><ul id="2648e11f-9262-806f-9c51-d75fb76d2e95" class="bulleted-list"><li style="list-style-type:disc">Implement logic to automatically apply 10% discount for orders placed during certain time periods</li></ul></div></div><p id="2648e11f-9262-808b-ab5a-fdc911016580" class="">
+</p><div id="2648e11f-9262-80f1-8198-fa10afe9e453" class="column-list"><div id="2648e11f-9262-800c-b1fa-ff98825c5fe0" style="width:50%" class="column"><ul id="2648e11f-9262-8065-9e8e-f028af9f09ed" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>C. Security and Authentication</strong></mark><ul id="2648e11f-9262-80c9-ba73-db6b0a9adf90" class="bulleted-list"><li style="list-style-type:circle">Ensuring that users have the correct authorization</li></ul><ul id="2648e11f-9262-80ec-a8a3-e34f79b9e89e" class="bulleted-list"><li style="list-style-type:circle">Storing passwords securely and encrypted</li></ul><ul id="2648e11f-9262-8043-af0a-f7ac6f5a6f2a" class="bulleted-list"><li style="list-style-type:circle">Blocking access from unauthorized users</li></ul></li></ul><p id="2648e11f-9262-8064-af60-f23b5317338f" class="">
+</p></div><div id="2648e11f-9262-805e-b953-d8dfe057406c" style="width:50%" class="column"><p id="2648e11f-9262-80c9-b23d-c1b345ec555c" class=""><strong>Example) </strong></p><ul id="2648e11f-9262-80b7-9562-dccf8a410e91" class="bulleted-list"><li style="list-style-type:disc">Return <code>403 Forbidden</code> when a <code> non-admin</code> user accesses the <code>/admin</code> endpoint</li></ul><ul id="2648e11f-9262-803b-97c5-d4fd4aa15155" class="bulleted-list"><li style="list-style-type:disc">Hash password <code>with bcrypt</code>and store it in DB, but not the original password</li></ul><ul id="2648e11f-9262-80d5-ac13-e19ef26fbf0e" class="bulleted-list"><li style="list-style-type:disc">Return <code>401 Unauthorized</code> response when a non-logged-in user requests the post creation API</li></ul></div></div><div id="2648e11f-9262-8063-b98f-ec71fc9b98bc" class="column-list"><div id="2648e11f-9262-804f-b138-e1d5ce7ce070" style="width:50%" class="column"><ul id="2648e11f-9262-8066-9f49-e78f8b291a3d" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>D. Handling performance and scalability</strong></mark><ul id="2648e11f-9262-80f0-8c8f-e62c2e3f5ec7" class="bulleted-list"><li style="list-style-type:circle">Ensuring stable behavior even when thousands or tens of thousands of users access at the same time</li></ul><ul id="2648e11f-9262-80f2-998a-e23d023d8642" class="bulleted-list"><li style="list-style-type:circle">Maintaining performance by applying cache, scaling servers, load balancing, etc.</li></ul></li></ul><p id="2648e11f-9262-802c-9633-e931ae4f1bbb" class="">
+</p><p id="2648e11f-9262-8003-bbd5-f66f5ee8f779" class="">
+</p></div><div id="2648e11f-9262-8096-980d-dbbad845febf" style="width:50%" class="column"><p id="2648e11f-9262-8064-bddc-ebf5359dee88" class=""><strong>Example) </strong></p><ul id="2648e11f-9262-80f3-b0c9-e11250fb07bb" class="bulleted-list"><li style="list-style-type:disc">Spreading traffic across multiple servers and using load balancers in a live chat service</li></ul><ul id="2648e11f-9262-80a9-b128-f24609106b5d" class="bulleted-list"><li style="list-style-type:disc">Reducing DB load by storing a list of popular posts in a Redis cache</li></ul><ul id="2648e11f-9262-80d9-ba1c-d651d1453588" class="bulleted-list"><li style="list-style-type:disc">Balancing server load with Nginx load balancing</li></ul></div></div><h3 id="2648e11f-9262-80ab-a735-e8dd8621b35c" class="">B. Major challenges faced by backend developers</h3><ul id="2648e11f-9262-8046-b838-e5e84a64288a" class="bulleted-list"><li style="list-style-type:disc"><strong>Performance issues</strong>: Server lag, database bottlenecks during high traffic situations</li></ul><ul id="2648e11f-9262-804d-9281-ee0b71c8236a" class="bulleted-list"><li style="list-style-type:disc"><strong>Security threats</strong>: SQL Injection, XSS, risk of authentication token hijacking</li></ul><ul id="2648e11f-9262-808b-aa8d-c989f3fd2faa" class="bulleted-list"><li style="list-style-type:disc"><strong>Scalability needs</strong>: Server scaling and data management issues as the service grows larger</li></ul><ul id="2648e11f-9262-803a-be7d-de6183bdc899" class="bulleted-list"><li style="list-style-type:disc"><strong>Failure response</strong>: Have recovery procedures in place in case of server down, data loss, or deployment failure</li></ul></div></p><p id="2648e11f-9262-80f0-a11d-c53bb111c455" class=""><div class="indented"><h3 id="2648e11f-9262-80a5-9345-d924d2fbbd8c" class="">C. Tools and technology stack used by backend developers</h3><ul id="2648e11f-9262-8064-8171-f62831dd6b80" class="bulleted-list"><li style="list-style-type:disc"><strong>Development languages</strong>: Java, Python, JavaScript (Node.js), Go</li></ul><ul id="2648e11f-9262-8030-9496-ca0f3fb49ebc" class="bulleted-list"><li style="list-style-type:disc"><strong>Frameworks</strong>: Spring Boot, Express, Django</li></ul><ul id="2648e11f-9262-8010-9bec-f125e71d0d12" class="bulleted-list"><li style="list-style-type:disc"><strong>Databases</strong>: MySQL, PostgreSQL, MongoDB, Redis</li></ul><ul id="2648e11f-9262-8006-9463-e7e01e7e611d" class="bulleted-list"><li style="list-style-type:disc"><strong>Operations/deployment</strong>: AWS, Docker, Kubernetes, GitHub Actions</li></ul><ul id="2648e11f-9262-8049-9dec-cb7e743c74be" class="bulleted-list"><li style="list-style-type:disc"><strong>Collaboration tools</strong>: GitHub, Jira, Slack</li></ul></div></p><hr id="2648e11f-9262-80cb-bd15-f00a484ec143"/></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. How to become a Back-End Developer?</summary><div class="indented"><p id="2648e11f-9262-80af-83b9-de2ab12a4986" class="">
+</p><h3 id="2648e11f-9262-80d0-9bb1-c39c4a884285" class="">A. Basic knowledge that back-end developers need to learn</h3><p id="2648e11f-9262-8015-8dae-d536ca82bbd0" class=""><div class="indented"><h3 id="2648e11f-9262-8068-9cdd-e6dabad1e75d" class="">A. Programming languages: The most fundamental knowledge!</h3><div id="2648e11f-9262-80f4-abf4-fb20c9dd59b8" class="column-list"><div id="2648e11f-9262-80db-803a-c4bc465b76a6" style="width:31.25%" class="column"><ul id="2648e11f-9262-8088-b519-ec68bcbd623e" class="bulleted-list"><li style="list-style-type:disc"><strong>Java</strong>: a language that is strong in stability and large-scale systems</li></ul><ul id="2648e11f-9262-803b-8f20-ee4c7534e51a" class="bulleted-list"><li style="list-style-type:disc"><strong>Python</strong>: a language with simple syntax and high productivity</li></ul><ul id="2648e11f-9262-803d-b21a-da009411c692" class="bulleted-list"><li style="list-style-type:disc"><strong>JavaScript (Node.js</strong>): A language that allows you to develop front-end and back-end in one language</li></ul><ul id="2648e11f-9262-80d3-ab9c-f229c045cac5" class="bulleted-list"><li style="list-style-type:disc"><strong>Go, Kotlin</strong>: Languages that are increasingly used in recent trends</li></ul><p id="2648e11f-9262-8050-a34e-ee217ff8cebc" class=""><mark class="highlight-orange"><strong>Programming languages are simple tools, so understanding the underlying principles is more important than choosing a specific language</strong></mark></p><p id="2648e11f-9262-80f6-81f9-c46758931611" class="">
+</p></div><div id="2648e11f-9262-8036-867a-d94ff713b7ce" style="width:68.75%" class="column"><table id="2648e11f-9262-8025-82ad-df32f5848568" class="simple-table"><thead class="simple-table-header"><tr id="2648e11f-9262-8018-b97e-c7fd4d09e256"><th id="ccP[" class="simple-table-header-color simple-table-header">Language</th><th id="crv|" class="simple-table-header-color simple-table-header">Features</th><th id="Gjg[" class="simple-table-header-color simple-table-header">Examples of real-world applications</th><th id=":@qy" class="simple-table-header-color simple-table-header">Strengths</th></tr></thead><tbody><tr id="2648e11f-9262-807c-ac61-c9f569245268"><td id="ccP[" class=""><strong>Java</strong></td><td id="crv|" class="">Highly reliable and performant, strong for large systems</td><td id="Gjg[" class="">Bank payment systems, enterprise ERP, Android app server</td><td id=":@qy" class="">Large ecosystem, rich frameworks like Spring Boot</td></tr><tr id="2648e11f-9262-80cd-9624-f795d99e70ae"><td id="ccP[" class=""><strong>Python</strong></td><td id="crv|" class="">Beginner-friendly with simple syntax and high readability</td><td id="Gjg[" class="">Startup prototypes, machine learning recommendation systems, automation tools</td><td id=":@qy" class="">Highly productive, with strong ties to data and AI</td></tr><tr id="2648e11f-9262-80df-8194-c74a221f60b1"><td id="ccP[" class=""><strong>JavaScript (Node.js)</strong></td><td id="crv|" class="">Can develop front-end and back-end in one language</td><td id="Gjg[" class="">Live chat servers, early versions of web services</td><td id=":@qy" class="">Asynchronous processing strengths, vast NPM ecosystem</td></tr><tr id="2648e11f-9262-8066-ad52-c39c21dac02d"><td id="ccP[" class=""><strong>Go</strong></td><td id="crv|" class="">Simple syntax + high performance, optimized for handling concurrency</td><td id="Gjg[" class="">Cloud infrastructure, microservices, Docker development</td><td id=":@qy" class="">Fast compilation speed, great for building lightweight servers</td></tr><tr id="2648e11f-9262-80bc-b5c9-e0412f0ca2a3"><td id="ccP[" class=""><strong>Kotlin</strong></td><td id="crv|" class="">100% compatible with Java, concise and secure grammar</td><td id="Gjg[" class="">Android servers, Spring Boot-based services</td><td id=":@qy" class="">Code conciseness, modern syntax support, mobile friendly</td></tr></tbody></table></div></div><h3 id="2648e11f-9262-80b7-bae2-eed34458d72e" class="">B. Basic concepts of the web: background to understand the behavior</h3><ul id="2648e11f-9262-80aa-b4ec-e6c083c085da" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>HTTP protocol</strong></mark><mark class="highlight-orange">:</mark><p id="2648e11f-9262-8087-a2c0-cfe47849a19a" class="">Communication rules that clients (users) and servers must follow when sending and receiving data.</p><blockquote id="2648e11f-9262-8061-8f16-d2cfafdd41d5" class=""> Example: When you type the address <code>http://example.com/users</code> in your browser, you send a request to the server; the server responds with an HTML or JSON response</blockquote></li></ul><ul id="2648e11f-9262-8092-b68d-c40cf29a1996" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Request</strong></mark><mark class="highlight-orange">:</mark><p id="2648e11f-9262-804b-8008-f043b860991c" class="">A message that a user sends to a server, usually consisting of a URL + method (GET, POST, etc.) + header + body</p><blockquote id="2648e11f-9262-809c-847e-e7b1b100f70c" class="">Example: Email-password entered by the user at login is sent to the server in the body of a POST request</blockquote></li></ul><ul id="2648e11f-9262-8042-a182-fc675835bb52" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Response</strong></mark><mark class="highlight-orange">:</mark><p id="2648e11f-9262-8004-97f3-e857fdac3a7e" class="">Message sent back to the user by the server, containing status codes and data (JSON, HTML, XML, etc.)</p><blockquote id="2648e11f-9262-803d-85ca-c5f1b3148f5e" class="">Example: Return &quot;Login successful, token issued&quot; message with <code>200 OK</code> status code on successful login</blockquote></li></ul><ul id="2648e11f-9262-8084-86d3-d02225dcef1c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>REST API</strong></mark><mark class="highlight-orange">:</mark><p id="2648e11f-9262-80d3-8f7a-f59ea0fb682a" class="">A design approach that divides resources into addresses (URLs) and behaviors into methods (GET, POST, PUT, DELETE).</p><blockquote id="2648e11f-9262-80e6-812c-dd8065972b90" class="">Example:<ul id="2648e11f-9262-80f1-ba51-db6cb16fdd53" class="bulleted-list"><li style="list-style-type:disc"><code>GET /users</code> → Get all users</li></ul><ul id="2648e11f-9262-8006-babf-f2ccd518d838" class="bulleted-list"><li style="list-style-type:disc"><code>POST /users</code> → Register a new user</li></ul><ul id="2648e11f-9262-8014-aa31-ce92f77c262c" class="bulleted-list"><li style="list-style-type:disc"><code>PUT /users/1</code> → Modify specific user information</li></ul><ul id="2648e11f-9262-8071-98c5-f68a42f862a7" class="bulleted-list"><li style="list-style-type:disc"><code>DELETE /users/1</code> → Delete a specific user</li></ul></blockquote><p id="2648e11f-9262-8060-a09b-e66087794edd" class="">
+</p></li></ul><h3 id="2648e11f-9262-80f8-b409-f9cfde898635" class="">c. Database: The entity that manages data!</h3><ul id="2648e11f-9262-80d9-b339-eeec4f50b120" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Relational Database (RDBMS)</strong></mark><mark class="highlight-orange">:</mark><p id="2648e11f-9262-8052-b60b-e74bd833bff3" class="">A table-based database like MySQL, PostgreSQL, etc.</p><ul id="2648e11f-9262-8002-befa-c5d978c1c422" class="bulleted-list"><li style="list-style-type:circle">Stores data in a row and column structure and manipulates it with SQL</li></ul><ul id="2648e11f-9262-8062-8e9a-f164e0e308b1" class="bulleted-list"><li style="list-style-type:circle"><strong>Normalize</strong>to reduce duplicates and ensure data integrity</li></ul><ul id="2648e11f-9262-8025-9e79-d3ce09efa94d" class="bulleted-list"><li style="list-style-type:circle"><strong>JOIN</strong>to connect and view data from multiple tables</li></ul><blockquote id="2648e11f-9262-80fc-9e5c-eb8e97d72856" class="">Example:<ul id="2648e11f-9262-80e2-8b4a-c85104f43c74" class="bulleted-list"><li style="list-style-type:disc">JOIN the<code>users</code> table with the <code>orders</code> table to get the order history of a specific user</li></ul><ul id="2648e11f-9262-8095-b8d6-c0b79fae9c18" class="bulleted-list"><li style="list-style-type:disc">Linking an account table with a transaction history table in a banking system</li></ul></blockquote></li></ul><ul id="2648e11f-9262-8006-bc2c-edc6ec2ed0ff" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Non-relational databases (NoSQL)</strong></mark><mark class="highlight-orange">:</mark><p id="2648e11f-9262-80be-bb45-d9145118d9af" class="">A free-form way to store data, such as MongoDB and Redis.</p><ul id="2648e11f-9262-808f-98d6-f0b243a488d6" class="bulleted-list"><li style="list-style-type:circle"><strong>Document-based storage</strong>: MongoDB → flexible data structure in JSON format</li></ul><ul id="2648e11f-9262-80ff-bc79-f1041edf6958" class="bulleted-list"><li style="list-style-type:circle"><strong>Key-Value storage</strong>: Redis → cache, optimized for session storage</li></ul><blockquote id="2648e11f-9262-8063-aff5-d737f42c31fd" class="">Example:<ul id="2648e11f-9262-8069-90cf-ddb6d0523410" class="bulleted-list"><li style="list-style-type:disc">Storing user profile information from a social network as JSON in MongoDB</li></ul><ul id="2648e11f-9262-8064-a3f0-d276f8591a32" class="bulleted-list"><li style="list-style-type:disc">Store the last 100 live chat room messages in Redis for quick fetching</li></ul></blockquote></li></ul><ul id="2648e11f-9262-8094-b406-d405380342b8" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Object Relational Mapping (ORM)</strong></mark><mark class="highlight-orange">:</mark><p id="2648e11f-9262-802f-8f00-fe9b676afaac" class="">Tools like JPA, Sequelize, and Django ORMs</p><ul id="2648e11f-9262-808c-b023-d0eb9a0e8f55" class="bulleted-list"><li style="list-style-type:circle">Manipulate DB with code in object-oriented languages without writing SQL directly</li></ul><ul id="2648e11f-9262-80af-984a-e2283cc325cb" class="bulleted-list"><li style="list-style-type:circle">Automatically handle DB table ↔ code object mapping</li></ul><blockquote id="2648e11f-9262-80dc-8ae6-dee3f4eb44d3" class="">Example:<ul id="2648e11f-9262-8088-be4b-daf9cd6e4f89" class="bulleted-list"><li style="list-style-type:disc"><code>User.findByEmail(&quot;test@test.com&quot;)</code> → execute <code>SELECT * FROM users WHERE email = ...</code> automatically without SQL</li></ul><ul id="2648e11f-9262-803f-86da-d1271267ca14" class="bulleted-list"><li style="list-style-type:disc">Django ORM to automatically lookup posts table when calling <code>Post.objects.all()</code> </li></ul></blockquote></li></ul><p id="2648e11f-9262-80dd-8de3-d8d15e47a2d5" class="">
+</p><h3 id="2648e11f-9262-8084-8a8f-c72276d79dfb" class="">D. Security and authentication: key areas that determine <strong>the reliability of your backend</strong></h3><ul id="2648e11f-9262-801e-94ac-c718d6dcf692" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Sessions and cookies</strong></mark><ul id="2648e11f-9262-801f-8e19-d239dd32fb7e" class="bulleted-list"><li style="list-style-type:circle">The server saves the session, and the client keeps a cookie with the session ID.</li></ul><ul id="2648e11f-9262-807c-913f-ec91503d415c" class="bulleted-list"><li style="list-style-type:circle">Traditional and intuitive, but can increase server memory/DB load</li></ul><blockquote id="2648e11f-9262-803f-a5be-ee4512c8d057" class="">Example: Keeping you logged in to a shopping mall</blockquote></li></ul><ul id="2648e11f-9262-807f-bb37-c6fe84fe43d6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>JWT (JSON Web Token)</strong></mark><ul id="2648e11f-9262-8045-9419-f5f25f62b194" class="bulleted-list"><li style="list-style-type:circle">Token-based authentication, client carries a token to verify with server</li></ul><ul id="2648e11f-9262-80b7-b7d9-d53c95c922bf" class="bulleted-list"><li style="list-style-type:circle">Highly scalable as the server only needs to verify the token</li></ul><blockquote id="2648e11f-9262-8024-ba94-f9936a3d4eee" class="">Example: After logging in to a mobile app, pass <code>Authorization: Bearer &lt;token&gt;</code> every time when calling an API</blockquote></li></ul><ul id="2648e11f-9262-80a8-ac5b-ef14c40928c3" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>OAuth 2.0</strong></mark><ul id="2648e11f-9262-80bd-8c25-c717e1366fc3" class="bulleted-list"><li style="list-style-type:circle">A way to sign in using an external service account</li></ul><ul id="2648e11f-9262-8043-8405-d70423f59965" class="bulleted-list"><li style="list-style-type:circle">Increases security and simplifies the user experience</li></ul><blockquote id="2648e11f-9262-8059-a8e2-d22916ef87c7" class="">Example: Google/Cakao/Netflix login</blockquote></li></ul><ul id="2648e11f-9262-80d8-88c8-ef15f7cd24d6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Password encryption</strong></mark><ul id="2648e11f-9262-80f7-8c26-f27dc106fecc" class="bulleted-list"><li style="list-style-type:circle">Hash algorithms like BCrypt and Argon2 prevent the original password from being stored</li></ul><blockquote id="2648e11f-9262-8067-9895-d576d5d1a196" class="">Example: If a user forgets their password, do not restore it, provide a reset link</blockquote><p id="2648e11f-9262-80c0-b963-f466254c3c06" class="">
+</p></li></ul><h3 id="2648e11f-9262-801e-8f3b-e14952bab1df" class="">e. Deployment and operations: the final responsibility of the backend to keep the service alive</h3><ul id="2648e11f-9262-8098-aee3-eb3283853eac" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Linux Basic Commands</strong></mark><ul id="2648e11f-9262-8005-9daa-e808d69561e5" class="bulleted-list"><li style="list-style-type:circle">File manipulation, permission setting, network management commands essential in a server environment</li></ul><blockquote id="2648e11f-9262-807e-85af-f527abbf6f2b" class="">Examples: <code>cd</code>, <code>ls</code>, <code>chmod</code>, <code>systemctl</code></blockquote></li></ul><ul id="2648e11f-9262-80e3-8db9-cf82ad8f89b7" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Cloud Services (AWS, GCP, Azure)</strong></mark><ul id="2648e11f-9262-80ff-a212-fcf46e5f5b60" class="bulleted-list"><li style="list-style-type:circle">Provide server infrastructure, databases, storage, and networking</li></ul><blockquote id="2648e11f-9262-80e7-9e17-c583dbb3dd29" class="">Examples: Deploying servers on AWS EC2, operating databases with RDS</blockquote></li></ul><ul id="2648e11f-9262-8070-8e92-eb3b5d80a683" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Docker</strong></mark><ul id="2648e11f-9262-80b2-b9ce-c3dbead8f14d" class="bulleted-list"><li style="list-style-type:circle">Packaging execution environments into containers → Ensure the same environment everywhere</li></ul><blockquote id="2648e11f-9262-80c4-b327-d2246bb9e707" class="">Example: Solving the &quot;it works on my PC, but not on the server&quot; problem by keeping local development and deployment environments the same</blockquote></li></ul><ul id="2648e11f-9262-8059-b60e-e094a395f074" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>CI/CD</strong></mark><ul id="2648e11f-9262-8034-a2a7-e69f6caefc0c" class="bulleted-list"><li style="list-style-type:circle">Automated build-test-deploy pipeline for code changes</li></ul><blockquote id="2648e11f-9262-8073-a6c6-d6b8c1a6947b" class="">Example: GitHub Actions → Automatically push to server when merged into main branch</blockquote></li></ul><ul id="2648e11f-9262-800d-9b50-fd255d4380f6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Monitoring tools</strong></mark><ul id="2648e11f-9262-809c-ad4b-c25edb983c56" class="bulleted-list"><li style="list-style-type:circle">Real-time observation of server health, traffic, and error logs</li></ul><blockquote id="2648e11f-9262-8091-8587-db108b937a74" class="">Example: Monitoring server CPU/memory with Grafana, searching error logs with ELK stack</blockquote><p id="2648e11f-9262-8013-9351-ee13786bb386" class="">
+</p></li></ul><hr id="2648e11f-9262-80f1-aa8c-d90bce9792a5"/><p id="2648e11f-9262-8011-ae5b-e4d78e955d11" class="">
+</p><p id="2648e11f-9262-8021-a55a-de6cb5aeb9a3" class="">
+</p></div></p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. Backend Development Learning Roadmap</summary><div class="indented"><h3 id="2648e11f-9262-804b-969b-e18b94859e01" class="">A. Learning Roadmap</h3><div id="2648e11f-9262-804a-971c-f66bf423d1e7" class="column-list"><div id="2648e11f-9262-80d9-8f15-dda581bb2d19" style="width:50%" class="column"><table id="2648e11f-9262-80eb-84e5-d555a25da7d3" class="simple-table"><thead class="simple-table-header"><tr id="2648e11f-9262-808a-adc6-d52bc75f169a"><th id="Ui`G" class="simple-table-header-color simple-table-header" style="width:173.33333333333334px">Step</th><th id="g\|M" class="simple-table-header-color simple-table-header" style="width:173.33333333333334px">What you will learn</th><th id="a}e?" class="simple-table-header-color simple-table-header" style="width:173.33333333333334px">Example</th></tr></thead><tbody><tr id="2648e11f-9262-8049-bc9e-f9f586a4b759"><td id="Ui`G" class="" style="width:173.33333333333334px">Step 1</td><td id="g\|M" class="" style="width:173.33333333333334px">Programming language + Git</td><td id="a}e?" class="" style="width:173.33333333333334px">Java syntax, using GitHub</td></tr><tr id="2648e11f-9262-80cd-ab88-f23f706840d0"><td id="Ui`G" class="" style="width:173.33333333333334px">Step 2</td><td id="g\|M" class="" style="width:173.33333333333334px">Web basics</td><td id="a}e?" class="" style="width:173.33333333333334px">HTTP, REST APIs</td></tr><tr id="2648e11f-9262-80c1-a203-f9e2a56791fe"><td id="Ui`G" class="" style="width:173.33333333333334px">Step 3</td><td id="g\|M" class="" style="width:173.33333333333334px">Frameworks</td><td id="a}e?" class="" style="width:173.33333333333334px">Creating a Spring Boot API</td></tr><tr id="2648e11f-9262-8071-8008-dda5354ce131"><td id="Ui`G" class="" style="width:173.33333333333334px">Step 4</td><td id="g\|M" class="" style="width:173.33333333333334px">The database</td><td id="a}e?" class="" style="width:173.33333333333334px">MySQL CRUD queries</td></tr><tr id="2648e11f-9262-80a7-bd0a-c2eaddd388f5"><td id="Ui`G" class="" style="width:173.33333333333334px">Step 5</td><td id="g\|M" class="" style="width:173.33333333333334px">Security</td><td id="a}e?" class="" style="width:173.33333333333334px">Sessions, JWT Login</td></tr><tr id="2648e11f-9262-80e8-bbd2-ee8c186d2c8f"><td id="Ui`G" class="" style="width:173.33333333333334px">Step 6</td><td id="g\|M" class="" style="width:173.33333333333334px">Deployment and operations</td><td id="a}e?" class="" style="width:173.33333333333334px">Deploy the server to AWS EC2</td></tr><tr id="2648e11f-9262-8098-bf24-d1fddc3af9f4"><td id="Ui`G" class="" style="width:173.33333333333334px">Step 7</td><td id="g\|M" class="" style="width:173.33333333333334px">Deeper Learning</td><td id="a}e?" class="" style="width:173.33333333333334px">Caches, Queues, and Microservices</td></tr></tbody></table></div><div id="2648e11f-9262-80c7-b3a1-fa35b18b9a78" style="width:50%" class="column"><ul id="2648e11f-9262-801d-974b-de31eed1c053" class="bulleted-list"><li style="list-style-type:disc"><strong>Web Fundamentals track</strong>: HTTP, status codes, cache headers, equality, API conventions concepts</li></ul><ul id="2648e11f-9262-8070-8e68-f955f31726f1" class="bulleted-list"><li style="list-style-type:disc"><strong>Data track</strong>: SQL, transactions, indexes, normalized and denormalized, ORM pattern concepts</li></ul><ul id="2648e11f-9262-80e8-b610-deeb69492d30" class="bulleted-list"><li style="list-style-type:disc"><strong>Server track</strong>: Framework structure, middleware, error handling, logging pattern concepts</li></ul><ul id="2648e11f-9262-80e1-b4f2-f6405af97015" class="bulleted-list"><li style="list-style-type:disc"><strong>Security track</strong>: authentication-authorization, input validation, secrets management, vulnerability response concepts</li></ul><ul id="2648e11f-9262-80f0-9416-f6c91af3e0ef" class="bulleted-list"><li style="list-style-type:disc"><strong>Performance track</strong>: Profiling, cache, queue, batch, and scaling strategy concepts</li></ul><ul id="2648e11f-9262-806e-8373-c74369835f94" class="bulleted-list"><li style="list-style-type:disc"><strong>Operations track</strong>: Containers, CI/CD, monitoring, alerting, and failover concepts</li></ul><ul id="2648e11f-9262-807a-bfea-fb3ef3edd035" class="bulleted-list"><li style="list-style-type:disc"><strong>Design Track</strong>: Needs analysis, domain modeling, diagrams, SLO documentation concepts</li></ul><p id="2648e11f-9262-802f-ab75-f7969c643dab" class="">
+</p></div></div><div id="2648e11f-9262-80a8-b853-e9fd2c9d405f" class="column-list"><div id="2648e11f-9262-80fe-9598-e8eccfb8d0dd" style="width:50%" class="column"></div><div id="2648e11f-9262-8085-b2d8-e8d8977e72d9" style="width:50%" class="column"></div></div><h3 id="2648e11f-9262-80e6-8324-c80c8a0ddaf6" class="">B. How to Study?</h3><div id="2648e11f-9262-80ff-9bb2-fea198cf93b5" class="column-list"><div id="2648e11f-9262-805f-886b-c8193b569eb6" style="width:50%" class="column"><h3 id="2648e11f-9262-8083-babb-fe0158494191" class=""><mark class="highlight-orange">Step 1. Programming Basics</mark></h3><ul id="2648e11f-9262-80bb-8bdb-e186b8e788ae" class="bulleted-list"><li style="list-style-type:disc">Learn language grammar</li></ul><ul id="2648e11f-9262-808d-8386-edd10a06cd8d" class="bulleted-list"><li style="list-style-type:disc">Learn data structures and algorithms</li></ul><ul id="2648e11f-9262-80f9-87f8-ce81822c2939" class="bulleted-list"><li style="list-style-type:disc">Learn version control through Git and GitHub</li></ul><h3 id="2648e11f-9262-807d-8587-e295b1219ad9" class=""><mark class="highlight-orange">Step 2. Understand web basics</mark></h3><ul id="2648e11f-9262-80ef-b862-d4a6a295c4da" class="bulleted-list"><li style="list-style-type:disc">Learn the structure of the HTTP protocol</li></ul><ul id="2648e11f-9262-806b-8415-f1780e09cc34" class="bulleted-list"><li style="list-style-type:disc">Learn REST API design principles</li></ul><h3 id="2648e11f-9262-808c-a15e-d13c5463823d" class=""><mark class="highlight-orange">Step 3. Learn backend frameworks</mark></h3><ul id="2648e11f-9262-809f-8f55-cece5fb977ae" class="bulleted-list"><li style="list-style-type:disc">Learn your choice of Spring Boot, Express, Django, etc.</li></ul><ul id="2648e11f-9262-80d2-890c-d63f00b3640e" class="bulleted-list"><li style="list-style-type:disc">Learn routing, controller, and middleware concepts</li></ul><h3 id="2648e11f-9262-80fc-bf2c-f5063066da4e" class=""><mark class="highlight-orange">Step 4. Learn databases</mark></h3><ul id="2648e11f-9262-80a9-a84b-ca61deb87d74" class="bulleted-list"><li style="list-style-type:disc">Learn SQL basic commands</li></ul><ul id="2648e11f-9262-8088-ac02-f5bd51b014f9" class="bulleted-list"><li style="list-style-type:disc">Learn database table design</li></ul><ul id="2648e11f-9262-8044-95ce-f602b4cd84b6" class="bulleted-list"><li style="list-style-type:disc">Learn to utilize ORM tools</li></ul></div><div id="2648e11f-9262-80ba-9548-df4de58bbb7e" style="width:50%" class="column"><h3 id="2648e11f-9262-8069-8388-f6704d4b3a13" class=""><mark class="highlight-orange">Step 5. Learn security and authentication</mark></h3><ul id="2648e11f-9262-8009-a494-eb9cff41715b" class="bulleted-list"><li style="list-style-type:disc">Learn session, cookie, and JWT methods</li></ul><ul id="2648e11f-9262-80c2-abfd-d124773a6830" class="bulleted-list"><li style="list-style-type:disc">Learn the OAuth2.0 authentication process</li></ul><ul id="2648e11f-9262-8099-bd43-eec57d516790" class="bulleted-list"><li style="list-style-type:disc">Learn techniques to prevent security vulnerabilities</li></ul><h3 id="2648e11f-9262-80ff-924d-d5921c6b2628" class=""><mark class="highlight-orange">Step 6. Deployment and Operations</mark></h3><ul id="2648e11f-9262-802d-932a-d4a3e65ec1d2" class="bulleted-list"><li style="list-style-type:disc">Learn basic Linux server operations</li></ul><ul id="2648e11f-9262-8056-a566-fedb85aeb5ce" class="bulleted-list"><li style="list-style-type:disc">Learn to deploy services in a cloud environment</li></ul><ul id="2648e11f-9262-8046-801b-d33345061e8e" class="bulleted-list"><li style="list-style-type:disc">Learn Docker and CI/CD pipelines</li></ul><h3 id="2648e11f-9262-806d-931b-e0a20e5fb225" class=""><mark class="highlight-orange">Step 7.</mark></h3><ul id="2648e11f-9262-8079-969c-fda64488cdc7" class="bulleted-list"><li style="list-style-type:disc">Learn techniques for handling large-scale traffic</li></ul><ul id="2648e11f-9262-80cc-bc6a-f5ebd934094e" class="bulleted-list"><li style="list-style-type:disc">Understand microservice architecture (MSA)</li></ul><ul id="2648e11f-9262-8078-be13-cb3c1b96f91e" class="bulleted-list"><li style="list-style-type:disc">Learn system design principles</li></ul><p id="2648e11f-9262-8081-ae13-fdf948dd06f4" class="">
+</p></div></div><hr id="2648e11f-9262-806f-b04c-fe6a6257e7bd"/><p id="2648e11f-9262-8030-9d2a-e0a7cecaa163" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. Tips for growing as a backend developer!</summary><div class="indented"><ul id="2648e11f-9262-801e-a28e-e4fd8ebd2ed7" class="bulleted-list"><li style="list-style-type:disc"><strong>Accumulate experience with small projects</strong>: Experience building services like blogs, message boards, and shopping malls</li></ul><ul id="2648e11f-9262-80bb-b628-ef1eb37b9137" class="bulleted-list"><li style="list-style-type:disc"><strong>Acquire collaboration skills</strong>: Experience collaborating on code and reviewing code via Git</li></ul><ul id="2648e11f-9262-80e5-ae6c-ea49f574ff76" class="bulleted-list"><li style="list-style-type:disc"><strong>Develop</strong> a<strong>habit of reading official documentation</strong>: Familiarize yourself with the official documentation of frameworks and databases</li></ul><ul id="2648e11f-9262-8097-b869-f5b95b5bf6f8" class="bulleted-list"><li style="list-style-type:disc">Established a habit<strong>of recording</strong>: habit of recording learning in TILs or blogs</li></ul><ul id="2648e11f-9262-80c1-a2c5-f05f17335508" class="bulleted-list"><li style="list-style-type:disc"><strong>Community engagement experience</strong>: Experience with study groups, hackathons, and open source contributions.</li></ul><p id="2648e11f-9262-8099-8481-ec9d5b8d91a6" class="">
+</p><hr id="2648e11f-9262-80e8-8dfa-ce67590e94ee"/><p id="2648e11f-9262-80df-bd42-fc71ccf204c0" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">6. References</summary><div class="indented"><ul id="2648e11f-9262-800f-865f-c8af96accab7" class="bulleted-list"><li style="list-style-type:disc"><strong>Books</strong><ul id="2648e11f-9262-802d-9271-f7c4c2f4b269" class="bulleted-list"><li style="list-style-type:circle">&quot;The Complete Guide to HTTP: An explanation of the structure of web communication</li></ul><ul id="2648e11f-9262-805c-955a-d0f638baef5e" class="bulleted-list"><li style="list-style-type:circle">&quot;Clean Code: Principles for Writing Readable and Maintainable Code Resource</li></ul></li></ul><ul id="2648e11f-9262-80ac-afd5-e4ef31e497f8" class="bulleted-list"><li style="list-style-type:disc"><strong>Online resources</strong><ul id="2648e11f-9262-8098-bc5b-c30468991a7a" class="bulleted-list"><li style="list-style-type:circle"><a href="https://roadmap.sh/backend">roadmap.sh/backend</a>: Visualization of the backend roadmap</li></ul><ul id="2648e11f-9262-8051-8c19-c76d347d6958" class="bulleted-list"><li style="list-style-type:circle"><a href="https://developer.mozilla.org/">MDN Web Docs</a>: Explanations of basic web concepts</li></ul></li></ul></div></details><p id="2648e11f-9262-80dd-ad88-cc941681147c" class="">
+</p><hr id="2648e11f-9262-8002-926e-ed8d7321de97"/><p id="2648e11f-9262-805a-a291-f1320c1cb058" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
