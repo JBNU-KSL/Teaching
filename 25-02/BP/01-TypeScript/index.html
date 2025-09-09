@@ -1,0 +1,1230 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>01. TypeScript</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none;   /* 파이어폭스 등 */
+}
+
+
+
+summary::before {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  break-after: page; /* 인쇄 시 페이지 나눔 */
+}
+
+.properties {
+	display: none;
+}
+
+@media print {
+  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  
+  /* 페이지 가운데 정렬 영역 */
+  header{
+    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
+    display:flex;
+    position: relative;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* 본문 타이틀(원래의 00. OT) */
+  .page-title{
+    margin:0;
+    line-height:1.25;
+    font-weight:800;
+    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0; /* 상·하 여유 공간 */
+  }
+
+  /* 최상단 큰 제목 */
+  .page-title::before{
+    content: "초급프로젝트 (25-02)\A";
+    white-space: pre-line;     /* \A 줄바꿈 활성화 */
+    display:block;
+    font-weight:900;
+    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
+    letter-spacing:.02em;
+    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  }
+
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+	  white-space: pre-line;
+	  position: absolute;
+	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  font-size: 11pt;
+	  font-weight: 500;
+	  line-height: 1.6;
+	  text-align: center;
+} 
+}
+	
+</style></head><body><article id="2588e11f-9262-81fc-9a91-e05eecb4d6c0" class="page sans"><header><h1 class="page-title">01. TypeScript</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>2주차</td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">! Notification</summary><div class="indented"><div id="2698e11f-9262-8088-9e88-cb9d549c5ace" class="column-list"><div id="2698e11f-9262-80ec-90ed-e7e973bd2eee" style="width:50%" class="column"><p id="2698e11f-9262-80ba-93fe-d968a15b3dca" class="">아래 링크 가입해주세요!</p><p id="2698e11f-9262-80e3-bbdb-c0d536d91ade" class="">&gt; 공지/강의자료 업로드!</p><p id="2698e11f-9262-806b-a59c-f794e0b6bfdb" class=""><strong>Google Classroom</strong>: <a href="https://classroom.google.com/c/ODAwOTM1Njc5ODc5?cjc=p2t26zjz">https://classroom.google.com/c/ODAwOTM1Njc5ODc5?cjc=p2t26zjz</a></p><figure id="2698e11f-9262-80da-9a50-ce732d9e9372" class="image"><a href="01%20TypeScript%202588e11f926281fc9a91e05eecb4d6c0/image.png"><img style="width:224px" src="01%20TypeScript%202588e11f926281fc9a91e05eecb4d6c0/image.png"/></a></figure></div><div id="2698e11f-9262-808a-8dc3-cf75e7b268f5" style="width:50%" class="column"><p id="2698e11f-9262-809b-9671-c5353bc79eff" class="">아래 링크 가입해주세요!</p><p id="2698e11f-9262-80ac-ab8a-e0dfb33bcf34" class="">&gt; 공지사항 업로드!</p><p id="2698e11f-9262-8053-a007-f026b17eb85c" class=""><strong>Discord</strong>: </p><p id="2698e11f-9262-80ba-9224-d4be3108047d" class=""><a href="https://discord.gg/W5m2mtt7aC">https://discord.gg/W5m2mtt7aC</a></p><figure id="2698e11f-9262-80bf-bccc-f3cc0c4b1d58" class="image"><a href="01%20TypeScript%202588e11f926281fc9a91e05eecb4d6c0/image%201.png"><img style="width:224px" src="01%20TypeScript%202588e11f926281fc9a91e05eecb4d6c0/image%201.png"/></a></figure></div></div></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">A. TypeScript 기본 개념 및 문법</summary><div class="indented"><h2 id="2688e11f-9262-8094-bd1a-e9e0e61a16e7" class="">1. 메인룰</h2><ul id="2688e11f-9262-8067-9c6e-ef636dae3fd2" class="bulleted-list"><li style="list-style-type:disc">typescript는 최종적으로 <strong>javascript로 변환</strong>된다. 순전한 typescript 코드를 돌릴 수 있는 것은 <strong>deno</strong>이나 대중화되지가 않았음. 브라우저, 노드는 모두 js 파일을 실행한다.</li></ul><ul id="2688e11f-9262-8017-8eed-d7ed5d609b69" class="bulleted-list"><li style="list-style-type:disc">typescript는 언어이자 컴파일러(tsc)이다. 컴파일러는 ts 코드를 js로 바꿔준다.</li></ul><ul id="2688e11f-9262-8038-9706-e7796e87a368" class="bulleted-list"><li style="list-style-type:disc"><code>tsc</code>는 1) 코드 변환하는 역할 2) 타입검사하는 역할<br/>1과 2가 별개여서 타입검사에서 에러가 나도 코드를 js로 변환할 수 있다<h3 id="2698e11f-9262-807f-bb35-c6da5e237428" class="">핵심 포인트</h3><ol type="1" id="2698e11f-9262-804a-81b2-f06b963b5f41" class="numbered-list" start="1"><li><strong>TS → JS로 변환되어야 실행</strong><ul id="2698e11f-9262-8001-9cc2-ff988ec0d3c0" class="bulleted-list"><li style="list-style-type:disc">브라우저·Node.js는 <strong>JS만 실행</strong>한다.</li></ul><ul id="2698e11f-9262-80ff-a6b2-cb1c6ba9a445" class="bulleted-list"><li style="list-style-type:disc">Deno/Bun은 TS를 바로 돌릴 수 있지만 <strong>수업 기본 가정은 “TS → JS 컴파일”</strong>.</li></ul></li></ol><ol type="1" id="2698e11f-9262-8093-ae82-ecacdda6a033" class="numbered-list" start="2"><li><strong>TypeScript = 언어 + 컴파일러(tsc)</strong><ul id="2698e11f-9262-8083-af78-e123aa8d3dc8" class="bulleted-list"><li style="list-style-type:disc"><code>tsc</code>는<ul id="2698e11f-9262-80ba-81b3-ff59b4c9db3d" class="bulleted-list"><li style="list-style-type:circle">(a) <strong>코드 변환(emit)</strong>: TS → JS</li></ul><ul id="2698e11f-9262-809a-a827-da89721bcf25" class="bulleted-list"><li style="list-style-type:circle">(b) <strong>타입 검사(check)</strong> 두 역할을 한다.</li></ul></li></ul><ul id="2698e11f-9262-80bf-984e-f83715077a2c" class="bulleted-list"><li style="list-style-type:disc">둘은 <strong>독립적</strong>이어서 <strong>타입 에러가 있어도 JS를 뽑을 수 있음</strong>(옵션에 따라).</li></ul></li></ol><h3 id="2698e11f-9262-80a5-9256-da31791713f7" class="">자주 하는 실수</h3><ul id="2698e11f-9262-8070-9a8f-d9edbe4898c9" class="bulleted-list"><li style="list-style-type:circle">“타입 에러가 없으면 실행도 안전하다” → ❌ (런타임 예외는 여전히 가능)</li></ul><ul id="2698e11f-9262-80e4-8e3e-d1b553e733b1" class="bulleted-list"><li style="list-style-type:circle">“Deno니까 브라우저에서도 TS 바로 됨?” → ❌ (브라우저는 JS만)</li></ul></li></ul><hr id="2688e11f-9262-800e-87e4-c23d53a8fad0"/><h2 id="2688e11f-9262-8042-85b3-c55a84b2f968" class="">2. ts 프로젝트 만들기</h2><ul id="2688e11f-9262-807b-b253-d643b1cbce78" class="bulleted-list"><li style="list-style-type:disc"><code>npx tsc --init</code> : <code>tsconfig.json</code> 생성</li></ul><ul id="2688e11f-9262-80d5-acf2-e8e6f571a71c" class="bulleted-list"><li style="list-style-type:disc"><code>npx tsc</code> : ts파일을 js로 바꾸는 명령어</li></ul><ul id="2688e11f-9262-80bf-be50-dc0806ad11ea" class="bulleted-list"><li style="list-style-type:disc"><code>npx tsc --noEmit</code> : <strong>타입검사만</strong> 하는 명령어. 에디터를 사용하지 않으면 해당 명령어를 계속해줘야함</li></ul><p id="2688e11f-9262-8092-b312-dc36cf043674" class=""><strong>주요 tsconfig 옵션</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-80aa-9dd5-c1cf7a442dc2" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;compilerOptions&quot;: {
+    // 모듈/타깃
+    &quot;target&quot;: &quot;ES2020&quot;,
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;moduleResolution&quot;: &quot;Bundler&quot;, // (Node 프로젝트면 &quot;NodeNext&quot; 권장)
+    &quot;lib&quot;: [&quot;ES2020&quot;, &quot;DOM&quot;],
+
+    // 안전성
+    &quot;strict&quot;: true,
+    &quot;noImplicitAny&quot;: true,
+    &quot;noUncheckedIndexedAccess&quot;: true,
+    &quot;exactOptionalPropertyTypes&quot;: true,
+
+    // 품질/호환
+    &quot;esModuleInterop&quot;: true,
+    &quot;skipLibCheck&quot;: true,
+    &quot;forceConsistentCasingInFileNames&quot;: true,
+
+    // 빌드
+    &quot;outDir&quot;: &quot;dist&quot;,
+    &quot;rootDir&quot;: &quot;src&quot;,
+
+    // 경로 별칭(선택)
+    // &quot;baseUrl&quot;: &quot;.&quot;,
+    // &quot;paths&quot;: { &quot;@/*&quot;: [&quot;src/*&quot;] }
+  },
+  &quot;include&quot;: [&quot;src&quot;]
+}</code></pre><ul id="2688e11f-9262-8054-a078-c89b66f434ae" class="bulleted-list"><li style="list-style-type:disc"><code>&quot;allowJs&quot;: true</code> : ts와 js를 동시에 쓸 수 있음</li></ul><ul id="2688e11f-9262-8046-b655-fc55f71b9e4f" class="bulleted-list"><li style="list-style-type:disc"><code>esModuleInterop: true</code>, <code>strict: true</code> : <strong>필수</strong></li></ul><ul id="2688e11f-9262-80c8-82b9-f1a848ebcc21" class="bulleted-list"><li style="list-style-type:disc"><code>&quot;skipLibCheck&quot;: true</code> : 라이브러리는 타입검사하지 말라</li></ul><ul id="2688e11f-9262-8088-8ba2-cece641f9325" class="bulleted-list"><li style="list-style-type:disc"><code>&quot;forceConsistentCasingInFileNames&quot;: true</code> : 윈도우에서는 대소문자 지키지 않고 import해도 되는데 리눅스에서는 안된다. 따라서 서버에 올렸을때 문제 될 수 있으므로 윈도우에서도 대소문자 지켜야 되도록 하는 옵션이다</li></ul><hr id="2688e11f-9262-804e-b247-f256fc4e15c7"/><h2 id="2688e11f-9262-80a3-9c5c-e974d93cc940" class="">3. 기본타입</h2><p id="2698e11f-9262-8001-b9a2-f24ef2a1c7c7" class="">
+</p><p id="2688e11f-9262-8022-8426-e72781cd5ddc" class="">* 문자열 타입, 숫자타입, 진위(boolean) 타입, 객체타입, 배열타입, 튜플타입, <code>null</code>, <code>undefined</code>, <code>never</code>, <code>any</code>, <code>unknown</code>, <code>void</code></p><h3 id="2698e11f-9262-80b8-b665-db0458890e0a" class="">Load-Maps</h3><ul id="2698e11f-9262-8070-a588-e747809d42af" class="bulleted-list"><li style="list-style-type:disc">원시: <code>string</code>, <code>number</code>, <code>boolean</code>, <code>bigint</code>, <code>symbol</code>, <code>null</code>, <code>undefined</code></li></ul><ul id="2698e11f-9262-80b1-9e1c-d81f855a2478" class="bulleted-list"><li style="list-style-type:disc">특수: <code>any</code>, <code>unknown</code>, <code>never</code>, <code>void</code></li></ul><ul id="2698e11f-9262-80dc-80e2-f80c009a32c5" class="bulleted-list"><li style="list-style-type:disc">구조: <code>object</code>, <code>array</code>, <strong>tuple</strong>, 함수타입</li></ul><p id="2698e11f-9262-804d-986f-c13fb0e0519a" class="">
+</p><h3 id="2688e11f-9262-8049-9182-fe0f10f4d0b3" class="">1) <code>object</code> 타입</h3><p id="2688e11f-9262-804c-ba6d-eef82ffc9e42" class="">타입스크립트의 장점을 극대화하려면 가급적 타입을 <strong>최대한 구체적으로</strong> 선언해야한다. 이 관점에서 볼 때 <code>object</code> 타입은 어떤 속성이 있고 무슨 타입을 갖는지 명시되어 있지 않으므로 자바스크립트를 사용하는 것과 크게 차이가 없다.</p><p id="2688e11f-9262-80d9-ac0a-e58e3d0065ed" class="">따라서 <strong>객체를 타이핑할 때 </strong><code><strong>object</strong></code><strong>는 지양</strong>해야한다. (interface나 type, class 등을 사용하자)</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-804b-b0a8-f8a1e4dc8c44" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 나쁨(의미 없음)
+let u: object = { a: 1 };
+
+// 좋음
+interface User { id: number; name: string }
+const u2: User = { id: 1, name: &quot;Kim&quot; };</code></pre><h3 id="2688e11f-9262-807c-ba74-d5372e3864e7" class="">2) 튜플타입</h3><p id="2688e11f-9262-80e6-b66d-c4a2ce883864" class="">튜플은 특정 형태를 갖는 배열을 의미한다. <strong>배열 길이가 고정</strong>되고 <strong>각 요소 타입</strong>이 정의된 배열을 튜플이라 한다.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-800b-a354-f1029524e6cb" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const tuple: [string, number] = [&quot;1&quot;, 1];
+tuple[2] = &quot;hello&quot;; // 에러
+tuple.push(&quot;hello&quot;); // 이건 잘 됨</code></pre><ul id="2698e11f-9262-80ca-b76f-de26c02cce63" class="bulleted-list"><li style="list-style-type:disc"><strong>가변(variadic) 튜플</strong> 예시</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8016-b6d0-c7e2112a435c" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function join1st&lt;T extends [unknown, ...unknown[]]&gt;(t: T) { return t[0]; }</code></pre><p id="2698e11f-9262-8054-8b6a-f1429d82f2e2" class="">
+</p><h3 id="2688e11f-9262-80e8-8f89-f403bcf3fddf" class="">3) <code>never</code> 타입</h3><p id="2688e11f-9262-8091-9a65-ef6c25a8e67c" class="">타입스크립트에서 <code>never</code> 타입은 <strong>값의 공집합</strong>이다.</p><p id="2688e11f-9262-80e0-b8a5-f3600fd0cdb5" class=""><code>never</code> 타입이 왜 필요할까?: 숫자 체계에 아무것도 없는 양을 나타내는 <strong>0</strong>처럼 문자 체계에도 <strong>불가능</strong>을 나타내는 타입이 필요하다.</p><p id="2688e11f-9262-8069-83dd-c41d4c5572b7" class=""><code>const array = []</code> : 빈배열 선언하면 <code>array</code>를 <code>never[]</code> 로 추론</p><ul id="2698e11f-9262-80e8-9744-c17e9721a163" class="bulleted-list"><li style="list-style-type:disc"><strong>불가능/도달 불가</strong>를 의미하는 <strong>공집합 타입</strong></li></ul><ul id="2698e11f-9262-8052-b5b5-c9d8b1ab7e5a" class="bulleted-list"><li style="list-style-type:disc">주용도: <strong>exhaustive check</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8057-9b8d-df50ee772f49" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type Shape = { type: &quot;circle&quot;; r: number } |
+             { type: &quot;square&quot;; s: number };
+
+function area(s: Shape) {
+  switch (s.type) {
+    case &quot;circle&quot;: return Math.PI * s.r ** 2;
+    case &quot;square&quot;: return s.s * s.s;
+    default: {
+      const _exhaustive: never = s; // 새 케이스 누락 시 에러
+      return _exhaustive;
+    }
+  }
+}</code></pre><blockquote id="2698e11f-9262-8015-b78c-dbaea6b5cd79" class="">빈 배열 리터럴 const arr = []는 보통 any[]로 시작해 사용에 따라 진화<br/>컨텍스트가 너무 좁거나 as const 등으로 굳히면 never[]로 보이는 경우가 있어요(오해 주의).</blockquote><p id="2698e11f-9262-80c7-a3bc-f9f0201bb15f" class="">
+</p><h3 id="2688e11f-9262-804e-bea5-dcbce959251f" class="">4) <code>any</code> 타입과 <code>unknown</code> 타입</h3><ul id="2688e11f-9262-80ab-88be-f60817c7a912" class="bulleted-list"><li style="list-style-type:disc">둘 다 없으면 좋지만, <code><strong>any</strong></code><strong>보다는 </strong><code><strong>unknown</strong></code><strong>이 낫다.</strong></li></ul><ul id="2688e11f-9262-8039-8dbd-caa0ed5bfba2" class="bulleted-list"><li style="list-style-type:disc"><code>any</code>는 타입검사를 <strong>아예 포기</strong>하지만, <code>unknown</code>은 <strong>타입검사를 포기하지 않는다</strong>. (나중에라도 타입을 지정할 수 있다.)<ul id="2698e11f-9262-80d2-99f7-f0ce0870d4f5" class="bulleted-list"><li style="list-style-type:circle"><code><strong>any</strong></code>: 타입 검사 포기(빨간 줄은 사라지지만 런타임 에러 위험↑)</li></ul><ul id="2698e11f-9262-80b2-8e38-cbb4df833964" class="bulleted-list"><li style="list-style-type:circle"><code><strong>unknown</strong></code>: “아직 모름”. <strong>사용 전 좁히기/단언 필요</strong> → 안전성↑</li></ul></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8077-8924-fa6aca789e90" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface A {
+  talk: () =&gt; number;
+}
+const a: A = {
+  talk: () =&gt; {
+    return 3
+  }
+}
+
+// any는 타입검사를 포기해버림.
+const b: any = a.talk();
+b.play(); // 타입에러는 안나지만 b에 play속성이 없으므로 런타임에서 에러난다.
+
+// unknown은 타입검사를 포기하지 않는다.
+const c: unknown = a.talk();
+c.talk(); // &#x27;c is typeof unknown&#x27; 에러가 난다.
+(c as A).talk() // unknown은 나중에라도 타입을 지정할 수 있다.
+</code></pre><p id="2688e11f-9262-804e-9aa2-fa657dac17da" class="">* <strong>catch 변수</strong>는 <code>useUnknownInCatchVariables: true</code> 설정 시 <code>unknown</code> → 안전</p><p id="2698e11f-9262-80d1-a367-e90fe17bd037" class="">
+</p><h3 id="2688e11f-9262-808e-b20f-e4e1759b68c5" class="">5) <code>void</code></h3><ul id="2688e11f-9262-8082-a719-ec9e4faf363d" class="bulleted-list"><li style="list-style-type:disc">(a) <strong>return 값 있으면 안 된다.</strong></li></ul><ul id="2688e11f-9262-80dd-aff7-e67e89827702" class="bulleted-list"><li style="list-style-type:disc">(b) return 값이 있어도 되나, return 값이 뭐든간에 <strong>return 값을 사용하지 않겠다.</strong></li></ul><blockquote id="2698e11f-9262-80bd-91b0-d1a8ec8f749a" class="">“<strong>반환값을 사용하지 않음</strong>” 의미<ul id="2698e11f-9262-801c-83ac-f9b792db997f" class="bulleted-list"><li style="list-style-type:disc">함수 선언: 반환값을 <strong>무시</strong>하도록 약속</li></ul><ul id="2698e11f-9262-8019-b974-f7f2710d62bd" class="bulleted-list"><li style="list-style-type:disc">메서드/콜백에서도 <strong>값 반환은 가능하지만 무시됨</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8006-bc54-f887e05320d4" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function forEach&lt;T&gt;(arr: T[], cb: (el: T) =&gt; void): void {
+  for (const x of arr) cb(x); // cb의 반환값이 있어도 무시
+}
+</code></pre><ul id="2698e11f-9262-809e-90c6-f960fb80c1e2" class="bulleted-list"><li style="list-style-type:disc"><code>undefined</code>는 <code>void</code> 위치에 <strong>대입 가능</strong><br/>(반대는 불가. 값으로서의 <code>void</code>는 사용할 수 없다고 이해하면 쉬움)</li></ul></blockquote><p id="2698e11f-9262-8030-99c3-e4cd5574eeaf" class="">
+</p><p id="2688e11f-9262-802f-8fcb-ebddf6932a22" class=""><strong>정리</strong></p><ul id="2688e11f-9262-801b-811c-f39fad231eae" class="bulleted-list"><li style="list-style-type:disc">return값이 <code>void</code>인 <strong>함수</strong> → return값 <strong>있으면 안 됨</strong></li></ul><ul id="2688e11f-9262-80f3-bd1d-c3620e45bbd7" class="bulleted-list"><li style="list-style-type:disc">return값이 <code>void</code>인 <strong>method</strong> → return 값 <strong>있어도 됨</strong> = return 값을 사용하지 않겠다.</li></ul><ul id="2688e11f-9262-80e8-821f-f563a6318f02" class="bulleted-list"><li style="list-style-type:disc">return값이 <code>void</code>인 <strong>매개변수 함수</strong> → return 값 <strong>있어도 됨</strong> = return 값을 사용하지 않겠다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80f1-80ba-f8c7b83e1dc5" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// push는 return값이 number이다.
+function forEach(arr: number[], callback: (el: number) =&gt; undefined): void;
+const target: number[] = [];
+forEach([1, 2, 3], (el) =&gt; target.push(el)); // 에러난다
+
+function forEach(arr: number[], callback: (el: number) =&gt; void): void;
+const target: number[] = [];
+forEach([1, 2, 3], (el) =&gt; target.push(el)); // 에러안난다</code></pre><p id="2698e11f-9262-80f5-a038-d64d3a861c16" class="">
+</p><ul id="2688e11f-9262-80d7-a3f1-d73ba3cfaf30" class="bulleted-list"><li style="list-style-type:disc"><code>undefined</code>는 <code>void</code>에 <strong>대입 가능</strong>하다. <code>void</code>는 <code>undefined</code>에 대입이 불가능했는데 <strong>TS 5.1부터는 가능</strong>하게 되었다</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80cd-bd66-c1da7b18fa21" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// undefined는 void에 대입 가능하다.
+function a(): void {
+  return undefined;
+}
+
+// null은 void에 대입 불가능하다.
+function a(): void {
+  return null;
+}
+
+// void는 undefined에 대입이 불가능하다. ts 5.1부터는 가능하게 되었다.
+function a(): undefined {
+}</code></pre><p id="2698e11f-9262-80a3-bb01-c30cf752e224" class="">
+</p><h3 id="2688e11f-9262-80ce-ad5a-e5c8b3941060" class="">6) <code>{}</code>와 <code>Object</code></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-809c-8220-e5ac26a4a7ad" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const x: {} = &quot;hello&quot;; // 에러가 나지 않는다.
+const y: Object = &quot;hi&quot;; // 에러가 나지 않는다.
+const xx: object = &quot;hi&quot;; // 에러난다.
+const yy: object = { hello: &quot;world&quot; };
+const z: unknown = &quot;hi&quot;;
+// * unknown = {} | null | undefined
+if (z) {
+  z; // {}로 추론된다. 왜냐면,
+} else {
+  z; // null과 undefined는 else로 가기 때문에
+}</code></pre><p id="2688e11f-9262-8098-8647-c488de94dd04" class=""><code>{}</code>(=Object) 타입은 <strong>null과 undefined를 제외한 모든 타입</strong>을 의미한다.</p><p id="2698e11f-9262-8052-a64c-dc2449bf8787" class="">
+</p><h2 id="2698e11f-9262-80d4-af5b-ff245c472d03" class="">3. 유틸리티 타입 (Practical Cheatsheet)</h2><blockquote id="2698e11f-9262-8048-9e61-d617c92a3a2c" class="">모두 얕게(shallow) 동작합니다. 중첩 객체까지 바꾸려면 직접 매핑(맵드 타입)하거나 별도 라이브러리를 쓰세요.</blockquote><h3 id="2698e11f-9262-8024-afec-fcbfab0aa39c" class="">3.1 기본 세트</h3><h3 id="2698e11f-9262-804c-9f62-cf84e6862905" class=""><code>Partial&lt;T&gt;</code></h3><ul id="2698e11f-9262-806a-8bdd-fe8eb234a087" class="bulleted-list"><li style="list-style-type:disc">모든 속성을 <strong>선택적</strong>으로.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8007-abf8-e5f40d7b1e9c" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type User = { id: string; name: string; age: number };
+type UserPatch = Partial&lt;User&gt;; // { id?: string; name?: string; age?: number }</code></pre><ul id="2698e11f-9262-8085-8ee7-c45cc8380620" class="bulleted-list"><li style="list-style-type:disc">폼/패치(payload) 작성에 최적. 단, 저장 전 <strong>필수값 보장 로직</strong> 필요.</li></ul><h3 id="2698e11f-9262-8041-b04d-f1efc1bcc58e" class=""><code>Required&lt;T&gt;</code></h3><ul id="2698e11f-9262-8001-9fee-c0342ccf30ac" class="bulleted-list"><li style="list-style-type:disc">모든 속성을 <strong>필수</strong>로.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-801b-b47c-e85f005afa5c" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type AllNeeded = Required&lt;Partial&lt;User&gt;&gt;; // 다시 전부 필수</code></pre><h3 id="2698e11f-9262-8048-935c-daab69e1adda" class=""><code>Readonly&lt;T&gt;</code></h3><ul id="2698e11f-9262-8023-9898-ee575f8be872" class="bulleted-list"><li style="list-style-type:disc">모든 속성을 <strong>읽기 전용</strong>으로.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-80db-a1d3-f2a98f780abb" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type FrozenUser = Readonly&lt;User&gt;;</code></pre><ul id="2698e11f-9262-809a-8bca-f9f1b2ac3205" class="bulleted-list"><li style="list-style-type:disc">얕은 불변. 깊은 불변은 <code>Readonly</code>를 중첩해서 직접 만들거나 별도 타입이 필요.</li></ul><h3 id="2698e11f-9262-8033-b77a-d12ca1853579" class=""><code>Pick&lt;T, K&gt;</code></h3><ul id="2698e11f-9262-80b6-8d43-ea8776771b3b" class="bulleted-list"><li style="list-style-type:disc">T에서 <strong>일부 키만 선택</strong>.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8099-87d3-ed515f6df060" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type PublicUser = Pick&lt;User, &quot;id&quot; | &quot;name&quot;&gt;;</code></pre><h3 id="2698e11f-9262-8087-b1ef-de0084f84b74" class=""><code>Omit&lt;T, K&gt;</code></h3><ul id="2698e11f-9262-806a-9b67-dedc9f539317" class="bulleted-list"><li style="list-style-type:disc">T에서 <strong>일부 키 제외</strong>.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8065-b021-fe58ba16d0d0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type UserWithoutAge = Omit&lt;User, &quot;age&quot;&gt;;</code></pre><h3 id="2698e11f-9262-8065-b205-d58b105afbaa" class=""><code>Record&lt;K, T&gt;</code></h3><ul id="2698e11f-9262-80b4-ae5e-f010a7e9a620" class="bulleted-list"><li style="list-style-type:disc">키 집합 K로 <strong>맵 타입</strong> 생성.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-805a-ab41-f1ca86252d1c" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type Roles = &quot;admin&quot; | &quot;user&quot;;
+type RoleMap = Record&lt;Roles, number&gt;; // { admin: number; user: number }
+
+type ById = Record&lt;string, User&gt;; // 인덱스 시그니처 대체에 자주 사용</code></pre><h3 id="2698e11f-9262-80c3-af33-fb0fcaff604b" class=""><code>ReturnType&lt;F&gt;</code></h3><ul id="2698e11f-9262-807e-b255-c1c433faca42" class="bulleted-list"><li style="list-style-type:disc">함수 <strong>반환 타입</strong> 추출.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-80b1-8ce7-e7062ac54fbd" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function fetchUser() { return { id: &quot;1&quot;, name: &quot;Lee&quot; } }
+type FetchUserRet = ReturnType&lt;typeof fetchUser&gt;; // { id: string; name: string }</code></pre><hr id="2698e11f-9262-8086-b884-ee0dfc741045"/><h3 id="2698e11f-9262-8012-99bb-dccfd5dbc7cd" class="">3.2 null/유니언/배열·함수 관련</h3><h3 id="2698e11f-9262-8010-933a-cdb5e14d551c" class=""><code>NonNullable&lt;T&gt;</code></h3><ul id="2698e11f-9262-800f-ae06-dda24b35f643" class="bulleted-list"><li style="list-style-type:disc"><code>null | undefined</code> 제거.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8044-9834-e2705ca69427" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type NN = NonNullable&lt;string | null | undefined&gt;; // string</code></pre><h3 id="2698e11f-9262-806c-9511-ee332f2f79d2" class=""><code>Exclude&lt;T, U&gt;</code></h3><ul id="2698e11f-9262-801d-80b3-dadd5cc27c7a" class="bulleted-list"><li style="list-style-type:disc">유니언 T에서 U <strong>빼기</strong>.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8082-8325-f73f59b84e11" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type A = &quot;a&quot; | &quot;b&quot; | &quot;c&quot;;
+type OnlyAB = Exclude&lt;A, &quot;c&quot;&gt;; // &quot;a&quot; | &quot;b&quot;</code></pre><h3 id="2698e11f-9262-8040-ae3b-f51b397c8d62" class=""><code>Extract&lt;T, U&gt;</code></h3><ul id="2698e11f-9262-803a-afae-f4f245c2a707" class="bulleted-list"><li style="list-style-type:disc">유니언 T에서 U <strong>교집합</strong>만.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-805f-8ed7-c8441a84b2b8" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type Letters = Extract&lt;&quot;a&quot; | 1 | &quot;b&quot;, string&gt;; // &quot;a&quot; | &quot;b&quot;</code></pre><h3 id="2698e11f-9262-8026-8c2f-e9cb463dcfc9" class=""><code>Parameters&lt;F&gt;</code></h3><ul id="2698e11f-9262-8097-bb26-f60540fc6ec6" class="bulleted-list"><li style="list-style-type:disc">함수 <strong>매개변수 튜플</strong> 추출.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8034-bca2-e2a82221ebad" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function log(x: string, n: number) {}
+type LogArgs = Parameters&lt;typeof log&gt;; // [string, number]</code></pre><h3 id="2698e11f-9262-80ce-afa0-e1b5312e2993" class=""><code>ConstructorParameters&lt;C&gt;</code></h3><ul id="2698e11f-9262-801c-a417-d5bb95fd30a0" class="bulleted-list"><li style="list-style-type:disc">생성자 <strong>매개변수 튜플</strong>.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-80a0-84ff-c7c288da2481" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class Person { constructor(public name: string, public age: number) {} }
+type CtorArgs = ConstructorParameters&lt;typeof Person&gt;; // [string, number]</code></pre><h3 id="2698e11f-9262-80b6-a989-da0ed6aefc21" class=""><code>InstanceType&lt;C&gt;</code></h3><ul id="2698e11f-9262-80a9-9fdf-d484bd43dd37" class="bulleted-list"><li style="list-style-type:disc">생성자 결과 <strong>인스턴스 타입</strong>.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8035-abd6-c636cb2c978e" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type PersonInstance = InstanceType&lt;typeof Person&gt;; // Person</code></pre><h3 id="2698e11f-9262-806a-9de4-dad0fb585b4c" class=""><code>Awaited&lt;T&gt;</code></h3><ul id="2698e11f-9262-8046-8700-c57c4c0ba742" class="bulleted-list"><li style="list-style-type:disc"><code>Promise</code> 풀기(중첩도 처리).</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8028-af50-cb1332e58cc4" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type R = Awaited&lt;Promise&lt;Promise&lt;number&gt;&gt;&gt;; // number</code></pre><hr id="2698e11f-9262-8083-ad70-c2ccea2d5d7b"/><h3 id="2698e11f-9262-80f5-9e8f-d83309da4714" class="">3.3 패턴 &amp; 실전 팁</h3><h3 id="2698e11f-9262-8010-9e55-e23bf670b58f" class="">(1) API 입력/출력 분리</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8060-9e2d-d8927c8c04c9" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type UserDTO = Pick&lt;User, &quot;id&quot; | &quot;name&quot;&gt;;
+type UserUpdateInput = Partial&lt;Omit&lt;User, &quot;id&quot;&gt;&gt;; // id 고정, 나머지 선택</code></pre><h3 id="2698e11f-9262-80c0-9d99-f832acc2047c" class="">(2) 안전한 옵션 합치기</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-800c-b2ec-e517cba687e3" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type Options = { retry?: number; baseURL?: string };
+const withDefaults = (opt: Partial&lt;Options&gt;): Required&lt;Options&gt; =&gt; ({
+  retry: 3,
+  baseURL: &quot;/api&quot;,
+  ...opt,
+});</code></pre><h3 id="2698e11f-9262-800b-97dd-dd3196e723cb" class="">(3) 키 재매핑 + <code>as</code> (TS 4.1+)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8031-90a5-d80d00c93e73" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type PrefixKeys&lt;T, P extends string&gt; = {
+  [K in keyof T as `${P}${Extract&lt;K, string&gt;}`]: T[K]
+};
+type API = PrefixKeys&lt;{ users: string; posts: number }, &quot;get/&quot;&gt;
+// { &quot;get/users&quot;: string; &quot;get/posts&quot;: number }</code></pre><h3 id="2698e11f-9262-8074-8954-fa4627e6fc13" class="">(4) <code>Record</code> vs 인덱스 시그니처</h3><ul id="2698e11f-9262-8009-a246-f8d6821528e8" class="bulleted-list"><li style="list-style-type:disc"><code>Record&lt;K, T&gt;</code>는 <strong>키가 닫힌 집합</strong>일 때 깔끔.</li></ul><ul id="2698e11f-9262-8010-8d7e-cc2f6e9adb06" class="bulleted-list"><li style="list-style-type:disc">임의 문자열 키면 <code>Record&lt;string, T&gt;</code>나 <code>{ [k: string]: T }</code> 모두 가능.<br/>팀 컨벤션에 맞춰 일관되게 사용.</li></ul><h3 id="2698e11f-9262-806e-90bc-e7901d96842d" class="">(5) <code>ReadonlyArray&lt;T&gt;</code> / <code>as const</code></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8055-a68d-f8acb2062df0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const arr: ReadonlyArray&lt;number&gt; = [1,2,3]; // push 불가
+const COLORS = [&quot;red&quot;, &quot;blue&quot;] as const;
+type Color = typeof COLORS[number]; // &quot;red&quot; | &quot;blue&quot;</code></pre><h3 id="2698e11f-9262-80d2-a2ae-c6a51b3cf174" class="">(6) <code>DeepPartial</code>이 필요할 때</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-80e5-9504-c57f9448ad62" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 간단 예시 (재귀 맵드 타입)
+type DeepPartial&lt;T&gt; = { [K in keyof T]?: T[K] extends object ? DeepPartial&lt;T[K]&gt; : T[K] };</code></pre><blockquote id="2698e11f-9262-808a-8ef5-e37e359b9d8e" class="">기본 Partial은 얕음. 중첩 구조 패치면 DeepPartial 같은 커스텀이 필요.</blockquote><hr id="2698e11f-9262-8033-b15f-d18e5efaeb1c"/><h3 id="2698e11f-9262-80a5-a65c-f5f0b006bf5b" class="">3.4 흔한 실수 &amp; 체크리스트</h3><ul id="2698e11f-9262-80ff-9e39-f791e59baf62" class="bulleted-list"><li style="list-style-type:disc"><code>Partial&lt;T&gt;</code> 남발 → 저장 직전에는 <code>Required&lt;T&gt;</code>로 <strong>필수값 보장</strong>하거나 <strong>런타임 검증</strong>을 붙이기.</li></ul><ul id="2698e11f-9262-8055-b4f5-ecaa0203918f" class="bulleted-list"><li style="list-style-type:disc"><code>Readonly&lt;T&gt;</code>를 불변 보장으로 오해 → <strong>얕은 불변</strong>임을 기억.</li></ul><ul id="2698e11f-9262-8002-acfa-d638efefe2b2" class="bulleted-list"><li style="list-style-type:disc"><code>ReturnType&lt;typeof fn&gt;</code>는 <strong>선언부 기준</strong>. 오버로드 시 <strong>오버로드 시그니처와 일치</strong>하는지 주의.</li></ul><ul id="2698e11f-9262-80bf-ab2a-ff53537fc09e" class="bulleted-list"><li style="list-style-type:disc"><code>Record&lt;Keys, T&gt;</code>에서 <code>Keys</code>는 <strong>유니언 리터럴</strong>이 이상적. 그냥 <code>string</code>이면 사실상 인덱스 시그니처와 유사.</li></ul><p id="2698e11f-9262-8083-b27f-d002f812af9c" class="">
+</p><hr id="2688e11f-9262-808e-b93e-fa6651d53adb"/><p id="2698e11f-9262-80b2-993a-f6836d183555" class="">
+</p><h2 id="2698e11f-9262-8015-b277-fddf0ce54cb2" class="">4. 함수 / Methods</h2><h3 id="2698e11f-9262-8088-b60c-d0f1d7719e5f" class="">1) 함수 선언 방식</h3><p id="2698e11f-9262-8099-be1b-e0e6fca52b31" class="">TypeScript에서 함수는 JavaScript와 동일하게 여러 가지 방식으로 선언할 수 있으며, 타입을 명시할 수 있다는 점이 다름.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-802f-a165-ecb7abdaac3a" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 함수 선언식
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+// 함수 표현식
+const add = function (a: number, b: number): number {
+  return a + b;
+};
+
+// 화살표 함수
+const add = (a: number, b: number): number =&gt; a + b;
+</code></pre><ul id="2698e11f-9262-80d7-b09c-d3c6dadf159b" class="bulleted-list"><li style="list-style-type:disc"><strong>매개변수 타입</strong>과 <strong>반환 타입</strong>을 명시 가능</li></ul><ul id="2698e11f-9262-80a5-8601-f22b56d39e24" class="bulleted-list"><li style="list-style-type:disc">반환 타입은 생략 시 <strong>타입 추론</strong>이 적용됨</li></ul><hr id="2698e11f-9262-8076-8f2b-ff57c52286a5"/><h3 id="2698e11f-9262-803f-8f95-d6c42293b536" class="">2) 선택적 매개변수 &amp; 기본값</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-806c-8e34-d8b3725bf00c" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function greet(name: string, age?: number) {
+  console.log(`${name} (${age ?? &quot;나이 미상&quot;})`);
+}
+
+function greet2(name: string, age: number = 20) {
+  console.log(`${name} (${age})`);
+}</code></pre><ul id="2698e11f-9262-805b-9562-e7ed8df41efd" class="bulleted-list"><li style="list-style-type:disc"><code>age?: number</code> → <strong>선택적 매개변수</strong> (있을 수도, 없을 수도 있음)</li></ul><ul id="2698e11f-9262-8086-b136-ee7f0f357371" class="bulleted-list"><li style="list-style-type:disc">기본값을 주면 생략 가능 (<code>age = 20</code>)</li></ul><hr id="2698e11f-9262-80ee-b95f-cc6fd95de79b"/><h3 id="2698e11f-9262-802b-8d76-c2ed57c147e8" class="">3) 나머지 매개변수 (Rest Parameters)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8018-81cb-de0a80430fb7" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function sum(...nums: number[]): number {
+  return nums.reduce((a, b) =&gt; a + b, 0);
+}</code></pre><ul id="2698e11f-9262-80ad-bbc4-f0656ac982d6" class="bulleted-list"><li style="list-style-type:disc">여러 개의 인자를 배열 형태로 받을 수 있음</li></ul><ul id="2698e11f-9262-8066-9314-fb06b6aaad44" class="bulleted-list"><li style="list-style-type:disc">타입은 <code>number[]</code> 처럼 지정</li></ul><hr id="2698e11f-9262-8081-aba2-db55df853c69"/><h3 id="2698e11f-9262-8093-b7a9-e5317727e53a" class="">4) this와 함수</h3><p id="2698e11f-9262-8055-b030-c7b18bc9b2f8" class="">TypeScript는 <code>this</code> 타입도 체크할 수 있습니다.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8082-9f6d-feffb7c42ddf" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface User {
+  name: string;
+  greet(this: User): void;
+}
+
+const user: User = {
+  name: &quot;은수&quot;,
+  greet() {
+    console.log(`안녕하세요, ${this.name}`);
+  },
+};</code></pre><ul id="2698e11f-9262-8098-935a-d7444c2be0b3" class="bulleted-list"><li style="list-style-type:disc"><code>this: User</code> 로 타입을 제한 가능</li></ul><ul id="2698e11f-9262-80fc-be40-c46571a8eee8" class="bulleted-list"><li style="list-style-type:disc">화살표 함수는 <code>this</code>를 바인딩하지 않고 상위 스코프의 <code>this</code>를 사용 → 클래스 메서드 작성 시 자주 활용</li></ul><hr id="2698e11f-9262-8022-9ebd-ddb5acb21ee1"/><h3 id="2698e11f-9262-802d-959f-e63db105cece" class="">5) 오버로드 (Function Overloading)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8029-a5a0-f659c0f0e2a9" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function len(x: string): number;
+function len(x: any[]): number;
+function len(x: string | any[]): number {
+  return x.length;
+}
+
+len(&quot;hello&quot;); // 5
+len([1, 2, 3]); // 3</code></pre><ul id="2698e11f-9262-80fd-a5cd-f1e3a6cf64ec" class="bulleted-list"><li style="list-style-type:disc">동일한 함수 이름에 <strong>여러 시그니처</strong> 제공 가능</li></ul><ul id="2698e11f-9262-80af-aaa4-fef9eeec87b6" class="bulleted-list"><li style="list-style-type:disc">실제 구현부는 한 번만 작성, 내부에서 분기</li></ul><hr id="2698e11f-9262-800b-aa6c-e10cc0e1cf9f"/><h3 id="2698e11f-9262-8037-9f64-e43549d5093f" class="">6) 매개변수의 this 타입</h3><p id="2698e11f-9262-8068-9d55-d60cb3d86732" class="">콜백 함수에서 <code>this</code> 타입도 명시 가능</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-802b-a96c-dfe89442653e" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface HTMLElement {
+  addClickListener(onclick: (this: void, e: Event) =&gt; void): void;
+}</code></pre><ul id="2698e11f-9262-806b-b062-ce94df6b1ab6" class="bulleted-list"><li style="list-style-type:disc"><code>this: void</code> → 콜백 안에서 <code>this</code> 사용 불가</li></ul><hr id="2698e11f-9262-8069-a6b4-d8fe4107a602"/><h3 id="2698e11f-9262-801f-a455-c0226ffb7072" class="">7) 제네릭 함수</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-80d7-a8ac-fa08e71ba264" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function identity&lt;T&gt;(arg: T): T {
+  return arg;
+}
+
+identity&lt;string&gt;(&quot;hi&quot;); // string
+identity(123);          // number (추론됨)</code></pre><ul id="2698e11f-9262-809c-95b5-d4d467247716" class="bulleted-list"><li style="list-style-type:disc">함수 선언에 <code>&lt;T&gt;</code> 추가해 제네릭 활용 가능</li></ul><ul id="2698e11f-9262-8048-a22f-d7361e576837" class="bulleted-list"><li style="list-style-type:disc">호출 시점에 타입을 명시하거나 자동 추론</li></ul><hr id="2698e11f-9262-8008-b028-d8e370c84ced"/><ul id="2698e11f-9262-801e-908b-ec4fb39d3d7b" class="bulleted-list"><li style="list-style-type:disc"><strong>요약</strong>:<ul id="2698e11f-9262-8056-8e59-c342137f24ac" class="bulleted-list"><li style="list-style-type:circle">함수 선언식 / 표현식 / 화살표 함수 모두 타입 지정 가능</li></ul><ul id="2698e11f-9262-8088-86ee-c586921f4ec9" class="bulleted-list"><li style="list-style-type:circle">선택적 매개변수, 기본값, 나머지 매개변수 활용</li></ul><ul id="2698e11f-9262-805e-83e1-ec7d12c8eb8d" class="bulleted-list"><li style="list-style-type:circle"><code>this</code> 타입 제한 가능 → 특히 클래스, 콜백에서 유용</li></ul><ul id="2698e11f-9262-8099-bccd-faf91e6811ba" class="bulleted-list"><li style="list-style-type:circle">함수 오버로드로 여러 입력 타입을 안전하게 처리</li></ul><ul id="2698e11f-9262-80dd-bf7a-eb0e8213aac6" class="bulleted-list"><li style="list-style-type:circle">제네릭 함수로 타입 안전성과 재사용성 확보</li></ul></li></ul><hr id="2698e11f-9262-80b0-b957-e8e1c31917b4"/><p id="2698e11f-9262-802b-9ef6-f264a192200c" class="">
+</p><h2 id="2688e11f-9262-808b-8ac3-d824ee11da6d" class="">5. 인터페이스</h2><h3 id="2688e11f-9262-801e-b6d5-f4b8d9763400" class="">1) 인터페이스 상속</h3><ul id="2688e11f-9262-80e7-8d7c-cc99810e7505" class="bulleted-list"><li style="list-style-type:disc">인터페이스를 상속받을때 클래스와 동일하게 <code>extends</code>라는 예약어를 사용한다.</li></ul><ul id="2688e11f-9262-80ec-ac95-e44a93c38ca8" class="bulleted-list"><li style="list-style-type:disc"><strong>상속을 여러번</strong> 할 수 있다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80ae-a94b-d0e3b3c7a0bd" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface IAnimal { breath: true; }
+interface IHuman extends IAnimal { think: true; }
+
+// 상속을 여러번 할 수 있다.
+interface IHuman { talk: true; }
+
+const ieunsu: IHuman = { breath: true, think: true, talk: true };</code></pre><h3 id="2688e11f-9262-8000-9d34-d635b62aa648" class="">2) 인덱스 시그니처</h3><p id="2688e11f-9262-80bc-bf05-f30aaa1552b4" class="">정확히 속성이름을 명시하지 않고, <strong>속성 이름의 타입</strong>과 <strong>속성 값의 타입</strong>을 정의하는 문법 (객체와 배열을 인덱싱할 때 활용된다)</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80ea-b82a-d0edb8441636" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface A {
+  [key: string]: string;
+}
+const a: A = { a: &quot;hello&quot;, b: &quot;world&quot; };
+
+// 문자열 배열은 string[]으로 선언하는 것이 더 간편하고 타입을 파악하기 편함
+interface B {
+  [key: number]: string;
+}
+const a: B = [&quot;hello&quot;, &quot;world&quot;];</code></pre><h3 id="2698e11f-9262-80af-ae6b-c17fd33e2279" class="">3) 읽기 전용 &amp; 선택 속성</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8052-a956-e3bcd8b539e6" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface Post { readonly id: number; title?: string }</code></pre><hr id="2688e11f-9262-8095-9f40-fa17084daac3"/><h2 id="2688e11f-9262-808c-9cea-d9ca0438c21a" class="">6. 타입별칭(Type Alias)</h2><h3 id="2688e11f-9262-8022-b259-c03ea81eb841" class="">1) 타입 별칭 타입 확장</h3><ul id="2688e11f-9262-8024-9491-ff0509f5f057" class="bulleted-list"><li style="list-style-type:disc">인터페이스는 타입을 확장할 때 <strong>상속</strong>이라는 개념을 이용</li></ul><ul id="2688e11f-9262-8089-8c2e-ecab4f64a21f" class="bulleted-list"><li style="list-style-type:disc">타입 별칭은 **인터섹션 타입(&amp;)**으로 타입을 확장함</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80bc-a808-e62ef4aae32e" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type Person = {
+  name: string;
+  age: number;
+};
+type Developer = {
+  skill: string;
+};
+var joo: Person &amp; Developer = {
+  name: &quot;은수&quot;,
+  age: 25,
+  skill: &quot;프론트엔드 개발&quot;,
+};
+</code></pre><h3 id="2688e11f-9262-800f-83b6-cdeb0ff4804c" class="">2) 타입 별칭과 인터페이스의 차이</h3><ul id="2688e11f-9262-801f-b415-d7ebcf3f1e1b" class="bulleted-list"><li style="list-style-type:disc"><strong>코드에디터에서 표기 방식</strong> 차이</li></ul><ul id="2688e11f-9262-8048-b473-c06901925419" class="bulleted-list"><li style="list-style-type:disc"><strong>사용할 수 있는 타입</strong>의 차이<ul id="2688e11f-9262-8033-ad4e-db0a8ed30256" class="bulleted-list"><li style="list-style-type:circle">인터페이스는 <strong>주로 객체의 타입</strong>을 정의하는데 사용하는 반면,</li></ul><ul id="2688e11f-9262-805f-be7d-f89e86a4a5e5" class="bulleted-list"><li style="list-style-type:circle">타입 별칭은 일반 타입에 이름을 짓는데 사용하거나 <strong>유니언 타입, 인터섹션 타입</strong> 등에도 사용할 수 있음, 또한 타입 별칭은 <strong>제네릭</strong>이나 <strong>유틸리티 타입</strong> 등 다양한 타입에서 사용할 수 있음</li></ul></li></ul><p id="2688e11f-9262-80a5-8592-e485b63faf44" class=""><strong>타입 확장 관점에서의 차이</strong></p><ul id="2688e11f-9262-8027-b38f-fd2baf7f8b1a" class="bulleted-list"><li style="list-style-type:disc">인터페이스는 타입을 확장할 때 <strong>상속(extends)</strong> 개념을 이용</li></ul><ul id="2688e11f-9262-8035-bb95-c70aa33d1555" class="bulleted-list"><li style="list-style-type:disc">타입 별칭은 **인터섹션 타입(&amp;)**으로 확장</li></ul><hr id="2688e11f-9262-80b3-8ef4-c4a3f99128b9"/><h2 id="2688e11f-9262-8024-8f0f-dce28f656af7" class="">5. enum</h2><h3 id="2688e11f-9262-80b2-b67c-ded0de9e409b" class="">1) enum이란 (숫자형, 문자형)</h3><p id="2688e11f-9262-803a-acd8-d64ce53cca1a" class="">특정 값의 <strong>집합</strong>을 의미하는 데이터 타입</p><p id="2688e11f-9262-80be-bad1-cdffc0a3de27" class=""><strong>숫자형 enum</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80d4-8bad-cced7567afbb" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">enum EDirection {
+  Up = 3,
+  Down,
+  Left,
+  Right,
+}
+</code></pre><p id="2688e11f-9262-80ea-b8d9-facc27bddda9" class=""><strong>문자형 enum</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80f4-845c-f6513f72e4ba" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">enum EDirection {
+  Up = &quot;Up&quot;,
+  Down = &quot;Down&quot;,
+  Left = &quot;Left&quot;,
+  Right = &quot;Right&quot;,
+}
+</code></pre><ul id="2688e11f-9262-8086-af4f-e254570c9e3b" class="bulleted-list"><li style="list-style-type:disc"><code>const enum</code>은 js 코드로 컴파일하면 <strong>사라진다.</strong></li></ul><h3 id="2688e11f-9262-8079-86fe-c12a94b959ae" class="">2) 객체와 다른 점은 무엇일까?</h3><ul id="2688e11f-9262-80a0-884c-e1c1cba579c9" class="bulleted-list"><li style="list-style-type:disc"><code>enum</code>은 한번 생성되면, <strong>속성 추가 및 수정이 불가</strong>하다.</li></ul><ul id="2688e11f-9262-80d4-a9b9-ee02f31398d5" class="bulleted-list"><li style="list-style-type:disc">객체는 생성 이후에도 속성을 추가하고 변경할 수 있다.</li></ul><ul id="2688e11f-9262-80fe-abb6-daec0e155b54" class="bulleted-list"><li style="list-style-type:disc"><code>enum</code>은 속성 값으로 <strong>숫자, 문자열만</strong> 할당할 수 있다. 즉, enum은 JS객체보다 더 엄격하게 타입을 정의하여 사용할 때 유용하다.</li></ul><h3 id="2688e11f-9262-8049-95c0-cafc9689226b" class="">3) <code>keyof</code>, <code>typeof</code></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80a9-ae0a-e55ddb39b940" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const ODirection = {
+  Up: 0,
+  Down: 1,
+  Left: 2,
+  Right: 3,
+} as const;
+
+// key 값을 꺼내오고싶을 때
+type Key = keyof typeof ODirection; // &quot;Up&quot; | &quot;Down&quot; | &quot;Left&quot; | &quot;Right&quot;
+
+// value 값을 꺼내오고 싶을 때
+type Value = (typeof ODirection)[keyof typeof ODirection]; // 0 | 1 | 2 | 3</code></pre><hr id="2688e11f-9262-804c-bdf5-c8986ffd2f28"/><h2 id="2688e11f-9262-8022-9f35-e6d8c436208b" class="">7. 클래스</h2><h3 id="2688e11f-9262-80bd-80be-e0a03c4a0a70" class="">1) 클래스란?</h3><p id="2688e11f-9262-80a3-a113-d1b127415f7d" class="">여러가지 유사한 객체를 쉽게 생성하는 <strong>자바스크립트 최신문법</strong></p><h3 id="2688e11f-9262-8066-a399-cdec79305eba" class="">2) TypeScript 클래스</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80e4-8288-d2f8db3923a0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class Person {
+  name: string;
+  age: number;
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+  sayMyName() {
+    console.log(`내 이름은 ${this.name}`);
+  }
+}
+const eunsu = new Person(&#x27;은수&#x27;, 25);
+eunsu.sayMyName()</code></pre><p id="2688e11f-9262-8062-ad47-f3722258683f" class=""><strong>상속</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8096-a2c1-e5d9e727e1ec" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class Person {
+  name: string;
+  age: number;
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+  sayMyName() {
+    console.log(`내 이름은 ${this.name}`);
+  }
+}
+class Developer extends Person {
+  skill: string;
+  constructor(name: string, age: number, skill: string) {
+    super(name, age);
+    this.skill = skill;
+  }
+  coding() {
+    console.log(`${this.skill} is Fun`);
+  }
+}
+const eunsu = new Developer(&quot;은수&quot;, 25, &quot;TypeScript&quot;);
+eunsu.coding();
+</code></pre><h3 id="2688e11f-9262-80e2-9e1b-c53c28548883" class="">3) 클래스 접근 제어자</h3><p id="2688e11f-9262-80d3-8574-cdbeb65d16cf" class="">TypeScript의 <strong>Public, Private, Protected</strong></p><ul id="2688e11f-9262-8079-b6dd-ed29ce31ee67" class="bulleted-list"><li style="list-style-type:disc"><code>public</code>: 클래스 안에 선언된 속성과 메서드를 어디서든 접근할 수 있게 한다.</li></ul><ul id="2688e11f-9262-809b-b788-fcb1a0f15cf4" class="bulleted-list"><li style="list-style-type:disc"><code>private</code>: 클래스 코드 외부에서 클래스의 속성과 메서드를 접근할 수 없다.</li></ul><ul id="2688e11f-9262-8056-8bcb-de3d35f91171" class="bulleted-list"><li style="list-style-type:disc"><code>protected</code>: <code>protected</code>로 선언된 속성이나 메서드는 클래스 코드 외부에서 사용할 수 없으나, <strong>상속받은 클래스에서는</strong> 사용할 수 있다.</li></ul><p id="2688e11f-9262-801f-9f61-cbb1882a3199" class=""><strong>TypeScript의 private과 JavaScript의 private</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8005-a1a3-f939495a682a" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class A {
+  #a: string = &quot;123&quot;; // js의 private
+  private b: number = 123; // ts의 private
+  method() {
+    console.log(this.#a, this.b);
+  }
+}</code></pre><ul id="2688e11f-9262-8033-948b-f6d512f371f4" class="bulleted-list"><li style="list-style-type:disc">js에서는 <code>protected</code>는 지원안하기 때문에 정교하게 쓰고싶다면 <strong>ts의 private, protected</strong> 속성을 쓰자</li></ul><ul id="2688e11f-9262-8038-bed0-d92c1a6a087d" class="bulleted-list"><li style="list-style-type:disc">ts의 <code>private</code>은 js로 컴파일하면 <code>public</code>으로 바뀐다. 하지만 <code>private</code> 변수에 접근하면 타입스크립트 단계에서 <strong>에러</strong>가 난다.</li></ul><h3 id="2688e11f-9262-804b-8e64-efa1f2fc69e2" class="">4) Implements</h3><ul id="2688e11f-9262-8052-afcf-eb194cf7c438" class="bulleted-list"><li style="list-style-type:disc"><code>class</code>는 <code>interface</code>를 구현(implements)할 수 있다. interface가 있으면 class는 그 interface를 따라야한다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80f4-8a34-c2f3839c2179" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface A {
+  readonly a: string;
+  b: string;
+}
+class B implements A {
+  a: string = &quot;123&quot;;
+  b: string = &quot;world&quot;;
+}
+class C extends B {}
+new C().a;
+new C().b;</code></pre><p id="2688e11f-9262-807d-a3de-f88ea036f785" class="">// js로 컴파일하면 <strong>interface는 사라지고, implements도 사라짐.</strong></p><h3 id="2688e11f-9262-80ed-be66-f0f37897c0cd" class="">5) 추상클래스: 클래스를 대충 모양만 미리 만들어둔 것</h3><ul id="2688e11f-9262-80f1-a628-f073ebc2021d" class="bulleted-list"><li style="list-style-type:disc"><code>abstract</code>키워드를 사용해서 추상 클래스를 생성가능하며, <code>new</code>를 이용하여 객체를 생성할 수 없다.</li></ul><ul id="2688e11f-9262-80e1-af52-c981dbc2f809" class="bulleted-list"><li style="list-style-type:disc"><code>extends</code>를 통해서 자식클래스를 만들 수만 있다.</li></ul><ul id="2688e11f-9262-80e0-a130-c50d05542987" class="bulleted-list"><li style="list-style-type:disc">추상클래스 내 존재하는 <strong>추상 메소드</strong>는 상속받은 클래스(자식)에서 <strong>꼭 구현</strong>해야한다 (아니면 에러)</li></ul><ul id="2688e11f-9262-8046-a174-ed34e66e7f70" class="bulleted-list"><li style="list-style-type:disc">모든 자식이 같은 메소드를 가지지만, <strong>구체적인 내용은 자식마다 다를 수 있다.</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80e9-8c61-c795f2fc985c" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">abstract class Car {
+  color: string;
+  constructor(color: string) {
+    this.color = color;
+  }
+  start() {
+    console.log(&quot;Start&quot;);
+  }
+  abstract doSomething(): void;
+}
+class Bmw extends Car {
+  constructor(color: string) {
+    super(color);
+  }
+  doSomething() {
+    console.log(&quot;do something!&quot;);
+  }
+}
+const z4 = new Bmw(&quot;black&quot;);
+</code></pre><h3 id="2698e11f-9262-8078-bdb6-e1360accaa9b" class="">접근 제어자</h3><ul id="2698e11f-9262-80ee-95cd-e8a6d55b7e6f" class="bulleted-list"><li style="list-style-type:disc"><code>public</code>(기본) / <code>private</code> / <code>protected</code></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8004-899d-f463ec6abb5c" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class A {
+  #hardPrivate = 1;   // JS 레벨 진짜 private
+  private softPrivate = 2; // TS 단계만 막음(컴파일 후 표면상 공개)
+  protected p = 3;
+}
+</code></pre><h3 id="2698e11f-9262-803b-acd4-f96fb164e38c" class="">인터페이스 구현</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8097-a02f-e945a8b2a63e" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface ReadonlyId { readonly id: string }
+class Book implements ReadonlyId {
+  constructor(public id: string) {}
+}
+</code></pre><h3 id="2698e11f-9262-8085-803e-d4b58042f98c" class="">추상 클래스</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-8000-8411-dfcef3984fbd" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">abstract class Shape {
+  abstract area(): number;
+}
+class Circle extends Shape {
+  constructor(public r: number){ super(); }
+  area() { return Math.PI * this.r ** 2; }
+}</code></pre><hr id="2688e11f-9262-801a-8b1f-c7cb12257b7b"/><h2 id="2688e11f-9262-80fd-8d3e-efd0624b7446" class="">8. 제네릭</h2><h3 id="2688e11f-9262-8017-988e-cf84b59a4d77" class="">1) 제네릭이란?</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-80f2-96f6-f60053712419" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function id&lt;T&gt;(x: T): T { return x; }
+const r = id&lt;string&gt;(&quot;hi&quot;);</code></pre><ul id="2688e11f-9262-80f2-85f1-c7566829356f" class="bulleted-list"><li style="list-style-type:disc">제네릭은 타입을 미리 정의하지 않고 <strong>사용하는 시점에 원하는 타입</strong>을 정의해서 쓸 수 있는 문법.</li></ul><ul id="2688e11f-9262-80eb-a4f3-d019694442d5" class="bulleted-list"><li style="list-style-type:disc">함수의 인자에 넘긴 값을 함수의 파라미터로 받아 함수 내부에서 그대로 사용하는 방식.</li></ul><p id="2698e11f-9262-80f9-a2c7-c4b795576fac" class="">
+</p><h3 id="2688e11f-9262-805a-8850-d30434480f01" class="">2) 제네릭 기본문법</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-804c-a47d-cb2926bf85ca" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function getText&lt;T&gt;(text: T): T {
+  return text;
+}
+const getText: &lt;T&gt;(text: T) =&gt; T = (text) =&gt; {
+  return text;
+};
+const getText = function &lt;T&gt;(text: T): T {
+  return text;
+};</code></pre><p id="2698e11f-9262-8069-8ddc-f243d378b802" class="">
+</p><h3 id="2688e11f-9262-809e-b09b-fb61009e379f" class="">3) 왜 제네릭을 사용할까?</h3><ul id="2688e11f-9262-8035-946f-e65a9cb70b1d" class="bulleted-list"><li style="list-style-type:disc">중복되는 타입 코드의 문제점</li></ul><ul id="2688e11f-9262-80b2-a9c4-dafcd8a07030" class="bulleted-list"><li style="list-style-type:disc"><code>any</code>를 쓰면 되지 않을까? → <code>any</code>는 자바스크립트 코드 처럼 <strong>모든 타입을 다 취급</strong>할 수 있는 대신, 타입스크립트의 <strong>코드 자동 완성</strong>이나 <strong>에러의 사전 방지</strong> 혜택을 받지 못함</li></ul><p id="2698e11f-9262-808e-b113-d713ace52ac1" class="">
+</p><h3 id="2688e11f-9262-80ea-a8d0-dedee1c0e6d5" class="">4) 제네릭의 타입제약</h3><p id="2688e11f-9262-804e-98fa-c0c0647cafd3" class=""><code><strong>extends</strong></code><strong>를 사용한 타입제약</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8063-a31e-dc89066a8ea0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 제네릭의 타입을 string으로 제약한 코드
+function embraceEverything&lt;T extends string&gt;(thing: T): T {
+  return thing;
+}
+// length 속성을 갖는 타입만 취급
+function lengthOnly&lt;T extends { length: number }&gt;(value: T) {
+  return value.length;
+}
+</code></pre><p id="2688e11f-9262-80d4-aa9c-d050f774dde4" class=""><code><strong>keyof</strong></code><strong>를 사용한 타입제약</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80b1-a5ba-c01d9e8206d0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type DeveloperKeys = keyof { name: string; skill: string };
+function printKeys&lt;T extends keyof { name: string; skill: string }&gt;(value: T) {
+  console.log(value);
+}
+</code></pre><h3 id="2698e11f-9262-80c8-a0f8-c57c54fe6d3b" class="">흔한 오해</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2698e11f-9262-802b-b82a-f5c060eb262f" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function printLen&lt;T&gt;(x: T) {
+  // x.length ❌ T가 뭔지 모르므로
+}</code></pre><ul id="2698e11f-9262-80b6-bcac-dd43d6336373" class="bulleted-list"><li style="list-style-type:disc"><strong>컴파일러 관점</strong>: 제네릭은 “아직 미정” → 가정 금지. 제약으로 좁히자.</li></ul><p id="2698e11f-9262-80c7-9e4c-de63245a9b31" class="">
+</p><p id="2688e11f-9262-80bc-a849-fca90f09af98" class=""><strong>제한 둘 수 있는 형태</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-805a-8a26-fa3ff454ad01" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">&lt;T extends {...}&gt;
+&lt;T extends any[]&gt;
+&lt;T extends (...args: any) =&gt; any&gt;
+&lt;T extends abstract new (...args: any)=&gt; any&gt;
+</code></pre><h3 id="2688e11f-9262-80be-89ef-eeba02f16e06" class="">5) 제네릭을 처음 사용할 때 주의해야할 사고방식</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8013-9dbb-c2b0de5c99a2" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function printTextLength&lt;T&gt;(text: T){
+  console.log(text.length) // &#x27;T&#x27; 형식에 &#x27;length&#x27;속성이 없습니다.
+}
+</code></pre><p id="2688e11f-9262-806b-bac5-c73182868feb" class="">‘함수에 문자열을 넘겼으니 당연히 이 문자를 받아서 처리하는 함수 내부에서도 문자열로 취급되겠지’ 라고 생각하는 것은 <strong>타입스크립트 컴파일러가 아닌 개발자의 관점</strong>.</p><p id="2688e11f-9262-801e-b007-cd0cb02f7e36" class=""><strong>컴파일러 관점</strong>에서 <code>printTextLength()</code> 함수에 어떤 타입이 들어올지 모르기 때문에 함부로 이 타입을 가정하지 않음. 따라서 함수안에 제네릭으로 지정된 <code>text</code> 파라미터를 다룰 때 <strong>코드 자동완성</strong>이나 <strong>타입이 미리 정의된</strong> 효과는 얻을 수 없음.</p><h3 id="2688e11f-9262-8089-9b00-eafed6242489" class="">6) 기타</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8072-9da1-fb48fe01972b" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function add&lt;T extends string&gt;(x: T, y: T): T {
+  return x + y;
+}
+// &#x27;string&#x27; 형식은 &#x27;T&#x27; 형식에 할당할 수 없습니다
+
+const result = &quot;Hello&quot; + &quot; World&quot;;
+// result의 타입은 &quot;Hello World&quot;가 됨
+</code></pre><p id="2688e11f-9262-808e-9915-c7fc4cd5d561" class="">여기서 <code>result</code>의 타입은 실제 문자열 값인 <code>&quot;Hello World&quot;</code> 가 된다. 이것은 TypeScript가 <strong>리터럴 타입</strong>으로 정확하게 타입을 추론하는 특성이다.</p><p id="2688e11f-9262-8034-8796-e5aa14e3451b" class="">따라서 제네릭 타입 <code>T</code>가 문자열일지라도, <code>+</code> 연산자를 사용하여 문자열을 결합하면 TypeScript는 결과를 <strong>string이 아닌 문자열 리터럴 타입</strong>으로 간주한다.</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">B. TypeScript &amp; 타입</summary><div class="indented"><h2 id="2688e11f-9262-80d8-98d8-fd0fced93b78" class="">1. 타입 추론</h2><h3 id="2688e11f-9262-8069-b074-c6d42f05f334" class="">1) 타입 추론이란?</h3><ul id="2688e11f-9262-80b3-8d4d-c08bbbaf1ff6" class="bulleted-list"><li style="list-style-type:disc">타입스크립트가 코드를 해석하여 적절한 타입을 정의하는 동작을 의미한다.</li></ul><ul id="2688e11f-9262-8067-8317-c065314ed3e2" class="bulleted-list"><li style="list-style-type:disc">변수를 하나 선언하고 값을 할당하면 해당 변수의 타입은 자동으로 추론된다.</li></ul><h3 id="2688e11f-9262-8077-9d6f-d33f17744022" class="">2) 타입추론을 적극 활용하자</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-809b-8822-d0716bccf695" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const a = &#x27;5&#x27; // a: &#x27;5&#x27; 라고 추론한다.
+const a: string = &#x27;5&#x27; // 잘못된 타입 지정. const로 선언했기 때문에 값이 바뀔 일이 없는데, &#x27;5&#x27;에서 string이라는 넓은 타입으로 지정한 꼴.</code></pre><ul id="2688e11f-9262-8035-8fb1-f7cd347267ba" class="bulleted-list"><li style="list-style-type:disc"> 따라서 타입을 지워보고, 타입추론이 any이거나 틀린 타입일 때만 타입을 다시 지정하면 된다. 항상 마우스를 올려서 <strong>타입추론을 적극 활용</strong>하자..!</li></ul><hr id="2688e11f-9262-808f-a051-c082b131936b"/><h2 id="2688e11f-9262-8054-946f-c8f1aba441d0" class="">2. 타입 단언</h2><h3 id="2688e11f-9262-80ee-887f-e3fae3973a8e" class="">1) 타입 단언이란?</h3><p id="2698e11f-9262-800a-aecc-d047acae668d" class=""><mark class="highlight-orange"><strong>* 문법 오른쪽에서만 사용, 남용 금지</strong></mark></p><ul id="2688e11f-9262-805f-9814-c20e172b3561" class="bulleted-list"><li style="list-style-type:disc">타입 추론에 기대지 않고 개발자가 <strong>직접 타입을 명시</strong>하여 해당 타입으로 강제하는 것.</li></ul><ul id="2688e11f-9262-8094-871e-c4e08cf034af" class="bulleted-list"><li style="list-style-type:disc">숫자, 문자열, 객체 등 원시 값 뿐 아니라 <strong>변수나 함수의 호출 결과</strong>에도 사용 가능하다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80dc-ba5d-ceec221ba7c2" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function getId(id) {
+  return id;
+}
+var myId = getId(&#x27;josh&#x27;) // myId는 any로 추론됨
+var myId2 = getId(&#x27;josh&#x27;) as string // myId2는 string으로 추론됨</code></pre><h3 id="2688e11f-9262-801a-850c-fc387d48b4bf" class="">2) 타입 단언을 사용할 때 주의할 점</h3><ul id="2688e11f-9262-80ce-91f5-fb279e2de923" class="bulleted-list"><li style="list-style-type:disc"><code>as</code> 키워드는 구문 오른쪽에서만 사용한다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8053-ae8b-eaba7b290e42" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">var num as number = 10; // ❌ 잘못된 문법
+var num = 10 as number; // ✅ 올바른 문법
+var num: number = 10;</code></pre><ul id="2688e11f-9262-804d-942a-ce6a072d43b0" class="bulleted-list"><li style="list-style-type:disc"><strong>호환되지 않는 타입</strong>은 단언할 수 없다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8080-b57d-d6b6fb13d761" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">var num = 10 as string; // ❌ 에러
+var num = (10 as any) as string; // ✅ 가능 (단 unknown/any 경유 필요)</code></pre><ul id="2688e11f-9262-80b0-8077-d907c1e6efe8" class="bulleted-list"><li style="list-style-type:disc">타입 단언을 남용하지 말자 → <strong>타입 에러는 해결되지만 실행 에러는 방지 못함</strong>.</li></ul><h3 id="2688e11f-9262-80a3-aa11-ec57f7c1bd2d" class="">3) null 아님 보장 연산자 (non null assertion, <code>!</code>)</h3><ul id="2688e11f-9262-8082-99c8-c29696da5c1f" class="bulleted-list"><li style="list-style-type:disc">값이 null이 아님을 보장한다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8026-8a11-c7e99715dfb4" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// non null assertion 사용 전
+const head = document.querySelector(&quot;#head&quot;);
+if (head) {
+  head.innerHTML = &quot;hi&quot;;
+}
+
+// non null assertion 사용 후
+const head = document.querySelector(&quot;#head&quot;)!;
+head.innerHTML = &quot;hi&quot;;
+</code></pre><p id="2688e11f-9262-8075-894c-fc50c9ec45d6" class="">가능하면 쓰지 말자…! (타입 에러는 해결되지만 실행 에러는 방지하지 못함)</p><p id="2688e11f-9262-8049-8520-d26db0330d07" class="">만약 HTML에서 id <code>head</code>를 <code>header</code>로 바꾸면 실행 에러 발생.</p><hr id="2688e11f-9262-80e4-af9e-c3254df4c7d9"/><h2 id="2688e11f-9262-8045-84b3-d91d9c37730f" class="">3. 타입 가드</h2><h3 id="2688e11f-9262-8084-b3c5-c5249812eb60" class="">1) 타입 가드란?</h3><ul id="2688e11f-9262-8072-99be-c57373bf37d9" class="bulleted-list"><li style="list-style-type:disc">여러 개의 타입으로 지정된 값을 특정 위치에서 원하는 타입으로 구분하는 것.</li></ul><ul id="2688e11f-9262-802f-820c-ec0a35f8b560" class="bulleted-list"><li style="list-style-type:disc">즉, <strong>넓은 타입에서 좁은 타입으로 범위를 좁히는 것</strong>.</li></ul><h3 id="2688e11f-9262-8046-8528-db6c5c958da8" class="">2) typeof</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8023-9b1e-d0b362d984cd" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 타입 단언(as) 사용 시 문제
+function numOrStr(a: number | string){
+  (a as number).toFixed(2); // 위험!
+}
+numOrStr(&quot;123.1111&quot;); // 런타임 에러 발생
+numOrStr(123.1111);   // 정상
+
+// typeof로 안전하게 타입 좁히기
+function numOrStr(a: number | string) {
+  if (typeof a === &quot;number&quot;) {
+    console.log(a.toFixed(2));
+  } else if (typeof a === &quot;string&quot;) {
+    console.log(a.charAt(2));
+  }
+}
+</code></pre><h3 id="2688e11f-9262-80a7-9e85-c6849c14bda6" class="">3) Array.isArray</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80be-8e27-f12efdaf1d25" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function numObjOrNumArr(a: number[] | object) {
+  if (Array.isArray(a)) {
+    console.log(a.concat(4));
+  } else {
+    Object.entries(a).forEach(([key, value]) =&gt; {
+      console.log(key, value);
+    });
+  }
+}
+</code></pre><h3 id="2688e11f-9262-80be-bf77-ca1bd86fb084" class="">4) instanceof (클래스 타입 좁히기)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8065-9ee0-f25841970c96" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class A { aaa() {} }
+class B { bbb() {} }
+
+function aOrB(param: A | B) {
+  if (param instanceof A) {
+    param.aaa();
+  }
+}
+aOrB(new A());</code></pre><h3 id="2688e11f-9262-804b-96b8-ec4c6a2331dc" class="">5) in 연산자 (객체 타입 좁히기)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8067-ab76-e2db06aaa1e2" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type B = { type: &quot;e&quot;; eee: string };
+type F = { type: &quot;f&quot;; fff: string };
+type G = { type: &quot;f&quot;; ggg: string };
+
+function typeCheck(a: E | F | G) {
+  if (a.type === &quot;e&quot;) {
+    console.log(a.eee);
+  } else {
+    if (&quot;fff&quot; in a) {
+      console.log(a.fff);
+    } else {
+      console.log(a.ggg);
+    }
+  }
+}</code></pre><h3 id="2688e11f-9262-80bb-a596-dadffd9b085f" class="">6) 타입가드 함수</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-804e-8960-cb19414ba3a7" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface Cat { meow: number; }
+interface Dog { bow: number; }
+
+function isDog(a: Cat | Dog): a is Dog {
+  return (a as Dog).bow !== undefined;
+}
+
+function greet(animal: Cat | Dog) {
+  if (isDog(animal)) {
+    console.log(&quot;개가 짖는다.&quot;);
+    for (let i = 0; i &lt; animal.bow; i++) console.log(&quot;왈&quot;);
+  } else {
+    console.log(&quot;고양이가 운다&quot;);
+    for (let i = 0; i &lt; animal.meow; i++) console.log(&quot;냐옹&quot;);
+  }
+}</code></pre><p id="2688e11f-9262-8015-bfdb-e04983084aa1" class=""><strong>실전 예제 – Promise Settled</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8087-b008-c3c18678c7f4" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const isRejected = (
+  input: PromiseSettledResult&lt;unknown&gt;
+): input is PromiseRejectedResult =&gt; input.status === &quot;rejected&quot;;
+
+const isFulfilled = &lt;T&gt;(
+  input: PromiseSettledResult&lt;T&gt;
+): input is PromiseFulfilledResult&lt;T&gt; =&gt; input.status === &quot;fulfilled&quot;;
+
+const promises = await Promise.allSettled([
+  Promise.resolve(&quot;a&quot;),
+  Promise.resolve(&quot;b&quot;),
+]);
+
+const errors1 = promises.filter((a) =&gt; true); // PromiseSettledResult[]
+const errors2 = promises.filter((p) =&gt; p.status === &quot;rejected&quot;); // 여전히 PromiseSettledResult[]
+const errors3 = promises.filter(isRejected); // ✅ PromiseRejectedResult[] 로 좁혀짐</code></pre><hr id="2688e11f-9262-806b-adac-f5996f379025"/><h2 id="2688e11f-9262-80ff-8806-eb3037c3ccd3" class="">4. 타입 호환</h2><h3 id="2688e11f-9262-80a1-885b-e0d0f1a1a510" class="">1) 타입 호환이란?</h3><ul id="2688e11f-9262-8008-97dc-e8ca5b36d9bf" class="bulleted-list"><li style="list-style-type:disc">서로 다른 타입이 있을 때 특정 타입이 다른 타입에 포함되는지 확인하는 것.</li></ul><ul id="2688e11f-9262-80ec-89df-e357eaaaef69" class="bulleted-list"><li style="list-style-type:disc">즉, <strong>타입 간 할당 가능 여부</strong>로 판단.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8099-8a4c-f7e4e62f6f6b" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">var a: string = &quot;hi&quot;
+var b: number = 10;
+b = a; // 에러
+
+var a: string = &quot;hi&quot;
+var b: &quot;hi&quot; = &quot;hi&quot;;
+b = a; // 에러
+a = b; // 정상</code></pre><h3 id="2688e11f-9262-805e-8e4f-cc9c28dd7801" class="">2) 다른 언어와의 차이점</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-80b3-a4b3-c0473655c5a6" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">interface IHero { name: string; }
+class CHero {
+  name: string;
+  constructor(name: string) { this.name = name; }
+}
+let i: IHero;
+i = new CHero(&quot;ironman&quot;); // ✅ 구조적 타이핑 덕분에 에러 없음</code></pre><p id="2688e11f-9262-80ec-b6ad-c9ff4ac32f99" class="">👉 <strong>구조적 타이핑</strong>: 타입의 이름이 아니라, 타입의 구조(프로퍼티 기준)로 호환 여부를 판단.</p><h3 id="2688e11f-9262-8089-9c04-de948b1ecf57" class="">3) 타입을 집합으로 생각하기 (좁은/넓은 타입)</h3><ul id="2688e11f-9262-8027-9fbf-d04cc472733c" class="bulleted-list"><li style="list-style-type:disc">any = 전체집합, never = 공집합</li></ul><ul id="2688e11f-9262-8035-b382-c65a827b1ab1" class="bulleted-list"><li style="list-style-type:disc">좁은 타입은 넓은 타입에 대입 가능하지만, 넓은 타입을 좁은 타입에 대입하면 에러.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-8049-924f-d4ebc0452294" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">type A = {name: string}
+type B = {age: number}
+type C = A | B // 넓은 타입
+type D = A &amp; B // 좁은 타입
+
+const c: C = { name: &#x27;zerocho&#x27; }
+const d: D = c // 에러 (좁은 타입에 넓은 타입 대입)
+
+const d: D = { name: &#x27;eunsu&#x27;, age: 25 }
+const c: C = d // 정상 (넓은 타입에 좁은 타입 대입)</code></pre><p id="2688e11f-9262-8047-9586-ec7328269340" class=""><strong>객체 리터럴 검사 (잉여 속성 검사)</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2688e11f-9262-804a-af06-c75056e8c3f6" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const d: D = {name: &#x27;zerocho&#x27;, age: 29, married: false} // 에러
+const obj = {name: &#x27;zerocho&#x27;, age: 29, married: false}
+const d: D = obj; // 정상</code></pre><blockquote id="2688e11f-9262-8027-bdfb-c31a92cacb38" class=""> 객체 리터럴을 직접 대입할 경우 <strong>잉여 속성 검사</strong>가 실행되기 때문.</blockquote></div></details><p id="2698e11f-9262-80d8-833b-fe3c464ac2b5" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
