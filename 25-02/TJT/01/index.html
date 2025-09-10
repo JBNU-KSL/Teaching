@@ -686,6 +686,80 @@ blockquote.quote-large {
 	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
 }
 	
+
+	summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none;   /* 파이어폭스 등 */
+}
+
+
+
+summary::before {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  break-after: page; /* 인쇄 시 페이지 나눔 */
+}
+
+.properties {
+	display: none;
+}
+
+@media print {
+  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  
+  /* 페이지 가운데 정렬 영역 */
+  header{
+    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
+    display:flex;
+    position: relative;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* 본문 타이틀(원래의 00. OT) */
+  .page-title{
+    margin:0;
+    line-height:1.25;
+    font-weight:800;
+    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0; /* 상·하 여유 공간 */
+  }
+
+  /* 최상단 큰 제목 */
+  .page-title::before{
+    content: "통합전공탐색 (25-02)\A";
+    white-space: pre-line;     /* \A 줄바꿈 활성화 */
+    display:block;
+    font-weight:900;
+    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
+    letter-spacing:.02em;
+    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  }
+
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+	  white-space: pre-line;
+	  position: absolute;
+	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  font-size: 11pt;
+	  font-weight: 500;
+	  line-height: 1.6;
+	  text-align: center;
+} 
+}
 </style></head><body><article id="2588e11f-9262-8158-a4a2-d77ed068595c" class="page sans"><header><h1 class="page-title">01. 전공소개</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>1주차</td></tr></tbody></table></header><div class="page-body"><h1 id="26a8e11f-9262-8070-962b-f6c0e4e2270c" class="">💻 컴퓨터공학부 전공 탐색: 세상을 움직이는 논리를 “<mark class="highlight-orange">설계</mark>”하다</h1>
 <figure id="26a8e11f-9262-8002-acde-c3d506a6d082" class="image"><a href="01%20%EC%A0%84%EA%B3%B5%EC%86%8C%EA%B0%9C%202588e11f92628158a4a2d77ed068595c/image.png"><img style="width:709.9921875px" src="01%20%EC%A0%84%EA%B3%B5%EC%86%8C%EA%B0%9C%202588e11f92628158a4a2d77ed068595c/image.png"/></a>
 </figure>
