@@ -1,0 +1,785 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>01. 유전알고리즘의 개요</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(115, 114, 110, 1);
+	fill: rgba(115, 114, 110, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(205, 60, 58, 1);
+	fill: rgba(205, 60, 58, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none;   /* 파이어폭스 등 */
+}
+
+
+
+summary::before {
+  content: "";
+  display: block;
+  margin-top: 20px;
+  break-after: page; /* 인쇄 시 페이지 나눔 */
+}
+
+.properties {
+	display: none;
+}
+
+@media print {
+  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  
+  /* 페이지 가운데 정렬 영역 */
+  header{
+    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
+    display:flex;
+    position: relative;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* 본문 타이틀(원래의 00. OT) */
+  .page-title{
+    margin:0;
+    line-height:1.25;
+    font-weight:800;
+    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0; /* 상·하 여유 공간 */
+  }
+
+  /* 최상단 큰 제목 */
+  .page-title::before{
+    content: "유전 알고리즘과 응용 (25-02)\A";
+    white-space: pre-line;     /* \A 줄바꿈 활성화 */
+    display:block;
+    font-weight:900;
+    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
+    letter-spacing:.02em;
+    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  }
+
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+	  white-space: pre-line;
+	  position: absolute;
+	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  font-size: 11pt;
+	  font-weight: 500;
+	  line-height: 1.6;
+	  text-align: center;
+} 
+}
+	
+</style></head><body><article id="2588e11f-9262-81d8-a789-fa9045a8fb11" class="page sans"><header><h1 class="page-title">01. 유전알고리즘의 개요</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>날짜</th><td></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(71, 70, 68, 0.6);fill:rgba(71, 70, 68, 0.6)"></div></span>주차</th><td>2주차</td></tr></tbody></table></header><div class="page-body"><p id="26a8e11f-9262-8099-ae83-e7dafc004b5a" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 왜 진화인가? 문제와 영감</summary><div class="indented"><h2 id="26a8e11f-9262-80cb-b24f-da931ceba8d4" class=""><strong>유전 알고리즘: 진화의 지혜로 푸는 최적화 문제</strong></h2><p id="26a8e11f-9262-807d-a9f8-d83a4cfdb596" class=""><strong>강의 목표:</strong> 복잡한 최적화 문제의 본질을 이해하고, 자연의 진화 원리가 어떻게 강력한 문제 해결 도구로 추상화되는지 파악하며, 유전 알고리즘의 핵심 메커니즘을 실제 연구에 적용할 수 있는 이론적 기반을 다지는 것을 목표로 함.</p><div id="26a8e11f-9262-801a-98fe-db6bf2fd1713" class="column-list"><div id="26a8e11f-9262-8090-bcaa-d9b97221d815" style="width:50%" class="column"><figure id="26a8e11f-9262-801c-94c0-c09d57576989" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image.png"><img style="width:306px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image.png"/></a></figure></div><div id="26a8e11f-9262-808c-8a8a-f7198b1ce930" style="width:50%" class="column"><figure id="26a8e11f-9262-80e8-96ad-fecb77d8eb36" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%201.png"><img style="width:306px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%201.png"/></a></figure></div></div><h3 id="26a8e11f-9262-806b-b645-e785232c8f97" class=""><mark class="highlight-orange">세상은 최적화 문제로 가득 차 있다 (Introduction to Optimization)</mark></h3><ul id="26a8e11f-9262-800d-b830-d2caec33dae9" class="bulleted-list"><li style="list-style-type:disc"><strong>&quot;수백 개의 도시를 모두 방문하는 가장 짧은 경로는 어떻게 찾을 수 있을까? </strong><p id="26a8e11f-9262-8009-9348-c7897240f03d" class="">⇒ 최고의 성능을 내는 신약 분자 구조는 어떻게 설계할 수 있을까요?&quot; 이처럼 우리 주변에는 정답이 정해져 있지 않고, 수많은 가능성 속에서 &#x27;최상의 답&#x27;을 찾아야 하는 문제들이 산재해 있음.</p></li></ul><ul id="26a8e11f-9262-807e-814f-c521f1b26d0a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>최적화(Optimization)란?</strong></mark><ul id="26a8e11f-9262-8047-8256-dd830d8ae528" class="bulleted-list"><li style="list-style-type:circle"><strong>정의:</strong> 주어진 <strong>제약 조건(Constraints)</strong> 하에서, 특정 **목적 함수(Objective Function)**의 값을 최대화 또는 최소화하는 최적의 해(Solution)를 찾는 과정.</li></ul></li></ul><ul id="26a8e11f-9262-8033-b874-c03d1a775173" class="bulleted-list"><li style="list-style-type:disc"><strong>어려움:</strong><ul id="26a8e11f-9262-8048-9317-f3db0ebc5583" class="bulleted-list"><li style="list-style-type:circle"><strong>탐색 공간(Search Space)의 저주:</strong> 해가 될 수 있는 후보의 수가 천문학적으로 많아 모두 탐색하는 것이 불가능함.</li></ul><ul id="26a8e11f-9262-804a-8a91-e869934e772d" class="bulleted-list"><li style="list-style-type:circle"><strong>지역 최적해(Local Optima)의 함정:</strong> 전체적으로는 최적이 아니지만, 주변의 해보다는 좋아 더 나은 해를 찾지 못하고 갇히는 현상.</li></ul></li></ul><ul id="26a8e11f-9262-8007-b00d-e892c3c30443" class="bulleted-list"><li style="list-style-type:disc"><strong>유전 알고리즘(Genetic Algorithm, GA)의 등장</strong><ul id="26a8e11f-9262-807e-87df-daa886777033" class="bulleted-list"><li style="list-style-type:circle">전통적인 최적화 기법(예: 경사 하강법)은 미분 가능성과 같은 엄격한 수학적 조건을 요구하여 복잡한 현실 문제에 적용하기 어려움.</li></ul><ul id="26a8e11f-9262-80a6-b075-d08f1b92d022" class="bulleted-list"><li style="list-style-type:circle">유전 알고리즘은 **메타휴리스틱(Metaheuristic)**의 한 종류로, 문제에 대한 깊은 사전 지식 없이도 자연의 진화 과정이라는 강력하고 검증된 원리를 통해 이러한 난관을 극복함.</li></ul><ul id="26a8e11f-9262-8079-b4e1-ed40cf3ffdce" class="bulleted-list"><li style="list-style-type:circle"><strong>주요 특징:</strong><ul id="26a8e11f-9262-80bf-b83c-ed993c3f03be" class="bulleted-list"><li style="list-style-type:square"><strong>확률적 탐색(Stochastic Search):</strong> 무작위성을 통해 지역 최적해를 탈출하고 전역 최적해(Global Optimum)를 탐색할 가능성을 높임.</li></ul><ul id="26a8e11f-9262-809c-b019-c80419da6faf" class="bulleted-list"><li style="list-style-type:square"><strong>유연성:</strong> 문제의 형태가 복잡하거나, 미분 불가능해도 적용할 수 있음.</li></ul><ul id="26a8e11f-9262-8064-b1bb-c64e6af914a3" class="bulleted-list"><li style="list-style-type:square"><strong>강건성(Robustness):</strong> 탐색 공간에 대한 정보가 부족하거나 노이즈가 있어도 준수한 해를 찾아냄.</li></ul><p id="26a8e11f-9262-8035-ac4b-f3554a7795a0" class="">
+</p></li></ul></li></ul></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 유전알고리즘의 개요</summary><div class="indented"><p id="26a8e11f-9262-8084-ab66-f86e709d90d1" class="">
+</p><h3 id="26a8e11f-9262-80d5-8019-f55f49a7587a" class="">A. Genetic Algorithm?</h3><ul id="26a8e11f-9262-800c-89f8-ea21fba20f47" class="bulleted-list"><li style="list-style-type:disc">1975년 미국 미시간 대학의 John Holland 교수가 세포의 작용을 연구하던 중 제안한 것으로, 생물학계의 적자생존 원리 즉, 자연도태 원리를 기초로 한 최적화 알고리즘.</li></ul><ul id="26a8e11f-9262-800b-9127-e3e0c3a4c780" class="bulleted-list"><li style="list-style-type:disc">생물의 유전과 진화알고리즘을 공학적으로 모델화하여 문제해결이나 시스템의 학습등에 응용하려는 알고리즘</li></ul><ul id="26a8e11f-9262-8011-bf05-f0492c36a0a9" class="bulleted-list"><li style="list-style-type:disc">어떤 세대(generation)을 형성하는 개체( individual)들의 집합, 즉 개체군(population)중에서 환경에 대한 적합도(fitness)가 높은 개체가 높은 확률로 살아 남아 재생(reproduction)할 수 있게 되며 이때 교배(crossover) 및 돌연변이(mutation)로서 다음 세대의 개체군을 형성하게 되는 생물의 진화과정을 인공적으로 모델링한 알고리즘</li></ul><ul id="26a8e11f-9262-8011-a761-c07499b9757b" class="bulleted-list"><li style="list-style-type:disc">진화적 알고리즘(evolutionary algorithm)이라고도 함</li></ul><ul id="26a8e11f-9262-8001-9016-d1b11798e668" class="bulleted-list"><li style="list-style-type:disc">2000년대 붐을 일으키고 있으며, Job shop scheduling, 훈련신경회로망, 이미지 특징 추출 및 인식, 최적화 문제등에 응용</li></ul><p id="26a8e11f-9262-8044-87cf-d3ca6058ad8c" class="">
+</p><h3 id="26a8e11f-9262-8047-b765-e43914a01160" class="">B. 진화적 알고리즘의 흐름</h3><div id="26a8e11f-9262-80be-a1f0-e8839babd1e7" class="column-list"><div id="26a8e11f-9262-808e-b9ce-f08215ab7a0a" style="width:31.25%" class="column"><figure id="26a8e11f-9262-800d-9647-d0c0b1f557d2" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%202.png"><img style="width:200px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%202.png"/></a></figure></div><div id="26a8e11f-9262-8092-bb39-fa502fc5a254" style="width:68.75%" class="column"><p id="26a8e11f-9262-80ba-8105-fa4618c1c232" class="">유전자 알고리즘(Genetic Algorithm, GA)</p><ul id="26a8e11f-9262-80bd-9ee1-d706e599cfd0" class="bulleted-list"><li style="list-style-type:disc">협의의 알고리즘으로, 고정길이의 이진 스트링 염색체를 사용</li></ul><p id="26a8e11f-9262-80a3-882c-d596bda9021e" class="">유전자 프로그래밍(Genetic Programming, GP)</p><ul id="26a8e11f-9262-80c7-9ce3-f56fe95def12" class="bulleted-list"><li style="list-style-type:disc">그래프와 트리 등을 염색체 표현에 사용, 90년대 개발</li></ul><p id="26a8e11f-9262-8071-bc30-c91522d990ae" class="">진화적 프로그래밍(Evolutionary Programming, EP)</p><ul id="26a8e11f-9262-80b2-8741-e29c8f6c02a5" class="bulleted-list"><li style="list-style-type:disc">유연한 구조의 염색체를 사용하며 행동과 능력의 진화에 초점</li></ul><p id="26a8e11f-9262-80db-af90-d59b91c43725" class="">진화적 전략(Evolutionary Strategy, ES)</p><ul id="26a8e11f-9262-8098-adda-f8c6572f78b0" class="bulleted-list"><li style="list-style-type:disc">실수값을 갖는 염색체를 사용하여 연속적 매개변수 최적화에 적합</li></ul></div></div><h3 id="26a8e11f-9262-80fa-811b-d0a13b4e02bf" class="">C. 진화적 알고리즘 비교</h3><table id="26a8e11f-9262-8078-9a1b-de52986524b0" class="simple-table"><thead class="simple-table-header"><tr id="26a8e11f-9262-80d0-9b4d-fcde715da730"><th id="fF;:" class="simple-table-header-color simple-table-header">구분</th><th id="aG_u" class="simple-table-header-color simple-table-header">진화적 전략 (ES)</th><th id="J&gt;Zn" class="simple-table-header-color simple-table-header">진화적 프로그래밍 (EP)</th><th id="`eUg" class="simple-table-header-color simple-table-header">유전자 알고리즘 (GA)</th><th id="_bgJ" class="simple-table-header-color simple-table-header">유전자 프로그래밍 (GP)</th></tr></thead><tbody><tr id="26a8e11f-9262-8089-8c79-fb5dcaf16648"><td id="fF;:" class=""><strong>기원</strong></td><td id="aG_u" class="">Rechenberg, I.(1963)</td><td id="J&gt;Zn" class="">Fogel, L.J.</td><td id="`eUg" class="">Holland, J.H.(1975)</td><td id="_bgJ" class="">Koza, J.(1990)</td></tr><tr id="26a8e11f-9262-805f-b0cf-d31022a7f245"><td id="fF;:" class=""><strong>표현 방식</strong></td><td id="aG_u" class="">실수, 길이 고정</td><td id="J&gt;Zn" class="">실수·이산치, 크기 고정</td><td id="`eUg" class="">이진 문자열 (실수형도 가능), 길이 고정</td><td id="_bgJ" class="">기본 함수, 크기 가변</td></tr><tr id="26a8e11f-9262-80c3-a82e-d1c27dd8d0da"><td id="fF;:" class=""><strong>자기적응성</strong></td><td id="aG_u" class="">표준편차와 상호분산</td><td id="J&gt;Zn" class="">표준편차 (메타-진화 프로그래밍의 경우)</td><td id="`eUg" class="">없음 (메타-GA의 경우 가능)</td><td id="_bgJ" class="">없음 (메타-GA의 경우 가능)</td></tr><tr id="26a8e11f-9262-800f-aff5-d5e092cfcf97"><td id="fF;:" class=""><strong>적합도</strong></td><td id="aG_u" class="">목적 함수 값</td><td id="J&gt;Zn" class="">비율에 의해 조정된 목적 함수 값</td><td id="`eUg" class="">비율에 의해 조정된 목적 함수 값</td><td id="_bgJ" class="">비율에 의해 조정된 목적 함수 값</td></tr><tr id="26a8e11f-9262-80d9-a1cb-e07b0572f750"><td id="fF;:" class=""><strong>문제 표현 방식</strong></td><td id="aG_u" class="">벡터</td><td id="J&gt;Zn" class="">그래프</td><td id="`eUg" class="">문자열</td><td id="_bgJ" class="">트리</td></tr><tr id="26a8e11f-9262-80dc-bf75-e8b332c90a51"><td id="fF;:" class=""><strong>돌연변이</strong></td><td id="aG_u" class="">주요 연산자</td><td id="J&gt;Zn" class="">유일한 연산자</td><td id="`eUg" class="">보조 연산자</td><td id="_bgJ" class="">보조 연산자</td></tr><tr id="26a8e11f-9262-8073-842c-c39675f4d447"><td id="fF;:" class=""><strong>교배</strong></td><td id="aG_u" class="">자기적응성에 중요</td><td id="J&gt;Zn" class="">없음</td><td id="`eUg" class="">주요 연산자</td><td id="_bgJ" class="">주요 연산자</td></tr><tr id="26a8e11f-9262-80ad-99ef-d2a9b426b2d9"><td id="fF;:" class=""><strong>선택</strong></td><td id="aG_u" class="">결정론적이며 소멸성 있음</td><td id="J&gt;Zn" class="">승자승 원리를 통한 확률적 선택, 소멸성 있음</td><td id="`eUg" class="">확률적이지만 보존성 있음</td><td id="_bgJ" class="">확률적이지만 보존성 있음</td></tr><tr id="26a8e11f-9262-80ae-aea6-f28ecbb27aa9"><td id="fF;:" class=""><strong>특징 및 응용분야</strong></td><td id="aG_u" class="">종에 속한 개체 수준에서 진화를 모방, 다양한 교배 가능. <strong>실수치 탐색</strong></td><td id="J&gt;Zn" class="">종 수준 진화 모방, 교배 없음. <strong>오토마타 합성</strong></td><td id="`eUg" class="">개체 수준 진화 모방, 다양한 교배 과정 가능. <strong>자연 진화 원리에 가장 가까움, 문자열·벡터 탐색</strong></td><td id="_bgJ" class=""><strong>프로그램 합성</strong></td></tr></tbody></table><p id="26a8e11f-9262-80d6-bd12-dd7b407954c5" class="">
+</p><h3 id="26a8e11f-9262-8094-a444-f73d058162d7" class="">D. 생물학과 GA 용어 비교</h3><figure id="26a8e11f-9262-80bc-aa24-f3311af6fe07" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%203.png"><img style="width:490px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%203.png"/></a></figure><p id="26a8e11f-9262-80c6-b451-e3cf49c9d42a" class="">GA는 생물학 용어를 차용하여 개념을 설명함.</p><table id="26a8e11f-9262-80a6-842b-cdc7a6ee1658" class="simple-table"><thead class="simple-table-header"><tr id="26a8e11f-9262-80b6-b92a-db76a3b2dccd"><th id="aOs}" class="simple-table-header-color simple-table-header" style="width:328.5px">생물학</th><th id="nacD" class="simple-table-header-color simple-table-header" style="width:328.5px">유전 알고리즘(GA)</th></tr></thead><tbody><tr id="26a8e11f-9262-80b4-b412-fcb156d132ba"><td id="aOs}" class="" style="width:328.5px"><strong>개체 (individual)</strong></td><td id="nacD" class="" style="width:328.5px">염색체에 의해 특징지어지는 자율적인 하나의 작은 집단</td></tr><tr id="26a8e11f-9262-8050-94c7-c5876dec6140"><td id="aOs}" class="" style="width:328.5px"><strong>집단 (population)</strong></td><td id="nacD" class="" style="width:328.5px">집단 내의 개체의 수</td></tr><tr id="26a8e11f-9262-8065-967b-f10f5c66e728"><td id="aOs}" class="" style="width:328.5px"><strong>유전자 (gene)</strong></td><td id="nacD" class="" style="width:328.5px">개체의 형질을 규정하는 기본 구성요소 (feature, character 등)</td></tr><tr id="26a8e11f-9262-80aa-80a4-f70507539f35"><td id="aOs}" class="" style="width:328.5px"><strong>염색체 (chromosome)</strong></td><td id="nacD" class="" style="width:328.5px">복수의 유전자 모임. 문자열(string)로 표현</td></tr><tr id="26a8e11f-9262-80d0-adfb-d4e393d4764d"><td id="aOs}" class="" style="width:328.5px"><strong>대립 유전자 (allele)</strong></td><td id="nacD" class="" style="width:328.5px">유전자가 갖는 특성 값(feature value)</td></tr><tr id="26a8e11f-9262-80fc-954b-ff430b9ca3f7"><td id="aOs}" class="" style="width:328.5px"><strong>유전자 자리 (locus)</strong></td><td id="nacD" class="" style="width:328.5px">염색체 상에서 유전자의 위치, 문자열의 위치(string position)</td></tr><tr id="26a8e11f-9262-8019-8c7c-d03ba3649405"><td id="aOs}" class="" style="width:328.5px"><strong>적합도/적응도 (fitness)</strong></td><td id="nacD" class="" style="width:328.5px">개체가 환경에 얼마나 적합한지를 평가하는 값. 최적화 문제에서는 목적 함수 값, 제약조건 고려 시 페널티 함수 값으로 설정</td></tr><tr id="26a8e11f-9262-8056-a80e-e98ba2ddb5d7"><td id="aOs}" class="" style="width:328.5px"><strong>코딩 (coding)</strong></td><td id="nacD" class="" style="width:328.5px">표현 디코딩에서 유전자형으로 매핑하는 것</td></tr><tr id="26a8e11f-9262-8053-8ed4-efdf3deb16c0"><td id="aOs}" class="" style="width:328.5px"><strong>디코딩 (decoding)</strong></td><td id="nacD" class="" style="width:328.5px">유전자형에서 표현형으로 역 매핑하는 것</td></tr><tr id="26a8e11f-9262-805f-b63f-f9e3f0141a19"><td id="aOs}" class="" style="width:328.5px"><strong>유전자형 (genotype)</strong></td><td id="nacD" class="" style="width:328.5px">형질의 염색체에 의한 내부 표현 (structure)</td></tr><tr id="26a8e11f-9262-80db-b68f-ef8c10273966"><td id="aOs}" class="" style="width:328.5px"><strong>표현형 (phenotype)</strong></td><td id="nacD" class="" style="width:328.5px">염색체에 의해 규정된 형질을 외부적으로 표현. 파라미터 집합(parameter set), 대체해(alternative solution), 디코드 구조체(decoded structure)로 표현</td></tr></tbody></table><p id="26a8e11f-9262-8004-b8c7-fbd5cf5c0210" class="">
+</p><h3 id="26a8e11f-9262-803b-b2dc-e05e6d046091" class="">E. GA Background</h3><ul id="26a8e11f-9262-8008-a55c-d3c34bdde075" class="bulleted-list"><li style="list-style-type:disc">스키마(schema)<ul id="26a8e11f-9262-8030-83c4-ec91546d7e66" class="bulleted-list"><li style="list-style-type:circle">정해진 스트링 위치에 같은 비트값을 가진 가능한 스트링들의 부분집합</li></ul><ul id="26a8e11f-9262-803d-8245-f17fc722ca3c" class="bulleted-list"><li style="list-style-type:circle">개체 중에 부분적 유전자좌에 주목하여 <em>(don&#x27;t care symbol)로 표현하여 개체를 평가하는 방법을 부여하는 수학적 도구</em></li></ul><ul id="26a8e11f-9262-80f4-9bf5-c013929f4b1b" class="bulleted-list"><li style="list-style-type:circle"><em>예) 1</em>01, 000*, <em>1</em>*, 0101 : 스키마<ul id="26a8e11f-9262-8039-b445-fda042acf503" class="bulleted-list"><li style="list-style-type:square">4개의 비트를 가진 H = 1<strong>0 인 스키마: 첫 번째 자리에 1의 값을 그리고 4번째 자리에 0의 값을 가지는 모든 스트링을 나타냄. H = 1</strong>0 = {1000, 1010, 1100, 1110}</li></ul></li></ul></li></ul><ul id="26a8e11f-9262-80e1-97ed-dfeb352fbe8c" class="bulleted-list"><li style="list-style-type:disc">인스턴스(instance): 스키마에 의해 표현되는 각각의 스트링 위에서 1000, 1010 등은 스키마 1<strong>0의 인스턴스</strong></li></ul><ul id="26a8e11f-9262-80ac-b7c9-cb8e79dc6e1b" class="bulleted-list"><li style="list-style-type:disc"><strong>고정위치(fixed position): 스키마에서 0 또는 1의 값을 가진 유전자의 위치</strong></li></ul><ul id="26a8e11f-9262-8084-960e-f47805de1aa1" class="bulleted-list"><li style="list-style-type:disc"><strong>스키마의 차수(order: o(H)): 고정위치의 개수</strong></li></ul><ul id="26a8e11f-9262-80dd-99eb-cbef7821b40b" class="bulleted-list"><li style="list-style-type:disc"><strong>스키마의 길이(defining length: δ(H)): 가장 왼쪽 고정위치와 가장 오른쪽 고정위치 사이의 길이<br/>(예) 스키마 H = *10</strong>0* 가 있을 때 o(H) = 3, δ(H) = 4 가 된다</li></ul><p id="26a8e11f-9262-80f7-84f5-e3daa33d1b25" class="">
+</p><figure id="26a8e11f-9262-8012-87aa-e2741e637d97" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%204.png"><img style="width:681.984375px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%204.png"/></a></figure><p id="26a8e11f-9262-8036-a5b1-c3a64b5a7f74" class="">
+</p><p id="26a8e11f-9262-80cf-84d1-fdf9e2d9d7bb" class="">
+</p><hr id="26a8e11f-9262-8069-b6e5-cf41142813a2"/><p id="26a8e11f-9262-80af-8e09-ef1fba82c3c9" class="">
+</p><p id="26a8e11f-9262-80ec-8a39-d388ace8ccde" class="">
+</p><p id="26a8e11f-9262-800c-b2cb-c1151b431161" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. 유전 알고리즘의 작동 원리</summary><div class="indented"><p id="26a8e11f-9262-8066-b6a0-c72046a4742d" class="">GA 프로세스는 <strong>유전자형 결정 → 초기 집단 생성 → 적합도 평가 → 선택 → 교배 → 돌연변이</strong>의 단계를 반복적으로 수행함.</p><h3 id="26a8e11f-9262-80ab-be07-fb2684b04c57" class=""><strong>1단계: 유전자형 결정 (해의 표현)</strong></h3><ul id="26a8e11f-9262-8076-8309-c3ee708f7601" class="bulleted-list"><li style="list-style-type:disc">풀고자 하는 문제의 변수 값을 주로 이진 문자열(binary string)으로 표현.</li></ul><ul id="26a8e11f-9262-8073-8385-cdc1082a2d27" class="bulleted-list"><li style="list-style-type:disc">문제의 특성에 따라 다양한 표현법 사용 가능.<ul id="26a8e11f-9262-8057-9fc5-f1fadeac3093" class="bulleted-list"><li style="list-style-type:circle"><strong>이진(Binary):</strong> 배낭 문제처럼 포함 여부를 0/1로 표현.</li></ul><ul id="26a8e11f-9262-8086-aa47-fa355f80d362" class="bulleted-list"><li style="list-style-type:circle"><strong>순열(Permutation):</strong> TSP 문제처럼 도시 방문 순서 <code>(3 4 1 7 2 5 8 6)</code> 등으로 표현. [cite: 97, 98]</li></ul><ul id="26a8e11f-9262-8087-ba54-fba2675209fb" class="bulleted-list"><li style="list-style-type:circle"><strong>실수(Real-valued):</strong> 변수가 연속적인 실수 값을 가질 때 사용.</li></ul></li></ul><h3 id="26a8e11f-9262-80ed-b745-d216785aff48" class=""><strong>2단계: 초기 유전자 집단 생성</strong></h3><ul id="26a8e11f-9262-80b8-97ff-de5a205d0dde" class="bulleted-list"><li style="list-style-type:disc">해결하려는 문제 공간 내에서 무작위로 일정 수의 해(염색체)를 생성하여 초기 집단을 구성함.</li></ul><h3 id="26a8e11f-9262-80ee-bf3e-f298dd630504" class=""><strong>3단계 &amp; 4단계: 적합도 평가와 선택</strong></h3><ul id="26a8e11f-9262-8057-b0c7-c93a2bb1d372" class="bulleted-list"><li style="list-style-type:disc"><strong>적합도 함수 (Fitness Function):</strong> 각 개체(해)가 얼마나 우수한지를 정량적으로 평가하는 기준. [cite: 101] 목적 함수 값을 기반으로 설계하며, 때로는 값의 범위를 조정하는 <strong>스케일링(scaling)</strong> 과정을 거침. </li></ul><ul id="26a8e11f-9262-80cb-8796-f05f8fc82de2" class="bulleted-list"><li style="list-style-type:disc"><strong>선택 (Selection):</strong> 적합도에 비례하여 우수한 개체들이 다음 세대의 부모가 될 확률을 높이는 과정. <ul id="26a8e11f-9262-800f-ae2a-d8d3b4effce4" class="bulleted-list"><li style="list-style-type:circle"><strong>룰렛 휠 선택:</strong> 각 개체의 적합도에 비례하는 확률로 선택. </li></ul><ul id="26a8e11f-9262-80a9-aad9-d95f6777539e" class="bulleted-list"><li style="list-style-type:circle"><strong>엘리트 보존 선택:</strong> 현 세대에서 가장 우수한 개체를 다음 세대에 그대로 보존하여 최적해의 손실을 방지.</li></ul><ul id="26a8e11f-9262-8019-9d95-ec9a7f35053e" class="bulleted-list"><li style="list-style-type:circle"><strong>순위 선택:</strong> 절대적인 적합도 값이 아닌 순위에 따라 선택 확률을 결정. [cite: 126]</li></ul><ul id="26a8e11f-9262-8086-acac-ca25510b32c9" class="bulleted-list"><li style="list-style-type:circle"><strong>토너먼트 선택:</strong> 집단에서 무작위로 일부를 선택해 그중 가장 좋은 개체를 최종 선택하는 방식.</li></ul></li></ul><h3 id="26a8e11f-9262-809f-8677-cf799f131fbc" class=""><strong>5단계: 교배 (Crossover)</strong></h3><figure id="26a8e11f-9262-806f-a03b-fe3f20b8cf72" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%205.png"><img style="width:681.9765625px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%205.png"/></a></figure><figure id="26a8e11f-9262-8047-a24a-e6c48ea93e74" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%206.png"><img style="width:681.984375px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%206.png"/></a></figure><ul id="26a8e11f-9262-80ad-88be-eb305c6ddfbd" class="bulleted-list"><li style="list-style-type:disc">두 부모 개체 간에 유전 정보를 부분적으로 교환하여 새로운 자손을 생성하는 핵심 연산. <ul id="26a8e11f-9262-80ad-866a-c37c5c352708" class="bulleted-list"><li style="list-style-type:circle"><strong>단순(단일점) 교배:</strong> 염색체의 한 지점을 잘라 서로 교환.</li></ul><ul id="26a8e11f-9262-801e-99cd-e07a8c5d987f" class="bulleted-list"><li style="list-style-type:circle"><strong>복수점 교배:</strong> 두 개 이상의 지점을 기준으로 유전자를 교환.]</li></ul><ul id="26a8e11f-9262-807b-8dd4-d36ea5dcd879" class="bulleted-list"><li style="list-style-type:circle"><strong>균등 교배:</strong> 각 유전자 자리마다 확률적으로 부모 중 누구의 유전자를 받을지 결정. </li></ul><ul id="26a8e11f-9262-8069-be2e-ff8db51801b3" class="bulleted-list"><li style="list-style-type:circle"><strong>순서 기반 교배 (PMX, OX, CX 등):</strong> 순서가 중요한 순열 문제에서 유효한 해를 생성하기 위한 특수 교배 방식.</li></ul></li></ul><h3 id="26a8e11f-9262-8064-bd27-dccaac6576e4" class=""><strong>6단계: 돌연변이 (Mutation)</strong></h3><figure id="26a8e11f-9262-8020-ac9d-dbe8ffd886b5" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%207.png"><img style="width:681.9453125px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%207.png"/></a></figure><figure id="26a8e11f-9262-800c-95ea-fc0f16b2d8ea" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%208.png"><img style="width:681.9453125px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%208.png"/></a></figure><ul id="26a8e11f-9262-8000-a538-d3894afd9eca" class="bulleted-list"><li style="list-style-type:disc">개체의 유전자 값을 아주 작은 확률로 임의 변경하는 연산.</li></ul><ul id="26a8e11f-9262-80ec-8791-fa3f6e681294" class="bulleted-list"><li style="list-style-type:disc">집단의 다양성을 유지하고 <strong>지역 최적해(Local Optimum)</strong>에 빠지는 것을 방지하는 중요한 수단.</li></ul><p id="26a8e11f-9262-80ac-921f-c0998a24e38a" class="">
+</p><figure id="26a8e11f-9262-8073-8f75-c6ba4cc9d31b" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%209.png"><img style="width:681.9921875px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%209.png"/></a></figure><p id="26a8e11f-9262-8070-afcc-e90d62aebe4d" class="">
+</p><hr id="26a8e11f-9262-8038-90b1-c57e9f56213f"/><p id="26a8e11f-9262-8079-95f3-d392165b0d54" class="">
+</p><p id="26a8e11f-9262-80fa-abab-c9c4a9019169" class="">
+</p><p id="26a8e11f-9262-8089-906f-e007233876e8" class="">
+</p><p id="26a8e11f-9262-80bf-8b2e-e932ecdb4750" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. 유전 알고리즘 심화</summary><div class="indented"><h2 id="26a8e11f-9262-808f-833b-c2040fc9b543" class="">4-1) 스키마 이론 (Schema Theorem)</h2><ul id="26a8e11f-9262-804e-80b9-ecacc3e584fc" class="bulleted-list"><li style="list-style-type:disc"><strong>정의</strong><br/>스키마 H는 염색체 집합에서 특정 위치에 고정된 값을 갖고, 나머지는 로 일반화된 패턴.<br/>예: <code>H = 1*0*</code> → {1000, 1010, 1100, 1110}</li></ul><ul id="26a8e11f-9262-80be-8f63-f5cdb8256c9f" class="bulleted-list"><li style="list-style-type:disc"><strong>개념 요소</strong><ul id="26a8e11f-9262-809b-b5ad-ed6fb2e569f1" class="bulleted-list"><li style="list-style-type:circle">차수 <code>o(H)</code>: 고정된 위치의 개수.</li></ul><ul id="26a8e11f-9262-80a7-8e58-d477aabf4c24" class="bulleted-list"><li style="list-style-type:circle">길이 <code>δ(H)</code>: 가장 왼쪽 고정 위치와 가장 오른쪽 고정 위치 간의 거리.</li></ul><ul id="26a8e11f-9262-80ac-a564-ce5c1b88c37a" class="bulleted-list"><li style="list-style-type:circle">인스턴스(instance): 스키마 H를 만족하는 실제 문자열 집합.</li></ul></li></ul><ul id="26a8e11f-9262-80a0-a107-cf8ec5b042eb" class="bulleted-list"><li style="list-style-type:disc"><strong>스키마 정리(Holland, 1975)</strong><br/>세대 t에서 스키마 H에 속하는 평균 적합도를 <code>f(H)</code>라 하면, 선택(selection), 교차(crossover), 변이(mutation)을 거친 다음 세대 t+1에서 H의 기대 개체 수는 다음과 같음.<figure id="26a8e11f-9262-80f0-a25d-fd5ce8137543" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mo stretchy="false">[</mo><mi>m</mi><mo stretchy="false">(</mo><mi>H</mi><mo separator="true">,</mo><mi>t</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>≥</mo><mi>m</mi><mo stretchy="false">(</mo><mi>H</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>⋅</mo><mfrac><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><mover accent="true"><mi>f</mi><mo>ˉ</mo></mover></mfrac><mo>⋅</mo><mo fence="false" stretchy="true" minsize="1.8em" maxsize="1.8em">(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>c</mi></msub><mfrac><mrow><mi>δ</mi><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow><mrow><mi>L</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo fence="false" stretchy="true" minsize="1.8em" maxsize="1.8em">)</mo><mo>⋅</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>m</mi></msub><msup><mo stretchy="false">)</mo><mrow><mi>o</mi><mo stretchy="false">(</mo><mi>H</mi><mo stretchy="false">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">E[m(H, t+1)] \geq m(H, t) \cdot \frac{f(H)}{\bar{f}} \cdot \Big( 1 - p_c \frac{\delta(H)}{L-1} \Big) \cdot (1 - p_m)^{o(H)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord mathnormal">m</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.3427em;vertical-align:-0.9157em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.2788em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8312em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.0833em;"><span class="mord">ˉ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9157em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.8em;vertical-align:-0.65em;"></span><span class="mord"><span class="delimsizing size2">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="delimsizing size2">)</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.188em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">o</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></div></figure><ul id="26a8e11f-9262-80da-8d90-fbea97a41192" class="bulleted-list"><li style="list-style-type:circle">$m(H,t)$: 세대 t에서 H의 개체 수</li></ul><ul id="26a8e11f-9262-8045-8d50-e625e7acd45c" class="bulleted-list"><li style="list-style-type:circle">$\bar{f}$: 전체 집단의 평균 적합도</li></ul><ul id="26a8e11f-9262-8016-a569-d57cc32bdbe7" class="bulleted-list"><li style="list-style-type:circle">$p_c$: 교차 확률</li></ul><ul id="26a8e11f-9262-8001-802b-d4375213d29c" class="bulleted-list"><li style="list-style-type:circle">$p_m$: 변이 확률</li></ul><ul id="26a8e11f-9262-8052-b379-e4a9e7348968" class="bulleted-list"><li style="list-style-type:circle">$L$: 염색체 길이</li></ul></li></ul><ul id="26a8e11f-9262-80a5-98c7-e157cd600ace" class="bulleted-list"><li style="list-style-type:disc"><strong>의의</strong><ul id="26a8e11f-9262-80aa-b553-f1b4129014af" class="bulleted-list"><li style="list-style-type:circle"><strong>짧고(low δ), 차수가 낮으며(low o), 높은 적합도를 가진 스키마는 세대가 거듭될수록 지수적으로 증가</strong>.</li></ul><ul id="26a8e11f-9262-80e8-b7df-e510b497648d" class="bulleted-list"><li style="list-style-type:circle">GA가 단순히 무작위 탐색이 아니라, <strong>유용한 패턴을 점차 증폭</strong>시키는 메커니즘임을 설명.</li></ul></li></ul><hr id="26a8e11f-9262-8097-b907-d50204e608ff"/><h2 id="26a8e11f-9262-8085-92c7-fd6842e3867a" class="">4-2) 암묵적 병렬성 (Implicit Parallelism)</h2><ul id="26a8e11f-9262-80bc-8bb5-cc0f35c3fc9a" class="bulleted-list"><li style="list-style-type:disc"><strong>아이디어</strong>: 한 개체를 평가하면, 그 개체 안에 포함된 수많은 스키마도 동시에 평가되는 것과 같음.</li></ul><ul id="26a8e11f-9262-80c8-9cfb-d82c53706575" class="bulleted-list"><li style="list-style-type:disc">길이 L의 이진 염색체에는 $2^L$개의 스키마가 존재한다.</li></ul><ul id="26a8e11f-9262-80aa-babd-c7a0c0ca5f65" class="bulleted-list"><li style="list-style-type:disc">실제로는 집단 크기가 N일 때, $O(N^3)$에 해당하는 스키마가 매 세대 병렬적으로 평가되는 효과가 있음.</li></ul><ul id="26a8e11f-9262-8098-913b-ef762cfa8fe2" class="bulleted-list"><li style="list-style-type:disc"><strong>효과</strong>: GA는 <strong>명시적 병렬 연산 없이도 병렬 탐색과 유사한 성능</strong>을 만들어 냄.</li></ul><hr id="26a8e11f-9262-80af-aba6-cb27ac995feb"/><h2 id="26a8e11f-9262-80a3-8b9d-d805753c6694" class="">4-3) 추가 연산자 (Extended Operators)</h2><ul id="26a8e11f-9262-80d9-b518-fdd3953f6e47" class="bulleted-list"><li style="list-style-type:disc"><strong>Displacement (치환)</strong>: 특정 구간을 잘라 다른 위치로 옮김. → TSP 같은 순열 문제에서 유용.</li></ul><ul id="26a8e11f-9262-806b-968b-eff3240b79d9" class="bulleted-list"><li style="list-style-type:disc"><strong>Inversion (역위)</strong>: 두 점 사이의 구간을 뒤집어 순서를 반전. → 지역 최적해 탈출에 효과적.</li></ul><ul id="26a8e11f-9262-80d9-aed3-fc061f84a4d7" class="bulleted-list"><li style="list-style-type:disc"><strong>Duplication / Addition / Deletion (가변 길이 연산자)</strong><ul id="26a8e11f-9262-80d8-aee2-de1b9da3c281" class="bulleted-list"><li style="list-style-type:circle">문자열 일부를 중복·삽입·삭제하여 염색체 길이 자체를 변화.</li></ul><ul id="26a8e11f-9262-8076-ab21-e9a85714e025" class="bulleted-list"><li style="list-style-type:circle">→ \*\<em>동적 최적화 문제, 비정형 문제(예: 신경망 구조 탐색)\</em>\*에 적합.</li></ul></li></ul><hr id="26a8e11f-9262-80ca-bef3-e8caad60b231"/><h2 id="26a8e11f-9262-8023-a7aa-dd34c2464caa" class="">4-4) 제약 조건 처리 (Constraint Handling)</h2><ol type="1" id="26a8e11f-9262-80cf-bc23-ca7fc9c4fc06" class="numbered-list" start="1"><li><strong>Penalty Function (페널티 함수)</strong><ul id="26a8e11f-9262-80ea-8a78-d7325f0a15c9" class="bulleted-list"><li style="list-style-type:disc">제약 위반 정도를 패널티 값으로 감점.</li></ul><ul id="26a8e11f-9262-8082-89ff-df345e91c27f" class="bulleted-list"><li style="list-style-type:disc"><strong>동적 페널티</strong>: 세대 진행에 따라 강도 조절.</li></ul><ul id="26a8e11f-9262-808a-b2b1-ed367e0dffce" class="bulleted-list"><li style="list-style-type:disc"><strong>적응형 페널티</strong>: 탐색 성과에 따라 조절.</li></ul></li></ol><ol type="1" id="26a8e11f-9262-8093-8536-f9f83285428f" class="numbered-list" start="2"><li><strong>Repair Methods (수리 기법)</strong><ul id="26a8e11f-9262-8087-8e4e-c9016207b9a9" class="bulleted-list"><li style="list-style-type:disc">위반된 해를 허용해로 변환.</li></ul><ul id="26a8e11f-9262-804a-a150-c1956451a060" class="bulleted-list"><li style="list-style-type:disc">예: 배낭 문제에서 무게 초과 시 가치 대비 무게 비율이 낮은 물건부터 제거.</li></ul></li></ol><ol type="1" id="26a8e11f-9262-80be-b1d2-ebd383235dc2" class="numbered-list" start="3"><li><strong>Decoder Approaches (디코더 설계)</strong><ul id="26a8e11f-9262-8024-8bad-e878588bf1a8" class="bulleted-list"><li style="list-style-type:disc">염색체 표현 자체가 항상 제약을 만족하도록 설계.</li></ul><ul id="26a8e11f-9262-8016-a5d2-de2676d1e9d4" class="bulleted-list"><li style="list-style-type:disc">예: 시간표 문제에서 유효한 배치만 생성되도록 인코딩.</li></ul></li></ol><hr id="26a8e11f-9262-80de-94e0-f5a8ebf22bc9"/><h2 id="26a8e11f-9262-809c-8409-fad6a8d1f8f3" class="">4-5) 다양성 유지와 조기 수렴 방지</h2><ul id="26a8e11f-9262-80a3-80d1-e62ae9336e46" class="bulleted-list"><li style="list-style-type:disc"><strong>니칭(Niching) &amp; 피트니스 셰어링</strong><ul id="26a8e11f-9262-80fb-9a34-c146baa21d89" class="bulleted-list"><li style="list-style-type:circle">개체 간 유사도 기반으로 적합도를 나누어 다양한 해를 유지.</li></ul></li></ul><ul id="26a8e11f-9262-80f4-8c99-cd3fc640065c" class="bulleted-list"><li style="list-style-type:disc"><strong>섬 모델(Island Model) &amp; 이주(Migration)</strong><ul id="26a8e11f-9262-8085-974a-f209249d5f31" class="bulleted-list"><li style="list-style-type:circle">집단을 여러 섬으로 분할, 개별 진화 후 주기적으로 개체 교환.</li></ul><ul id="26a8e11f-9262-8027-a5e4-ca96b92c74ac" class="bulleted-list"><li style="list-style-type:circle">→ 전역 탐색 + 지역 탐색의 균형.</li></ul></li></ul><ul id="26a8e11f-9262-8050-8eb1-e036eb814d0e" class="bulleted-list"><li style="list-style-type:disc"><strong>선택압 조절</strong><ul id="26a8e11f-9262-80bb-9951-c945fc4305cc" class="bulleted-list"><li style="list-style-type:circle">토너먼트 크기, 순위 기반 스케일링 등을 통해 특정 개체로 과도한 집중을 방지.</li></ul></li></ul><hr id="26a8e11f-9262-80e1-87e2-c5cb8185b446"/><h2 id="26a8e11f-9262-805a-99a5-c2b635df171e" class="">4-6) 파라미터 튜닝 가이드</h2><ul id="26a8e11f-9262-80b0-a81d-c1a0022f42f4" class="bulleted-list"><li style="list-style-type:disc"><strong>Population Size</strong>: 30 \~ 200 (난도 ↑ → 크게)</li></ul><ul id="26a8e11f-9262-8054-b2a1-eda52e3da6dd" class="bulleted-list"><li style="list-style-type:disc"><strong>Crossover Rate (pc)</strong>: 0.6 \~ 0.9</li></ul><ul id="26a8e11f-9262-8056-8b34-f55b0a1cff86" class="bulleted-list"><li style="list-style-type:disc"><strong>Mutation Rate (pm)</strong>:<ul id="26a8e11f-9262-8082-970d-edd6a79ac3af" class="bulleted-list"><li style="list-style-type:circle">이진: $1/L$ \~ 0.02</li></ul><ul id="26a8e11f-9262-8085-8643-e380ab64371b" class="bulleted-list"><li style="list-style-type:circle">순열: swap, inversion 등을 1회/개체</li></ul></li></ul><ul id="26a8e11f-9262-808b-9b97-f0b121e7c7b9" class="bulleted-list"><li style="list-style-type:disc"><strong>Elitism (엘리트 보존)</strong>: 1 \~ 5%<ul id="26a8e11f-9262-80d1-99c0-f6f72c55182c" class="bulleted-list"><li style="list-style-type:circle">과도하면 다양성 저해.</li></ul></li></ul><blockquote id="26a8e11f-9262-80b5-88a7-fa15a65ef0e1" class="">실전 팁: 파라미터 최적화는 문제별 경험적 조정이 필요. 최근에는 \*\자동 파라미터 조정(AutoML 스타일)\\*이 연구되고 있음.</blockquote><hr id="26a8e11f-9262-80c6-b4cb-c5e20c50779a"/><h2 id="26a8e11f-9262-80e5-8155-fd6b56a2e1d5" class="">4-7) 적응형 / 자가적응 기법</h2><ul id="26a8e11f-9262-80fa-9f5a-e489ef4c1529" class="bulleted-list"><li style="list-style-type:disc"><strong>Adaptive GA</strong><ul id="26a8e11f-9262-803f-a991-fe6c58117c2d" class="bulleted-list"><li style="list-style-type:circle">세대별 개선도, 집단의 다양성 지표에 따라 <code>pc</code>, <code>pm</code>을 동적으로 조정.</li></ul><ul id="26a8e11f-9262-802d-b690-d8e912396075" class="bulleted-list"><li style="list-style-type:circle">예: 정체 상태 → 변이율 증가.</li></ul></li></ul><ul id="26a8e11f-9262-805a-b353-c007b292c260" class="bulleted-list"><li style="list-style-type:disc"><strong>Self-Adaptive (ES 스타일)</strong><ul id="26a8e11f-9262-8078-92d7-e36f2f9f74e7" class="bulleted-list"><li style="list-style-type:circle">염색체 내부에 <strong>전략 파라미터</strong>(ex. σ 값)를 포함시켜 함께 진화.</li></ul><ul id="26a8e11f-9262-80b0-b50c-f2222759d58e" class="bulleted-list"><li style="list-style-type:circle">실수 기반 GA에서 특히 강력.</li></ul></li></ul><hr id="26a8e11f-9262-8027-a68c-ef1f44636ff8"/><h2 id="26a8e11f-9262-8050-9373-d8ca50a7fc84" class="">4-8) 하이브리드 기법 (Memetic Algorithms)</h2><ul id="26a8e11f-9262-809d-8cb4-e4a6b72050fd" class="bulleted-list"><li style="list-style-type:disc"><strong>GA + Local Search</strong><ul id="26a8e11f-9262-807e-8ae9-c87cd08c569d" class="bulleted-list"><li style="list-style-type:circle">교차/변이 후, 국소 탐색(탐욕적 개선, Simulated Annealing 등)으로 해를 정밀 개선.</li></ul><ul id="26a8e11f-9262-8009-8ab4-ccca7bc426e8" class="bulleted-list"><li style="list-style-type:circle">Ex) TSP 문제: GA로 경로 후보 생성 → 2-opt로 미세 조정.</li></ul></li></ul><ul id="26a8e11f-9262-80f4-a839-c73d1ad70852" class="bulleted-list"><li style="list-style-type:disc"><strong>주의점</strong>: 집단 내 다양성이 줄어드는 것을 방지하기 위해 일부 개체만 적용.</li></ul><hr id="26a8e11f-9262-80f9-b26a-c21cd2ab2493"/><h2 id="26a8e11f-9262-808a-848f-e931b79c4a7d" class="">4-9) 병렬화 (Parallelization)</h2><ul id="26a8e11f-9262-801d-a129-c5dee03b8bef" class="bulleted-list"><li style="list-style-type:disc"><strong>Master–Worker 모델</strong><ul id="26a8e11f-9262-80a0-8698-d16fbf9cb22d" class="bulleted-list"><li style="list-style-type:circle">적합도 계산을 여러 프로세서에 분산.</li></ul><ul id="26a8e11f-9262-8071-8c89-f820c30ebc73" class="bulleted-list"><li style="list-style-type:circle">계산량이 큰 문제(예: 시뮬레이션 기반 평가)에 유리.</li></ul></li></ul><ul id="26a8e11f-9262-80ac-b9c4-c04e5daab89a" class="bulleted-list"><li style="list-style-type:disc"><strong>Island Model</strong><ul id="26a8e11f-9262-8027-a201-c1a9941a8a93" class="bulleted-list"><li style="list-style-type:circle">병렬 집단 진화 + 주기적 이주.</li></ul><ul id="26a8e11f-9262-8006-b807-c225a52a34b0" class="bulleted-list"><li style="list-style-type:circle">대규모 분산 환경(클러스터, GPU)에서 확장성 확보.</li></ul></li></ul><hr id="26a8e11f-9262-80c3-af8f-d9eabb806877"/><p id="26a8e11f-9262-80e0-bd25-e0616f37ce60" class="">
+</p><p id="26a8e11f-9262-80ff-80bd-cd592765df17" class="">
+</p><p id="26a8e11f-9262-8062-bc0c-cc99d386999b" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 진화적 전략</summary><div class="indented"><h3 id="26a8e11f-9262-80a9-a3b9-d9bd88f113c8" class="">A. 진화적 전략 (Evolution Strategy, ES)</h3><ul id="26a8e11f-9262-8044-ab5d-da03cf17fe90" class="bulleted-list"><li style="list-style-type:disc"><strong>핵심 아이디어</strong><br/>다수 개체로 구성된 집단 개념을 도입하여 <strong>랜덤 교배, 돌연변이, 선택</strong>이라는 진화 원리를 활용하는 전략.</li></ul><ul id="26a8e11f-9262-8082-bc96-e77b3096ecb7" class="bulleted-list"><li style="list-style-type:disc"><strong>특징</strong><ul id="26a8e11f-9262-8052-8856-e85b3e77d2d8" class="bulleted-list"><li style="list-style-type:circle">개체의 평가 방법 외에는 문제에 대한 사전 지식이 거의 필요 없음.</li></ul><ul id="26a8e11f-9262-80b8-be38-c82cb93ea2f6" class="bulleted-list"><li style="list-style-type:circle">선형/비선형 제약조건을 포함한 <strong>고차원·멀티모달 비선형 문제</strong> 해결 가능.</li></ul><ul id="26a8e11f-9262-803c-8968-f17f84326dde" class="bulleted-list"><li style="list-style-type:circle">대부분의 최적화 문제에 적용 가능.</li></ul></li></ul><ul id="26a8e11f-9262-807d-9fb4-fa950cd07e65" class="bulleted-list"><li style="list-style-type:disc"><strong>알고리즘 절차</strong><ol type="1" id="26a8e11f-9262-8019-97fc-db669a54b2f9" class="numbered-list" start="1"><li><strong>초기화</strong><ul id="26a8e11f-9262-80be-8185-f8d9c31050d6" class="bulleted-list"><li style="list-style-type:disc">부모 벡터 집단 $X_i (i = 1, …, μ)$를 실행 범위에서 무작위로 선택.</li></ul></li></ol><ol type="1" id="26a8e11f-9262-8098-9531-fbd48f762a33" class="numbered-list" start="2"><li><strong>돌연변이</strong><ul id="26a8e11f-9262-80ae-afb9-fa86f8e57558" class="bulleted-list"><li style="list-style-type:disc">각 부모 $X_i$로부터 Gaussian 분포 기반의 랜덤 변화를 적용하여 자손 벡터 생성.</li></ul></li></ol><ol type="1" id="26a8e11f-9262-80e5-8a78-d44dea2b153e" class="numbered-list" start="3"><li><strong>평가</strong><ul id="26a8e11f-9262-80fd-b5a9-f0cdb546af29" class="bulleted-list"><li style="list-style-type:disc">부모 및 자손의 적합도 계산.</li></ul></li></ol><ol type="1" id="26a8e11f-9262-8071-b525-cdd51bc496ff" class="numbered-list" start="4"><li><strong>선택</strong><ul id="26a8e11f-9262-807e-928b-fa77c88b5560" class="bulleted-list"><li style="list-style-type:disc">적합도 기준으로 다음 세대 부모 집단을 선택.</li></ul></li></ol><ol type="1" id="26a8e11f-9262-800b-8a7c-f7f5837622c2" class="numbered-list" start="5"><li><strong>반복</strong><ul id="26a8e11f-9262-80b5-ab04-ffb5cb2d7a02" class="bulleted-list"><li style="list-style-type:disc">2단계 \~ 4단계를 해가 수렴할 때까지 반복.</li></ul></li></ol></li></ul><hr id="26a8e11f-9262-804c-a5ad-d8413eb89ca6"/><h3 id="26a8e11f-9262-80b9-884d-d016b9911ad2" class="">B. 진화적 프로그래밍 (Evolutionary Programming, EP)</h3><ul id="26a8e11f-9262-8063-9c93-c5d05ac52413" class="bulleted-list"><li style="list-style-type:disc"><strong>핵심 아이디어</strong><ul id="26a8e11f-9262-80f9-9538-d71b6c263d8e" class="bulleted-list"><li style="list-style-type:circle">교배 연산을 사용하지 않음.</li></ul><ul id="26a8e11f-9262-8030-86cd-ed35170a7cec" class="bulleted-list"><li style="list-style-type:circle">돌연변이에 사용되는 <strong>표준편차 값 자체를 돌연변이</strong>시키는 <em>메타 진화 프로그래밍</em>을 적용.</li></ul><ul id="26a8e11f-9262-80d1-bfc5-dbd9a313c2e3" class="bulleted-list"><li style="list-style-type:circle">해가 점진적으로 최적값에 수렴하도록 조절.</li></ul></li></ul><ul id="26a8e11f-9262-8042-b184-d0c5b73847d5" class="bulleted-list"><li style="list-style-type:disc"><strong>알고리즘 절차</strong><ol type="1" id="26a8e11f-9262-8095-aaf1-d70389206d2c" class="numbered-list" start="1"><li><strong>초기화</strong><ul id="26a8e11f-9262-8079-b089-cb622654ab57" class="bulleted-list"><li style="list-style-type:disc">초기 집단을 무작위 값으로 생성.</li></ul><ul id="26a8e11f-9262-8024-bcfa-cdba86edb2fa" class="bulleted-list"><li style="list-style-type:disc">집단 크기는 최적화 속도에 큰 영향 → 그러나 “적정 크기”는 문제 의존적.</li></ul></li></ol><ol type="1" id="26a8e11f-9262-80d6-be69-c906f4f748bb" class="numbered-list" start="2"><li><strong>복제 및 돌연변이</strong><ul id="26a8e11f-9262-804f-b63c-c2b4f2439380" class="bulleted-list"><li style="list-style-type:disc">각 개체를 새로운 집단으로 복제.</li></ul><ul id="26a8e11f-9262-80bd-ac9e-e9f57b07fd50" class="bulleted-list"><li style="list-style-type:disc">돌연변이 강도는 부모 개체의 변화 요구도에 의존.</li></ul><ul id="26a8e11f-9262-80b8-ac39-f7adb7349c88" class="bulleted-list"><li style="list-style-type:disc">돌연변이 방식:<ul id="26a8e11f-9262-80aa-84d8-e8977c2b7ddd" class="bulleted-list"><li style="list-style-type:circle">표준 정규분포 변이</li></ul><ul id="26a8e11f-9262-80e7-8427-f7c2ba67e071" class="bulleted-list"><li style="list-style-type:circle">로그 정규분포 변이</li></ul><ul id="26a8e11f-9262-807d-9b16-fd4070b9d75a" class="bulleted-list"><li style="list-style-type:circle">평균 돌연변이</li></ul><ul id="26a8e11f-9262-80a6-8585-e25c43433ea4" class="bulleted-list"><li style="list-style-type:circle">자기적응(Self-adaptive) 평균 돌연변이</li></ul></li></ul></li></ol><ol type="1" id="26a8e11f-9262-801f-ad69-c36f5b612b6b" class="numbered-list" start="3"><li><strong>선택</strong><ul id="26a8e11f-9262-8052-8a15-fca621458d47" class="bulleted-list"><li style="list-style-type:disc">자식 개체를 평가 후, \*\<em>확률적 승자승(selection by tournaments)\</em>\*으로 다음 세대를 구성.</li></ul></li></ol></li></ul><hr id="26a8e11f-9262-80c6-b1cd-cf135c8bec9d"/><h3 id="26a8e11f-9262-8039-be13-f743de6230d9" class="">C. 유전자 프로그래밍 (Genetic Programming, GP)</h3><ul id="26a8e11f-9262-80bf-a924-f74033d7a680" class="bulleted-list"><li style="list-style-type:disc"><strong>핵심 아이디어</strong><ul id="26a8e11f-9262-802b-b19a-dc3227b27b67" class="bulleted-list"><li style="list-style-type:circle">인간이 직접 프로그래밍하지 않아도, <strong>컴퓨터가 스스로 문제 해결 프로그램을 진화</strong>시키는 전략.</li></ul><ul id="26a8e11f-9262-80e4-a17d-c55a43a06863" class="bulleted-list"><li style="list-style-type:circle">유전자 알고리즘(GA)에 기반하나, <strong>동적 트리 구조</strong>를 염색체 표현으로 사용.</li></ul><ul id="26a8e11f-9262-80c6-bfb6-f491956c375d" class="bulleted-list"><li style="list-style-type:circle"><strong>출력 차이</strong><ul id="26a8e11f-9262-809d-9ef1-c210978d5099" class="bulleted-list"><li style="list-style-type:square">GA: 수치적 해(solution)</li></ul><ul id="26a8e11f-9262-80fa-9dc2-da6bff111799" class="bulleted-list"><li style="list-style-type:square">GP: 프로그램(알고리즘)</li></ul></li></ul></li></ul><ul id="26a8e11f-9262-80ab-92f0-d7c6a95489c5" class="bulleted-list"><li style="list-style-type:disc"><strong>필수 정의 요소</strong><ul id="26a8e11f-9262-8034-a13e-f01aa1672014" class="bulleted-list"><li style="list-style-type:circle"><strong>원시 함수 집합 (Primitive functions)</strong></li></ul><ul id="26a8e11f-9262-80a0-846d-efdf1eb813ea" class="bulleted-list"><li style="list-style-type:circle"><strong>터미널 집합 (Terminals)</strong></li></ul><ul id="26a8e11f-9262-80de-84f7-d78da9530b42" class="bulleted-list"><li style="list-style-type:circle"><strong>적합도 함수 (Fitness function)</strong> → GP 성능의 핵심.</li></ul></li></ul><ul id="26a8e11f-9262-802e-b5d3-e8f0aa685eee" class="bulleted-list"><li style="list-style-type:disc"><strong>주요 연산자</strong><ul id="26a8e11f-9262-80fe-93d9-d4d96b6e786a" class="bulleted-list"><li style="list-style-type:circle">교배 연산(Crossover)이 핵심.</li></ul><ul id="26a8e11f-9262-801e-9c5b-d02dd748f08f" class="bulleted-list"><li style="list-style-type:circle">변이 연산도 가능하지만 보조적 역할.</li></ul></li></ul><ul id="26a8e11f-9262-8047-b5a9-c93ea14d4bd4" class="bulleted-list"><li style="list-style-type:disc"><strong>활용 분야</strong><ul id="26a8e11f-9262-8092-ac93-c4f522ec780e" class="bulleted-list"><li style="list-style-type:circle">최적화 문제</li></ul><ul id="26a8e11f-9262-8034-b889-c14e8b199e69" class="bulleted-list"><li style="list-style-type:circle">자동 프로그래밍 (예: 로봇 제어, 자동 코드 생성)</li></ul><ul id="26a8e11f-9262-80ae-9200-f84c8080a285" class="bulleted-list"><li style="list-style-type:circle">모델링 및 예측</li></ul><ul id="26a8e11f-9262-80fd-80dd-ee37e347a4d0" class="bulleted-list"><li style="list-style-type:circle">데이터 마이닝, 패턴 탐지</li></ul></li></ul><p id="26a8e11f-9262-80da-b978-d3b85f61b1d9" class="">
+</p><figure id="26a8e11f-9262-80eb-81b8-e729db9d4af7" class="image"><a href="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%2010.png"><img style="width:681.9921875px" src="01%20%EC%9C%A0%EC%A0%84%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EC%9D%98%20%EA%B0%9C%EC%9A%94%202588e11f926281d8a789fa9045a8fb11/image%2010.png"/></a></figure></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
