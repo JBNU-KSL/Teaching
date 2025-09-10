@@ -687,6 +687,7 @@ blockquote.quote-large {
 }
 
 
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
 summary {
   list-style: none; /* 일부 브라우저 */
 }
@@ -696,78 +697,107 @@ summary::-webkit-details-marker {
 }
 
 summary::marker {
-  content: none;   /* 파이어폭스 등 */
+  content: none; /* 파이어폭스 등 */
 }
 
-
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
 .properties {
-	display: none;
+  display: none;
 }
 
 @media print {
-@page {
-  size: 338.67mm 190.5mm;  /* 16:9 비율, A4보다 큼 */
-  margin: 10mm 10mm 9mm 10mm;
-}
 
-  html, body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  
-  /* 페이지 가운데 정렬 영역 */
-  header{
-    min-height: calc(100vh - 36mm);   /* @page 여백 감안한 높이 */
-    display:flex;
-    position: relative;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
   }
 
-  /* 본문 타이틀(원래의 00. OT) */
-  .page-title{
-    margin:0;
-    line-height:1.25;
-    font-weight:800;
-    font-size: clamp(18pt, 3.6vw, 26pt); /* 반응형 크기 */
+  @page {
+    size: 210mm 7100mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
     letter-spacing: .01em;
     position: relative;
-    padding: 2.4rem 0; /* 상·하 여유 공간 */
+    padding: 2.4rem 0;
+    break-after: page;
   }
 
-  /* 최상단 큰 제목 */
-  .page-title::before{
-    content: "웹서비스설계 (25-02)\A";
-    white-space: pre-line;     /* \A 줄바꿈 활성화 */
-    display:block;
-    font-weight:900;
-    font-size: clamp(34pt, 7vw, 36pt);  /* 가장 크게 */
-    letter-spacing:.02em;
-    margin-bottom: .65em;      /* 큰제목 ↔ 00.OT 간격 */
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "웹서비스설계 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
   }
 
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
   body::after {
 	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
-	  white-space: pre-line;
-	  position: absolute;
-	  bottom: 1.5cm;    /* 프린트 안전영역 고려 */
-	  left: 50%;
-	  transform: translateX(-50%);
-	  font-size: 11pt;
-	  font-weight: 500;
-	  line-height: 1.6;
-	  text-align: center;
-	}
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
 
-:root{
-  --logo-w: 20mm;   /* 로고 너비/높이 */
-  --gap-r: 0mm;     /* 로고 오른쪽 여백(라인 잘라낼 폭에 포함됨) */
-  --line-t: #B0411D;
-  --line-b: #7A1B7A;
-}
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
 
-
-  
-  summary{
-    break-before: page;
+  summary {
     position: relative;
     display: flex;
     align-items: center;
@@ -777,47 +807,51 @@ summary::marker {
     font-weight: 1000;
     letter-spacing: .02em;
 
-    /* 위/아래 라인: 오른쪽(로고+여백)만큼 길이 축소 */
     background:
       linear-gradient(var(--line-t), var(--line-t)) 40% top /
-        calc(100% - 30%) 4px no-repeat,
+      calc(100% - 30%) 4px no-repeat,
       linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
-        calc(70%) 4px no-repeat;
+      calc(70%) 4px no-repeat;
 
-    padding: 3mm 0;
-    margin: 0;
+    padding: 5mm 0;
+    margin-top: 1500mm;
   }
 
-  /* 로고: 오른쪽 가운데 */
-  summary::after{
-    content:"";
-    position:absolute;
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
     width: calc(var(--logo-w) - 10px);
     height: calc(var(--logo-w) - 10px);
     background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
-                center/contain no-repeat;
+      center/contain no-repeat;
   }
 
-    summary::before{
-    content:"";
-    position:absolute;
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
     width: calc(var(--logo-w) - 10px);
     height: calc(var(--logo-w) - 10px);
     background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
-                center/contain no-repeat;
+      center/contain no-repeat;
   }
 
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
 
-/* summary 다음 요소와의 간격을 확실히 보장 */
-summary + *{
-  margin-top: 15mm !important;   /* margin-bottom이 먹지 않을 때도 확실히 간격 생김 */
-}
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
 }
 
 	
