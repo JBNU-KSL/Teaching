@@ -1,0 +1,869 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>03. Back-End Architecture (EN)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(199, 121, 69, 1);
+	fill: rgba(199, 121, 69, 1);
+}
+.highlight-yellow {
+	color: rgba(175, 136, 66, 1);
+	fill: rgba(175, 136, 66, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(174, 96, 133, 1);
+	fill: rgba(174, 96, 133, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.highlight-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.highlight-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.highlight-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.highlight-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.highlight-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.highlight-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(199, 121, 69, 1);
+	fill: rgba(199, 121, 69, 1);
+}
+.block-color-yellow {
+	color: rgba(175, 136, 66, 1);
+	fill: rgba(175, 136, 66, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(174, 96, 133, 1);
+	fill: rgba(174, 96, 133, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 2000mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "Web Service Design (25-02) \A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "Prof. Kyungsu Lee\A Computer Science & Artificial Intelligence, JBNU\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+
+	
+</style></head><body><article id="26f8e11f-9262-80d5-9807-de7b408ab106" class="page sans"><header><h1 class="page-title">03. Back-End Architecture (EN)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>날짜</th><td></td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><strong>1.Back-End Server Structure</strong></summary><div class="indented"><h3 id="26f8e11f-9262-80ce-a4cd-ddc107ea1934" class="">A. Back-End Trend?</h3><ul id="26f8e11f-9262-80bf-9b5d-d619d931a53d" class="bulleted-list"><li style="list-style-type:disc">Recently, &#x27;<strong>serverless</strong>&#x27; has become a trend in the back-end field, and it is one of the models of cloud computing, which is an architecture that does not require developers to manage servers directly.</li></ul><ul id="26f8e11f-9262-806f-9d12-e6dc48efcb69" class="bulleted-list"><li style="list-style-type:disc">If a backend developer expects 10,000 users on a server and buys the right amount of capacity, he or she will pay the same amount whether there are 10,000 or zero users. This situation can cause losses, large or small.</li></ul><ul id="26f8e11f-9262-80c0-977d-f8cbbc5cdd52" class="bulleted-list"><li style="list-style-type:disc"><strong>Serverless</strong>, however, <strong>dynamically allocates resources on the server</strong>. When there are no users, it waits without allocating resources and only when requests come in, it allocates resources to serve them.</li></ul><ul id="26f8e11f-9262-80f1-b4ff-cc9e84923307" class="bulleted-list"><li style="list-style-type:disc">Recently, there&#x27;s been a lot of interest in server-side rendering (SSR)!</li></ul><ul id="26f8e11f-9262-8019-8511-ee52407d4351" class="bulleted-list"><li style="list-style-type:disc">Server-Side Rendering (SSR) is a method of pre-rendering the content of a web page on the server and then delivering the finished HTML to the client. This approach is beneficial for SEO (search engine optimization) because it allows for faster first-page loading speeds, since the finished page is already visible on the screen before any JavaScript is executed on the client side.</li></ul><ul id="26f8e11f-9262-805e-8173-fe4cf51fc9a3" class="bulleted-list"><li style="list-style-type:disc">SSR specifically improves SEO performance by making it easier for search engines to crawl your web pages. It also improves user experience because the initial screen is displayed quickly. However, it can increase the load on your server and may require more complex setup than client-side rendering (CSR).</li></ul><ul id="26f8e11f-9262-8036-87c2-ef3b709cf0a4" class="bulleted-list"><li style="list-style-type:disc">Major frameworks include Next.js (React), Nuxt.js (Vue.js), and others.</li></ul><p id="26f8e11f-9262-80bc-b0aa-c49097905787" class="">
+</p><p id="26f8e11f-9262-8099-aefa-ff3b57670b7d" class="">
+</p><h3 id="26f8e11f-9262-80ba-80f1-f69b37d2d88e" class="">B. Types and structure of different servers</h3><p id="26f8e11f-9262-8075-9695-cca1f92bb747" class="">* Servers are categorized by role and function, and the scope of a backend developer&#x27;s responsibilities depends on which server they are working with.<div class="indented"><ul id="26f8e11f-9262-8021-893f-d5e4c0c2ed5a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Web Server (Web Server)</strong></mark><ul id="26f8e11f-9262-80fe-9061-c5a3ecf82230" class="bulleted-list"><li style="list-style-type:circle">Receives HTTP requests and serves static content (HTML, CSS, JS).</li></ul><ul id="26f8e11f-9262-8091-bce5-e724e0cf2818" class="bulleted-list"><li style="list-style-type:circle">Examples: Apache, Nginx</li></ul></li></ul><ul id="26f8e11f-9262-8006-abdf-de82d9438a8e" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Application Server</strong></mark><ul id="26f8e11f-9262-802d-bddc-e8f4ef6eb6c4" class="bulleted-list"><li style="list-style-type:circle">Executes business logic and generates dynamic content</li></ul><ul id="26f8e11f-9262-80ae-b971-eed631f0778f" class="bulleted-list"><li style="list-style-type:circle">Examples: Node.js, Spring Boot, Django</li></ul></li></ul><ul id="26f8e11f-9262-8022-a971-ccff505ff0b4" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Database Server (DB Server)</strong></mark><ul id="26f8e11f-9262-80ad-b907-e306da770327" class="bulleted-list"><li style="list-style-type:circle">Data storage/retrieval, transaction management</li></ul><ul id="26f8e11f-9262-8001-8c58-efe70d892e05" class="bulleted-list"><li style="list-style-type:circle">Examples: MySQL, PostgreSQL, MongoDB</li></ul></li></ul><ul id="26f8e11f-9262-80cd-adf7-dca80fbbd307" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Cache Server (Cache Server)</strong></mark><ul id="26f8e11f-9262-805e-938b-ec4a1c1492ef" class="bulleted-list"><li style="list-style-type:circle">Temporary storage of frequently requested data → faster response time</li></ul><ul id="26f8e11f-9262-804a-a3df-e4fb5763c56d" class="bulleted-list"><li style="list-style-type:circle">Examples: Redis, Memcached</li></ul></li></ul><ul id="26f8e11f-9262-80c8-a9da-ea820ede40d6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Proxy Server</strong></mark><ul id="26f8e11f-9262-8075-acfc-f923698a1fc5" class="bulleted-list"><li style="list-style-type:circle">Relays requests between clients and servers, enhances security, and performs load balancing</li></ul></li></ul><ul id="26f8e11f-9262-80a0-8e4a-c157ebaabbb6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Mail server, file server, authentication server, etc.</strong></mark><ul id="26f8e11f-9262-803d-9868-e2759534e745" class="bulleted-list"><li style="list-style-type:circle">Servers that specialize in specific functions (SMTP, FTP, LDAP, etc.)</li></ul></li></ul><p id="26f8e11f-9262-8007-95e0-e10114009fba" class="">
+</p><p id="26f8e11f-9262-80df-8e79-da9650d8cf5f" class="">
+</p></div></p><p id="26f8e11f-9262-80d1-badd-dc128a155d9f" class="">
+</p><h3 id="26f8e11f-9262-8080-9b04-d74cf14f7c05" class="">C. <strong>Types of Client Server Architecture</strong> </h3><ul id="26f8e11f-9262-80b4-b945-e62990bc3858" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>N-Tier Architecture</strong></mark>: A structure in which servers are divided into multiple tiers, each responsible for different functions. Favorable for scalability and handling complex business logic.<ul id="26f8e11f-9262-80e4-8d7a-e3b3476caaa5" class="bulleted-list"><li style="list-style-type:circle"><strong>1-Tier Architecture</strong>: Client and server run on the same system. Mostly used for single-user applications.</li></ul><ul id="26f8e11f-9262-8051-89f0-e51ff70e7cd9" class="bulleted-list"><li style="list-style-type:circle"><strong>2-Tier Architecture</strong>: Traditional client-server architecture where the client and server are separated. The client acts as the front-end and the server as the back-end.</li></ul><ul id="26f8e11f-9262-80be-807f-e90b593e0233" class="bulleted-list"><li style="list-style-type:circle"><strong>3-Tier Architecture</strong>: Separate client, server, and database. The server handles client requests, while the database manages data.</li></ul></li></ul><ul id="26f8e11f-9262-8096-b39f-c1ffd5e5006b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Micro Service Architecture (MSA</strong></mark>): Divides applications into small, independent services that can be deployed and scaled individually.</li></ul><ul id="26f8e11f-9262-803b-93c6-c47f77d558a6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Serverless Architecture</strong></mark>: An event-driven structure where the cloud automatically runs the infrastructure without server management and focuses on code execution.</li></ul><p id="26f8e11f-9262-803a-a0b5-e63976ee2cbe" class=""><div class="indented"><h3 id="26f8e11f-9262-8011-8f9d-d7162dc53623" class=""><mark class="highlight-orange">(1) N-Tier Architecture</mark></h3><p id="26f8e11f-9262-80c4-abaa-c14f544a437b" class=""><div class="indented"><h3 id="26f8e11f-9262-8002-b3fb-db83563557c4" class="">a. Client-Server Architecture (2-Tier)</h3><figure id="26f8e11f-9262-80f4-9e80-e67daa236c4d" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image.png"><img style="width:477.984375px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image.png"/></a></figure><ul id="26f8e11f-9262-8010-afad-f321afd9cd5d" class="bulleted-list"><li style="list-style-type:disc">Distribution<strong>of roles between client and server</strong>: Client-Server Architecture refers to a structure in which the client and server interact by performing different roles. The client creates a request from the user, and the server processes it and returns a response.</li></ul><ul id="26f8e11f-9262-80c8-9d31-d8af86f02fe2" class="bulleted-list"><li style="list-style-type:disc">The<strong>server&#x27;s function</strong>: The server is centrally responsible for data processing, executing business logic or interacting with the database based on requests received from the client. This allows clients to receive the data they need.</li></ul><ul id="26f8e11f-9262-8062-8cb1-ff9fca7bdd1c" class="bulleted-list"><li style="list-style-type:disc"><strong>Communication protocols</strong>: The client and server exchange data using communication protocols, primarily HTTP and HTTPS. During this process, requests and responses are exchanged, and the client receives the results and displays them on the screen.</li></ul><p id="26f8e11f-9262-804e-a286-c84fc06aabb3" class=""><div class="indented"><figure id="26f8e11f-9262-80d4-b972-dd3b71b92186" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/2ce5d31b-ce6a-441a-a7f3-5f5876b82367.png"><img style="width:1296px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/2ce5d31b-ce6a-441a-a7f3-5f5876b82367.png"/></a></figure></div></p><ul id="26f8e11f-9262-802d-9634-df12abb6c654" class="bulleted-list"><li style="list-style-type:disc"><strong>Scalability and maintainability</strong>: Client-Server Architecture has a modularized structure, which makes it easy to scale and maintain. The server is designed to handle multiple client requests and can be changed independently of the client and server.</li></ul><ul id="26f8e11f-9262-805b-9c5d-c27ace5d3e4d" class="bulleted-list"><li style="list-style-type:disc">The<strong>role of the backend</strong>: The backend works on the server side and is responsible for data processing, storage, and integration with external services. When a client requests the data it needs, the backend processes it and returns the information to the client.</li></ul><ul id="26f8e11f-9262-8005-b215-f2cc16fa5ca6" class="bulleted-list"><li style="list-style-type:disc"><strong>Multi-user support</strong>: Centralized servers provide the ability to handle simultaneous access from multiple clients, which allows multiple users to access the same resource.</li></ul><p id="26f8e11f-9262-80fb-80f3-f9651915df3d" class=""><div class="indented"><h3 id="26f8e11f-9262-8084-903b-cb79921ecf37" class="">b. Client-Server Architecture (3-Tier)</h3><figure id="26f8e11f-9262-8044-b771-c2639fa67339" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%201.png"><img style="width:1296px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%201.png"/></a></figure><figure id="26f8e11f-9262-8031-9138-e2dd2b66d1ee" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%202.png"><img style="width:1296px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%202.png"/></a></figure><ul id="26f8e11f-9262-8044-b1b7-d3c09dab544c" class="bulleted-list"><li style="list-style-type:disc"><strong>The 3-Tier Architecture is</strong>an extension of the Client-Server Architecture, which means that the application is divided into three independent tiers.</li></ul><ul id="26f8e11f-9262-80a0-ac67-efaed37be4b5" class="bulleted-list"><li style="list-style-type:disc">Each tier fulfills a specific role, and this separation contributes to making the system more maintainable, scalable, and secure.</li></ul><ul id="26f8e11f-9262-8028-936f-cd00fb8358b8" class="bulleted-list"><li style="list-style-type:disc"><strong>Scalability</strong>: The ability to scale the server or database tiers independently, making it easier to increase performance when traffic increases.</li></ul><ul id="26f8e11f-9262-809a-864f-dd425e7910f4" class="bulleted-list"><li style="list-style-type:disc">Increased<strong>security</strong>: Because the database and business logic tiers are separated, the database is never accessed directly through the presentation tier, increasing security.</li></ul><ul id="26f8e11f-9262-80bf-a557-ea565ae2f4b3" class="bulleted-list"><li style="list-style-type:disc"><strong>Reusability</strong>: The business logic layer and data layer can be reused across multiple client applications.</li></ul><p id="26f8e11f-9262-806c-bdbd-d941251efc01" class=""><div class="indented"><figure id="26f8e11f-9262-80d8-8c93-fcbe478b21e1" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%203.png"><img style="width:960px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%203.png"/></a></figure><p id="26f8e11f-9262-80ae-a6ed-f2905ff96b58" class=""><strong>1) Presentation layer</strong></p><ul id="26f8e11f-9262-80fb-890a-ce3b398ffdfc" class="bulleted-list"><li style="list-style-type:disc"><strong>Role</strong>: This layer is responsible for all processing related to the user interface (UI) and operates primarily on the client side. It handles the visual part of the screen or application that the user interacts with.</li></ul><ul id="26f8e11f-9262-80d3-9dbf-d934657b6b39" class="bulleted-list"><li style="list-style-type:disc"><strong>Main functions</strong>: Takes user input and processes it, forwards requests to the server, and outputs the response from the server to the screen.</li></ul><ul id="26f8e11f-9262-8046-b1fc-ff569a017146" class="bulleted-list"><li style="list-style-type:disc"><strong>Examples</strong>: A front-end application based on HTML, CSS, and JavaScript that runs in a web browser, or the UI portion of a mobile application.</li></ul><p id="26f8e11f-9262-80fc-9937-c875bc0c0ff1" class="">
+</p><p id="26f8e11f-9262-80c4-8d09-c634fdd9674e" class=""><strong>2) Business logic layer</strong></p><ul id="26f8e11f-9262-8028-9438-d63dcf56cbee" class="bulleted-list"><li style="list-style-type:disc"><strong>Role</strong>: The layer responsible for the core logic of the application, processing client requests and executing data processing rules and business logic. Usually runs on the server side.</li></ul><ul id="26f8e11f-9262-80d3-b888-f7933706542c" class="bulleted-list"><li style="list-style-type:disc"><strong>Key functions</strong>: Receives client requests, interacts with the database, applies business rules according to the requests, and returns the results to the presentation layer.</li></ul><ul id="26f8e11f-9262-80fc-a6d3-ef00c6ccf858" class="bulleted-list"><li style="list-style-type:disc"><strong>Examples</strong>: Backend servers of web applications, API servers, application servers, etc. Typically written in programming languages such as Python, Java, C#, Node.js, etc.</li></ul></div></p><p id="26f8e11f-9262-80f3-8b41-c332e766e345" class=""><div class="indented"><p id="26f8e11f-9262-80b5-9b29-f8acff672df0" class="">3) The Persistence Layer</p><ul id="26f8e11f-9262-8031-a4a8-cbe09ee0c638" class="bulleted-list"><li style="list-style-type:disc"><strong>Role</strong>: This layer provides an abstracted connection between the application&#x27;s business logic and data storage (DB, cache, file storage, etc.), bringing together data access code in one place for greater reusability and maintainability. Responsible for managing transaction boundaries, object-relationship mapping (ORM), and exception transformation.</li></ul><ul id="26f8e11f-9262-80b2-b9ca-f9057527e405" class="bulleted-list"><li style="list-style-type:disc"><strong>Key features</strong>: CRUD operation creation/retrieval/modification/deletion abstraction (DAO/Repository), entity ↔ table (or document/key-value) mapping, query building/execution, paging/sorting, transaction management (commit/rollback), lock (optimistic/pessimistic) handling.</li></ul><ul id="26f8e11f-9262-8004-b878-cde8f0d092c5" class="bulleted-list"><li style="list-style-type:disc"><strong>Example</strong>: Repository/DAO/Mapper pattern, Unit of Work, DataSource/Connection Pool (HikariCP, etc.)</li></ul><p id="26f8e11f-9262-8056-8597-c08e8022f7f8" class="">
+</p><p id="26f8e11f-9262-80e8-a0dd-e22dd9ecdfa5" class=""><strong>4) Database Layer</strong></p><ul id="26f8e11f-9262-8064-8b2f-d9470662454f" class="bulleted-list"><li style="list-style-type:disc"><strong>Role</strong>: The layer that stores and manages data, where the database that permanently stores data is located.</li></ul><ul id="26f8e11f-9262-801b-aca0-f6d5bee21e64" class="bulleted-list"><li style="list-style-type:disc"><strong>Main functions</strong>: Storing or retrieving data as requested by the business logic layer, and managing data securely and efficiently.</li></ul><ul id="26f8e11f-9262-804c-a4d6-d4df36f0ae4a" class="bulleted-list"><li style="list-style-type:disc"><strong>Examples</strong>: Relational or non-relational databases such as MySQL, PostgreSQL, and MongoDB make up this layer.</li></ul></div></p></div></p></div></p></div></p><p id="26f8e11f-9262-80f3-a0c8-f35f8d06cab1" class=""><div class="indented"><h3 id="26f8e11f-9262-8048-9ac0-ca37ab362823" class=""><mark class="highlight-orange">(2) Micro Service Architecture (MSA)</mark></h3><div id="26f8e11f-9262-8066-b0ea-c2b5a860f6cc" class="column-list"><div id="26f8e11f-9262-8016-a615-e9b7d101c60b" style="width:50%" class="column"><figure id="26f8e11f-9262-801f-81c7-f95bc9da14d6" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%204.png"><img style="width:367.46875px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%204.png"/></a></figure></div><div id="26f8e11f-9262-80b4-a227-cf4d8d9643e6" style="width:50%" class="column"><figure id="26f8e11f-9262-80d6-9327-e6538c0d3b30" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%205.png"><img style="width:367.484375px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%205.png"/></a></figure></div></div><ul id="26f8e11f-9262-80ce-b7b5-fd3664bc7db4" class="bulleted-list"><li style="list-style-type:disc"><strong>Concept</strong>: A microservice architecture is a way to decompose an application into small service units that can be deployed, scaled, and maintained independently. Unlike traditional monolithic architectures, dependencies between services are reduced.</li></ul><ul id="26f8e11f-9262-8088-929a-ecb0875c8326" class="bulleted-list"><li style="list-style-type:disc"><strong>Features</strong>: Each microservice can have its own database and can be developed, deployed, and scaled independently, focusing on specific business functions. This maximizes the flexibility and scalability of the system.</li></ul><ul id="26f8e11f-9262-804e-a2ca-c6c305af0944" class="bulleted-list"><li style="list-style-type:disc"><strong>Pros</strong>: Scales on a per-service basis, and failures only affect parts of the system, not the entire system. Independent teams can develop individual services, allowing for efficient collaboration.</li></ul><ul id="26f8e11f-9262-80ba-a5f2-e14dffeb0c63" class="bulleted-list"><li style="list-style-type:disc"><strong>Disadvantages</strong>: Communication between services can be complex, and each service requires infrastructure configuration and maintenance for deployment and management.</li></ul><p id="26f8e11f-9262-8067-8610-fc8af643a2da" class=""><div class="indented"><figure id="26f8e11f-9262-801f-9698-fa6c0387d6ea" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%206.png"><img style="width:1008px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%206.png"/></a></figure></div></p><p id="26f8e11f-9262-8073-83ef-e4851dd66fc1" class="">
+</p><h3 id="26f8e11f-9262-80fd-acea-cdf9e130ae7d" class=""><mark class="highlight-orange">(3) Serverless Architecture</mark></h3><figure id="26f8e11f-9262-805a-9271-efe6f6083fc3" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%207.png"><img style="width:1296px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%207.png"/></a></figure><ul id="26f8e11f-9262-8042-9996-c30185c4c39c" class="bulleted-list"><li style="list-style-type:disc">Concept: Serverless architecture is a way for cloud service providers to operate and scale infrastructure without developers managing servers themselves. Developers can focus on business logic and are relieved of the burden of server operations.</li></ul><ul id="26f8e11f-9262-80ff-9e9d-d445f5a5172e" class="bulleted-list"><li style="list-style-type:disc">Key services: AWS Lambda, Google Cloud Functions, and Azure Functions are the main cloud services that support serverless architecture.</li></ul><ul id="26f8e11f-9262-8089-9ae9-c74db98ecc4f" class="bulleted-list"><li style="list-style-type:disc">Benefits: Auto-scaling, cost efficiency, and reduced management complexity are key benefits. Can reduce idle costs by automatically adjusting resources based on application usage.</li></ul><ul id="26f8e11f-9262-8088-9f41-d357279879b2" class="bulleted-list"><li style="list-style-type:disc">Cons: Server uptime is limited and may not be ideal for handling complex tasks on the backend. It also creates a dependency on the cloud provider.</li></ul><figure id="26f8e11f-9262-808c-8733-c8af0a4b3444" class="image"><a href="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%208.png"><img style="width:1296px" src="03%20Back-End%20Architecture%20(EN)%2026f8e11f926280d59807de7b408ab106/image%208.png"/></a></figure><p id="26f8e11f-9262-8020-bd22-f5d58b704506" class="">
+</p><hr id="26f8e11f-9262-808c-affa-fd64118089c5"/><p id="26f8e11f-9262-80af-978a-e16d08d0311a" class="">
+</p></div></p></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

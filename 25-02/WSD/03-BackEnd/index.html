@@ -1,0 +1,868 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>3. Back-End Architecture</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(199, 121, 69, 1);
+	fill: rgba(199, 121, 69, 1);
+}
+.highlight-yellow {
+	color: rgba(175, 136, 66, 1);
+	fill: rgba(175, 136, 66, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(174, 96, 133, 1);
+	fill: rgba(174, 96, 133, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.highlight-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.highlight-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.highlight-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.highlight-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.highlight-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.highlight-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(199, 121, 69, 1);
+	fill: rgba(199, 121, 69, 1);
+}
+.block-color-yellow {
+	color: rgba(175, 136, 66, 1);
+	fill: rgba(175, 136, 66, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(174, 96, 133, 1);
+	fill: rgba(174, 96, 133, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 2000mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "웹서비스설계 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="26f8e11f-9262-8093-bb00-c4fedf4a0f13" class="page sans"><header><h1 class="page-title">3. Back-End Architecture</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>날짜</th><td></td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><strong>1.백엔드 서버의 구조</strong></summary><div class="indented"><h3 id="26f8e11f-9262-80ee-aa0c-f9cdae6db9e9" class="">A. 백엔드 트렌드?</h3><ul id="26f8e11f-9262-804f-972c-c6f35fd17acd" class="bulleted-list"><li style="list-style-type:disc">최근 백엔드 분야에서는 ‘<strong>서버리스</strong>’가 트렌드로 자리 잡고 있으며, 이는 클라우딩 컴퓨팅의 모델 중 하나로 ‘개발자가 서버를 직접 관리할 필요가 없는 아키텍처’</li></ul><ul id="26f8e11f-9262-8041-a97c-d512af4d1e9f" class="bulleted-list"><li style="list-style-type:disc">만약 백엔드 개발자가 서버의 사용자가 10,000명이 될 것을 예상하고 그에 맞는 용량의 서비스를 구입했다고 가정했을 경우, 실제 사용자가 10,000명이든 0명이든 같은 금액을 내야 함. 이러한 상황은 크든 작든 손실을 일으킬 수 있음</li></ul><ul id="26f8e11f-9262-80e4-941f-c3cafdd782bf" class="bulleted-list"><li style="list-style-type:disc">하지만 <strong>서버리스는 동적으로 서버의 자원을 할당</strong>. 사용자가 없을 때에는 자원을 할당하지 않고 대기하며 요청이 들어올 때에만 자원을 할당하여 요청을 처리.</li></ul><ul id="26f8e11f-9262-808f-a627-fe6e6e7f2796" class="bulleted-list"><li style="list-style-type:disc">최근, 서버 사이드 렌더링 (SSR)에 대해서도 관심이 많아지고 있음!!</li></ul><ul id="26f8e11f-9262-807f-9fa2-dc141833b6fa" class="bulleted-list"><li style="list-style-type:disc">서버사이드 렌더링(SSR, Server-Side Rendering)은 웹 페이지의 콘텐츠를 서버에서 미리 렌더링한 후, 완성된 HTML을 클라이언트에게 전달하는 방식임. 이 방식은 클라이언트 측에서 JavaScript가 실행되기 전에 이미 화면에 완성된 페이지가 보이기 때문에, 첫 페이지 로딩 속도가 빠르고 SEO(검색 엔진 최적화)에 유리함.</li></ul><ul id="26f8e11f-9262-8069-9b85-c2e7042306f6" class="bulleted-list"><li style="list-style-type:disc">SSR은 특히 검색 엔진이 웹 페이지를 쉽게 크롤링할 수 있게 하여, SEO 성능을 향상시킴. 또한, 초기 화면이 빨리 표시되므로 사용자 경험이 개선됨. 단, 서버의 부하가 증가할 수 있으며, 클라이언트 사이드 렌더링(CSR)보다 복잡한 설정이 필요할 수 있음.</li></ul><ul id="26f8e11f-9262-80b4-983d-f1310546e3a3" class="bulleted-list"><li style="list-style-type:disc">주요 프레임워크로는 Next.js(React), Nuxt.js(Vue.js) 등이 있음.</li></ul><p id="26f8e11f-9262-80ce-8999-f9cf16052c27" class="">
+</p><p id="26f8e11f-9262-8059-b05b-f6db73da29b8" class="">
+</p><h3 id="26f8e11f-9262-8080-9f57-d10db2d70cde" class="">B. 다양한 서버의 종류 및 구조</h3><p id="26f8e11f-9262-80a8-8d61-d504de95c44f" class="">* 서버는 역할과 기능에 따라 구분되며, 백엔드 개발자가 어떤 서버와 협업하느냐에 따라 책임 범위가 달라짐.<div class="indented"><ul id="26f8e11f-9262-808f-90ab-f9f51099dace" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>웹 서버 (Web Server)</strong></mark><ul id="26f8e11f-9262-806d-a32d-f69f29e56a9d" class="bulleted-list"><li style="list-style-type:circle">HTTP 요청을 받아 정적 콘텐츠(HTML, CSS, JS) 제공</li></ul><ul id="26f8e11f-9262-8067-ac0c-e0c10f5d23a3" class="bulleted-list"><li style="list-style-type:circle">예: Apache, Nginx</li></ul></li></ul><ul id="26f8e11f-9262-80a2-ad7f-e3691ec49ab2" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>애플리케이션 서버 (Application Server)</strong></mark><ul id="26f8e11f-9262-80d9-9abe-f3bb1070eeff" class="bulleted-list"><li style="list-style-type:circle">비즈니스 로직 실행 및 동적 콘텐츠 생성</li></ul><ul id="26f8e11f-9262-8011-8d88-d1b2fb21678a" class="bulleted-list"><li style="list-style-type:circle">예: Node.js, Spring Boot, Django</li></ul></li></ul><ul id="26f8e11f-9262-80bb-af8f-e7f1ab3f583a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>데이터베이스 서버 (DB Server)</strong></mark><ul id="26f8e11f-9262-804d-b602-d20f24eabe7a" class="bulleted-list"><li style="list-style-type:circle">데이터 저장/검색, 트랜잭션 관리</li></ul><ul id="26f8e11f-9262-8026-b8c4-cb6bb980ce5e" class="bulleted-list"><li style="list-style-type:circle">예: MySQL, PostgreSQL, MongoDB</li></ul></li></ul><ul id="26f8e11f-9262-80b8-878e-dceff61c63d6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>캐시 서버 (Cache Server)</strong></mark><ul id="26f8e11f-9262-8057-9317-d3933ed5721b" class="bulleted-list"><li style="list-style-type:circle">자주 요청되는 데이터 임시 저장 → 응답 속도 향상</li></ul><ul id="26f8e11f-9262-80ca-8bb7-c33fa4afcf51" class="bulleted-list"><li style="list-style-type:circle">예: Redis, Memcached</li></ul></li></ul><ul id="26f8e11f-9262-80f8-872a-d9819917824d" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>프록시 서버 (Proxy Server)</strong></mark><ul id="26f8e11f-9262-8045-893d-e2b5753958a8" class="bulleted-list"><li style="list-style-type:circle">클라이언트와 서버 사이에서 요청을 중계, 보안 강화 및 로드밸런싱 수행</li></ul></li></ul><ul id="26f8e11f-9262-80b0-9b23-c1cb1b934458" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>메일 서버, 파일 서버, 인증 서버 등</strong></mark><ul id="26f8e11f-9262-80d4-a223-c2f32997a6f8" class="bulleted-list"><li style="list-style-type:circle">특정 기능에 특화된 서버들 (SMTP, FTP, LDAP 등)</li></ul></li></ul><p id="26f8e11f-9262-8073-8a7b-d802c9a7a2c8" class="">
+</p><p id="26f8e11f-9262-8037-a04c-f48db8469f35" class="">
+</p></div></p><p id="26f8e11f-9262-8078-81f6-c2fb1d66e482" class="">
+</p><h3 id="26f8e11f-9262-803e-87c3-fd94a56ea07e" class="">C.  <strong>Client Server Architecture의 유형</strong> </h3><ul id="26f8e11f-9262-8096-a493-f59ce5c3a349" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>N-Tier Architecture</strong></mark>: 서버가 여러 계층으로 나뉘어 각각 다른 기능을 담당하는 구조. 확장성과 복잡한 비즈니스 로직 처리에 유리함.<ul id="26f8e11f-9262-8033-bd50-d6519200db90" class="bulleted-list"><li style="list-style-type:circle"><strong>1-Tier Architecture</strong>: 클라이언트와 서버가 동일한 시스템에서 실행되는 구조. 대부분 단일 사용자 애플리케이션에 사용됨.</li></ul><ul id="26f8e11f-9262-806e-a759-f0c82bf40b37" class="bulleted-list"><li style="list-style-type:circle"><strong>2-Tier Architecture</strong>: 클라이언트와 서버가 분리되어 있는 전통적인 클라이언트-서버 구조. 클라이언트는 프론트엔드, 서버는 백엔드 역할을 수행함.</li></ul><ul id="26f8e11f-9262-80b1-bc37-fdb03809481f" class="bulleted-list"><li style="list-style-type:circle"><strong>3-Tier Architecture</strong>: 클라이언트, 서버, 데이터베이스가 각각 분리된 구조. 서버는 클라이언트 요청을 처리하고, 데이터베이스는 데이터를 관리하는 역할을 함.</li></ul></li></ul><ul id="26f8e11f-9262-8083-866a-fc124d2b021b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Micro Service Architecture (MSA)</strong></mark>: 애플리케이션을 작은 독립 서비스 단위로 나눠 개별 배포·확장이 가능한 구조.</li></ul><ul id="26f8e11f-9262-80f8-a4e1-d37bd2ae2d1c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>Serverless Architecture</strong></mark>: 서버 관리 없이 클라우드가 자동으로 인프라를 운영하며, 코드 실행에만 집중하는 이벤트 기반 구조.</li></ul><p id="26f8e11f-9262-8017-b257-c29f6cd5d9a6" class=""><div class="indented"><h3 id="26f8e11f-9262-8043-91c7-d8589674fb24" class=""><mark class="highlight-orange">(1) N-Tier Architecture</mark></h3><p id="26f8e11f-9262-8078-8d08-d6a00531ec80" class=""><div class="indented"><h3 id="26f8e11f-9262-805d-a176-c4f117717771" class="">a. Client-Server Architecture (2-Tier)</h3><figure id="26f8e11f-9262-80da-a9c4-c21f819ce8b3" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image.png"><img style="width:636px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image.png"/></a></figure><ul id="26f8e11f-9262-80d6-b665-e0b26e9c85c1" class="bulleted-list"><li style="list-style-type:disc"><strong>클라이언트와 서버의 역할 분담</strong>: Client-Server Architecture는 클라이언트와 서버가 각기 다른 역할을 수행하며 상호작용하는 구조를 의미함. 클라이언트는 사용자의 요청을 생성하고, 서버는 이를 처리하여 응답을 반환함.</li></ul><ul id="26f8e11f-9262-8052-8750-fe6ecf29fdea" class="bulleted-list"><li style="list-style-type:disc"><strong>서버의 기능</strong>: 서버는 중앙에서 데이터 처리를 담당하며, 클라이언트로부터 수신된 요청에 따라 비즈니스 로직을 실행하거나 데이터베이스와 상호작용함. 이를 통해 클라이언트는 필요한 데이터를 받을 수 있음.</li></ul><ul id="26f8e11f-9262-801d-858d-c2c543bbd86c" class="bulleted-list"><li style="list-style-type:disc"><strong>통신 프로토콜</strong>: 클라이언트와 서버는 주로 HTTP, HTTPS와 같은 통신 프로토콜을 사용하여 데이터를 교환함. 이 과정에서 요청(Request)과 응답(Response)이 교환되며, 클라이언트는 결과를 받아 화면에 출력함.</li></ul><p id="26f8e11f-9262-80f6-b67b-dd099e48376b" class=""><div class="indented"><figure id="26f8e11f-9262-8061-8f81-fbe11603bc73" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/2ce5d31b-ce6a-441a-a7f3-5f5876b82367.png"><img style="width:1296px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/2ce5d31b-ce6a-441a-a7f3-5f5876b82367.png"/></a></figure></div></p><ul id="26f8e11f-9262-8053-b2a1-e89929ee6ae6" class="bulleted-list"><li style="list-style-type:disc"><strong>확장성과 유지보수성</strong>: Client-Server Architecture는 모듈화된 구조를 가지고 있어 확장성과 유지보수에 용이함. 서버는 다수의 클라이언트 요청을 처리할 수 있도록 설계되며, 클라이언트와 서버의 독립적인 변경이 가능함.</li></ul><ul id="26f8e11f-9262-809e-84d9-f43ab773a061" class="bulleted-list"><li style="list-style-type:disc"><strong>백엔드의 역할</strong>: 백엔드는 서버 측에서 작동하며 데이터 처리, 저장, 외부 서비스 연동 등을 담당함. 클라이언트가 필요한 데이터를 요청하면 백엔드에서 처리 후 클라이언트에게 필요한 정보를 반환함.</li></ul><ul id="26f8e11f-9262-806f-91fb-e72889f2817d" class="bulleted-list"><li style="list-style-type:disc"><strong>다중 사용자 지원</strong>: 중앙 집중식 서버는 여러 클라이언트의 동시 접속을 처리할 수 있는 능력을 제공하며, 이를 통해 다수의 사용자가 동일한 자원에 접근할 수 있음.</li></ul><p id="26f8e11f-9262-80d4-96bd-fc8712f7b35f" class=""><div class="indented"><h3 id="26f8e11f-9262-80e3-80c9-ca6a0551101d" class="">b. Client-Server Architecture (3-Tier)</h3><figure id="26f8e11f-9262-80f9-9f3b-e70214ee9e35" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%201.png"><img style="width:1296px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%201.png"/></a></figure><figure id="26f8e11f-9262-80c5-8dd6-e1385a863a9d" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%202.png"><img style="width:1296px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%202.png"/></a></figure><ul id="26f8e11f-9262-80a4-932f-c6083408c6ae" class="bulleted-list"><li style="list-style-type:disc"><strong>3-Tier Architecture</strong>는 클라이언트-서버 아키텍처의 확장된 형태로, 애플리케이션을 세 가지 독립적인 계층으로 나누어 관리하는 구조를 의미</li></ul><ul id="26f8e11f-9262-80d6-a709-d31d14e50e2c" class="bulleted-list"><li style="list-style-type:disc">각각의 계층은 특정한 역할을 수행하며, 이러한 분리는 시스템의 유지보수성, 확장성, 보안성을 높이는 데 기여.</li></ul><ul id="26f8e11f-9262-8075-9067-d05803f7b5d4" class="bulleted-list"><li style="list-style-type:disc"><strong>확장성</strong>: 서버 또는 데이터베이스 계층을 독립적으로 확장할 수 있어 트래픽이 증가할 경우 성능을 높이기 용이</li></ul><ul id="26f8e11f-9262-801c-8b3e-c36766a2f51f" class="bulleted-list"><li style="list-style-type:disc"><strong>보안 강화</strong>: 데이터베이스와 비즈니스 로직 계층이 분리되어 있기 때문에, 프레젠테이션 계층을 통해 직접적으로 데이터베이스에 접근하는 일이 없어 보안이 강화됨.</li></ul><ul id="26f8e11f-9262-8085-a817-db800388d8d1" class="bulleted-list"><li style="list-style-type:disc"><strong>재사용성</strong>: 비즈니스 로직 계층과 데이터 계층은 여러 클라이언트 애플리케이션에서 재사용될 수 있음.</li></ul><p id="26f8e11f-9262-8009-9033-f3a3240c4e91" class=""><div class="indented"><figure id="26f8e11f-9262-80ff-89d5-e713143fd1d8" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%203.png"><img style="width:960px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%203.png"/></a></figure><p id="26f8e11f-9262-80a0-9e49-de49aac85b38" class=""><strong>1) 프레젠테이션 계층</strong></p><ul id="26f8e11f-9262-8095-87f6-cf3093b1ee5b" class="bulleted-list"><li style="list-style-type:disc"><strong>역할</strong>: 사용자 인터페이스(UI)와 관련된 모든 처리를 담당하는 계층으로, 주로 클라이언트 측에서 동작함. 사용자가 상호작용하는 화면이나 애플리케이션의 시각적인 부분을 처리함.</li></ul><ul id="26f8e11f-9262-8036-be8e-eaeadfc95c40" class="bulleted-list"><li style="list-style-type:disc"><strong>주요 기능</strong>: 사용자 입력을 받아 이를 처리하고, 서버로 요청을 전달하며, 서버로부터 받은 응답을 화면에 출력하는 역할을 수행함.</li></ul><ul id="26f8e11f-9262-8001-b8fd-eae3a4e8f345" class="bulleted-list"><li style="list-style-type:disc"><strong>예시</strong>: 웹 브라우저에서 동작하는 HTML, CSS, JavaScript 기반의 프론트엔드 애플리케이션 또는 모바일 애플리케이션의 UI 부분.</li></ul><p id="26f8e11f-9262-80df-b7cb-c1d0627b5e4d" class="">
+</p><p id="26f8e11f-9262-8056-abdc-d020a26685a3" class=""><strong>2) 비지니스 로직 계층</strong></p><ul id="26f8e11f-9262-80a6-b91b-d56f88663698" class="bulleted-list"><li style="list-style-type:disc"><strong>역할</strong>: 애플리케이션의 핵심 로직을 담당하는 계층으로, 클라이언트 요청을 처리하고 데이터 처리 규칙과 비즈니스 로직을 실행함. 주로 서버 측에서 실행됨.</li></ul><ul id="26f8e11f-9262-8044-a9f9-e8948e2d1229" class="bulleted-list"><li style="list-style-type:disc"><strong>주요 기능</strong>: 클라이언트 요청을 받아 데이터베이스와 상호작용하며, 요청에 따라 비즈니스 규칙을 적용한 후, 결과를 프레젠테이션 계층으로 반환함.</li></ul><ul id="26f8e11f-9262-807e-a764-ffe3932371c8" class="bulleted-list"><li style="list-style-type:disc"><strong>예시</strong>: 웹 애플리케이션의 백엔드 서버, API 서버, 애플리케이션 서버 등이 여기에 속함. 보통 Python, Java, C#, Node.js 등의 프로그래밍 언어로 작성됨.</li></ul></div></p><p id="26f8e11f-9262-80f8-9f7b-c9fa4cde5c4d" class=""><div class="indented"><p id="26f8e11f-9262-80e0-9c0c-c3633222f162" class="">3) 퍼시스턴스 (영속성) 레이어</p><ul id="26f8e11f-9262-804a-ae36-de651ed1544d" class="bulleted-list"><li style="list-style-type:disc"><strong>역할</strong>: 애플리케이션의 비즈니스 로직과 데이터 저장소(DB, 캐시, 파일 스토리지 등) 사이를 추상화하여 연결하는 계층으로, 데이터 접근 코드를 한곳에 모아 재사용성과 유지보수성을 높임. 트랜잭션 경계를 관리하고, 객체–관계 매핑(ORM)과 예외 변환을 담당.</li></ul><ul id="26f8e11f-9262-8074-a106-d46752c2a3d8" class="bulleted-list"><li style="list-style-type:disc"><strong>주요 기능</strong>: CRUD 작업 생성/조회/수정/삭제 추상화(DAO/Repository), 엔티티 ↔ 테이블(또는 문서/키-값) 매핑, 쿼리 빌딩/실행, 페이징/정렬, 트랜잭션 관리(커밋/롤백), 락(낙관/비관) 처리</li></ul><ul id="26f8e11f-9262-8049-abc9-f09cf16ecd0a" class="bulleted-list"><li style="list-style-type:disc"><strong>예시</strong>: Repository/DAO/Mapper 패턴, Unit of Work, DataSource/Connection Pool(HikariCP 등)</li></ul><p id="26f8e11f-9262-8099-86e4-e81ed6a60bba" class="">
+</p><p id="26f8e11f-9262-8015-ac6a-e8629959bee9" class=""><strong>4) 데이터베이스 계층</strong></p><ul id="26f8e11f-9262-80c6-8093-f00fd1ad74f0" class="bulleted-list"><li style="list-style-type:disc"><strong>역할</strong>: 데이터를 저장하고 관리하는 계층으로, 영구적으로 데이터를 저장하는 데이터베이스가 위치하는 부분임.</li></ul><ul id="26f8e11f-9262-80c4-a7c7-d8b8d1a527ac" class="bulleted-list"><li style="list-style-type:disc"><strong>주요 기능</strong>: 비즈니스 로직 계층의 요청에 따라 데이터를 저장하거나 조회하며, 안전하고 효율적으로 데이터를 관리함.</li></ul><ul id="26f8e11f-9262-8056-b1b5-d18adce27b65" class="bulleted-list"><li style="list-style-type:disc"><strong>예시</strong>: MySQL, PostgreSQL, MongoDB와 같은 관계형 또는 비관계형 데이터베이스가 이 계층을 구성함.</li></ul></div></p></div></p></div></p></div></p><p id="26f8e11f-9262-805d-b04d-f2e4dcb81653" class=""><div class="indented"><h3 id="26f8e11f-9262-806c-bbfd-d3f0ac385453" class=""><mark class="highlight-orange">(2) Micro Service Architecture (MSA)</mark></h3><div id="26f8e11f-9262-80b5-84d6-e4d19cc9b4d3" class="column-list"><div id="26f8e11f-9262-809c-86f2-f3db6ab3e250" style="width:50%" class="column"><figure id="26f8e11f-9262-806c-8105-cd5383b33d3b" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%204.png"><img style="width:662px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%204.png"/></a></figure></div><div id="26f8e11f-9262-800e-a848-fd3fc2b9fdd6" style="width:50%" class="column"><figure id="26f8e11f-9262-80f0-80d3-d767d562f6e7" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%205.png"><img style="width:586px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%205.png"/></a></figure></div></div><ul id="26f8e11f-9262-8071-8f29-cba4f61b5fd8" class="bulleted-list"><li style="list-style-type:disc"><strong>개념</strong>: 마이크로서비스 아키텍처는 애플리케이션을 작은 서비스 단위로 분리하여 각각 독립적으로 배포, 확장, 유지보수가 가능하도록 하는 방식임. 전통적인 모놀리식 아키텍처와 달리, 서비스 간 의존성이 낮아짐.</li></ul><ul id="26f8e11f-9262-80fc-9fc5-c977c8afd994" class="bulleted-list"><li style="list-style-type:disc"><strong>특징</strong>: 각 마이크로서비스는 자체 데이터베이스를 가질 수 있으며, 특정 비즈니스 기능에 집중하여 독립적으로 개발, 배포, 확장 가능함. 이를 통해 시스템의 유연성과 확장성을 극대화할 수 있음.</li></ul><ul id="26f8e11f-9262-8052-9f72-eada0698c5ec" class="bulleted-list"><li style="list-style-type:disc"><strong>장점</strong>: 서비스 단위별 확장이 가능하며, 장애 발생 시 전체 시스템이 아닌 부분적으로만 영향이 미침. 독립적인 팀이 개별 서비스를 개발할 수 있어 협업이 효율적임.</li></ul><ul id="26f8e11f-9262-8042-a8fd-e1aa9cb10e2c" class="bulleted-list"><li style="list-style-type:disc"><strong>단점</strong>: 서비스 간 통신이 복잡해질 수 있으며, 서비스마다 배포와 관리를 위한 인프라 구성 및 유지가 필요함.</li></ul><p id="26f8e11f-9262-8081-8654-ef7be6d2d2a2" class=""><div class="indented"><figure id="26f8e11f-9262-80cb-aa0e-c89b68206668" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%206.png"><img style="width:1008px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%206.png"/></a></figure></div></p><p id="26f8e11f-9262-80c7-a278-f488f4c26d24" class="">
+</p><h3 id="26f8e11f-9262-8098-be95-f9b69e871b9f" class=""><mark class="highlight-orange">(3) Serverless Architecture</mark></h3><figure id="26f8e11f-9262-80db-ae77-f0d25d6441c7" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%207.png"><img style="width:1296px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%207.png"/></a></figure><ul id="26f8e11f-9262-80a8-b0c4-fb4a5708b6d0" class="bulleted-list"><li style="list-style-type:disc">개념: 서버리스 아키텍처는 개발자가 직접 서버를 관리하지 않고 클라우드 서비스 제공자가 인프라를 운영하고 확장하는 방식임. 개발자는 비즈니스 로직에만 집중할 수 있으며, 서버 운영 부담을 덜 수 있음.</li></ul><ul id="26f8e11f-9262-80cd-ad41-f5006f540d28" class="bulleted-list"><li style="list-style-type:disc">주요 서비스: AWS Lambda, Google Cloud Functions, Azure Functions 등이 서버리스 아키텍처를 지원하는 주요 클라우드 서비스임.</li></ul><ul id="26f8e11f-9262-802d-89e9-ddba40a2d37a" class="bulleted-list"><li style="list-style-type:disc">장점: 자동 확장, 비용 효율성, 관리 복잡성 감소 등이 주요 장점임. 애플리케이션의 사용량에 따라 자동으로 리소스를 조정함으로써 유휴 상태에서 비용을 절감할 수 있음.</li></ul><ul id="26f8e11f-9262-8073-9878-d34d27cc6f86" class="bulleted-list"><li style="list-style-type:disc">단점: 서버 실행 시간이 제한적이며, 백엔드에서 복잡한 작업을 처리하는 데는 적합하지 않을 수 있음. 또한, 클라우드 제공자에 대한 종속성이 생길 수 있음.</li></ul><figure id="26f8e11f-9262-8010-9924-cf91e4fce6ab" class="image"><a href="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%208.png"><img style="width:1296px" src="3%20Back-End%20Architecture%2026f8e11f92628093bb00c4fedf4a0f13/image%208.png"/></a></figure><p id="26f8e11f-9262-80f6-840c-faf0df1183e7" class="">
+</p><hr id="26f8e11f-9262-80b2-9f07-fefa98013411"/><p id="26f8e11f-9262-8063-8702-cf74c409683e" class="">
+</p></div></p></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
