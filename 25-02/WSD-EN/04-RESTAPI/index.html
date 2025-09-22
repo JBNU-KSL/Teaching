@@ -1,0 +1,885 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>04. REST API (EN)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.highlight-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.block-color-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 3100mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "Web Service Design (25-02) \A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "Prof. Kyungsu Lee\A Computer Science & Artificial Intelligence, JBNU\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+	
+</style></head><body><article id="2768e11f-9262-8010-8aae-d6f1006ff992" class="page sans"><header><h1 class="page-title">04. REST API (EN)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>날짜</th><td></td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">A. REST API Overview</summary><div class="indented"><h2 id="2768e11f-9262-80c3-ba72-ef5fa1cbeb60" class="">1. Network and Web Basics</h2><h3 id="2768e11f-9262-800b-bbc6-cd25e6862eeb" class=""><strong>1-1. What is a network?</strong></h3><figure id="2768e11f-9262-8070-9e5f-fb208a404e27" class="image"><a href="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image.png"><img style="width:792.9921875px" src="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image.png"/></a></figure><ul id="2768e11f-9262-80f2-b4a0-d6f50cac8454" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Network</strong></mark>: Refers to <strong>a structure in which multiple computers are connected so that they can exchange data with each other</strong>. There are wired (cable) and wireless (Wi-Fi, etc.) connections, and all connections are made according to a common protocol.</li></ul><ul id="2768e11f-9262-80db-9a4f-c28dfc9228a8" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Internet</strong></mark>: <strong>A very large network of networks from all over the world,</strong> the Internet is not a single system, but a collection <mark class="highlight-red_background">of many smaller networks connected together using a standard protocol (TCP/IP</mark>).</li></ul><blockquote id="2768e11f-9262-80c0-bbc5-fe03a932e2c9" class="">When we access a website, we are actually communicating with a <strong>browser (client)</strong>that sends <mark class="highlight-orange"><mark class="highlight-red_background">a request to</mark></mark> <strong>the server</strong>and the server sends back a <mark class="highlight-orange"><mark class="highlight-red_background"><strong>response</strong></mark></mark>!</blockquote><p id="2768e11f-9262-80d9-8d94-fcbd8daf881b" class="">
+</p><h3 id="2768e11f-9262-80da-a2f0-e659c87f8cdd" class=""><strong>1-2. Client and Server</strong></h3><figure id="2768e11f-9262-8050-b460-ec02848f64d3" class="image"><a href="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%201.png"><img style="width:792.984375px" src="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%201.png"/></a></figure><ul id="2768e11f-9262-8014-b67f-fd6d5e2d7977" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Client</strong></mark><mark class="highlight-red_background">:</mark> <ul id="2768e11f-9262-804a-a9fa-ed087155cc9a" class="bulleted-list"><li style="list-style-type:circle">The entity that requests a service. </li></ul><ul id="2768e11f-9262-80e9-933a-fca5c2bc6f31" class="bulleted-list"><li style="list-style-type:circle">Usually a program that is directly operated by the user (e.g., a <strong>web browser or</strong> <strong>mobile app</strong>).</li></ul><ul id="2768e11f-9262-8069-ae6b-c337a300e8e2" class="bulleted-list"><li style="list-style-type:circle">The client is <mark class="highlight-red_background">only responsible for</mark> <mark class="highlight-red_background"><strong>generating and</strong></mark> <mark class="highlight-red_background">sending</mark> <mark class="highlight-red_background"><strong>requests</strong></mark> <mark class="highlight-red_background">to the server,</mark>not actually storing data or performing complex computations.</li></ul></li></ul><ul id="2768e11f-9262-804a-9cf7-c7dea95a6562" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Server</strong></mark><mark class="highlight-red_background">:</mark> <ul id="2768e11f-9262-80f3-a349-ebb5daea229e" class="bulleted-list"><li style="list-style-type:circle"><strong>An entity that processes requests sent by a client and responds with the results.</strong></li></ul><ul id="2768e11f-9262-80a6-92d3-f7c48a49c5cc" class="bulleted-list"><li style="list-style-type:circle">A web server serves static pages or API responses, and a database server stores, retrieves, and updates data.</li></ul><ul id="2768e11f-9262-80ce-9db0-cd6efdc185a8" class="bulleted-list"><li style="list-style-type:circle">Servers typically receive requests from multiple clients simultaneously, <mark class="highlight-red_background"><strong>requiring</strong></mark>strong <mark class="highlight-red_background"><strong>parallelism and resource management</strong></mark>.</li></ul></li></ul><p id="2768e11f-9262-808a-926a-f9780ac2ef9a" class="">
+</p><ul id="2768e11f-9262-80fd-bcc3-cbc37df79554" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Real-life analogy</strong></mark><mark class="highlight-red_background">:</mark></li></ul><div id="2768e11f-9262-8048-b28a-e3e10d6a5636" class="column-list"><div id="2768e11f-9262-8086-b9f2-c5b878a794ae" style="width:50%" class="column"><p id="2768e11f-9262-8012-872b-d625fc9dfa24" class=""><div class="indented"><ul id="2768e11f-9262-80c7-b6b8-df72208df981" class="bulleted-list"><li style="list-style-type:disc"><strong>Client</strong> = a customer in a restaurant (the entity requesting service)</li></ul><ul id="2768e11f-9262-8037-9e5b-ca31deacb4da" class="bulleted-list"><li style="list-style-type:disc"><strong>Server</strong> = Chef (the entity that receives the request and performs the cooking and processing)</li></ul><ul id="2768e11f-9262-802a-8d2a-c6b669214406" class="bulleted-list"><li style="list-style-type:disc">The flow can be understood as<strong>order (request) → cooking (processing) → food (response)</strong>, and just as the customer does not do the cooking process himself, the client <mark class="highlight-red_background"><strong>only receives the result</strong></mark> without knowing the internal processing.</li></ul></div></p></div><div id="2768e11f-9262-808f-86d1-c77ed7f0991d" style="width:50%" class="column"><figure id="2768e11f-9262-808b-81fb-f85d5b54b5bd" class="image"><a href="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%202.png"><img style="width:1300px" src="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%202.png"/></a></figure></div></div><p id="2768e11f-9262-80f9-af52-d4efee824d0b" class="">
+</p><h3 id="2768e11f-9262-8033-999d-c65279950ebc" class=""><strong>1-3. HTTP Protocol</strong></h3><ul id="2768e11f-9262-8046-80f6-d038a6a1d0ae" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-red_background"><strong>HTTP (HyperText Transfer Protocol)</strong></mark></mark><mark class="highlight-orange"><mark class="highlight-red_background">:</mark></mark> The predominant convention for sending and receiving data on the web. It allows both requests and responses to be made in the <strong>form of text messages</strong>and is the basic unit of communication between client and server.<ul id="2768e11f-9262-803b-bd97-feab1c051056" class="bulleted-list"><li style="list-style-type:circle">A<mark class="highlight-orange"><strong>request</strong></mark>specifies what <strong>action to perform (e.g., get, create)</strong>and the target resource.</li></ul><ul id="2768e11f-9262-809a-a33d-f3f49b8bc468" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-orange"><strong>Response</strong></mark> <strong>contains</strong> <strong>the result of the processing,</strong> <strong>along with</strong> <strong>a status code</strong> and, <strong>if necessary, data</strong>.</li></ul><p id="2768e11f-9262-80a6-a84e-c36ec7059433" class="">
+</p></li></ul><ul id="2768e11f-9262-8069-b8c4-e05ce7566351" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Example HTTP requests</strong></mark><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2768e11f-9262-8027-b81c-d58b391ed33e" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">GET /students/1 HTTP/1.1
+Host: example.com</code></pre><ul id="2768e11f-9262-8006-824c-d459b660d1a6" class="bulleted-list"><li style="list-style-type:circle"><code>GET</code>: A request method that tells the server to retrieve data. Other methods include <code>POST</code>, <code>PUT</code>, and <code>DELETE</code>.</li></ul><ul id="2768e11f-9262-80e7-8068-e15f8530a1fd" class="bulleted-list"><li style="list-style-type:circle"><code>/students/1</code>: The URL path to the server resource, which in this case means we&#x27;re requesting student data with ID 1.</li></ul><ul id="2768e11f-9262-80ab-ad66-f9fcf8e39053" class="bulleted-list"><li style="list-style-type:circle"><code>HTTP/1.1</code>: The HTTP version being used. Currently, 1.1 and 2 are widely used, and the newest version is HTTP/3.</li></ul><ul id="2768e11f-9262-8016-97f5-da96e12b2ad9" class="bulleted-list"><li style="list-style-type:circle"><code>Host: example.com</code>: Allows you to specify the hostname of the server being requested. You can run multiple domains on the same server, so this <mark class="highlight-red_background"><strong>must be included</strong></mark>!</li></ul><p id="2768e11f-9262-8021-91ef-fff60d004d63" class="">
+</p></li></ul><ul id="2768e11f-9262-80d4-85f0-ddf8cb4bdece" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Example HTTP response:</strong></mark><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2768e11f-9262-8024-8283-f270ca39d28f" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  &quot;id&quot;: 1,
+  &quot;name&quot;: &quot;홍길동&quot;
+}</code></pre><ul id="2768e11f-9262-8052-aec0-c7f1d61db7ff" class="bulleted-list"><li style="list-style-type:circle"><code>HTTP/1.1 200 OK</code>: Response version and status code, where <code>200 OK</code>means the request was successfully processed.</li></ul><ul id="2768e11f-9262-80a7-8f82-f6ec4e618b82" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Type: application/json</code>: Specifies the data type of the response body. Here we return data in JSON format.</li></ul><ul id="2768e11f-9262-8053-ab6a-c15bab02dbdc" class="bulleted-list"><li style="list-style-type:circle"><code>{ &quot;id&quot;: 1, &quot;name&quot;: &quot;HongGilDong&quot; }</code>: The actual response data, which is the student information requested by the client in the form of a JSON object.</li></ul><p id="2768e11f-9262-8035-a754-f17ce9648c00" class="">
+</p></li></ul><ul id="2768e11f-9262-807f-be45-cd2b6049388c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>As shown above, HTTP has a simple structure of exchanging request and response messages, and REST API communication can be seen as an extension of this basic principle...!</strong></mark></li></ul><p id="2768e11f-9262-80dc-9fa3-e51377d0aded" class="">
+</p><h2 id="2768e11f-9262-80f1-a9e3-d5e7a270939f" class="">2. What is an API?</h2><figure id="2768e11f-9262-80c6-98b3-de58837f5390" class="image"><a href="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%203.png"><img style="width:792.9921875px" src="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%203.png"/></a></figure><ul id="2768e11f-9262-80bf-bb3a-ebd2cd8a1b45" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>API (Application Programming Interface)</strong></mark>: Refers to an application (program) and the <strong>promise (interface)</strong>that allows the application to interact with each other. In other words, an API is a <mark class="highlight-red_background"><strong>set of rules and specifications that define how certain functions can be called and used</strong></mark>.</li></ul><ul id="2768e11f-9262-8099-b829-e2394dcbbcf8" class="bulleted-list"><li style="list-style-type:disc">With APIs, programmers don&#x27;t need to know the intricate inner workings, but they can <mark class="highlight-red_background"><strong>leverage functionality by</strong></mark>sending <mark class="highlight-red_background"><strong>requests and</strong></mark> <mark class="highlight-red_background"><strong>receiving responses</strong></mark> <mark class="highlight-red_background"><strong>in a prescribed way</strong></mark>. For example, operating systems provide file open/save APIs, and web services provide data retrieval/registration APIs.</li></ul><hr id="2768e11f-9262-8032-8dbd-d3745206cb06"/><h3 id="2768e11f-9262-80e9-bc5a-e248549e1975" class=""><strong>2-1. Examples of everyday analogies</strong></h3><figure id="2768e11f-9262-807a-a54c-f57f322c8c21" class="image"><a href="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%204.png"><img style="width:792.9921875px" src="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%204.png"/></a></figure><ul id="2768e11f-9262-8015-99fa-ce2384cc5f44" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Cafe ordering analogy</strong></mark><mark class="highlight-red_background">:</mark><ul id="2768e11f-9262-8015-a901-e20c614e2b66" class="bulleted-list"><li style="list-style-type:circle">A customer says &quot;Americano, please&quot; in a cafe, and the waiter understands the order based on the <mark class="highlight-red_background"><strong>menu (rules)</strong></mark>, makes the coffee, and serves it to the customer.</li></ul><ul id="2768e11f-9262-800d-b793-e25dd7104350" class="bulleted-list"><li style="list-style-type:circle">The<mark class="highlight-red_background"><strong>customer</strong></mark> doesn<mark class="highlight-red_background"><strong>&#x27;t need to know how the coffee machine works or where the beans come from</strong></mark>. They just need to order the way it&#x27;s written on the menu.</li></ul><ul id="2768e11f-9262-80c0-b865-fb205a95a7dd" class="bulleted-list"><li style="list-style-type:circle">In this case, the <mark class="highlight-red_background"><strong>customer = client</strong></mark>, the <mark class="highlight-red_background"><strong>clerk = server</strong></mark>, and <mark class="highlight-red_background"><strong>the menu = API</strong></mark>.</li></ul></li></ul><ul id="2768e11f-9262-8065-aaed-eadd2a9fa7f1" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>APIs work the same way as above! :</strong></mark><ul id="2768e11f-9262-80a7-a8eb-c0937d97e5a0" class="bulleted-list"><li style="list-style-type:circle">The client sends a request, following the rules defined in the API documentation.</li></ul><ul id="2768e11f-9262-80d9-84da-dccac4f99366" class="bulleted-list"><li style="list-style-type:circle">The server processes the request and returns a response in a prescribed format.</li></ul><ul id="2768e11f-9262-8043-84df-febe5ae00e12" class="bulleted-list"><li style="list-style-type:circle"><strong>Requests that deviate from the rules are not processed and may result in an error. (Example: ordering an invalid menu → response like &quot;We don&#x27;t have that menu&quot;)</strong></li></ul></li></ul><hr id="2768e11f-9262-809b-a6c8-f37751289d47"/><ul id="2768e11f-9262-8083-9e81-f3b3546a8558" class="bulleted-list"><li style="list-style-type:disc">In summary, <strong>APIs</strong>can act as <strong>a formal language and menu board for communication between programs</strong>, allowing <mark class="highlight-red_background"><strong>developers to easily access the functionality they need without having to know the inner workings</strong></mark>.</li></ul><p id="2768e11f-9262-8032-97b0-cf2994000ba8" class="">
+</p><h3 id="2768e11f-9262-80f0-bf0c-d590fbaf3027" class="">2-2. The Role of Web APIs</h3><figure id="2768e11f-9262-80ec-bc71-e49e648cce38" class="image"><a href="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%205.png"><img style="width:792.9921875px" src="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%205.png"/></a></figure><ul id="2768e11f-9262-80bc-837f-d1d6ab42c9d8" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Access to resources in servers and databases</strong></mark><ul id="2768e11f-9262-80cf-9125-d096cd8f4d81" class="bulleted-list"><li style="list-style-type:circle">The information in the database is not available to everyone, so it can only be accessed on demand.</li></ul><ul id="2768e11f-9262-800d-abf9-fab2aec38a56" class="bulleted-list"><li style="list-style-type:circle">APIs allow only authorized people to access the server and database.</li></ul></li></ul><ul id="2768e11f-9262-809e-80ec-fc557c917cb5" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Standardize all requests and responses</strong></mark><ul id="2768e11f-9262-8057-9c18-c60290469707" class="bulleted-list"><li style="list-style-type:circle">It doesn&#x27;t matter if you&#x27;re using an iPhone or a Galaxy phone, you&#x27;re using the same API, so you can standardize client requests and server responses with one API.</li></ul></li></ul><ul id="2768e11f-9262-80d6-ab55-f80213dc5bc1" class="bulleted-list"><li style="list-style-type:disc">REST APIs<ul id="2768e11f-9262-8000-aaf0-e138beabea4a" class="bulleted-list"><li style="list-style-type:circle">REST API (Representational State Transfer) is a way to represent different resources used on the web as HTTP URIs and <strong>define actions on</strong>those <strong>resources as HTTP Methods</strong>.</li></ul><ul id="2768e11f-9262-8052-abe0-f439960954e5" class="bulleted-list"><li style="list-style-type:circle">In other words, it is a way to express <mark class="highlight-gray_background">how to use a resource (defined as an HTTP URI</mark>) in a structurally clean way <mark class="highlight-gray_background">(HTTP Method + Payload</mark>).</li></ul></li></ul><p id="2768e11f-9262-8024-bb9c-dad95f6f964d" class="">
+</p><p id="2768e11f-9262-80b7-bbff-dfc41ae49f34" class="">
+</p><h3 id="2768e11f-9262-803d-94f8-eece176e0856" class="">2-3. What is REST API?</h3><ul id="2768e11f-9262-8082-88b2-f8674d0979f5" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>REST (Representational State Transfer)</strong></mark>: A <strong>style of web architecture</strong> proposed in Roy Fielding&#x27;s paper in 2000. Not just a protocol, but <mark class="highlight-gray_background"><strong>a set of design rules for how resources are defined and accessed on the web</strong></mark>.</li></ul><ul id="2768e11f-9262-8083-96e4-d72a3d35124a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>REST API</strong></mark><mark class="highlight-orange">:</mark> An API that closely follows the constraints of REST. The client manipulates a resource by making a <mark class="highlight-gray_background">request</mark>, and the server returns the result in a <mark class="highlight-gray_background">response</mark>.</li></ul><hr id="2768e11f-9262-8039-9d9d-f3383ed1b652"/><ul id="2768e11f-9262-8042-941f-eb12c5845d56" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-default_background"><strong>The core constraints of a REST API</strong></mark></mark><mark class="highlight-orange"><mark class="highlight-default_background">:</mark></mark><ul id="2768e11f-9262-8087-b0d4-fdf38b3f2384" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Identification of resources (based on URIs)</strong></mark><mark class="highlight-gray_background">:</mark> Every resource is represented by a unique URI (Uniform Resource Identifier), e.g. <code>/students/1</code> → represents a resource called students with ID 1.</li></ul><ul id="2768e11f-9262-8040-be4e-fa5af353e960" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Manipulating resources through representations</strong></mark>: You send and receive representations (JSON, XML, etc.) of resources, not the resources themselves. The same resource can respond in different representations depending on the context.</li></ul><ul id="2768e11f-9262-8092-b4bb-d06df7d856ff" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Stateless</strong></mark>: The server does not store the client&#x27;s state. Each request is handled independently, and all necessary information must be contained within the request message.</li></ul><ul id="2768e11f-9262-80ea-a513-e9e337dea446" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Uniform Interface</strong></mark><mark class="highlight-gray_background">:</mark> Standardized request and response formats using HTTP methods and status codes.<ul id="2768e11f-9262-806e-b3a8-f2008e627e33" class="bulleted-list"><li style="list-style-type:square"><code>GET: Get</code> a resource</li></ul><ul id="2768e11f-9262-8000-bb88-d69c390df7ab" class="bulleted-list"><li style="list-style-type:square"><code>POST</code>: Create a resource</li></ul><ul id="2768e11f-9262-8005-a48c-cb28a6d09181" class="bulleted-list"><li style="list-style-type:square"><code>PUT</code>: Modify an entire resource</li></ul><ul id="2768e11f-9262-8049-8435-df19f429b1af" class="bulleted-list"><li style="list-style-type:square"><code>PATCH</code>: Modify a part of a resource</li></ul><ul id="2768e11f-9262-8034-95a7-cc6d854aefef" class="bulleted-list"><li style="list-style-type:square"><code>DELETE</code>: Delete a resource</li></ul></li></ul><ul id="2768e11f-9262-80ac-9648-d73d44855447" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Layered System</strong></mark><mark class="highlight-gray_background">: </mark>The client does not need to know about the existence of intermediate servers (proxies, load balancers, etc.), and requests should behave the same even if they go through multiple layers.</li></ul><ul id="2768e11f-9262-808c-bdc1-f3663b11e9aa" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Cacheable</strong></mark><mark class="highlight-gray_background">: </mark>Response results should be cacheable, which reduces server load and improves performance.</li></ul></li></ul><hr id="2768e11f-9262-8065-90c8-de64f5512c1d"/><ul id="2768e11f-9262-80cd-980b-d8ae5b01cf7c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>Features of REST APIs</strong></mark><ul id="2768e11f-9262-80bf-a1a8-c02878ff29d7" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Uniform Interface</strong></mark><ul id="2768e11f-9262-8049-96e3-e41754d636c9" class="bulleted-list"><li style="list-style-type:square">Available on platforms that follow the HTTP standard protocol</li></ul><ul id="2768e11f-9262-807d-8b76-f188f06917a6" class="bulleted-list"><li style="list-style-type:square">Performs operations on resources specified by URIs with a uniform, constrained interface</li></ul><ul id="2768e11f-9262-801f-af25-e7a188e2175b" class="bulleted-list"><li style="list-style-type:square">Handles resources through HTTP methods (GET, POST, PUT, DELETE)</li></ul></li></ul><ul id="2768e11f-9262-80de-b52d-d5da32e96aa5" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Stateless</strong></mark><ul id="2768e11f-9262-80b8-b03f-fc7b897b398a" class="bulleted-list"><li style="list-style-type:square">The server does not store the client&#x27;s state information</li></ul><ul id="2768e11f-9262-8041-88b4-d97e5696cbec" class="bulleted-list"><li style="list-style-type:square">Sends all necessary information in each request</li></ul><ul id="2768e11f-9262-8036-b38b-eb8ddc9d33da" class="bulleted-list"><li style="list-style-type:square">The server recognizes and processes each request as a completely separate entity</li></ul></li></ul><ul id="2768e11f-9262-80ca-af47-cd07417bcc2b" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Cacheable</strong></mark><ul id="2768e11f-9262-807c-8c46-c4008c2b6f5d" class="bulleted-list"><li style="list-style-type:square">Can apply HTTP&#x27;s caching features</li></ul><ul id="2768e11f-9262-805d-824e-cee3d4fdd4e0" class="bulleted-list"><li style="list-style-type:square">Cache can be used to improve response time and reduce server load</li></ul><ul id="2768e11f-9262-80ce-a381-d5de321fcd35" class="bulleted-list"><li style="list-style-type:square">GET requests are cacheable, but POST requests are not.</li></ul></li></ul><ul id="2768e11f-9262-80a4-89a1-ed5cfa95e62e" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Layered System</strong></mark><ul id="2768e11f-9262-802c-b8e9-c80a4742896d" class="bulleted-list"><li style="list-style-type:square">The client does not know whether it is connected to the server directly or through an intermediate server</li></ul><ul id="2768e11f-9262-805b-8ea5-d57271bc3730" class="bulleted-list"><li style="list-style-type:square">Intermediaries such as proxies and gateways can be used in between</li></ul><ul id="2768e11f-9262-8009-8782-cbdaf4c06180" class="bulleted-list"><li style="list-style-type:square">Can add security, load balancing, encryption, user authentication, etc.</li></ul></li></ul><ul id="2768e11f-9262-8040-9008-e727f7e9f738" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Self-descriptiveness</strong></mark><ul id="2768e11f-9262-8034-a363-e47cb5153c66" class="bulleted-list"><li style="list-style-type:square">Self-descriptive structure that can be understood by looking at REST API messages alone</li></ul><ul id="2768e11f-9262-80a1-bde8-e65d5659cbc5" class="bulleted-list"><li style="list-style-type:square">Use JSON to format messages</li></ul><ul id="2768e11f-9262-80d8-a721-c8b6f9dfd432" class="bulleted-list"><li style="list-style-type:square">Understand what information is being provided by just looking at the URI</li></ul></li></ul><ul id="2768e11f-9262-80ab-b758-fccf18b2fffa" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Client-Server Architecture</strong></mark><ul id="2768e11f-9262-80db-81dc-f2988f06f338" class="bulleted-list"><li style="list-style-type:square">Client and server are separate and independent</li></ul><ul id="2768e11f-9262-80f1-b2ab-f523e7533bc8" class="bulleted-list"><li style="list-style-type:square">Server provides API, client manages user authentication or context (session, login information) directly</li></ul><ul id="2768e11f-9262-80ca-8779-c7921d295c25" class="bulleted-list"><li style="list-style-type:square">Less dependency on each other</li></ul><p id="2768e11f-9262-80e2-9daa-c7181d7621c8" class="">
+</p></li></ul></li></ul><ul id="2768e11f-9262-8059-aa29-e65cdd0021ec" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>Advantages of REST APIs</strong></mark><mark class="highlight-gray_background">:</mark><ul id="2768e11f-9262-80f5-9f72-fe6fb08fd3f5" class="bulleted-list"><li style="list-style-type:circle">Intuitive and simple, no need to build a separate infrastructure</li></ul><ul id="2768e11f-9262-8072-b8ec-c59ab9c81d92" class="bulleted-list"><li style="list-style-type:circle">Because they use the HTTP protocol, you don&#x27;t need to build your own infrastructure to use REST APIs.</li></ul><ul id="2768e11f-9262-8042-8c40-fe196e64688e" class="bulleted-list"><li style="list-style-type:circle">Can be used on any platform that follows the HTTP standard protocol</li></ul><ul id="2768e11f-9262-80ac-a135-c55f0ddca3f9" class="bulleted-list"><li style="list-style-type:circle">Allows for clear separation of server and client roles</li></ul><ul id="2768e11f-9262-8064-af2d-e619ab0cc778" class="bulleted-list"><li style="list-style-type:circle">REST API messages clearly indicate what they are intended to do, making intent easy to understand</li></ul><ul id="2768e11f-9262-802d-96e8-fa68a62e739d" class="bulleted-list"><li style="list-style-type:circle">Minimizes issues that can arise from designing different services</li></ul><ul id="2768e11f-9262-8071-803e-eb3a53d8e039" class="bulleted-list"><li style="list-style-type:circle">Allows servers and clients to evolve independently</li></ul><p id="2768e11f-9262-80b8-a5ec-e47a3e48ba6b" class="">
+</p></li></ul><ul id="2768e11f-9262-809c-a808-fe42ca0767e1" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>Disadvantages of REST APIs</strong></mark><mark class="highlight-gray_background">:</mark><ul id="2768e11f-9262-80b2-b723-d67f66138a46" class="bulleted-list"><li style="list-style-type:circle">No standard exists, requiring definition</li></ul><ul id="2768e11f-9262-80f9-821c-d376a024fa1e" class="bulleted-list"><li style="list-style-type:circle">Limited number of HTTP methods (GET, POST, PUT, DELETE, etc.)</li></ul><ul id="2768e11f-9262-8038-80c1-cfa88fdac41f" class="bulleted-list"><li style="list-style-type:circle">PUT and DELETE may not be available on older browsers</li></ul><ul id="2768e11f-9262-8094-9023-e1b988c4fdb0" class="bulleted-list"><li style="list-style-type:circle">Related tools may be lacking</li></ul><ul id="2768e11f-9262-8051-9cd0-dcb1e4ae37f7" class="bulleted-list"><li style="list-style-type:circle">APIs you build require documentation and can be difficult to manage</li></ul><ul id="2768e11f-9262-8076-b410-fd08f99968ce" class="bulleted-list"><li style="list-style-type:circle">Clients may need multiple requests to retrieve the exact data they need</li></ul><ul id="2768e11f-9262-8015-b1ab-d4ea2de12850" class="bulleted-list"><li style="list-style-type:circle">Designing RESTful APIs can be challenging (API versioning, naming, etc.)</li></ul><ul id="2768e11f-9262-8068-9c32-c31ee1650b1d" class="bulleted-list"><li style="list-style-type:circle">Limited ways to handle large data transfers</li></ul><ul id="2768e11f-9262-8058-859e-e41cf01f4ff3" class="bulleted-list"><li style="list-style-type:circle">Can be difficult to manage due to lack of standards</li></ul><p id="2768e11f-9262-80d4-9514-dbec578b8377" class="">
+</p></li></ul><hr id="2768e11f-9262-8059-ab73-ee50247129df"/><p id="2768e11f-9262-80fa-9698-d67595388021" class="">To summarize, <strong>a REST API is an API that defines resources on the web as URIs and interacts with them in a standardized way through HTTP methods</strong>, and is the most popular form of web API today.</p><p id="2768e11f-9262-80a3-9e71-cd477be50ac1" class="">
+</p><p id="2768e11f-9262-80d0-bc7e-c6c3c0de77b3" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">B. REST API</summary><div class="indented"><h2 id="2768e11f-9262-80d3-97fc-c19f02966982" class="">1. Components of REST API</h2><h3 id="2768e11f-9262-80f6-82e9-fd1126f9d045" class=""><strong>1-1. Resource</strong></h3><ul id="2768e11f-9262-801e-bf09-ff4486b999f9" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background">The object thatthe API deals with. </mark><ul id="2768e11f-9262-80bc-a08e-f1367f06b165" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background">Example: </mark><mark class="highlight-gray_background"><strong>A noun-like object</strong></mark><mark class="highlight-gray_background">such as a student, post, or order. </mark></li></ul></li></ul><ul id="2768e11f-9262-80cc-906c-e656a539d3bc" class="bulleted-list"><li style="list-style-type:disc">A resource is <strong>identified</strong>by a Uniform Resource Identifier (URI).<ul id="2768e11f-9262-8084-b6d8-f9cf2b456138" class="bulleted-list"><li style="list-style-type:circle">Examples: <code>/students</code>, <code>/students/1</code>, <code>/orders/2024-09-01</code> </li></ul></li></ul><ul id="2768e11f-9262-806b-8e5e-c174b6a5b7b2" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"> Requires</mark> a<mark class="highlight-gray_background"><strong>collection/individual resource</strong></mark><mark class="highlight-gray_background"> distinction</mark>: <ul id="2768e11f-9262-80e4-b579-ebf2b077b50e" class="bulleted-list"><li style="list-style-type:circle"><code>/posts</code>(collection) ↔ <code>/posts/10</code>(individual).</li></ul><ul id="2768e11f-9262-807e-81a2-f5d3f2e6c48d" class="bulleted-list"><li style="list-style-type:circle">Sub-relationships should be expressed hierarchically <code>, such as /students/1/courses</code>.</li></ul></li></ul><ul id="2768e11f-9262-8037-a584-c96281bbc457" class="bulleted-list"><li style="list-style-type:disc">URIs <strong>only represent objects, not actions</strong>(use nouns). Lowercase-plural-hyphenated is recommended. <ul id="2768e11f-9262-8081-a25a-ce4e8d09a695" class="bulleted-list"><li style="list-style-type:circle">Example: <code>/createStudent</code>(avoided) → <code>/students</code>(preferred).</li></ul></li></ul><ul id="2768e11f-9262-8069-b485-cacd2b9b7047" class="bulleted-list"><li style="list-style-type:disc">Separate<strong>lookup conditions, paging, and sorting</strong>into query parameters.<ul id="2768e11f-9262-80a2-b4c3-e37052dd5e96" class="bulleted-list"><li style="list-style-type:circle">Example: <code>/students?major=cs&amp;page=2&amp;size=20&amp;sort=name,asc</code>.</li></ul></li></ul><ul id="2768e11f-9262-8065-92e4-c65a014dd41e" class="bulleted-list"><li style="list-style-type:disc"><strong>The server keeps the state of the resource, and the client sends and receives a representation of the state.</strong></li></ul><p id="2768e11f-9262-809e-b9f6-ed3cd528e3df" class="">
+</p><h3 id="2768e11f-9262-8094-96cd-f376d0e8ba4a" class=""><strong>1-2. Method</strong></h3><ul id="2768e11f-9262-8064-973d-c3b12c7f25f0" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>HTTP methods</strong></mark><mark class="highlight-gray_background">that indicate </mark><mark class="highlight-gray_background"><strong>what to do with</strong></mark><mark class="highlight-gray_background">a resource </mark><mark class="highlight-gray_background"><strong>!</strong></mark><ul id="2768e11f-9262-80ac-986b-fce6d64d2189" class="bulleted-list"><li style="list-style-type:circle"><code>GET:</code> <mark class="highlight-gray_background"><strong>Get</strong></mark>. Safe and<strong>idempotent</strong>. No body, just headers-query semantics.</li></ul><ul id="2768e11f-9262-8047-a40f-e8136d0fbfdd" class="bulleted-list"><li style="list-style-type:circle"><code>POST</code>: <mark class="highlight-gray_background"><strong>Create</strong></mark><mark class="highlight-gray_background"> or </mark><mark class="highlight-gray_background"><strong>add a child resource to</strong></mark><mark class="highlight-gray_background"> a collection </mark>. Idempotent. Usually returns <code>201 Created and a</code> <code>Location</code> header on success.</li></ul><ul id="2768e11f-9262-8054-bf09-d453d3c2d00c" class="bulleted-list"><li style="list-style-type:circle"><code>PUT</code>: <mark class="highlight-gray_background"><strong>Full replacement</strong></mark>(representative case). Equal. Missing fields may be considered deletions.</li></ul><ul id="2768e11f-9262-80ad-81fe-cb782ac38719" class="bulleted-list"><li style="list-style-type:circle"><code>PATCH</code>: <mark class="highlight-gray_background"><strong>Partial modification</strong></mark>. Usually non-equal (can be equal by design). The scope of the modification is specified in the body.</li></ul><ul id="2768e11f-9262-80c6-8e3d-e7a08ad71d26" class="bulleted-list"><li style="list-style-type:circle"><code>DELETE</code>: <mark class="highlight-gray_background"><strong>Delete</strong></mark>. Mutable. Resubmitting a request for a resource that has already been deleted should have the same result.</li></ul><figure id="2768e11f-9262-8093-8ce3-da83229c2897" class="image"><a href="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%206.png"><img style="width:417.96875px" src="04%20REST%20API%20(EN)%202768e11f926280108aaed6f1006ff992/image%206.png"/></a></figure></li></ul><ul id="2768e11f-9262-8051-80d0-d2463abd8773" class="bulleted-list"><li style="list-style-type:disc">Note Methods: <code>HEAD</code>(header only, no body), <code>OPTIONS</code>(check which methods the server supports).</li></ul><ul id="2768e11f-9262-80bb-a6b0-d89efc4b02b9" class="bulleted-list"><li style="list-style-type:disc"><strong>Representation status code</strong> depending on the method<code>:GET</code> → <code>200 OK</code> / <code>404 Not Found if not presentPOST</code> → <code>201 Created</code>(+ <code>Location)PUT/PATCH</code> → <code>200 OK</code> or <code>204 No Content if no bodyDELETE</code> → <code>204 No Content</code></li></ul><p id="2768e11f-9262-8047-81fd-e2c6ed46092e" class="">
+</p><h3 id="2768e11f-9262-802d-b5b8-e6c49aca23e8" class=""><strong>1-3. Representation</strong></h3><ul id="2768e11f-9262-8041-b625-dabe19254aed" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>This refers to the format in which the state of the resource is communicated.</strong></mark></li></ul><ul id="2768e11f-9262-80bf-a82d-e355586b7afc" class="bulleted-list"><li style="list-style-type:disc">The body format is mainly <strong>JSON</strong>, but in some cases, XML/CSV/binary, etc. can be used.</li></ul><ul id="2768e11f-9262-805d-9ec7-dab46a2235f8" class="bulleted-list"><li style="list-style-type:disc"><strong>Content Negotiation</strong>: Client indicates desired format <code>with Accept</code>, server declares actual format <code>with Content-Type</code>. Example: <code>Accept: application/json</code>, <code>Content-Type: application/json</code>.</li></ul><ul id="2768e11f-9262-8017-a3b7-eb9e9c2847ea" class="bulleted-list"><li style="list-style-type:disc">The representation should be self-descriptive. Field semantics are clear and can include any necessary links (e.g., <code>self</code>, <code>next</code>) or metadata (e.g., page info).</li></ul><ul id="2768e11f-9262-80ad-bf6d-d5a48cb02bdc" class="bulleted-list"><li style="list-style-type:disc">Errors should preferably be returned in a consistent format. Example: Suggestions for configuring the <code>status</code>, <code>code</code>, <code>message</code>, and <code>details</code> fields.</li></ul><p id="2768e11f-9262-80a2-8f35-e6d9a6f0ba5e" class="">
+</p><h3 id="2768e11f-9262-805c-8912-dc37f71633b1" class=""><mark class="highlight-gray_background">1-4. </mark><mark class="highlight-gray_background"><strong>REST API request/response structure</strong></mark></h3><ul id="2768e11f-9262-8098-bc3b-f83f156cebc9" class="bulleted-list"><li style="list-style-type:disc"><strong>Request</strong> = <code>Method</code> + <code>URI</code> + <code>Headers</code> + <code>Body (optional)</code><ul id="2768e11f-9262-808a-abaf-c059ad8df0b1" class="bulleted-list"><li style="list-style-type:circle">Auth-Authorization: Use <code>Authorization</code> header (JWT/Bearer, etc.).</li></ul><ul id="2768e11f-9262-8006-b990-e14b40e46395" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Type</code> required when sending body. Client acceptance type specified <code>as Accept</code>.</li></ul><ul id="2768e11f-9262-807c-8e6a-ecbe87fbc004" class="bulleted-list"><li style="list-style-type:circle">Cache-Conditional requests: Utilize <code>If-None-Match</code>(ETag), <code>If-Modified-Since</code>.</li></ul></li></ul><ul id="2768e11f-9262-8097-b090-d5b64ed06a0a" class="bulleted-list"><li style="list-style-type:disc"><strong>Response</strong> = <code>Status Code</code> + <code>Headers</code> + <code>Body (optional)</code><ul id="2768e11f-9262-80bc-9487-cc1fc783cd82" class="bulleted-list"><li style="list-style-type:circle">Success: <code>200/201/204</code> centered. Providing a new resource URI <code>with Location</code>on creation.</li></ul><ul id="2768e11f-9262-802d-8893-c5df0b8b0252" class="bulleted-list"><li style="list-style-type:circle">Errors: <code>4xx</code>(client error), <code>5xx</code>(server error). Clearly describe the cause and fix in the body, if possible.</li></ul><ul id="2768e11f-9262-8078-86f9-fe981d2c2ecc" class="bulleted-list"><li style="list-style-type:circle">Cache-versioning: use <code>ETags</code>, <code>Cache-Control</code>, path-versioning<code>(/v1</code>) or header-versioning strategies as needed.</li></ul></li></ul><p id="2768e11f-9262-8043-af43-e1b00889e31a" class="">
+</p><p id="2768e11f-9262-8091-b6bd-d8c760979400" class=""> </p><h2 id="2768e11f-9262-80d3-8e0c-e91cbc588582" class="">3. How REST APIs are designed</h2><ul id="2768e11f-9262-80da-8e99-f84bcd397408" class="bulleted-list"><li style="list-style-type:disc">Actions on resources are expressed as HTTP Methods (POST, GET, PUT, DELETE).</li></ul><ul id="2768e11f-9262-80e3-b84f-c1251151851e" class="bulleted-list"><li style="list-style-type:disc">Use / (forward slash) to indicate hierarchical relationships</li></ul><ul id="2768e11f-9262-80b2-b0b5-dfc8b03a688d" class="bulleted-list"><li style="list-style-type:disc">Do not use / (slash) in the last character of a URI</li></ul><ul id="2768e11f-9262-8032-a13a-f934b7ab2b4e" class="bulleted-list"><li style="list-style-type:disc">Avoid using _ (underscore) in URIs. We also recommend using lowercase letters rather than English capitalization.</li></ul><ul id="2768e11f-9262-8090-bf64-c43d08e12159" class="bulleted-list"><li style="list-style-type:disc">And avoid long words for readability.</li></ul><ul id="2768e11f-9262-8084-8c83-d0175166b6e0" class="bulleted-list"><li style="list-style-type:disc">Use nouns in URIs, not verbs, because verbs express HTTP methods like GET and POST.</li></ul><ul id="2768e11f-9262-8047-9327-c24fa67a08f1" class="bulleted-list"><li style="list-style-type:disc">Do not include file extensions (e.g. .json , .JPGE) in the URI.</li></ul><ul id="2768e11f-9262-80ba-9eeb-d7db95a6b233" class="bulleted-list"><li style="list-style-type:disc">Self-descriptiveness: RESTful APIs are designed so that it is easy to understand what the purpose of the API is from the name itself.</li></ul></div></details><p id="2768e11f-9262-8054-8562-e2970fab03ab" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
