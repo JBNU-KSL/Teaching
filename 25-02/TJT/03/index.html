@@ -1,0 +1,861 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>03. 취업 및 진로</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.highlight-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.block-color-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 8000mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "통합전공탐색 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2588e11f-9262-8198-9ccf-fe1741aec419" class="page sans"><header><h1 class="page-title">03. 취업 및 진로</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><div data-testid="/icons/list_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/list_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/list_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>날짜</th><td></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><div data-testid="/icons/description_gray.svg" style="width:14px;height:14px;flex-shrink:0;transform:scale(1.2);mask:url(/icons/description_gray.svg?mode=light) no-repeat center;-webkit-mask:url(/icons/description_gray.svg?mode=light) no-repeat center;background-color:rgba(142, 139, 134, 1);fill:rgba(142, 139, 134, 1)"></div></span>주차</th><td>3주차</td></tr></tbody></table></header><div class="page-body"><figure id="2788e11f-9262-806b-977b-eed3a150fcca" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B31.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B31.png"/></a></figure><figure id="2788e11f-9262-80b5-a9fa-c4744588934e" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B32.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B32.png"/></a></figure><figure id="2788e11f-9262-808d-9553-e8023a973227" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B33.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B33.png"/></a></figure><figure id="2788e11f-9262-80ec-9c9c-c4fba346bb15" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B34.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B34.png"/></a></figure><figure id="2788e11f-9262-80c7-a6b4-ca366540727a" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B35.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B35.png"/></a></figure><figure id="2788e11f-9262-803f-87d5-e44bf2d26f95" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B36.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B36.png"/></a></figure><figure id="2788e11f-9262-80d5-b66e-d286f746f04a" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B37.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B37.png"/></a></figure><figure id="2788e11f-9262-80ac-9605-d29cf4c5f425" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B38.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B38.png"/></a></figure><figure id="2788e11f-9262-8083-98bb-f77bf7ee2df7" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B39.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B39.png"/></a></figure><figure id="2788e11f-9262-803f-8ca5-efd151e78a7a" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B310.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B310.png"/></a></figure><figure id="2788e11f-9262-803e-8c41-d8c5d0e5011d" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B311.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B311.png"/></a></figure><figure id="2788e11f-9262-8007-91fc-c1d2f1c3996e" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B312.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B312.png"/></a></figure><figure id="2788e11f-9262-80d7-bc51-d3d55784ee0c" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B313.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B313.png"/></a></figure><figure id="2788e11f-9262-80ee-840c-c7767d8072a1" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B314.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B314.png"/></a></figure><figure id="2788e11f-9262-80ec-8872-d49d0ffc575d" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B315.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B315.png"/></a></figure><figure id="2788e11f-9262-80ea-bd3c-db94847be0d4" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B316.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B316.png"/></a></figure><figure id="2788e11f-9262-80b3-bdca-c036337df510" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B317.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B317.png"/></a></figure><figure id="2788e11f-9262-8082-85c1-c72cdddc18be" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B318.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B318.png"/></a></figure><figure id="2788e11f-9262-80fb-983f-c3bc407bdbf2" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B319.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B319.png"/></a></figure><figure id="2788e11f-9262-8000-84ec-c125fd55ab05" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B320.png"><img style="width:4000px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/%E1%84%89%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%83%E1%85%B320.png"/></a></figure><p id="2788e11f-9262-803f-942b-da61b5d9a2af" class="">
+</p><h2 id="2788e11f-9262-8064-ad31-e10f515d7fbc" class="">A. 컴퓨터공학 기반 진출 분야</h2><table id="2788e11f-9262-8010-8bb6-d00cdc73de8c" class="simple-table"><thead class="simple-table-header"><tr id="2788e11f-9262-8005-9228-e27d67f2d55b"><th id="TvIY" class="simple-table-header-color simple-table-header">분야</th><th id="gKhp" class="simple-table-header-color simple-table-header">주요 직무</th><th id="t^mU" class="simple-table-header-color simple-table-header">필요 역량</th><th id="VHu`" class="simple-table-header-color simple-table-header">대표 기업</th></tr></thead><tbody><tr id="2788e11f-9262-8083-9e82-d33bdd16a28a"><td id="TvIY" class=""><strong>소프트웨어 엔지니어</strong></td><td id="gKhp" class="">응용SW, 시스템SW, OS·DB 설계</td><td id="t^mU" class="">C/C++, Java, 운영체제</td><td id="VHu`" class="">삼성전자, LG전자</td></tr><tr id="2788e11f-9262-8089-b98b-e8717263a27a"><td id="TvIY" class=""><strong>네트워크·시스템 아키텍트</strong></td><td id="gKhp" class="">대규모 서버·클라우드 인프라 설계</td><td id="t^mU" class="">네트워크, 분산시스템</td><td id="VHu`" class="">AWS, MS, KT</td></tr><tr id="2788e11f-9262-8012-be5c-de8f52cf4f2e"><td id="TvIY" class=""><strong>보안 전문가</strong></td><td id="gKhp" class="">해킹 대응, 암호화, 네트워크 보안</td><td id="t^mU" class="">리눅스, 보안 프로토콜</td><td id="VHu`" class="">안랩, SK Shieldus</td></tr><tr id="2788e11f-9262-8015-afdb-e0bc8a6007e9"><td id="TvIY" class=""><strong>임베디드 개발자</strong></td><td id="gKhp" class="">IoT·로봇 제어 SW 개발</td><td id="t^mU" class="">C, FPGA, 하드웨어 지식</td><td id="VHu`" class="">현대차, LG이노텍</td></tr></tbody></table><blockquote id="2788e11f-9262-8014-96c3-d6a9453c2f22" class="">컴퓨터공학 기초 과목(자료구조, OS, 네트워크, 보안)이 튼튼해야 AI도 실전에서 활용할 수 있습니다.</blockquote><hr id="2788e11f-9262-8086-bf47-e005afa145f6"/><h2 id="2788e11f-9262-8095-a60e-ff19f3ea65a9" class="">B. 인공지능 심화 진출 분야</h2><table id="2788e11f-9262-80bb-85db-c863aca11535" class="simple-table"><thead class="simple-table-header"><tr id="2788e11f-9262-8022-8c05-d0f6120b28c1"><th id="rj~r" class="simple-table-header-color simple-table-header">분야</th><th id="SrRc" class="simple-table-header-color simple-table-header">주요 직무</th><th id="pq_;" class="simple-table-header-color simple-table-header">필요 역량</th><th id="t&gt;Kt" class="simple-table-header-color simple-table-header">대표 기업</th></tr></thead><tbody><tr id="2788e11f-9262-809e-9d76-d1dfbf18fa21"><td id="rj~r" class=""><strong>머신러닝 엔지니어</strong></td><td id="SrRc" class="">모델 설계·학습·배포</td><td id="pq_;" class="">Python, TensorFlow</td><td id="t&gt;Kt" class="">구글, 엔비디아</td></tr><tr id="2788e11f-9262-8099-83df-c0da6ed65360"><td id="rj~r" class=""><strong>딥러닝 리서처</strong></td><td id="SrRc" class="">신경망·알고리즘 연구</td><td id="pq_;" class="">PyTorch, 수학</td><td id="t&gt;Kt" class="">DeepMind, Meta</td></tr><tr id="2788e11f-9262-800c-a58f-c77c94cacaab"><td id="rj~r" class=""><strong>데이터 사이언티스트</strong></td><td id="SrRc" class="">데이터 분석·비즈니스 통찰</td><td id="pq_;" class="">R, SQL, ML</td><td id="t&gt;Kt" class="">네이버, 카카오</td></tr><tr id="2788e11f-9262-8031-ae64-f806042f3197"><td id="rj~r" class=""><strong>AI 윤리·정책 전문가</strong></td><td id="SrRc" class="">공정성·책임성 연구</td><td id="pq_;" class="">법·정책·철학</td><td id="t&gt;Kt" class="">정부기관, UNESCO</td></tr></tbody></table><blockquote id="2788e11f-9262-80b4-9f93-c3305f9279a1" class="">인공지능은 단순한 “코딩”이 아니라, 데이터와 사회적 맥락까지 고려해야 하는 종합적 학문입니다.</blockquote><hr id="2788e11f-9262-80ba-b291-d6fe24538608"/><h2 id="2788e11f-9262-8021-a7b1-e89cd710de56" class="">C. 융합·비개발 진로</h2><table id="2788e11f-9262-8052-b423-d1df3e129974" class="simple-table"><thead class="simple-table-header"><tr id="2788e11f-9262-8009-8a59-f256ec1a33cf"><th id="PSAL" class="simple-table-header-color simple-table-header">융합 분야</th><th id="d:[D" class="simple-table-header-color simple-table-header">적용 사례</th><th id="SyF^" class="simple-table-header-color simple-table-header">필요 역량</th><th id="hDFd" class="simple-table-header-color simple-table-header">대표 영역</th></tr></thead><tbody><tr id="2788e11f-9262-8028-aee7-ec0805602d21"><td id="PSAL" class=""><strong>자율주행</strong></td><td id="d:[D" class="">센서 데이터 분석, 차량 제어</td><td id="SyF^" class="">로보틱스, CV</td><td id="hDFd" class="">현대차, 테슬라</td></tr><tr id="2788e11f-9262-806e-acb6-cd74bd328be4"><td id="PSAL" class=""><strong>의료 AI</strong></td><td id="d:[D" class="">암 진단, 신약 개발</td><td id="SyF^" class="">ML, 의료지식</td><td id="hDFd" class="">루닛, 뷰노</td></tr><tr id="2788e11f-9262-8050-bf63-f8820b6e97bc"><td id="PSAL" class=""><strong>핀테크</strong></td><td id="d:[D" class="">금융 사기 탐지, 맞춤 서비스</td><td id="SyF^" class="">데이터 분석, 블록체인</td><td id="hDFd" class="">Toss, 카카오뱅크</td></tr><tr id="2788e11f-9262-80ff-99c3-dade549d28dc"><td id="PSAL" class=""><strong>스마트팩토리</strong></td><td id="d:[D" class="">제조 자동화, 효율화</td><td id="SyF^" class="">IoT, AI</td><td id="hDFd" class="">삼성, LG</td></tr><tr id="2788e11f-9262-804d-a5f8-d68a23d0170b"><td id="PSAL" class=""><strong>문화·콘텐츠</strong></td><td id="d:[D" class="">생성형 AI, 엔터테인먼트</td><td id="SyF^" class="">NLP, GAN</td><td id="hDFd" class="">게임·미디어 산업</td></tr></tbody></table><blockquote id="2788e11f-9262-8091-bb33-cc385124f991" class="">“나는 개발자가 되고 싶지 않은데 괜찮을까?” → 네, 기획자, 데이터 분석가, 컨설턴트, 교육자 등 비개발 진로도 무궁무진합니다.</blockquote><hr id="2788e11f-9262-8088-b8df-f98d8cd12b15"/><h2 id="2788e11f-9262-808d-9711-fe387a13b51a" class="">D. 학년별 커리어 로드맵</h2><table id="2788e11f-9262-805c-b27e-df6216e5eaab" class="simple-table"><thead class="simple-table-header"><tr id="2788e11f-9262-8094-8009-c5ce84d68d6f"><th id="Ny&lt;v" class="simple-table-header-color simple-table-header">학년</th><th id="n[?L" class="simple-table-header-color simple-table-header">학습 포인트</th><th id="e=~x" class="simple-table-header-color simple-table-header">활동 포인트</th></tr></thead><tbody><tr id="2788e11f-9262-80b8-a2f0-df9c4cd8157b"><td id="Ny&lt;v" class=""><strong>1학년</strong></td><td id="n[?L" class="">프로그래밍(C, Python), 이산수학, 선형대수</td><td id="e=~x" class="">동아리, 전공 탐색</td></tr><tr id="2788e11f-9262-8081-961d-c472a6fd2f88"><td id="Ny&lt;v" class=""><strong>2학년</strong></td><td id="n[?L" class="">자료구조, 알고리즘, 운영체제, DB</td><td id="e=~x" class="">공모전, 기초 프로젝트</td></tr><tr id="2788e11f-9262-8089-8c2f-cce4441129fe"><td id="Ny&lt;v" class=""><strong>3학년</strong></td><td id="n[?L" class="">네트워크, 머신러닝, 딥러닝, 캡스톤</td><td id="e=~x" class="">인턴십, Kaggle</td></tr><tr id="2788e11f-9262-8013-84b6-edccb8aba10d"><td id="Ny&lt;v" class=""><strong>4학년</strong></td><td id="n[?L" class="">AI 심화 과목, 보안/시스템 선택</td><td id="e=~x" class="">연구실 참여, 취업·대학원 준비</td></tr></tbody></table><hr id="2788e11f-9262-8048-b074-f59b9e243159"/><h2 id="2788e11f-9262-805a-85d0-cdc48bfe9561" class="">E. 취업 현황과 전망</h2><ul id="2788e11f-9262-8073-8949-d1affe75de2d" class="bulleted-list"><li style="list-style-type:disc"><strong>국내 대기업</strong>: 삼성전자, LG전자, 현대차, 네이버, 카카오 → <strong>연구개발+서비스 기획+데이터 분석 직군 확대 중</strong>.</li></ul><ul id="2788e11f-9262-806b-8348-ff13ed72f335" class="bulleted-list"><li style="list-style-type:disc"><strong>글로벌 기업</strong>: Google, Meta, Amazon, Microsoft → AI 리서치·데이터 사이언스 직군 적극 채용.</li></ul><ul id="2788e11f-9262-8078-bfd6-f02658b52684" class="bulleted-list"><li style="list-style-type:disc"><strong>스타트업</strong>: 헬스케어, 자율주행, 생성형 AI → 빠른 성장, 스톡옵션 기회.</li></ul><ul id="2788e11f-9262-805b-8e40-e18311f7eaaf" class="bulleted-list"><li style="list-style-type:disc"><strong>연구소·공공기관</strong>: ETRI, KIST, 국방과학연구소 → AI 국가 전략 연구.</li></ul><p id="2788e11f-9262-80df-9f91-c4f826bccfce" class=""><strong>전망: 2030년까지 컴퓨터공학+AI 융합 인재 수요는 폭발적으로 증가할 것이며, 단순 개발자보다는 문제를 정의하고 해결할 수 있는 창의적 리더가 주목받습니다.</strong></p><figure id="2788e11f-9262-808e-b2b6-e81eaf8f33f2" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/image.png"><img style="width:520.4921875px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/image.png"/></a></figure><figure id="2788e11f-9262-809d-b9bc-ec7312467851" class="image"><a href="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/image%201.png"><img style="width:520.484375px" src="03%20%EC%B7%A8%EC%97%85%20%EB%B0%8F%20%EC%A7%84%EB%A1%9C%202588e11f926281989ccffe1741aec419/image%201.png"/></a></figure><hr id="2788e11f-9262-802e-8b3e-c15bf7c66a32"/><h2 id="2788e11f-9262-8042-b727-f6bf48d421dc" class="">F. 필요한 역량과 준비 전략</h2><table id="2788e11f-9262-80e9-afdf-e7e1c9e14513" class="simple-table"><thead class="simple-table-header"><tr id="2788e11f-9262-8032-8d5e-f85784a62265"><th id="V{:d" class="simple-table-header-color simple-table-header">구분</th><th id="E:Yv" class="simple-table-header-color simple-table-header">세부 내용</th><th id="=&gt;_l" class="simple-table-header-color simple-table-header">준비 방법</th></tr></thead><tbody><tr id="2788e11f-9262-800f-8202-cbf4a1a20683"><td id="V{:d" class=""><strong>기술 역량</strong></td><td id="E:Yv" class="">프로그래밍, OS, 네트워크, ML 프레임워크</td><td id="=&gt;_l" class="">교과목·실습·캡스톤</td></tr><tr id="2788e11f-9262-80c8-a422-c79d439394d6"><td id="V{:d" class=""><strong>수학/이론</strong></td><td id="E:Yv" class="">선형대수, 확률·통계, 최적화</td><td id="=&gt;_l" class="">문제 풀이·스터디</td></tr><tr id="2788e11f-9262-807a-b0fe-d30fef8fbe58"><td id="V{:d" class=""><strong>소프트 스킬</strong></td><td id="E:Yv" class="">협업, 커뮤니케이션, 발표 능력</td><td id="=&gt;_l" class="">동아리·프로젝트</td></tr><tr id="2788e11f-9262-8083-99eb-ddcadb074fe6"><td id="V{:d" class=""><strong>실무 경험</strong></td><td id="E:Yv" class="">인턴십, 오픈소스 기여</td><td id="=&gt;_l" class="">GitHub 포트폴리오</td></tr></tbody></table><hr id="2788e11f-9262-804b-87cb-e50acbdfb5ae"/><h2 id="2788e11f-9262-80fa-8143-d3105ed8b2c4" class="">G. 학생 Q&amp;A</h2><ul id="2788e11f-9262-807b-ad82-f8ff4f2a599c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Q: 꼭 개발자가 되어야 하나요?</strong></mark><p id="2788e11f-9262-80c3-935c-f07a378d14f5" class="">→ 아니요. <strong>기획자(Planner), 분석가(Analyst), 정책 전문가(Policy Expert), 교육자(Educator)</strong> 등 다양한 진로가 있음. 개발 외에도 문제 해결 능력과 논리적 사고를 활용할 수 있는 분야가 많음.</p></li></ul><ul id="2788e11f-9262-802f-95f9-e735da11cc5c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Q: 컴퓨터공학 과목은 왜 중요한가요?</strong></mark><p id="2788e11f-9262-80e4-8615-d6053f20dbee" class="">→ AI(인공지능)는 결국 컴퓨터 위에서 동작하므로, 운영체제·네트워크·알고리즘 같은 <strong>시스템 이해</strong>가 전제되어야 함. 이러한 기초가 없으면 안정적이고 확장 가능한 고급 AI를 구현할 수 없음.</p></li></ul><ul id="2788e11f-9262-80e0-8b90-dc8d5fdbfb79" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Q: 대학원 진학은 필수인가요?</strong></mark><p id="2788e11f-9262-80c7-b1fc-d2230cf0f38a" class="">→ 연구직·교수직을 목표로 한다면 대학원은 필수임. 그러나 산업계에서는 학부 졸업만으로도 충분히 취업 가능하며, 필요할 경우 경력 중에 대학원 진학을 선택할 수 있음.</p></li></ul><ul id="2788e11f-9262-801a-a2c2-e6151520d4aa" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Q: 프로그래밍 언어를 몇 개나 배워야 하나요?</strong></mark><p id="2788e11f-9262-80e7-b3fd-dd3bc4edffaa" class="">→ 특정 언어 개수보다 <strong>문제 해결 능력과 기본 개념</strong>이 더 중요함. 예를 들어 자료구조·알고리즘 이해가 되어 있다면 새로운 언어도 빠르게 습득 가능함. 학부 과정에서는 2~3개의 대표 언어를 익히는 것으로 충분함.</p></li></ul><ul id="2788e11f-9262-80b5-b28a-f64eb4c45859" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>Q: 수학은 꼭 잘해야 하나요?</strong></mark><p id="2788e11f-9262-8048-a79d-f1f0a55f7c75" class="">→ 컴퓨터공학에서는 이산수학(Discrete Math), 선형대수(Linear Algebra), 확률·통계(Probability &amp; Statistics)가 자주 활용됨. 특히 알고리즘 분석이나 머신러닝 이해에는 수학적 배경이 도움이 됨. 다만 전공 과정에서 필요한 부분은 단계적으로 배우므로, 기초만 다져도 충분히 따라갈 수 있음.</p></li></ul><hr id="2788e11f-9262-80dc-806b-c8f4652deabe"/><p id="2788e11f-9262-807e-837a-cbd70844f948" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
