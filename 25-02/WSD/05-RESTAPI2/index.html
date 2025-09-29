@@ -1,0 +1,1450 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>05. REST API 예시</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.highlight-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.block-color-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 7500mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "웹서비스설계 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="27d8e11f-9262-80ce-9ae7-f7248efb968a" class="page sans"><header><h1 class="page-title">05. REST API 예시</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>날짜</th><td></td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">A. 요청 (Request)</summary><div class="indented"><p id="27d8e11f-9262-80b6-9c4e-fe085c121f1f" class="">
+</p><h3 id="27d8e11f-9262-8025-9f2c-e06ae06c2a24" class="">1) HTTP 요청의 전체 형태</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80b2-b3fd-e7e5d3ee0ee3" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">&lt;요청라인&gt;                # 예: POST /users?active=true HTTP/1.1
+&lt;헤더들...&gt;              # 예: Host: api.example.com
+                        #     Authorization: Bearer &lt;token&gt;
+                        #     Content-Type: application/json; charset=utf-8
+                        #     Content-Length: 27
+&lt;빈 줄(헤더와 바디 구분)&gt;
+&lt;바디&gt;                   # 예: {&quot;name&quot;:&quot;Lee&quot;,&quot;role&quot;:&quot;admin&quot;}
+</code></pre><ul id="27d8e11f-9262-80b6-a18a-fe7e15a64545" class="bulleted-list"><li style="list-style-type:disc">구체적인 예시</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8065-8dac-ec19b927b6a0" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">POST /todos HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Authorization: Bearer &lt;JWT&gt;
+Content-Length: 55
+
+
+{
+  &quot;title&quot;: &quot;프로그래밍 과제 하기&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;
+}</code></pre><p id="27d8e11f-9262-805a-9219-f281ce858f75" class="">
+</p><h3 id="27d8e11f-9262-8026-813e-c0ded1565cc1" class="">2) 요청 헤더 (Headers)</h3><ul id="27d8e11f-9262-805f-9901-c1fc0f9e612a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>요청 식별/ 전송 관련</strong></mark><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-801d-a432-e8b7be7bae4a" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /upload HTTP/1.1
+Host: api.example.com
+User-Agent: MyUploader/2.0 (macOS 14; x64)
+Date: Tue, 30 Sep 2025 12:34:56 GMT
+Connection: keep-alive
+Transfer-Encoding: chunked
+Expect: 100-continue
+TE: trailers
+Via: 1.1 cache-01.example.net, 1.1 lb-1
+Forwarded: for=203.0.113.7;proto=https;by=lb-1
+X-Forwarded-For: 203.0.113.7
+X-Forwarded-Proto: https
+Content-Type: application/octet-stream</code></pre><ul id="27d8e11f-9262-807f-9cda-c6451d77917e" class="bulleted-list"><li style="list-style-type:circle"><code>Host</code>: HTTP/1.1에서 필수. 가상호스팅 구분(예: <code>Host: api.example.com</code>).</li></ul><ul id="27d8e11f-9262-8029-96c6-d3219326843c" class="bulleted-list"><li style="list-style-type:circle"><code>User-Agent</code>: 클라이언트 정보(버전, 플랫폼 등). 로깅/분석에 유용.</li></ul><ul id="27d8e11f-9262-8018-82e6-eb86b290da79" class="bulleted-list"><li style="list-style-type:circle"><code>Date</code>: 메시지 생성 시각(요청/응답 둘 다 가능, 응답에서 더 흔함).</li></ul><ul id="27d8e11f-9262-80f8-a757-c2a0fe0da0c6" class="bulleted-list"><li style="list-style-type:circle"><code>Connection</code>: HTTP/1.1 전용 연결 옵션(예: <code>keep-alive</code>). HTTP/2에서는 사용 안 함.</li></ul><ul id="27d8e11f-9262-808c-85c1-cf9a5446b454" class="bulleted-list"><li style="list-style-type:circle"><code>Transfer-Encoding</code>: 메시지 프레이밍(예: <code>chunked</code>, HTTP/1.1). <code><strong>Content-Length</strong></code><strong>와 병용 금지</strong>.</li></ul><ul id="27d8e11f-9262-8091-a819-d1deb9297adf" class="bulleted-list"><li style="list-style-type:circle"><code>Expect: 100-continue</code>: 큰 바디 업로드 전, 서버가 받아도 되는지 확인 요청.</li></ul><ul id="27d8e11f-9262-801d-91c6-dcc02be820e1" class="bulleted-list"><li style="list-style-type:circle"><code>TE</code>: 전송 코딩 협상(요청에서 드뭄).</li></ul><ul id="27d8e11f-9262-801f-855b-dd2db360813c" class="bulleted-list"><li style="list-style-type:circle"><code>Via</code>, <code>Forwarded</code> / <code>X-Forwarded-For</code>, <code>X-Forwarded-Proto</code>: 프록시·로드밸런서 경유 정보.</li></ul><p id="27d8e11f-9262-80f3-b6ac-e016eb7bd17e" class="">
+</p></li></ul><ul id="27d8e11f-9262-8072-89b4-eb864952c6d2" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>콘텐츠(바디) 기술</strong></mark><ul id="27d8e11f-9262-800b-b5ef-eb7ecb246d92" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Type</code>: 바디의 MIME 타입(+ 인코딩).<ul id="27d8e11f-9262-8020-8b40-c4a31779844c" class="bulleted-list"><li style="list-style-type:square"><code>application/json; charset=utf-8</code>,</li></ul><ul id="27d8e11f-9262-80b2-a8db-dfb8be2d94b5" class="bulleted-list"><li style="list-style-type:square"><code>multipart/form-data; boundary=----abc</code>,</li></ul><ul id="27d8e11f-9262-804d-b2cc-cca997824f6c" class="bulleted-list"><li style="list-style-type:square"><code>application/x-www-form-urlencoded</code>.</li></ul></li></ul><ul id="27d8e11f-9262-8009-9e3f-d3029c1520fe" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Length</code>: 바디의 <strong>바이트</strong> 길이(문자 수 아님).</li></ul><ul id="27d8e11f-9262-80ba-a0a5-f82cfbbc236f" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Encoding</code>: 바디 압축 등(예: <code>gzip</code>). <strong>요청 바디에도 사용 가능</strong>하지만 서버가 지원해야 함.</li></ul><ul id="27d8e11f-9262-80d3-a3bd-d07d47d899c7" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Language</code>: 바디의 언어(예: <code>ko</code>).</li></ul><ul id="27d8e11f-9262-807e-93ce-d8a73505fc2f" class="bulleted-list"><li style="list-style-type:circle"><code>Content-MD5</code>(과거 관용): 무결성 체크로 쓰였으나 표준상 권장되지 않음. 대신 서명/해시 스킴을 사용.</li></ul><ul id="27d8e11f-9262-8096-a14d-eee9a323a853" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>JSON + 언어 지정 (가장 흔한 케이스)</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8028-a683-d5c57bc95c50" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /comments HTTP/1.1
+Host: api.example.com
+Content-Type: application/json; charset=utf-8
+Content-Language: ko
+Accept: application/json
+Content-Length: 87   # 예시 값
+
+
+BODY
+{
+  &quot;postId&quot;: 1001,
+  &quot;author&quot;: &quot;Lee&quot;,
+  &quot;text&quot;: &quot;정말 유용했어요!&quot;,
+  &quot;tags&quot;: [&quot;rest&quot;,&quot;http&quot;]
+}</code></pre><ul id="27d8e11f-9262-80b1-8380-eb01bb00ea76" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>JSON + 요청 바디 압축 (Content-Encoding: gzip)</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-806f-8ce8-cf8f87fde259" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /bulk/users HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Content-Encoding: gzip
+Content-Language: ko
+Accept: application/json
+Content-MD5: qUqP5cyxm6YcTAhz05Hph5==   # 예시(base64) — 표준에선 비권장
+Content-Length: 314   # 예시 값 (압축된 바디의 바이트 길이)
+
+
+BODY
+&lt;gzip으로 압축된 JSON 바이트 스트림&gt;</code></pre><ul id="27d8e11f-9262-80a0-ae6a-df50e8dba9d4" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>multipart/form-data (파일 업로드 + 텍스트)</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8048-8029-faad0082c377" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /avatars HTTP/1.1
+Host: api.example.com
+Content-Type: multipart/form-data; boundary=----Boundary123
+Accept: application/json
+Content-Length: 642   # 예시 값
+
+
+BODY
+------Boundary123
+Content-Disposition: form-data; name=&quot;userId&quot;
+
+42
+------Boundary123
+Content-Disposition: form-data; name=&quot;avatar&quot;; filename=&quot;me.png&quot;
+Content-Type: image/png
+
+&lt;PNG 파일 바이너리&gt;
+------Boundary123--</code></pre><ul id="27d8e11f-9262-802f-a636-eec2952225f9" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>application/x-www-form-urlencoded (로그인 폼 전송)</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8010-9e08-f07e3e6ee7fb" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /login HTTP/1.1
+Host: auth.example.com
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+Content-Length: 35   # 예시 값
+
+
+BODY
+username=lee&amp;password=s3cr3t</code></pre><p id="27d8e11f-9262-80b7-89f0-f6b33ed25043" class="">
+</p></li></ul><ul id="27d8e11f-9262-80e9-8185-c05d53c241cb" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>콘텐츠 협상(클라이언트 선호)</strong></mark><ul id="27d8e11f-9262-80d5-ad1c-d1f8c5b0b59c" class="bulleted-list"><li style="list-style-type:circle"><code>Accept</code>: 응답 미디어 타입 선호(예: <code>application/json</code>).</li></ul><ul id="27d8e11f-9262-80ec-929c-c86717cb8c9d" class="bulleted-list"><li style="list-style-type:circle"><code>Accept-Language</code>: 응답 언어 선호(예: <code>ko, en;q=0.8</code>).</li></ul><ul id="27d8e11f-9262-8052-83c0-dcdadda91f15" class="bulleted-list"><li style="list-style-type:circle"><code>Accept-Charset</code>: 문자셋 선호(거의 사용 안 함, JSON은 기본 UTF-8).</li></ul><ul id="27d8e11f-9262-8020-a565-e3d45d404f71" class="bulleted-list"><li style="list-style-type:circle"><code>Accept-Encoding</code>: 응답 압축 선호(예: <code>gzip, br</code>).</li></ul><ul id="27d8e11f-9262-805a-b74f-e3de42500669" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>API 조회 — JSON 우선, 한국어 선호, gzip/br 압축 허용</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80c9-a48f-c1f560feb0cf" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /v1/todos?status=active HTTP/1.1
+Host: api.example.com
+Accept: application/json
+Accept-Language: ko, en;q=0.8
+Accept-Charset: utf-8
+Accept-Encoding: gzip, br</code></pre><ul id="27d8e11f-9262-80e6-aa54-c8d1941fd44a" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>리포트 다운로드 — CSV 우선, JSON도 수용, 문자셋 선호 표시</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80fb-9a7d-e7e1adf88740" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /v1/reports/2025-09 HTTP/1.1
+Host: api.example.com
+Accept: text/csv; q=1.0, application/json; q=0.8
+Accept-Language: ko-KR, en-US;q=0.6
+Accept-Charset: utf-8, iso-8859-1;q=0.2, *;q=0.1
+Accept-Encoding: gzip, br
+</code></pre><ul id="27d8e11f-9262-801a-8c4a-fa7f837e4435" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>이미지 썸네일 — 최신 포맷 우선(avif/webp), 어떤 언어든 OK</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8078-a268-e5f6ab5d3e78" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /images/thumbnail/12345 HTTP/1.1
+Host: cdn.example.com
+Accept: image/avif, image/webp, image/*;q=0.8, */*;q=0.5
+Accept-Language: *        # 언어 비의존 리소스라 제한 없음
+Accept-Charset: utf-8
+Accept-Encoding: gzip, br</code></pre><ul id="27d8e11f-9262-80ee-ba95-ed1eed8b6398" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>문서 미리보기 — PDF 우선, 압축은 가능하면 하고(없으면 identity)</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80ee-af70-e16b9474924a" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /docs/preview/987.pdf HTTP/1.1
+Host: files.example.com
+Accept: application/pdf, application/octet-stream;q=0.5
+Accept-Language: ko, en;q=0.7
+Accept-Charset: utf-8
+Accept-Encoding: gzip, identity;q=0.1</code></pre><p id="27d8e11f-9262-80e4-a9b9-cce6015e28ca" class="">
+</p><p id="27d8e11f-9262-807f-8c1e-de3ed7077df1" class="">
+</p></li></ul><ul id="27d8e11f-9262-80c1-8d12-f6a4d66b9f64" class="bulleted-list"><li style="list-style-type:disc"><strong>인증/권한/세션</strong><ul id="27d8e11f-9262-80f8-8a2c-e790cdbad422" class="bulleted-list"><li style="list-style-type:circle"><code>Authorization</code>: 인증 정보.<p id="27d8e11f-9262-8079-a777-d762c6fd586c" class="">예: <code>Bearer &lt;JWT&gt;</code>, <code>Basic &lt;base64&gt;</code>, <code>Digest ...</code>, HMAC 서명 등.</p></li></ul><ul id="27d8e11f-9262-804b-9a26-d6eed25a45ab" class="bulleted-list"><li style="list-style-type:circle"><code>Proxy-Authorization</code>: 프록시 인증.</li></ul><ul id="27d8e11f-9262-80ec-9cef-d16bbbc0cc19" class="bulleted-list"><li style="list-style-type:circle"><code>Cookie</code>: 세션·상태 전달(예: <code>Cookie: sid=abc; theme=dark</code>). <strong>민감정보는 가급적 쿠키/URL에 두지 말고 토큰 헤더 사용.</strong></li></ul><ul id="27d8e11f-9262-803a-a48c-f6cc3856ac71" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Bearer 토큰(JWT) 인증</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8016-a92c-c253eb0ab936" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /v1/me HTTP/1.1
+Host: api.example.com
+Authorization: Bearer &lt;JWT&gt;
+Accept: application/json</code></pre><ul id="27d8e11f-9262-80bf-a124-f89843ca98c5" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Basic 인증</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8030-be8a-d8f0c014531a" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /admin HTTP/1.1
+Host: api.example.com
+Authorization: Basic &lt;base64(username:password)&gt;
+Accept: text/html</code></pre><ul id="27d8e11f-9262-80b3-b3a4-c06e95b860ed" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Proxy-Authorization</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8006-8f27-fee7b6e5ccf1" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET http://intranet.example.com/docs HTTP/1.1
+Host: intranet.example.com
+Proxy-Authorization: Basic &lt;base64(proxyUser:proxyPass)&gt;
+Accept: text/html</code></pre><ul id="27d8e11f-9262-80f3-b1b3-d40bbb86f493" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>Cookie 세션 (상태 유지)</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80a4-9e09-f498d5f4f670" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /cart HTTP/1.1
+Host: shop.example.com
+Cookie: sid=abc123; theme=dark
+Accept: application/json</code></pre><p id="27d8e11f-9262-80bb-bac8-d02af663e060" class="">
+</p></li></ul><p id="27d8e11f-9262-8012-a360-d542f27d02c3" class="">
+</p><h3 id="27d8e11f-9262-804f-b787-e194ed05c05b" class="">3) 요청 바디 (Body)</h3><ul id="27d8e11f-9262-80c3-9a67-d21d64b47733" class="bulleted-list"><li style="list-style-type:disc"><strong>요청 바디는 리소스의 실제 데이터를 담는 container!</strong></li></ul><p id="27d8e11f-9262-802d-9249-e5e061934946" class="">
+</p><ul id="27d8e11f-9262-8070-bfaa-f40b0d9cf215" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>바디를 “언제” 쓰나?</strong></mark><ul id="27d8e11f-9262-803f-851e-c79ff21cc8a3" class="bulleted-list"><li style="list-style-type:circle">일반적으로 <code>POST</code>/<code>PUT</code>/<code>PATCH</code>에서 사용.</li></ul><ul id="27d8e11f-9262-80ae-8a8e-f354159662a2" class="bulleted-list"><li style="list-style-type:circle"><code>GET</code>/<code>DELETE</code>에 바디를 <strong>보낼 수는 있지만</strong>(프로토콜상 금지 X) <strong>서버가 무시하는 경우가 많아 권장되지 않음</strong>.</li></ul><ul id="27d8e11f-9262-802c-9dfb-c276396ade0c" class="bulleted-list"><li style="list-style-type:circle"><code>HEAD</code>/<code>TRACE</code>는 바디를 갖지 않는 것이 관례.</li></ul><ul id="27d8e11f-9262-8083-80d6-eb68b2499d5f" class="bulleted-list"><li style="list-style-type:circle"><strong>POST-리소스 생성</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-808a-b4ef-d0e99ff5b7e9" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /todos HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+
+BODY
+{
+  &quot;title&quot;: &quot;프로그래밍 과제 하기&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;
+}</code></pre></li></ul><ul id="27d8e11f-9262-80e0-b486-db00468324c8" class="bulleted-list"><li style="list-style-type:circle"><strong>PUT — 전체 교체(스냅샷 업서트)</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8075-95d8-d399d28547b4" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+PUT /profiles/42 HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+
+BODY
+{
+  &quot;id&quot;: 42,
+  &quot;displayName&quot;: &quot;K. Lee&quot;,
+  &quot;lang&quot;: &quot;ko&quot;
+}</code></pre></li></ul><ul id="27d8e11f-9262-80db-988f-f5ab06ba815e" class="bulleted-list"><li style="list-style-type:circle"><strong>PATCH — 부분 변경</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-805e-a0c8-c748366cc9cd" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+PATCH /profiles/42 HTTP/1.1
+Host: api.example.com
+Content-Type: application/merge-patch+json
+Accept: application/json
+
+
+BODY
+{
+  &quot;lang&quot;: &quot;en&quot;
+}</code></pre></li></ul><ul id="27d8e11f-9262-80a9-842f-c94ae318b1c9" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red"><strong>GET + Body (권장 X)</strong></mark><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-805e-b876-f44cd580db15" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /search HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+
+BODY
+{
+  &quot;q&quot;: &quot;rest api&quot;,           # ❌ 대체로 무시됨
+  &quot;page&quot;: 2
+}
+
+
+==&gt;
+
+
+HEAD
+GET /search?q=rest+api&amp;page=2 HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+
+BODY
+# 없음</code></pre></li></ul><ul id="27d8e11f-9262-8056-a5d2-f4f7dbe606a7" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red"><strong>DELETE + Body (권장 X)</strong></mark><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80d8-9a66-fd75c118eb04" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+DELETE /todos/101 HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+
+BODY
+{
+  &quot;reason&quot;: &quot;duplicate&quot;      # ❌ 서버가 무시할 수 있음
+}
+
+
+==&gt;
+
+HEAD
+DELETE /todos/101?reason=duplicate HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+
+BODY
+# 없음</code></pre></li></ul><p id="27d8e11f-9262-80c4-a8b1-d7376b3ecf8f" class="">
+</p></li></ul><ul id="27d8e11f-9262-80c3-8ae3-cf1b1ab88b0d" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>대표적인 바디 포맷</strong></mark><ul id="27d8e11f-9262-80f4-ad41-d295afcb9289" class="bulleted-list"><li style="list-style-type:circle"><code>application/json</code> (가장 흔함)<ul id="27d8e11f-9262-8090-bf22-e1ca9ec6c85e" class="bulleted-list"><li style="list-style-type:square">예: <code>{&quot;name&quot;:&quot;Lee&quot;,&quot;role&quot;:&quot;admin&quot;}</code></li></ul><ul id="27d8e11f-9262-80af-a648-f8e08ec3d808" class="bulleted-list"><li style="list-style-type:square">JSON은 기본 <strong>UTF-8</strong>(헤더에 <code>charset=utf-8</code>을 함께 보내는 것도 실무에선 흔함).</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80fc-b68d-f8f70f7e211c" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /users HTTP/1.1
+Host: api.example.com
+Content-Type: application/json; charset=utf-8
+Accept: application/json
+
+
+BODY
+{
+  &quot;name&quot;: &quot;Lee&quot;,
+  &quot;role&quot;: &quot;admin&quot;
+}</code></pre></li></ul><ul id="27d8e11f-9262-80dc-bcc6-ea71a63454f9" class="bulleted-list"><li style="list-style-type:circle"><code>application/x-www-form-urlencoded</code><ul id="27d8e11f-9262-80d3-b689-c4c254e4d640" class="bulleted-list"><li style="list-style-type:square">HTML 폼 전송 기본. <code>key=value&amp;key2=value2</code> 형태(퍼센트 인코딩).</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80ef-bcfa-c6816c7f7cf0" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /login HTTP/1.1
+Host: auth.example.com
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+
+BODY
+username=lee&amp;password=s3cr3t</code></pre></li></ul><ul id="27d8e11f-9262-8024-8ad7-ec70f2b53249" class="bulleted-list"><li style="list-style-type:circle"><code>multipart/form-data</code><ul id="27d8e11f-9262-8036-9391-e53c3de48791" class="bulleted-list"><li style="list-style-type:square"><strong>파일 업로드</strong>나 <strong>혼합 데이터</strong>(텍스트 + 파일). 각 파트마다 자체 헤더 보유.</li></ul><ul id="27d8e11f-9262-8099-8f3e-dbf8b56a33bd" class="bulleted-list"><li style="list-style-type:square">파트 헤더 예: <code>Content-Disposition: form-data; name=&quot;avatar&quot;; filename=&quot;me.png&quot;</code>, <code>Content-Type: image/png</code></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8019-985b-e5962e3151a9" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /avatars HTTP/1.1
+Host: api.example.com
+Content-Type: multipart/form-data; boundary=----Boundary123
+Accept: application/json
+
+
+BODY
+------Boundary123
+Content-Disposition: form-data; name=&quot;userId&quot;
+
+42
+------Boundary123
+Content-Disposition: form-data; name=&quot;avatar&quot;; filename=&quot;me.png&quot;
+Content-Type: image/png</code></pre></li></ul><ul id="27d8e11f-9262-8030-ab4e-f3319980386f" class="bulleted-list"><li style="list-style-type:circle"><code>application/octet-stream</code><ul id="27d8e11f-9262-80ea-b63e-eecf6a364c88" class="bulleted-list"><li style="list-style-type:square">바이너리 스트림(예: 대용량 업로드). 바디 자체가 파일.<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-808f-8c09-cb366e8c7c8f" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+PUT /storage/raw/backup.tar HTTP/1.1
+Host: files.example.com
+Content-Type: application/octet-stream
+Authorization: Bearer &lt;JWT&gt;
+
+
+BODY
+&lt;tar 바이너리 바이트 스트림&gt;</code></pre></li></ul></li></ul><ul id="27d8e11f-9262-80c3-9ec2-c6e40242fa1b" class="bulleted-list"><li style="list-style-type:circle">기타: <code>application/xml</code>, <code>text/plain</code>, <code>application/merge-patch+json</code>, <code>application/json-patch+json</code>, <code>application/x-ndjson</code>(JSON Lines) 등.</li></ul><p id="27d8e11f-9262-8016-ac2d-facfbb14f702" class="">
+</p></li></ul></div></details><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">B. 응답 (Response)</summary><div class="indented"><h2 id="27d8e11f-9262-8035-8a6b-f582a4f23138" class="">1) HTTP 응답의 전체 형태</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80e9-af15-ef0279dad475" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">&lt;상태라인&gt;                # 예: HTTP/1.1 200 OK
+&lt;헤더들...&gt;              # 예: Content-Type: application/json; charset=utf-8
+                        #     Content-Length: 27
+&lt;빈 줄&gt;
+&lt;바디&gt;                   # 예: {&quot;id&quot;:101,&quot;title&quot;:&quot;...&quot;}</code></pre><ul id="27d8e11f-9262-807b-85fd-d62ffa2f2e5c" class="bulleted-list"><li style="list-style-type:disc"><strong>상태라인</strong>: <code>프로토콜 버전</code> + <code>상태코드</code> + <code>이유구문</code></li></ul><ul id="27d8e11f-9262-8063-81cd-d84807171d37" class="bulleted-list"><li style="list-style-type:disc"><strong>헤더</strong>: 응답 메타데이터(콘텐츠 타입, 캐시, 인증요구, 위치 등)</li></ul><ul id="27d8e11f-9262-8032-857a-c831fff75cf7" class="bulleted-list"><li style="list-style-type:disc"><strong>바디</strong>: 실제 데이터(JSON, 파일, HTML…). 코드/메서드에 따라 없을 수 있음(예: <code>204 No Content</code>, <code>304 Not Modified</code>)</li></ul><hr id="27d8e11f-9262-80c5-b2e9-d7ead1df1f4b"/><h2 id="27d8e11f-9262-8021-b395-f7393cef2693" class="">2) 상태코드 일람</h2><p id="27d8e11f-9262-8084-9cc4-e84c5e8612c8" class="">
+</p><ul id="27d8e11f-9262-80a0-8abe-e7b792ebeede" class="bulleted-list"><li style="list-style-type:disc"><strong>2xx 성공</strong>: 200 OK, 201 Created, 202 Accepted, 204 No Content, 206 Partial Content</li></ul><ul id="27d8e11f-9262-80b4-a69f-d503295f41d9" class="bulleted-list"><li style="list-style-type:disc">3xx 리다이렉션: 301/302/303/307/308 + <code>Location</code></li></ul><ul id="27d8e11f-9262-80a4-97ec-ff51a10f79b6" class="bulleted-list"><li style="list-style-type:disc"><strong>4xx 클라이언트 오류</strong>: 400, <strong>401 + WWW-Authenticate</strong>, 403, 404, 409, <strong>412</strong>, 415, <strong>429</strong> …</li></ul><ul id="27d8e11f-9262-80be-b29e-d6a09c0e1959" class="bulleted-list"><li style="list-style-type:disc"><strong>5xx 서버 오류</strong>: 500, 502, 503(+ <code>Retry-After</code>), 504 …</li></ul><p id="27d8e11f-9262-80aa-96a3-fdc349ed75be" class=""><div class="indented"><h2 id="27d8e11f-9262-80d4-9eaf-d96d8f7ec141" class=""><mark class="highlight-gray_background">2xx 성공</mark></h2><table id="27d8e11f-9262-806c-89ae-f132ad7a13e7" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-8019-8a0b-d03826040a12"><th id="PmYg" class="simple-table-header-color simple-table-header" style="width:189px">코드</th><th id="AtR|" class="simple-table-header-color simple-table-header" style="width:189px">이름</th><th id="WzDW" class="simple-table-header-color simple-table-header" style="width:189px">언제 쓰나 (요점)</th><th id="ZWG^" class="simple-table-header-color simple-table-header" style="width:189px">관련 응답 헤더(주요)</th></tr></thead><tbody><tr id="27d8e11f-9262-8026-8da3-e8e1d41b2777"><td id="PmYg" class="" style="width:189px"><strong>200</strong></td><td id="AtR|" class="" style="width:189px">OK</td><td id="WzDW" class="" style="width:189px">일반적인 성공. 본문에 결과 포함.</td><td id="ZWG^" class="" style="width:189px"><code>Content-Type</code>, <code>ETag</code>, <code>Cache-Control</code></td></tr><tr id="27d8e11f-9262-8012-81fb-f0dcac4a04ab"><td id="PmYg" class="" style="width:189px"><strong>201</strong></td><td id="AtR|" class="" style="width:189px">Created</td><td id="WzDW" class="" style="width:189px">새 리소스 <strong>생성 성공</strong>.</td><td id="ZWG^" class="" style="width:189px"><code>Location</code>(신규 리소스 URL), <code>Content-Type</code></td></tr><tr id="27d8e11f-9262-8032-8be5-d5821fd21cc0"><td id="PmYg" class="" style="width:189px"><strong>202</strong></td><td id="AtR|" class="" style="width:189px">Accepted</td><td id="WzDW" class="" style="width:189px"><strong>비동기 작업 수락</strong>(처리 중).</td><td id="ZWG^" class="" style="width:189px"><code>Location</code>(작업 조회), <code>Retry-After</code>, <code>Preference-Applied</code></td></tr><tr id="27d8e11f-9262-8040-a715-da0c60a46e91"><td id="PmYg" class="" style="width:189px"><strong>204</strong></td><td id="AtR|" class="" style="width:189px">No Content</td><td id="WzDW" class="" style="width:189px">성공했지만 <strong>본문 없음</strong>(삭제/토글 등).</td><td id="ZWG^" class="" style="width:189px">(보통 없음)</td></tr><tr id="27d8e11f-9262-80dd-8ab4-f1f691a85e80"><td id="PmYg" class="" style="width:189px"><strong>206</strong></td><td id="AtR|" class="" style="width:189px">Partial Content</td><td id="WzDW" class="" style="width:189px"><strong>범위 요청</strong>(Range) 응답.</td><td id="ZWG^" class="" style="width:189px"><code>Accept-Ranges</code>, <code>Content-Range</code>, <code>Content-Length</code></td></tr></tbody></table><h2 id="27d8e11f-9262-805d-9a39-edc1d1e03e08" class=""><mark class="highlight-gray_background">3xx 리다이렉션</mark></h2><table id="27d8e11f-9262-80e7-aac2-f2bd2303f005" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-80bb-a0fc-e99279075e61"><th id="Z[CT" class="simple-table-header-color simple-table-header" style="width:189px">코드</th><th id="@Usb" class="simple-table-header-color simple-table-header" style="width:189px">이름</th><th id="q^kg" class="simple-table-header-color simple-table-header" style="width:189px">언제 쓰나 (요점)</th><th id="O]_N" class="simple-table-header-color simple-table-header" style="width:189px">관련 응답 헤더(주요)</th></tr></thead><tbody><tr id="27d8e11f-9262-8067-b749-ce561ef654e2"><td id="Z[CT" class="" style="width:189px"><strong>301</strong></td><td id="@Usb" class="" style="width:189px">Moved Permanently</td><td id="q^kg" class="" style="width:189px">영구 이전(캐시 가능).</td><td id="O]_N" class="" style="width:189px"><code>Location</code></td></tr><tr id="27d8e11f-9262-80f0-8c9c-dc0384a22a0f"><td id="Z[CT" class="" style="width:189px"><strong>302</strong></td><td id="@Usb" class="" style="width:189px">Found</td><td id="q^kg" class="" style="width:189px">임시 이동(기본).</td><td id="O]_N" class="" style="width:189px"><code>Location</code></td></tr><tr id="27d8e11f-9262-800a-9b9d-c8f531b13e77"><td id="Z[CT" class="" style="width:189px"><strong>303</strong></td><td id="@Usb" class="" style="width:189px">See Other</td><td id="q^kg" class="" style="width:189px">POST 후 <strong>GET으로</strong> 다른 URL 보낼 때.</td><td id="O]_N" class="" style="width:189px"><code>Location</code></td></tr><tr id="27d8e11f-9262-802d-a311-dbfd04718122"><td id="Z[CT" class="" style="width:189px"><strong>307</strong></td><td id="@Usb" class="" style="width:189px">Temporary Redirect</td><td id="q^kg" class="" style="width:189px"><strong>메서드 보존</strong> 임시 리다이렉트.</td><td id="O]_N" class="" style="width:189px"><code>Location</code></td></tr><tr id="27d8e11f-9262-8042-aa4b-ea9deaf01ccb"><td id="Z[CT" class="" style="width:189px"><strong>308</strong></td><td id="@Usb" class="" style="width:189px">Permanent Redirect</td><td id="q^kg" class="" style="width:189px"><strong>메서드 보존</strong> 영구 리다이렉트.</td><td id="O]_N" class="" style="width:189px"><code>Location</code></td></tr></tbody></table><h2 id="27d8e11f-9262-8007-863a-f27925264c39" class=""><mark class="highlight-gray_background">4xx 클라이언트 오류</mark></h2><table id="27d8e11f-9262-804f-b370-e2144b449af4" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-8058-8ec6-f262534b0df8"><th id="nwj|" class="simple-table-header-color simple-table-header" style="width:189px">코드</th><th id="uLVk" class="simple-table-header-color simple-table-header" style="width:189px">이름</th><th id="jlL\" class="simple-table-header-color simple-table-header" style="width:189px">언제 쓰나 (요점)</th><th id="vJJ=" class="simple-table-header-color simple-table-header" style="width:189px">관련 응답 헤더(주요)</th></tr></thead><tbody><tr id="27d8e11f-9262-805a-aa8c-d4f10af39017"><td id="nwj|" class="" style="width:189px"><strong>400</strong></td><td id="uLVk" class="" style="width:189px">Bad Request</td><td id="jlL\" class="" style="width:189px">문법/스키마 오류, 필수 필드 누락.</td><td id="vJJ=" class="" style="width:189px"><code>Content-Type: application/problem+json</code> 등</td></tr><tr id="27d8e11f-9262-803d-bb0d-ed1a7d8bcde9"><td id="nwj|" class="" style="width:189px"><strong>401</strong></td><td id="uLVk" class="" style="width:189px">Unauthorized</td><td id="jlL\" class="" style="width:189px">인증 필요/실패.</td><td id="vJJ=" class="" style="width:189px"><code>WWW-Authenticate</code>(필수: Bearer 등)</td></tr><tr id="27d8e11f-9262-802b-9554-d061b4bc0fda"><td id="nwj|" class="" style="width:189px"><strong>403</strong></td><td id="uLVk" class="" style="width:189px">Forbidden</td><td id="jlL\" class="" style="width:189px">인증은 됐으나 <strong>권한 없음</strong>.</td><td id="vJJ=" class="" style="width:189px">—</td></tr><tr id="27d8e11f-9262-80fc-ae41-cb0576cde7b0"><td id="nwj|" class="" style="width:189px"><strong>404</strong></td><td id="uLVk" class="" style="width:189px">Not Found</td><td id="jlL\" class="" style="width:189px">리소스 없음/비공개.</td><td id="vJJ=" class="" style="width:189px">—</td></tr><tr id="27d8e11f-9262-80a1-955e-c2e029229da3"><td id="nwj|" class="" style="width:189px"><strong>409</strong></td><td id="uLVk" class="" style="width:189px">Conflict</td><td id="jlL\" class="" style="width:189px">상태 충돌(중복 생성, 비즈니스 충돌).</td><td id="vJJ=" class="" style="width:189px">—</td></tr><tr id="27d8e11f-9262-8091-a46b-e92995627e83"><td id="nwj|" class="" style="width:189px"><strong>412</strong></td><td id="uLVk" class="" style="width:189px">Precondition Failed</td><td id="jlL\" class="" style="width:189px">조건부 헤더 불일치(<strong>If-Match</strong> 등).</td><td id="vJJ=" class="" style="width:189px"><code>ETag</code>(현재값 안내)</td></tr><tr id="27d8e11f-9262-80ad-8847-fe5f2e5d81b2"><td id="nwj|" class="" style="width:189px"><strong>415</strong></td><td id="uLVk" class="" style="width:189px">Unsupported Media Type</td><td id="jlL\" class="" style="width:189px">요청 <code>Content-Type</code> 미지원.</td><td id="vJJ=" class="" style="width:189px"><code>Accept-Post</code>(허용 타입 힌트)</td></tr><tr id="27d8e11f-9262-808f-987b-d0068e6f8c6c"><td id="nwj|" class="" style="width:189px"><strong>422</strong></td><td id="uLVk" class="" style="width:189px">Unprocessable Entity</td><td id="jlL\" class="" style="width:189px">의미적 유효성 오류(스키마 OK, 값 오류).</td><td id="vJJ=" class="" style="width:189px">문제상세 바디(필드별 오류)</td></tr><tr id="27d8e11f-9262-804c-9ec5-ceea06b9f1e1"><td id="nwj|" class="" style="width:189px"><strong>429</strong></td><td id="uLVk" class="" style="width:189px">Too Many Requests</td><td id="jlL\" class="" style="width:189px"><strong>레이트 리밋 초과</strong>.</td><td id="vJJ=" class="" style="width:189px"><code>Retry-After</code>, <code>RateLimit-*</code></td></tr></tbody></table><h2 id="27d8e11f-9262-804b-a653-e09ea74329e1" class=""><mark class="highlight-gray_background">5xx 서버 오류</mark></h2><table id="27d8e11f-9262-80a0-9647-e76f39ec5c84" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-800d-90de-cdc95a43da6b"><th id="Kk`I" class="simple-table-header-color simple-table-header" style="width:189px">코드</th><th id="qzz?" class="simple-table-header-color simple-table-header" style="width:189px">이름</th><th id="XmvG" class="simple-table-header-color simple-table-header" style="width:189px">언제 쓰나 (요점)</th><th id="WCvf" class="simple-table-header-color simple-table-header" style="width:189px">관련 응답 헤더(주요)</th></tr></thead><tbody><tr id="27d8e11f-9262-8015-82cb-d58341c557e1"><td id="Kk`I" class="" style="width:189px"><strong>500</strong></td><td id="qzz?" class="" style="width:189px">Internal Server Error</td><td id="XmvG" class="" style="width:189px">서버 내부 예외(일반).</td><td id="WCvf" class="" style="width:189px">—</td></tr><tr id="27d8e11f-9262-805d-b1ae-d9c5e36435e3"><td id="Kk`I" class="" style="width:189px"><strong>502</strong></td><td id="qzz?" class="" style="width:189px">Bad Gateway</td><td id="XmvG" class="" style="width:189px">업스트림/게이트웨이 오류.</td><td id="WCvf" class="" style="width:189px">—</td></tr><tr id="27d8e11f-9262-8097-afcb-e7c6ee08cc2b"><td id="Kk`I" class="" style="width:189px"><strong>503</strong></td><td id="qzz?" class="" style="width:189px">Service Unavailable</td><td id="XmvG" class="" style="width:189px">과부하/점검 등 <strong>일시 중단</strong>.</td><td id="WCvf" class="" style="width:189px"><code>Retry-After</code>(초/날짜)</td></tr><tr id="27d8e11f-9262-8059-bfe2-f41661e160e1"><td id="Kk`I" class="" style="width:189px"><strong>504</strong></td><td id="qzz?" class="" style="width:189px">Gateway Timeout</td><td id="XmvG" class="" style="width:189px">업스트림 타임아웃.</td><td id="WCvf" class="" style="width:189px">—</td></tr></tbody></table></div></p><hr id="27d8e11f-9262-80a1-8c5e-dfc624d88db4"/><h2 id="27d8e11f-9262-802a-abcd-e1d1043b34dc" class="">3) 자주 쓰는 응답 헤더</h2><ul id="27d8e11f-9262-80e8-934e-c4d8371b780f" class="bulleted-list"><li style="list-style-type:disc"><strong>콘텐츠/표현</strong><ul id="27d8e11f-9262-805e-b1ce-ebe9752221b6" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Type</code>, <code>Content-Length</code>, <code>Content-Encoding</code>, <code>Content-Language</code></li></ul></li></ul><ul id="27d8e11f-9262-8098-a16c-c7a07824326f" class="bulleted-list"><li style="list-style-type:disc"><strong>캐시/조건부</strong><ul id="27d8e11f-9262-8098-9a2c-e19227ed2ef1" class="bulleted-list"><li style="list-style-type:circle"><code>ETag</code>, <code>Last-Modified</code>, <code>Cache-Control</code>, <code>Expires</code>, <code>Vary</code></li></ul></li></ul><ul id="27d8e11f-9262-807f-b35a-cd4307968faf" class="bulleted-list"><li style="list-style-type:disc"><strong>네비게이션</strong><ul id="27d8e11f-9262-80b4-a177-ee65d09ea60a" class="bulleted-list"><li style="list-style-type:circle"><code>Location</code>(생성/리다이렉트), <code>Link</code>(페이지네이션 등), <code>Content-Range</code>/<code>Accept-Ranges</code></li></ul></li></ul><ul id="27d8e11f-9262-80c3-901c-ea275d549f55" class="bulleted-list"><li style="list-style-type:disc"><strong>인증/세션</strong><ul id="27d8e11f-9262-8061-8f64-c31dc4d298cd" class="bulleted-list"><li style="list-style-type:circle"><code>WWW-Authenticate</code>(401), <code>Set-Cookie</code>, <code>Clear-Site-Data</code></li></ul></li></ul><ul id="27d8e11f-9262-8099-949a-d9ea370bbeec" class="bulleted-list"><li style="list-style-type:disc"><strong>레이트 리밋(관용)</strong><ul id="27d8e11f-9262-8002-b589-ca2945d61f4e" class="bulleted-list"><li style="list-style-type:circle"><code>RateLimit-Limit</code>, <code>RateLimit-Remaining</code>, <code>RateLimit-Reset</code> 또는 <code>X-RateLimit-*</code></li></ul></li></ul><ul id="27d8e11f-9262-8024-aedf-ceaa80f028c9" class="bulleted-list"><li style="list-style-type:disc"><strong>CORS</strong><ul id="27d8e11f-9262-80d2-b985-fb15bc9493a2" class="bulleted-list"><li style="list-style-type:circle"><code>Access-Control-Allow-*</code>, <code>Access-Control-Expose-Headers</code></li></ul></li></ul><ul id="27d8e11f-9262-8025-aeb1-f540d2289e10" class="bulleted-list"><li style="list-style-type:disc"><strong>신뢰성/지시</strong><ul id="27d8e11f-9262-80d0-ba87-ec083790bf24" class="bulleted-list"><li style="list-style-type:circle"><code>Retry-After</code>(429/503/202), <code>Preference-Applied</code>(Prefer 응답)</li></ul></li></ul><hr id="27d8e11f-9262-8018-8b97-ceb4e287a719"/><h2 id="27d8e11f-9262-8046-9ee1-c34211d69ed2" class="">4) 성공 응답 예시</h2><h3 id="27d8e11f-9262-800f-914c-d9aa3b0d6483" class="">4-1) 200 OK (JSON)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80eb-a707-de986d4dcab8" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+ETag: &quot;e7a9-abc123&quot;
+Cache-Control: max-age=60
+Vary: Accept, Accept-Encoding
+
+BODY
+{
+  &quot;id&quot;: 101,
+  &quot;title&quot;: &quot;프로그래밍 과제 하기&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;,
+  &quot;done&quot;: false
+}
+</code></pre><h3 id="27d8e11f-9262-8068-a66c-fa3e9535f14d" class="">4-2) 201 Created (+ Location)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-805b-a067-dc28569cb5dc" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 201 Created
+Content-Type: application/json; charset=utf-8
+Location: &lt;https://api.example.com/todos/101&gt;
+
+BODY
+{
+  &quot;id&quot;: 101,
+  &quot;title&quot;: &quot;프로그래밍 과제 하기&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;
+}</code></pre><h3 id="27d8e11f-9262-8087-88a8-cc22bb53dc9c" class="">4-3) 202 Accepted (비동기 작업 수락)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-806d-bdb7-ea8d64c0140c" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 202 Accepted
+Content-Type: application/json; charset=utf-8
+Location: &lt;https://api.example.com/jobs/7f9a&gt;
+Retry-After: 10
+Preference-Applied: respond-async
+
+BODY
+{ &quot;jobId&quot;: &quot;7f9a&quot;, &quot;status&quot;: &quot;queued&quot; }</code></pre><h3 id="27d8e11f-9262-80e8-ab32-ea3848c5e609" class="">4-4) 204 No Content (바디 없음)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-809c-a74e-d2128c5094e2" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 204 No Content
+
+BODY
+# 없음</code></pre><h3 id="27d8e11f-9262-800d-8daa-c9d59461146e" class="">4-5) 206 Partial Content (범위 응답)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80dd-a169-fb99ca973146" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 206 Partial Content
+Content-Type: video/mp4
+Accept-Ranges: bytes
+Content-Range: bytes 0-1048575/7340032
+Content-Length: 1048576
+
+BODY
+&lt;바이트 0~1,048,575 구간&gt;</code></pre><hr id="27d8e11f-9262-80ed-ad2d-ef02a17be9e4"/><h2 id="27d8e11f-9262-808b-a97a-d7f728bf69f1" class="">5) 리다이렉션</h2><h3 id="27d8e11f-9262-80b2-b8b5-ea5e2062347f" class="">5-1) 302 Found</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-805d-84bb-c9d721d4865d" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 302 Found
+Location: &lt;https://api.example.com/login&gt;
+
+BODY
+# 없음</code></pre><h3 id="27d8e11f-9262-80f3-acc3-e34df03234ab" class="">5-2) 308 Permanent Redirect (메서드 보존)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80e1-8ca3-dfb51878c2c4" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 308 Permanent Redirect
+Location: &lt;https://api.new-example.com/v2/todos&gt;
+
+BODY
+# 없음</code></pre><hr id="27d8e11f-9262-8054-a802-f46bbbaa784b"/><h2 id="27d8e11f-9262-8005-9df6-ce50e8a96dc0" class="">6) 인증/권한 오류</h2><h3 id="27d8e11f-9262-80d5-b49b-e014707dd2bb" class="">6-1) 401 Unauthorized (+ WWW-Authenticate)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-808a-bcca-eed26fa22570" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer realm=&quot;api&quot;, error=&quot;invalid_token&quot;, error_description=&quot;expired&quot;
+
+BODY
+{
+  &quot;type&quot;: &quot;about:blank&quot;,
+  &quot;title&quot;: &quot;Unauthorized&quot;,
+  &quot;detail&quot;: &quot;Access token expired.&quot;
+}</code></pre><h3 id="27d8e11f-9262-8016-811a-eb5379274cb3" class="">6-2) 403 Forbidden</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-802f-9715-d46e51975906" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 403 Forbidden
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;error&quot;: &quot;forbidden&quot;, &quot;message&quot;: &quot;권한이 없습니다.&quot; }</code></pre><hr id="27d8e11f-9262-8080-bd07-f60e9d1da314"/><h2 id="27d8e11f-9262-80f0-a3c2-eb8ab5b739f3" class="">7) 조건부/캐시 관련 응답</h2><h3 id="27d8e11f-9262-80d4-b6d0-cb197fab770c" class="">7-1) 304 Not Modified (바디 없음)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-807d-91f8-ce34448e8e05" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 304 Not Modified
+ETag: &quot;e7a9-abc123&quot;
+Cache-Control: max-age=600
+
+BODY
+# 없음</code></pre><h3 id="27d8e11f-9262-808c-a4d3-f30ba02c68eb" class="">7-2) 412 Precondition Failed (If-Match 불일치)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80fa-b49d-e3c8b522dbf5" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 412 Precondition Failed
+Content-Type: application/json; charset=utf-8
+ETag: &quot;b13c-77df29&quot;   # 현재 서버 ETag
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/errors/precondition-failed&gt;&quot;,
+  &quot;title&quot;: &quot;Precondition Failed&quot;,
+  &quot;detail&quot;: &quot;ETag mismatch.&quot;
+}
+</code></pre><hr id="27d8e11f-9262-803e-95c7-c97bbd80b0a3"/><h2 id="27d8e11f-9262-80cc-9138-e96721ec58f3" class="">8) 요청 포맷/콘텐츠 문제</h2><h3 id="27d8e11f-9262-8051-98ae-e528c57baca7" class="">8-1) 400 Bad Request (스키마 검증 실패)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8002-ac56-c6e7fb3687e6" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 400 Bad Request
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/validation-error&gt;&quot;,
+  &quot;title&quot;: &quot;Invalid Request&quot;,
+  &quot;detail&quot;: &quot;Field &#x27;dueDate&#x27; must be ISO-8601 date.&quot;,
+  &quot;errors&quot;: { &quot;dueDate&quot;: [&quot;invalid-format&quot;] }
+}
+</code></pre><h3 id="27d8e11f-9262-805e-a4f5-fd4ee3bde411" class="">8-2) 406 Not Acceptable (협상 실패)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8090-be7d-fdf229b321af" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 406 Not Acceptable
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;error&quot;: &quot;not_acceptable&quot;, &quot;supported&quot;: [&quot;application/json&quot;, &quot;text/csv&quot;] }
+</code></pre><h3 id="27d8e11f-9262-806d-821b-f658f789b2c1" class="">8-3) 415 Unsupported Media Type (요청 Content-Type 미지원)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80d0-a31c-fae578cb65a9" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 415 Unsupported Media Type
+Accept-Post: application/json, application/x-www-form-urlencoded
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;error&quot;: &quot;unsupported_media_type&quot;, &quot;message&quot;: &quot;Use application/json.&quot; }
+</code></pre><hr id="27d8e11f-9262-80e6-9583-f360003afe00"/><h2 id="27d8e11f-9262-80b1-a20f-f5c03237148f" class="">9) 레이트 리밋/서버 과부하</h2><h3 id="27d8e11f-9262-80b6-917c-e0c927ab409a" class="">9-1) 429 Too Many Requests</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-801e-b9a5-c3925f2711d2" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 429 Too Many Requests
+Content-Type: application/json; charset=utf-8
+Retry-After: 30
+RateLimit-Limit: 100
+RateLimit-Remaining: 0
+RateLimit-Reset: 1732992000
+
+BODY
+{ &quot;error&quot;: &quot;rate_limited&quot;, &quot;retryAfterSeconds&quot;: 30 }
+</code></pre><h3 id="27d8e11f-9262-8075-abf1-ecad66308da0" class="">9-2) 503 Service Unavailable (일시적 중단)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80f0-b541-db69cc326301" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 503 Service Unavailable
+Retry-After: 120
+
+BODY
+{ &quot;error&quot;: &quot;service_unavailable&quot;, &quot;message&quot;: &quot;Maintenance in progress.&quot; }
+</code></pre><hr id="27d8e11f-9262-802f-96b7-d2ec507c8fd8"/><h2 id="27d8e11f-9262-800e-9f96-fc9d1a8e860d" class="">10) CORS 응답(요청이 브라우저에서 온 경우)</h2><h3 id="27d8e11f-9262-80f5-807f-e0d0eeefc16e" class="">10-1) 프리플라이트 응답(OPTIONS)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-806e-b327-dd845140964f" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: &lt;https://app.example.com&gt;
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE
+Access-Control-Allow-Headers: authorization, content-type
+Access-Control-Max-Age: 600
+
+BODY
+# 없음
+</code></pre><h3 id="27d8e11f-9262-80f1-acb6-d6772caa4f7d" class="">10-2) 실제 요청 응답(표현 노출)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80c7-89d1-de576ea1d491" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: &lt;https://app.example.com&gt;
+Access-Control-Expose-Headers: ETag, Location
+
+BODY
+{ &quot;ok&quot;: true }
+</code></pre><hr id="27d8e11f-9262-80fc-9518-de052a508e29"/><h2 id="27d8e11f-9262-80b5-944c-ebc848b988f7" class="">11) 페이지네이션 응답</h2><h3 id="27d8e11f-9262-8023-ba9b-c7dde5897f23" class="">11-1) Link 헤더 기반</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8001-ae6e-e3ce1e46b8ba" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Link: &lt;https://api.example.com/todos?page=3&amp;per_page=20&gt;; rel=&quot;next&quot;,
+      &lt;https://api.example.com/todos?page=1&amp;per_page=20&gt;; rel=&quot;prev&quot;
+
+BODY
+[ { &quot;id&quot;: 81, ... }, { &quot;id&quot;: 100, ... } ]
+</code></pre><h3 id="27d8e11f-9262-807f-bea0-f2baa9f33570" class="">11-2) Range-Unit 기반(아이템 범위)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8065-99f9-d02c4c3296c3" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 206 Partial Content
+Content-Type: application/json; charset=utf-8
+Range-Unit: items
+Content-Range: items 0-49/240
+
+BODY
+[ { &quot;id&quot;: 1, ... }, { &quot;id&quot;: 50, ... } ]
+</code></pre><hr id="27d8e11f-9262-80f7-a524-f59122e1b8bb"/><h2 id="27d8e11f-9262-8062-a10c-ebfc7748138d" class="">12) 쿠키 설정(보안 플래그 예시)</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80f8-8c5f-d1ca09b37368" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Set-Cookie: sid=abc123; Path=/; Secure; HttpOnly; SameSite=Lax
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;message&quot;: &quot;signed in&quot; }
+</code></pre><hr id="27d8e11f-9262-8051-aa31-cfb3b7af653d"/><h2 id="27d8e11f-9262-8046-8daa-cee51aa8aa44" class="">13) 압축/스트리밍 응답</h2><h3 id="27d8e11f-9262-8057-98d6-f246ef2caf52" class="">13-1) gzip 압축</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80f8-8bb6-d99b1364dc3d" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Encoding: gzip
+Vary: Accept-Encoding
+
+BODY
+&lt;gzip 압축 본문&gt;
+</code></pre><h3 id="27d8e11f-9262-8055-bd23-e6e5cf5c7d36" class="">13-2) chunked 전송(HTTP/1.1)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8079-971f-c751d0ea5414" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json
+Transfer-Encoding: chunked
+
+BODY
+1E
+{&quot;event&quot;:&quot;start&quot;,&quot;ts&quot;:1696060800}
+0
+</code></pre><hr id="27d8e11f-9262-80cc-920b-fff1a7dcdf38"/><h2 id="27d8e11f-9262-8013-909c-ce4269029d75" class="">14) Best Practice!</h2><ul id="27d8e11f-9262-8089-8a86-e3bbab5efeb5" class="bulleted-list"><li style="list-style-type:disc"><strong>콘텐츠 계약</strong>: 항상 올바른 <code>Content-Type</code>(응답 포맷), 필요 시 <code>charset=utf-8</code>.</li></ul><ul id="27d8e11f-9262-804a-a6d7-c180e284973f" class="bulleted-list"><li style="list-style-type:disc"><strong>캐시/조건부</strong>: 가능한 <code>ETag</code> 또는 <code>Last-Modified</code> 발행 → 클라이언트가 <code>If-*</code>로 재검증.</li></ul><ul id="27d8e11f-9262-80fa-8a4a-e1ea4921ef7a" class="bulleted-list"><li style="list-style-type:disc"><strong>리소스 생성</strong>: <code>201 Created</code>와 <strong>정확한 </strong><code><strong>Location</strong></code> 헤더.</li></ul><ul id="27d8e11f-9262-80fe-92c7-f6370575c897" class="bulleted-list"><li style="list-style-type:disc"><strong>에러 포맷 일관성</strong>: <code>application/problem+json</code> 또는 팀 표준 에러 스키마 사용.</li></ul><ul id="27d8e11f-9262-80b9-b114-eb06daf1a0f8" class="bulleted-list"><li style="list-style-type:disc"><strong>레이트 리밋</strong>: 429와 함께 남은 한도/재시도 타이밍을 헤더로 제공.</li></ul><ul id="27d8e11f-9262-8085-8319-df1d10e034b0" class="bulleted-list"><li style="list-style-type:disc"><strong>CORS</strong>: 필요한 최소 출처만 허용, <code>Expose-Headers</code>로 클라이언트가 읽어야 할 헤더를 공개.</li></ul><ul id="27d8e11f-9262-801a-81b5-f28a3e00b667" class="bulleted-list"><li style="list-style-type:disc"><strong>보안</strong>: 세션 쿠키는 <code>Secure</code>/<code>HttpOnly</code>/<code>SameSite</code>; 민감 정보는 바디에만.</li></ul><p id="27d8e11f-9262-80b9-aad8-dee8ab524588" class="">
+</p><hr id="27d8e11f-9262-806d-b6a0-e8569e7936e9"/><h2 id="27d8e11f-9262-803c-b276-c1b3c377af67" class="">15) 응답 포맷 표준화 (Response Format)</h2><h3 id="27d8e11f-9262-805e-952a-dbdca8228daa" class="">15.1 규약</h3><ul id="27d8e11f-9262-805a-8785-e3ab4dc1ff81" class="bulleted-list"><li style="list-style-type:disc"><strong>Envelope</strong>(권장): 모든 성공 응답을 아래 공통 포맷으로 래핑<ul id="27d8e11f-9262-800d-9e87-c536c904bede" class="bulleted-list"><li style="list-style-type:circle"><code>data</code>: 실제 페이로드(객체/배열/원시값 모두 가능)</li></ul><ul id="27d8e11f-9262-8099-80fc-dbfaaa76d682" class="bulleted-list"><li style="list-style-type:circle"><code>meta</code>: 부가 정보(페이징, 추적 ID, 처리시간 등)</li></ul><ul id="27d8e11f-9262-8027-873c-d3a448b0ce19" class="bulleted-list"><li style="list-style-type:circle"><code>links</code>: HATEOAS/네비게이션 링크(선택)</li></ul></li></ul><ul id="27d8e11f-9262-8082-bcb3-ef01c6ddbeb8" class="bulleted-list"><li style="list-style-type:disc"><strong>시간/숫자</strong><ul id="27d8e11f-9262-80b5-b93e-d23bd6f491ba" class="bulleted-list"><li style="list-style-type:circle">시간은 <strong>UTC ISO-8601</strong> (<code>YYYY-MM-DDTHH:mm:ssZ</code>)</li></ul><ul id="27d8e11f-9262-805c-aafa-ed48cad8645d" class="bulleted-list"><li style="list-style-type:circle">금액은 <strong>정수 최소 단위</strong>(예: KRW 원 단위, USD 센트 단위) + 통화코드 명시</li></ul></li></ul><ul id="27d8e11f-9262-804b-b5e0-c2c77776b659" class="bulleted-list"><li style="list-style-type:disc"><strong>네이밍</strong>: <code>camelCase</code>(권장) 또는 팀 표준. 문서 전반에서 <strong>일관</strong> 유지</li></ul><ul id="27d8e11f-9262-8069-a0f8-e2226d52849b" class="bulleted-list"><li style="list-style-type:disc"><strong>널/비어있음</strong>: 존재하지 않음(<code>null</code>)과 빈값(<code>&quot;&quot;</code>/<code>[]</code>) 구분</li></ul><ul id="27d8e11f-9262-8029-8552-db1d810b418c" class="bulleted-list"><li style="list-style-type:disc"><strong>정렬</strong>: 목록 기본 정렬을 명시(예: <code>createdAt</code>)</li></ul><h3 id="27d8e11f-9262-809c-a46a-e58445b629d3" class="">15.2 단건/목록 성공 예시</h3><h3 id="27d8e11f-9262-8056-a411-fddb976c3fcf" class="">(A) 단건</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80ea-882b-caa6b6b4c097" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+ETag: &quot;e7a9-abc123&quot;
+
+BODY
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 101,
+    &quot;title&quot;: &quot;프로그래밍 과제 하기&quot;,
+    &quot;dueDate&quot;: &quot;2025-10-05&quot;,
+    &quot;done&quot;: false
+  },
+  &quot;meta&quot;: {
+    &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;,
+    &quot;servedAt&quot;: &quot;2025-09-30T12:34:56Z&quot;
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos/101&gt;&quot;
+  }
+}
+</code></pre><h3 id="27d8e11f-9262-809a-ad2a-d7da6ca81745" class="">(B) 목록</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8042-8051-d3299b4b9b78" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+BODY
+{
+  &quot;data&quot;: [
+    { &quot;id&quot;: 101, &quot;title&quot;: &quot;A&quot;, &quot;done&quot;: false },
+    { &quot;id&quot;: 102, &quot;title&quot;: &quot;B&quot;, &quot;done&quot;: true  }
+  ],
+  &quot;meta&quot;: {
+    &quot;total&quot;: 240,
+    &quot;page&quot;: 2,
+    &quot;perPage&quot;: 50,
+    &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos?page=2&amp;perPage=50&gt;&quot;,
+    &quot;next&quot;: &quot;&lt;https://api.example.com/todos?page=3&amp;perPage=50&gt;&quot;,
+    &quot;prev&quot;: &quot;&lt;https://api.example.com/todos?page=1&amp;perPage=50&gt;&quot;
+  }
+}
+</code></pre><h3 id="27d8e11f-9262-803e-bed8-f120fb81f8fb" class="">15.3 구현 체크리스트</h3><ul id="27d8e11f-9262-8074-8eac-dc62c5f13797" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">모든 성공 응답에 <code>data</code> 포함 (빈 결과는 <code>data: []</code> 또는 <code>data: null</code>)</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-800e-ae48-f0398e5ebfee" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">트레이싱을 위해 <code>meta.requestId</code>(또는 헤더 <code>X-Request-ID</code>) 제공</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-808a-a3a8-de2cc02c1908" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">정렬/필터/페이징 규칙을 <code>meta</code>/<code>links</code>에 반영</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-803c-903f-e8474174a7c7" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">큰 컬렉션은 기본 <code>limit/perPage</code> 적용 및 상한 설정</span><div class="indented"></div></li></ul><hr id="27d8e11f-9262-80bb-bcd7-f63779b4a34a"/><h2 id="27d8e11f-9262-800d-8642-cbe668acf465" class="">16) 에러 포맷 표준화 (Problem Details)</h2><h3 id="27d8e11f-9262-80fb-8377-d2d59f178fe0" class="">16.1 규약</h3><ul id="27d8e11f-9262-8020-8fb8-d326ba79e3d2" class="bulleted-list"><li style="list-style-type:disc">표준 미디어 타입 <code><strong>application/problem+json</strong></code> 사용 (RFC 9457)</li></ul><ul id="27d8e11f-9262-80e3-a766-d545f51d4d7d" class="bulleted-list"><li style="list-style-type:disc">공통 필드:<ul id="27d8e11f-9262-8051-90d7-c10f9f3f5b44" class="bulleted-list"><li style="list-style-type:circle"><code>type</code>(URL 또는 <code>&quot;about:blank&quot;</code>), <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code></li></ul></li></ul><ul id="27d8e11f-9262-8065-8086-f5452ba27420" class="bulleted-list"><li style="list-style-type:disc">확장 필드:<ul id="27d8e11f-9262-8056-aa66-f0cf63a55c35" class="bulleted-list"><li style="list-style-type:circle"><code>errors</code>(필드별 오류 맵), <code>requestId</code>, <code>hint</code>, <code>docs</code></li></ul></li></ul><h3 id="27d8e11f-9262-8056-84a9-e4e8e0e8a35f" class="">16.2 유효성 오류(400) 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8005-bed7-f96ffdade22d" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 400 Bad Request
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/validation-error&gt;&quot;,
+  &quot;title&quot;: &quot;Invalid Request&quot;,
+  &quot;status&quot;: 400,
+  &quot;detail&quot;: &quot;One or more fields are invalid.&quot;,
+  &quot;errors&quot;: {
+    &quot;dueDate&quot;: [&quot;must be ISO-8601 date&quot;]
+  },
+  &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;,
+  &quot;instance&quot;: &quot;/todos&quot;
+}
+</code></pre><h3 id="27d8e11f-9262-8026-8908-fc4ee6217eed" class="">16.3 인증 오류(401) 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-802a-994a-e6fc08ec37ba" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer realm=&quot;api&quot;, error=&quot;invalid_token&quot;, error_description=&quot;expired&quot;
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/auth&gt;&quot;,
+  &quot;title&quot;: &quot;Unauthorized&quot;,
+  &quot;status&quot;: 401,
+  &quot;detail&quot;: &quot;Access token expired.&quot;,
+  &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;
+}
+</code></pre><h3 id="27d8e11f-9262-80de-8817-eea00c65755d" class="">16.4 동시성 충돌(412) 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80f9-bca3-d1a317dfebbf" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 412 Precondition Failed
+ETag: &quot;b13c-77df29&quot;
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/precondition-failed&gt;&quot;,
+  &quot;title&quot;: &quot;Precondition Failed&quot;,
+  &quot;status&quot;: 412,
+  &quot;detail&quot;: &quot;ETag mismatch.&quot;,
+  &quot;hint&quot;: &quot;Refetch the resource and retry with the latest ETag.&quot;
+}
+</code></pre><h3 id="27d8e11f-9262-8035-909d-d02ff0886ed3" class="">16.5 구현 체크리스트</h3><ul id="27d8e11f-9262-8037-9fcb-dcfb654ec1ff" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">모든 비-2xx 응답은 <code>application/problem+json</code></span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-807a-9e2e-cc33c0fdd6bd" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">에러 코드 매핑표(HTTP ↔ 도메인 코드) 유지</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80e0-9e8c-fb50f0f9bc36" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">필드 에러는 <code>errors.{field}:[…]</code> 배열로 제공</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-8010-897c-d45f521ede72" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">로그/추적 연계를 위해 <code>requestId</code> 포함</span><div class="indented"></div></li></ul><hr id="27d8e11f-9262-80a4-973a-edfc54be520c"/><h2 id="27d8e11f-9262-80e4-b861-e714c3874dc1" class="">17) 페이지네이션 (Pagination)</h2><h3 id="27d8e11f-9262-8040-836e-f9864fd5e3a1" class="">17.1 규약(둘 중 하나 선택, 혼용 금지)</h3><h3 id="27d8e11f-9262-80bb-9d6f-d241e11cc156" class="">(A) <strong>쿼리 파라미터 페이지형</strong></h3><ul id="27d8e11f-9262-8091-9b92-e8fd0d99d03b" class="bulleted-list"><li style="list-style-type:disc">요청: <code>?page=2&amp;perPage=50&amp;sort=-createdAt</code></li></ul><ul id="27d8e11f-9262-8012-82dd-f24ab94d2fde" class="bulleted-list"><li style="list-style-type:disc">응답: <code>data</code> 배열 + <code>meta.total/page/perPage</code> + <code>links.self/next/prev</code></li></ul><ul id="27d8e11f-9262-8067-9690-d44666daf4b6" class="bulleted-list"><li style="list-style-type:disc">장점: 단순/직관적.</li></ul><ul id="27d8e11f-9262-80cb-8523-c0424b93f81d" class="bulleted-list"><li style="list-style-type:disc">단점: <strong>변동(total)</strong> 계산 비용.</li></ul><h3 id="27d8e11f-9262-805c-aee4-c0da3bc68867" class="">요청/응답 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80fc-aeca-c3296a3d78e0" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /todos?page=2&amp;perPage=50&amp;sort=-createdAt HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+BODY
+# 없음
+</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80fc-8984-fa19eb473909" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Link: &lt;https://api.example.com/todos?page=3&amp;perPage=50&gt;; rel=&quot;next&quot;,
+      &lt;https://api.example.com/todos?page=1&amp;perPage=50&gt;; rel=&quot;prev&quot;
+
+BODY
+{
+  &quot;data&quot;: [ /* 50 items */ ],
+  &quot;meta&quot;: {
+    &quot;total&quot;: 240,
+    &quot;page&quot;: 2,
+    &quot;perPage&quot;: 50
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos?page=2&amp;perPage=50&gt;&quot;,
+    &quot;next&quot;: &quot;&lt;https://api.example.com/todos?page=3&amp;perPage=50&gt;&quot;,
+    &quot;prev&quot;: &quot;&lt;https://api.example.com/todos?page=1&amp;perPage=50&gt;&quot;
+  }
+}</code></pre><h3 id="27d8e11f-9262-808d-9957-ef145c8c5b86" class="">(B) <strong>커서형(cursor/token)</strong></h3><ul id="27d8e11f-9262-80f9-979d-f284571cdfed" class="bulleted-list"><li style="list-style-type:disc">요청: <code>?limit=50&amp;cursor=&lt;opaqueToken&gt;</code> (첫 페이지는 <code>cursor</code> 없음)</li></ul><ul id="27d8e11f-9262-80cd-a786-c4dd7fb1d0e8" class="bulleted-list"><li style="list-style-type:disc">응답: <code>meta.nextCursor</code>(있으면 다음 페이지 있음), <code>meta.hasMore</code>(선택)</li></ul><ul id="27d8e11f-9262-80ec-926a-f59b73f9e6f6" class="bulleted-list"><li style="list-style-type:disc">장점: <strong>대규모/실시간 변동</strong> 데이터에 강함, 안정적 스캔.</li></ul><ul id="27d8e11f-9262-8067-97f2-f9d3e524406b" class="bulleted-list"><li style="list-style-type:disc">단점: 구현 복잡도↑, 임의 페이지 접근 어려움.</li></ul><h3 id="27d8e11f-9262-8093-a97b-cdc5387f4193" class="">요청/응답 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80c7-80a9-db4b24863e12" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /todos?limit=50&amp;cursor=eyJpZCI6MTAxLCJjcmVhdGVkQXQiOiIyMDI1LTA5LTMwVDEyOjM0OjU2WiJ9 HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+BODY
+# 없음</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8001-b7cc-d48effd8d3fa" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+BODY
+{
+  &quot;data&quot;: [ /* 50 items */ ],
+  &quot;meta&quot;: {
+    &quot;limit&quot;: 50,
+    &quot;nextCursor&quot;: &quot;eyJpZCI6MTAyLCJjcmVhdGVkQXQiOiIyMDI1LTA5LTMwVDEyOjM1OjEwWiJ9&quot;,
+    &quot;hasMore&quot;: true
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos?limit=50&amp;cursor=&gt;...&quot;,
+    &quot;next&quot;: &quot;&lt;https://api.example.com/todos?limit=50&amp;cursor=eyJpZCI6MTAy&gt;...&quot;
+  }
+}
+</code></pre><h3 id="27d8e11f-9262-80ec-82b4-eadffc359e66" class="">17.2 Range-Unit 기반(대안)</h3><ul id="27d8e11f-9262-80d4-b022-d7c3b22ae67a" class="bulleted-list"><li style="list-style-type:disc">요청 헤더:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80bb-ade6-c672b4671798" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /todos HTTP/1.1
+Host: api.example.com
+Range-Unit: items
+Range: items=0-49
+</code></pre></li></ul><ul id="27d8e11f-9262-807d-b8b9-ee1fd625562c" class="bulleted-list"><li style="list-style-type:disc">응답 헤더: <code>206 Partial Content</code> + <code>Content-Range: items 0-49/240</code></li></ul><h3 id="27d8e11f-9262-808d-b3f7-f129de2f6e36" class="">17.3 구현 체크리스트</h3><ul id="27d8e11f-9262-800c-8a3b-e45310ea4a7d" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">기본 <code>perPage/limit</code>와 최대 상한 설정(예: 기본 50, 최대 200)</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-8045-8504-fef9816c4148" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">정렬 필드/방향 규약(예: <code>sort=-createdAt</code>)</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-807e-a52c-f4a92b1373e0" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">페이지형은 <code>total</code> 계산 비용이 큰 경우 <strong>지연 계산</strong> 또는 <strong>추정치</strong> 문서화</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-801e-93d3-e5157bc29d56" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">커서형은 <code>nextCursor</code>를 <strong>불투명 토큰</strong>으로(내부 스키마 노출 금지)</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-8006-af7e-e44dbbb58a92" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked"><code>Link</code> 헤더와 <code>links</code> 객체를 <strong>동시에 제공</strong>(클라이언트 선택권)</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-807d-9ee2-f452d78e52c9" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">빈 결과: <code>data: []</code>, <code>meta.total: 0</code> 또는 <code>hasMore: false</code></span><div class="indented"></div></li></ul><p id="27d8e11f-9262-80aa-b9d0-c9e8c32e2973" class="">
+</p></div></details><p id="27d8e11f-9262-8011-8f28-e335db8b95f6" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

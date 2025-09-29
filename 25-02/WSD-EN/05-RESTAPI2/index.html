@@ -1,0 +1,1477 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>05. REST API Example (EN)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.highlight-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.highlight-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(128, 125, 120, 1);
+	fill: rgba(128, 125, 120, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(204, 121, 47, 1);
+	fill: rgba(204, 121, 47, 1);
+}
+.block-color-yellow {
+	color: rgba(195, 148, 67, 1);
+	fill: rgba(195, 148, 67, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(179, 84, 136, 1);
+	fill: rgba(179, 84, 136, 1);
+}
+.block-color-red {
+	color: rgba(201, 85, 73, 1);
+	fill: rgba(201, 85, 73, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 7600mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "Web Service Design (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+    content: "Kyungsu Lee\A Dept. CS & AI\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="27d8e11f-9262-80f3-9b3f-f29ddcd8552e" class="page sans"><header><h1 class="page-title">05. REST API Example (EN)</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>날짜</th><td></td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">A. Request</summary><div class="indented"><h3 id="27d8e11f-9262-8036-9163-e29b6bca2f70" class="">1) Overall Structure of an HTTP Request</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-804a-9e4b-f9dc722b1fa6" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">&lt;Request Line&gt;                # e.g., POST /users?active=true HTTP/1.1
+&lt;Headers...&gt;                  # e.g., Host: api.example.com
+                              #     Authorization: Bearer &lt;token&gt;
+                              #     Content-Type: application/json; charset=utf-8
+                              #     Content-Length: 27
+&lt;Empty Line (separates headers and body)&gt;
+&lt;Body&gt;                        # e.g., {&quot;name&quot;:&quot;Lee&quot;,&quot;role&quot;:&quot;admin&quot;}
+
+</code></pre><ul id="27d8e11f-9262-8027-be1f-d40d5bf6e499" class="bulleted-list"><li style="list-style-type:disc">Specific Example</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8003-81dc-de44186040e2" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">POST /todos HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Authorization: Bearer &lt;JWT&gt;
+Content-Length: 55
+
+{
+  &quot;title&quot;: &quot;Do programming assignment&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;
+}
+</code></pre><h3 id="27d8e11f-9262-8040-852a-ee4b9392f948" class="">2) Request Headers</h3><ul id="27d8e11f-9262-8050-8172-cdc33ddd49d6" class="bulleted-list"><li style="list-style-type:disc"><strong>Request Identification / Transmission</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80cb-8000-fc1c7dbd2adc" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /upload HTTP/1.1
+Host: api.example.com
+User-Agent: MyUploader/2.0 (macOS 14; x64)
+Date: Tue, 30 Sep 2025 12:34:56 GMT
+Connection: keep-alive
+Transfer-Encoding: chunked
+Expect: 100-continue
+TE: trailers
+Via: 1.1 cache-01.example.net, 1.1 lb-1
+Forwarded: for=203.0.113.7;proto=https;by=lb-1
+X-Forwarded-For: 203.0.113.7
+X-Forwarded-Proto: https
+Content-Type: application/octet-stream</code></pre><ul id="27d8e11f-9262-807e-92a7-f35f388ee7fd" class="bulleted-list"><li style="list-style-type:circle"><code>Host</code>: Required in HTTP/1.1. Differentiates virtual hosts (e.g., <code>Host: api.example.com</code>).</li></ul><ul id="27d8e11f-9262-8001-bb55-e8508de06567" class="bulleted-list"><li style="list-style-type:circle"><code>User-Agent</code>: Client information (version, platform, etc.). Useful for logging/analytics.</li></ul><ul id="27d8e11f-9262-8022-8ccf-d9fc72b79452" class="bulleted-list"><li style="list-style-type:circle"><code>Date</code>: Timestamp of message creation (can be in request/response, more common in response).</li></ul><ul id="27d8e11f-9262-8044-84d2-c519558d3a9b" class="bulleted-list"><li style="list-style-type:circle"><code>Connection</code>: Connection options for HTTP/1.1 only (e.g., <code>keep-alive</code>). Not used in HTTP/2.</li></ul><ul id="27d8e11f-9262-80c4-89e8-eac784248e8a" class="bulleted-list"><li style="list-style-type:circle"><code>Transfer-Encoding</code>: Message framing (e.g., <code>chunked</code>, HTTP/1.1). <strong>Must not be used with </strong><code><strong>Content-Length</strong></code><strong>.</strong></li></ul><ul id="27d8e11f-9262-8018-aa72-fc5fb62c2d50" class="bulleted-list"><li style="list-style-type:circle"><code>Expect: 100-continue</code>: Before uploading a large body, asks the server if it&#x27;s okay to proceed.</li></ul><ul id="27d8e11f-9262-8022-828d-f4b0456c71a4" class="bulleted-list"><li style="list-style-type:circle"><code>TE</code>: Transfer coding negotiation (rare in requests).</li></ul><ul id="27d8e11f-9262-80a0-bd7b-e7bb26ab4dfb" class="bulleted-list"><li style="list-style-type:circle"><code>Via</code>, <code>Forwarded</code> / <code>X-Forwarded-For</code>, <code>X-Forwarded-Proto</code>: Information about passing through proxies/load balancers.</li></ul><p id="27d8e11f-9262-8022-812d-d783ea78835b" class="">
+</p></li></ul><ul id="27d8e11f-9262-80b0-ac26-cea9d6572e63" class="bulleted-list"><li style="list-style-type:disc"><strong>Content (Body) Description</strong><ul id="27d8e11f-9262-80e3-bc9b-f4a13d7f8d33" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Type</code>: MIME type of the body (+ encoding).<ul id="27d8e11f-9262-80e0-9390-c3fec5277f8e" class="bulleted-list"><li style="list-style-type:square"><code>application/json; charset=utf-8</code>,</li></ul><ul id="27d8e11f-9262-8007-a0b5-ed942d5adbb3" class="bulleted-list"><li style="list-style-type:square"><code>multipart/form-data; boundary=----abc</code>,</li></ul><ul id="27d8e11f-9262-802a-9b50-e9d51c17ac31" class="bulleted-list"><li style="list-style-type:square"><code>application/x-www-form-urlencoded</code>.</li></ul></li></ul><ul id="27d8e11f-9262-8084-b9a2-ebba22986ac3" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Length</code>: Length of the body in <strong>bytes</strong> (not character count).</li></ul><ul id="27d8e11f-9262-80b8-bab0-f7aefba9df5d" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Encoding</code>: Body compression, etc. (e.g., <code>gzip</code>). <strong>Can be used for request bodies</strong>, but the server must support it.</li></ul><ul id="27d8e11f-9262-803e-b49f-d547ce07446a" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Language</code>: Language of the body (e.g., <code>ko</code>).</li></ul><ul id="27d8e11f-9262-8094-84a8-cc9c9424f5f1" class="bulleted-list"><li style="list-style-type:circle"><code>Content-MD5</code> (legacy): Was used for integrity checks, but is not recommended in the standard. Use signing/hashing schemes instead.</li></ul><ul id="27d8e11f-9262-80fc-a96a-fb82078dde97" class="bulleted-list"><li style="list-style-type:circle"><strong>JSON + Language specified (most common case)</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-808e-8b94-eb75de3f4d00" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /comments HTTP/1.1
+Host: api.example.com
+Content-Type: application/json; charset=utf-8
+Content-Language: ko
+Accept: application/json
+Content-Length: 87   # example value
+
+BODY
+{
+  &quot;postId&quot;: 1001,
+  &quot;author&quot;: &quot;Lee&quot;,
+  &quot;text&quot;: &quot;This was really helpful!&quot;,
+  &quot;tags&quot;: [&quot;rest&quot;,&quot;http&quot;]
+}
+</code></pre><ul id="27d8e11f-9262-80e0-9b33-d0c1374715a1" class="bulleted-list"><li style="list-style-type:circle"><strong>JSON + Request Body Compression (Content-Encoding: gzip)</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-802d-a6de-fe7818917106" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /bulk/users HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Content-Encoding: gzip
+Content-Language: ko
+Accept: application/json
+Content-MD5: qUqP5cyxm6YcTAhz05Hph5==   # example(base64) — not recommended by standard
+Content-Length: 314   # example value (byte length of the compressed body)
+
+BODY
+&lt;gzip-compressed JSON byte stream&gt;
+</code></pre><ul id="27d8e11f-9262-80e5-b4aa-ff647ea53198" class="bulleted-list"><li style="list-style-type:circle"><strong>multipart/form-data (File Upload + Text)</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80b5-a53b-d7b927ac4e0e" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /avatars HTTP/1.1
+Host: api.example.com
+Content-Type: multipart/form-data; boundary=----Boundary123
+Accept: application/json
+Content-Length: 642   # example value
+
+BODY
+------Boundary123
+Content-Disposition: form-data; name=&quot;userId&quot;
+
+42
+------Boundary123
+Content-Disposition: form-data; name=&quot;avatar&quot;; filename=&quot;me.png&quot;
+Content-Type: image/png
+
+&lt;PNG file binary&gt;
+------Boundary123--
+</code></pre><ul id="27d8e11f-9262-8064-a655-ed794470523e" class="bulleted-list"><li style="list-style-type:circle"><strong>application/x-www-form-urlencoded (Login Form Submission)</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80c5-bba3-fa7a7f7daef6" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /login HTTP/1.1
+Host: auth.example.com
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+Content-Length: 35   # example value
+
+BODY
+username=lee&amp;password=s3cr3t
+</code></pre></li></ul><p id="27d8e11f-9262-80f8-973e-f347e88968bc" class="">
+</p><ul id="27d8e11f-9262-80b9-95ed-f5e94236da5c" class="bulleted-list"><li style="list-style-type:disc"><strong>Content Negotiation (Client Preferences)</strong><ul id="27d8e11f-9262-80bf-9165-cad33bfd0a18" class="bulleted-list"><li style="list-style-type:circle"><code>Accept</code>: Preferred media type for the response (e.g., <code>application/json</code>).</li></ul><ul id="27d8e11f-9262-805e-ad96-ed1b5582d84b" class="bulleted-list"><li style="list-style-type:circle"><code>Accept-Language</code>: Preferred language for the response (e.g., <code>ko, en;q=0.8</code>).</li></ul><ul id="27d8e11f-9262-80bb-aac2-c11ebd4fe102" class="bulleted-list"><li style="list-style-type:circle"><code>Accept-Charset</code>: Preferred character set (rarely used, JSON is UTF-8 by default).</li></ul><ul id="27d8e11f-9262-80fc-8e2b-d3e1ff2590e6" class="bulleted-list"><li style="list-style-type:circle"><code>Accept-Encoding</code>: Preferred compression for the response (e.g., <code>gzip, br</code>).</li></ul><ul id="27d8e11f-9262-8023-80f5-e257c7890ade" class="bulleted-list"><li style="list-style-type:circle"><strong>API Query — Prefer JSON, Korean language, allow gzip/br compression</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8068-b5a8-d1b891949199" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /v1/todos?status=active HTTP/1.1
+Host: api.example.com
+Accept: application/json
+Accept-Language: ko, en;q=0.8
+Accept-Charset: utf-8
+Accept-Encoding: gzip, br
+</code></pre><ul id="27d8e11f-9262-80df-8b80-f989b1a7346e" class="bulleted-list"><li style="list-style-type:circle"><strong>Report Download — Prefer CSV, also accept JSON, indicate character set preference</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-809e-9b92-c30338be7b08" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /v1/reports/2025-09 HTTP/1.1
+Host: api.example.com
+Accept: text/csv; q=1.0, application/json; q=0.8
+Accept-Language: ko-KR, en-US;q=0.6
+Accept-Charset: utf-8, iso-8859-1;q=0.2, *;q=0.1
+Accept-Encoding: gzip, br
+
+</code></pre><ul id="27d8e11f-9262-8077-8546-cc799f630b29" class="bulleted-list"><li style="list-style-type:circle"><strong>Image Thumbnail — Prefer modern formats (avif/webp), any language is OK</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8018-8f78-f84d39b218ec" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /images/thumbnail/12345 HTTP/1.1
+Host: cdn.example.com
+Accept: image/avif, image/webp, image/*;q=0.8, */*;q=0.5
+Accept-Language: * # Language-independent resource, so no restrictions
+Accept-Charset: utf-8
+Accept-Encoding: gzip, br
+</code></pre><ul id="27d8e11f-9262-80f4-be07-d08c92f9ea32" class="bulleted-list"><li style="list-style-type:circle"><strong>Document Preview — Prefer PDF, compress if possible (identity if not)</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8022-881d-e6a6fd19f657" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /docs/preview/987.pdf HTTP/1.1
+Host: files.example.com
+Accept: application/pdf, application/octet-stream;q=0.5
+Accept-Language: ko, en;q=0.7
+Accept-Charset: utf-8
+Accept-Encoding: gzip, identity;q=0.1
+</code></pre></li></ul><p id="27d8e11f-9262-80bb-81da-cba45b957f4e" class="">
+</p><ul id="27d8e11f-9262-8023-82ba-c1723a999700" class="bulleted-list"><li style="list-style-type:disc"><strong>Authentication/Authorization/Session</strong><ul id="27d8e11f-9262-80e6-a427-c1eeec42ee72" class="bulleted-list"><li style="list-style-type:circle"><code>Authorization</code>: Authentication credentials.<p id="27d8e11f-9262-8091-8fec-feeefa391319" class="">e.g., <code>Bearer &lt;JWT&gt;,</code> <code>Basic &lt;base64&gt;,</code> <code>Digest ...</code>, HMAC signature, etc.</p></li></ul><ul id="27d8e11f-9262-809e-b20a-ed56882e90f0" class="bulleted-list"><li style="list-style-type:circle"><code>Proxy-Authorization</code>: Proxy authentication.</li></ul><ul id="27d8e11f-9262-8099-9b9f-ec310c1c8d3c" class="bulleted-list"><li style="list-style-type:circle"><code>Cookie</code>: Transmits session/state (e.g., <code>Cookie: sid=abc; theme=dark</code>). <strong>Avoid placing sensitive information in cookies/URLs; use a token header instead.</strong></li></ul><ul id="27d8e11f-9262-8036-8e31-f96ab8f4b65e" class="bulleted-list"><li style="list-style-type:circle"><strong>Bearer Token (JWT) Authentication</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-800a-848b-ca7c57559ee3" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /v1/me HTTP/1.1
+Host: api.example.com
+Authorization: Bearer &lt;JWT&gt;
+Accept: application/json
+</code></pre><ul id="27d8e11f-9262-80d1-99e6-c46c1bfb7c12" class="bulleted-list"><li style="list-style-type:circle"><strong>Basic Authentication</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80e2-b453-cda1ca82264f" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /admin HTTP/1.1
+Host: api.example.com
+Authorization: Basic &lt;base64(username:password)&gt;
+Accept: text/html
+</code></pre><ul id="27d8e11f-9262-80a0-8a0d-ce9b770b7080" class="bulleted-list"><li style="list-style-type:circle"><strong>Proxy-Authorization</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8068-b16c-db222184c4ea" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET &lt;http://intranet.example.com/docs&gt; HTTP/1.1
+Host: intranet.example.com
+Proxy-Authorization: Basic &lt;base64(proxyUser:proxyPass)&gt;
+Accept: text/html
+</code></pre><ul id="27d8e11f-9262-802a-b557-db079e0b94c5" class="bulleted-list"><li style="list-style-type:circle"><strong>Cookie Session (State Maintenance)</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80b6-b008-c233f559ea92" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /cart HTTP/1.1
+Host: shop.example.com
+Cookie: sid=abc123; theme=dark
+Accept: application/json
+</code></pre></li></ul><h3 id="27d8e11f-9262-8090-884b-fe44e720badb" class="">3) Request Body</h3><ul id="27d8e11f-9262-807c-b0a2-d04a01f46ab7" class="bulleted-list"><li style="list-style-type:disc"><strong>The request body is a container for the actual data of a resource!</strong></li></ul><ul id="27d8e11f-9262-8084-9382-e76027b81ffe" class="bulleted-list"><li style="list-style-type:disc"><strong>&quot;When&quot; to use a body?</strong><ul id="27d8e11f-9262-8023-9930-e555f8b9b7e2" class="bulleted-list"><li style="list-style-type:circle">Generally used with <code>POST/PUT/PATCH</code>.</li></ul><ul id="27d8e11f-9262-805c-afef-e7c723e32dfe" class="bulleted-list"><li style="list-style-type:circle">It&#x27;s <strong>possible to send</strong> a body with <code>GET/DELETE</code> (not forbidden by the protocol), but it&#x27;s <strong>not recommended as servers often ignore it.</strong></li></ul><ul id="27d8e11f-9262-8006-a6ad-eff7d92f9914" class="bulleted-list"><li style="list-style-type:circle"><code>HEAD/TRACE</code> conventionally do not have a body.</li></ul><ul id="27d8e11f-9262-8057-bb98-dcbf0a5653ad" class="bulleted-list"><li style="list-style-type:circle"><strong>POST — Resource Creation</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80f9-a8b3-f2a35d480b34" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /todos HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+BODY
+{
+  &quot;title&quot;: &quot;Do programming assignment&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;
+}
+</code></pre></li></ul><ul id="27d8e11f-9262-8062-94c6-dccae112ef32" class="bulleted-list"><li style="list-style-type:circle"><strong>PUT — Full Replacement (Snapshot Upsert)</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8045-bd31-ef08344f7686" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+PUT /profiles/42 HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+BODY
+{
+  &quot;id&quot;: 42,
+  &quot;displayName&quot;: &quot;K. Lee&quot;,
+  &quot;lang&quot;: &quot;ko&quot;
+}
+</code></pre></li></ul><ul id="27d8e11f-9262-8079-91cd-f89488c8f243" class="bulleted-list"><li style="list-style-type:circle"><strong>PATCH — Partial Update</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80fc-9144-d3530c67bf18" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+PATCH /profiles/42 HTTP/1.1
+Host: api.example.com
+Content-Type: application/merge-patch+json
+Accept: application/json
+
+BODY
+{
+  &quot;lang&quot;: &quot;en&quot;
+}
+</code></pre></li></ul><ul id="27d8e11f-9262-80c1-a794-c0c993072ce8" class="bulleted-list"><li style="list-style-type:circle"><strong>GET + Body (Not Recommended)</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8070-9f8e-eb7f0f2b233a" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">**HEAD
+GET /search HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+BODY
+{
+  &quot;q&quot;: &quot;rest api&quot;,           # ❌ Generally ignored
+  &quot;page&quot;: 2
+}
+
+==&gt;
+
+HEAD
+GET /search?q=rest+api&amp;page=2 HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+BODY
+# None**
+</code></pre></li></ul><ul id="27d8e11f-9262-80a8-bb62-d33e28b361ac" class="bulleted-list"><li style="list-style-type:circle"><strong>DELETE + Body (Not Recommended)</strong><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-807e-bca9-c9a034408ee6" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+DELETE /todos/101 HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+Accept: application/json
+
+BODY
+{
+  &quot;reason&quot;: &quot;duplicate&quot;      # ❌ Server may ignore it
+}
+
+==&gt;
+
+HEAD
+DELETE /todos/101?reason=duplicate HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+BODY
+# None
+</code></pre></li></ul></li></ul><p id="27d8e11f-9262-80a6-838c-fb32c473ba37" class="">
+</p><ul id="27d8e11f-9262-80a1-9fa7-fc29e9de87b2" class="bulleted-list"><li style="list-style-type:disc"><strong>Common Body Formats</strong><ul id="27d8e11f-9262-80a3-a22e-d56bb4dde7f4" class="bulleted-list"><li style="list-style-type:circle"><code>application/json</code> (Most common)<ul id="27d8e11f-9262-8075-a9e8-e2c74b50baf1" class="bulleted-list"><li style="list-style-type:square">e.g., <code>{&quot;name&quot;:&quot;Lee&quot;,&quot;role&quot;:&quot;admin&quot;}</code></li></ul><ul id="27d8e11f-9262-8095-ad3c-c7b4ccc06620" class="bulleted-list"><li style="list-style-type:square">JSON is <strong>UTF-8</strong> by default (sending <code>charset=utf-8</code> in the header is also common in practice).</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80bd-8953-cb29fbabc9f0" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /users HTTP/1.1
+Host: api.example.com
+Content-Type: application/json; charset=utf-8
+Accept: application/json
+
+BODY
+{
+  &quot;name&quot;: &quot;Lee&quot;,
+  &quot;role&quot;: &quot;admin&quot;
+}
+</code></pre></li></ul><ul id="27d8e11f-9262-8085-90e0-f4607ddee28b" class="bulleted-list"><li style="list-style-type:circle"><code>application/x-www-form-urlencoded</code><ul id="27d8e11f-9262-8037-9855-e84a57aabd3d" class="bulleted-list"><li style="list-style-type:square">Default for HTML form submission. <code>key=value&amp;key2=value2</code> format (percent-encoded).</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8016-8fc1-d0a1ad12d662" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /login HTTP/1.1
+Host: auth.example.com
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+BODY
+username=lee&amp;password=s3cr3t
+</code></pre></li></ul><ul id="27d8e11f-9262-80d2-8d23-f95ff2d89a3b" class="bulleted-list"><li style="list-style-type:circle"><code>multipart/form-data</code><ul id="27d8e11f-9262-8004-b08a-c00ecc4ec00a" class="bulleted-list"><li style="list-style-type:square">For <strong>file uploads</strong> or <strong>mixed data (text</strong> + file). Each part has its own headers.</li></ul><ul id="27d8e11f-9262-8079-a83b-f34ce1cec98b" class="bulleted-list"><li style="list-style-type:square">Part header examples: <code>Content-Disposition: form-data; name=&quot;avatar&quot;; filename=&quot;me.png&quot;</code>, <code>Content-Type: image/png</code></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8032-ad33-ced2bca356c0" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+POST /avatars HTTP/1.1
+Host: api.example.com
+Content-Type: multipart/form-data; boundary=----Boundary123
+Accept: application/json
+
+BODY
+------Boundary123
+Content-Disposition: form-data; name=&quot;userId&quot;
+
+42
+------Boundary123
+Content-Disposition: form-data; name=&quot;avatar&quot;; filename=&quot;me.png&quot;
+Content-Type: image/png
+</code></pre></li></ul><ul id="27d8e11f-9262-803f-9b8e-f0e8af0b5680" class="bulleted-list"><li style="list-style-type:circle"><code>application/octet-stream</code><ul id="27d8e11f-9262-8069-9717-f8a2d61e679c" class="bulleted-list"><li style="list-style-type:square">Binary stream (e.g., large file uploads). The body itself is the file.<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80f2-b2ac-c825ef46d8dc" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+PUT /storage/raw/backup.tar HTTP/1.1
+Host: files.example.com
+Content-Type: application/octet-stream
+Authorization: Bearer &lt;JWT&gt;
+
+BODY
+&lt;tar binary byte stream&gt;
+</code></pre></li></ul></li></ul><ul id="27d8e11f-9262-80b0-a0a3-d946651bca86" class="bulleted-list"><li style="list-style-type:circle">Others: <code>application/xml</code>, <code>text/plain</code>, <code>application/merge-patch+json</code>, <code>application/json-patch+json</code>, <code>application/x-ndjson</code> (JSON Lines), etc.</li></ul></li></ul></div></details><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">B. Response</summary><div class="indented"><h2 id="27d8e11f-9262-80ff-974d-df09b1c13eb3" class="">1) Overall Structure of an HTTP Response</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8064-b649-e6fa42e025d2" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">&lt;Status Line&gt;                # e.g., HTTP/1.1 200 OK
+&lt;Headers...&gt;                 # e.g., Content-Type: application/json; charset=utf-8
+                             #     Content-Length: 27
+&lt;Empty Line&gt;
+&lt;Body&gt;                       # e.g., {&quot;id&quot;:101,&quot;title&quot;:&quot;...&quot;}
+</code></pre><ul id="27d8e11f-9262-8003-9cfb-fa7567b157cd" class="bulleted-list"><li style="list-style-type:disc"><strong>Status Line:</strong> <code>Protocol Version</code> + <code>Status Code</code> + <code>Reason Phrase</code></li></ul><ul id="27d8e11f-9262-8057-9615-c85832e300ba" class="bulleted-list"><li style="list-style-type:disc"><strong>Headers:</strong> Response metadata (content type, cache, authentication challenges, location, etc.)</li></ul><ul id="27d8e11f-9262-80dd-a95e-d1148d9d4ff3" class="bulleted-list"><li style="list-style-type:disc"><strong>Body:</strong> The actual data (JSON, file, HTML...). May be absent depending on the code/method (e.g., <code>204 No Content</code>, <code>304 Not Modified</code>)</li></ul><hr id="27d8e11f-9262-8073-8511-f5aaeccbbe02"/><h2 id="27d8e11f-9262-800d-8acb-fd3fd17524ef" class="">2) Status Code Summary</h2><ul id="27d8e11f-9262-80dc-b83e-cdbf15b11126" class="bulleted-list"><li style="list-style-type:disc"><strong>2xx Success:</strong> 200 OK, 201 Created, 202 Accepted, 204 No Content, 206 Partial Content</li></ul><ul id="27d8e11f-9262-80c9-ba03-cbb821b42d80" class="bulleted-list"><li style="list-style-type:disc">3xx Redirection: 301/302/303/307/308 + <code>Location</code></li></ul><ul id="27d8e11f-9262-8056-96a2-d16de89699cd" class="bulleted-list"><li style="list-style-type:disc"><strong>4xx Client Error:</strong> 400, <strong>401 + WWW-Authenticate</strong>, 403, 404, 409, <strong>412</strong>, 415, <strong>429</strong> …</li></ul><ul id="27d8e11f-9262-80dc-8711-c36f1072ac4f" class="bulleted-list"><li style="list-style-type:disc"><strong>5xx Server Error:</strong> 500, 502, 503(+ <code>Retry-After</code>), 504 …</li></ul><h2 id="27d8e11f-9262-8002-bb4c-c9aa30368121" class="">2xx Success</h2><table id="27d8e11f-9262-8023-bf1d-d6e3987f5579" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-809e-8fbc-e04bbce1a2a5"><th id="F_GG" class="simple-table-header-color simple-table-header" style="width:195px">Code</th><th id="dDvU" class="simple-table-header-color simple-table-header" style="width:195px">Name</th><th id="wki[" class="simple-table-header-color simple-table-header" style="width:195px">When to use (Key Points)</th><th id="^j{`" class="simple-table-header-color simple-table-header" style="width:195px">Related Response Headers (Key)</th></tr></thead><tbody><tr id="27d8e11f-9262-8068-b216-e34e9ce01f89"><td id="F_GG" class="" style="width:195px"><strong>200</strong></td><td id="dDvU" class="" style="width:195px">OK</td><td id="wki[" class="" style="width:195px">General success. Includes result in the body.</td><td id="^j{`" class="" style="width:195px"><code>Content-Type</code>, <code>ETag</code>, <code>Cache-Control</code></td></tr><tr id="27d8e11f-9262-80b1-9759-c4abefdff3e4"><td id="F_GG" class="" style="width:195px"><strong>201</strong></td><td id="dDvU" class="" style="width:195px">Created</td><td id="wki[" class="" style="width:195px">New resource <strong>creation successful.</strong></td><td id="^j{`" class="" style="width:195px"><code>Location</code>(new resource URL), <code>Content-Type</code></td></tr><tr id="27d8e11f-9262-800b-8a63-fe74d6782684"><td id="F_GG" class="" style="width:195px"><strong>202</strong></td><td id="dDvU" class="" style="width:195px">Accepted</td><td id="wki[" class="" style="width:195px"><strong>Asynchronous</strong> task accepted (processing).</td><td id="^j{`" class="" style="width:195px"><code>Location</code>(job status URL), <code>Retry-After</code>, <code>Preference-Applied</code></td></tr><tr id="27d8e11f-9262-806d-a1ff-d06e02645681"><td id="F_GG" class="" style="width:195px"><strong>204</strong></td><td id="dDvU" class="" style="width:195px">No Content</td><td id="wki[" class="" style="width:195px">Successful but <strong>no body</strong> (for delete/toggle, etc.).</td><td id="^j{`" class="" style="width:195px">(Usually none)</td></tr><tr id="27d8e11f-9262-8021-b145-d17cfca321a1"><td id="F_GG" class="" style="width:195px"><strong>206</strong></td><td id="dDvU" class="" style="width:195px">Partial Content</td><td id="wki[" class="" style="width:195px">Response to a <strong>range request</strong> (<code>Range</code>).</td><td id="^j{`" class="" style="width:195px"><code>Accept-Ranges</code>, <code>Content-Range</code>, <code>Content-Length</code></td></tr></tbody></table><h2 id="27d8e11f-9262-80ad-8b5e-dd5fa394eb64" class="">3xx Redirection</h2><table id="27d8e11f-9262-80e6-b298-f31ebecc011b" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-80fb-bfcc-fa854f1055ee"><th id="meDU" class="simple-table-header-color simple-table-header" style="width:195px">Code</th><th id="~DZn" class="simple-table-header-color simple-table-header" style="width:195px">Name</th><th id="mRfc" class="simple-table-header-color simple-table-header" style="width:195px">When to use (Key Points)</th><th id="]d}=" class="simple-table-header-color simple-table-header" style="width:195px">Related Response Headers (Key)</th></tr></thead><tbody><tr id="27d8e11f-9262-80b0-bf67-d2472ed54cb8"><td id="meDU" class="" style="width:195px"><strong>301</strong></td><td id="~DZn" class="" style="width:195px">Moved Permanently</td><td id="mRfc" class="" style="width:195px">Permanent redirect (cacheable).</td><td id="]d}=" class="" style="width:195px"><code>Location</code></td></tr><tr id="27d8e11f-9262-8079-b2aa-f402a0505a46"><td id="meDU" class="" style="width:195px"><strong>302</strong></td><td id="~DZn" class="" style="width:195px">Found</td><td id="mRfc" class="" style="width:195px">Temporary redirect (default).</td><td id="]d}=" class="" style="width:195px"><code>Location</code></td></tr><tr id="27d8e11f-9262-80bc-9a13-f67e992c7de1"><td id="meDU" class="" style="width:195px"><strong>303</strong></td><td id="~DZn" class="" style="width:195px">See Other</td><td id="mRfc" class="" style="width:195px">After a POST, redirects to another URL via <strong>GET</strong>.</td><td id="]d}=" class="" style="width:195px"><code>Location</code></td></tr><tr id="27d8e11f-9262-804d-a694-f40f261120c6"><td id="meDU" class="" style="width:195px"><strong>307</strong></td><td id="~DZn" class="" style="width:195px">Temporary Redirect</td><td id="mRfc" class="" style="width:195px"><strong>Method-preserving</strong> temporary redirect.</td><td id="]d}=" class="" style="width:195px"><code>Location</code></td></tr><tr id="27d8e11f-9262-80c4-82b1-e6c1ff66ca30"><td id="meDU" class="" style="width:195px"><strong>308</strong></td><td id="~DZn" class="" style="width:195px">Permanent Redirect</td><td id="mRfc" class="" style="width:195px"><strong>Method-preserving</strong> permanent redirect.</td><td id="]d}=" class="" style="width:195px"><code>Location</code></td></tr></tbody></table><h2 id="27d8e11f-9262-80a8-8e7a-d2f948af39b0" class="">4xx Client Error</h2><table id="27d8e11f-9262-80bb-a71e-de5fdb31d363" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-8076-98f9-c81ceb25035c"><th id="I~@T" class="simple-table-header-color simple-table-header" style="width:195px">Code</th><th id="iEII" class="simple-table-header-color simple-table-header" style="width:195px">Name</th><th id="cw&gt;D" class="simple-table-header-color simple-table-header" style="width:195px">When to use (Key Points)</th><th id="Wvqb" class="simple-table-header-color simple-table-header" style="width:195px">Related Response Headers (Key)</th></tr></thead><tbody><tr id="27d8e11f-9262-80e0-9a4e-d6957a99a85f"><td id="I~@T" class="" style="width:195px"><strong>400</strong></td><td id="iEII" class="" style="width:195px">Bad Request</td><td id="cw&gt;D" class="" style="width:195px">Syntax/schema error, missing required fields.</td><td id="Wvqb" class="" style="width:195px"><code>Content-Type: application/problem+json</code>, etc.</td></tr><tr id="27d8e11f-9262-8081-9d75-c89d542ad436"><td id="I~@T" class="" style="width:195px"><strong>401</strong></td><td id="iEII" class="" style="width:195px">Unauthorized</td><td id="cw&gt;D" class="" style="width:195px">Authentication required/failed.</td><td id="Wvqb" class="" style="width:195px"><code>WWW-Authenticate</code>(required: Bearer, etc.)</td></tr><tr id="27d8e11f-9262-8012-bf01-e426950e1178"><td id="I~@T" class="" style="width:195px"><strong>403</strong></td><td id="iEII" class="" style="width:195px">Forbidden</td><td id="cw&gt;D" class="" style="width:195px">Authenticated, but <strong>not authorized.</strong></td><td id="Wvqb" class="" style="width:195px">—</td></tr><tr id="27d8e11f-9262-80e0-826a-c2e922ec9673"><td id="I~@T" class="" style="width:195px"><strong>404</strong></td><td id="iEII" class="" style="width:195px">Not Found</td><td id="cw&gt;D" class="" style="width:195px">Resource not found/private.</td><td id="Wvqb" class="" style="width:195px">—</td></tr><tr id="27d8e11f-9262-8031-bf07-e75aad74c63b"><td id="I~@T" class="" style="width:195px"><strong>409</strong></td><td id="iEII" class="" style="width:195px">Conflict</td><td id="cw&gt;D" class="" style="width:195px">State conflict (duplicate creation, business logic conflict).</td><td id="Wvqb" class="" style="width:195px">—</td></tr><tr id="27d8e11f-9262-80b7-9a23-e459406529c2"><td id="I~@T" class="" style="width:195px"><strong>412</strong></td><td id="iEII" class="" style="width:195px">Precondition Failed</td><td id="cw&gt;D" class="" style="width:195px"><strong>Conditional header mismatch</strong> (<code>If-Match</code>, etc.).</td><td id="Wvqb" class="" style="width:195px"><code>ETag</code>(to indicate current value)</td></tr><tr id="27d8e11f-9262-8035-83d8-ff16d17a819a"><td id="I~@T" class="" style="width:195px"><strong>415</strong></td><td id="iEII" class="" style="width:195px">Unsupported Media Type</td><td id="cw&gt;D" class="" style="width:195px">Request <code>Content-Type</code> not supported.</td><td id="Wvqb" class="" style="width:195px"><code>Accept-Post</code>(hint for allowed types)</td></tr><tr id="27d8e11f-9262-80da-ab2f-d90672bf2271"><td id="I~@T" class="" style="width:195px"><strong>422</strong></td><td id="iEII" class="" style="width:195px">Unprocessable Entity</td><td id="cw&gt;D" class="" style="width:195px">Semantic validation error (schema OK, but values are invalid).</td><td id="Wvqb" class="" style="width:195px">Body with problem details (field-specific errors)</td></tr><tr id="27d8e11f-9262-8053-950e-d3e0fc54fd5e"><td id="I~@T" class="" style="width:195px"><strong>429</strong></td><td id="iEII" class="" style="width:195px">Too Many Requests</td><td id="cw&gt;D" class="" style="width:195px"><strong>Rate limit exceeded.</strong></td><td id="Wvqb" class="" style="width:195px"><code>Retry-After</code>, <code>RateLimit-*</code></td></tr></tbody></table><h2 id="27d8e11f-9262-806c-bc55-e417c1c2c7ab" class="">5xx Server Error</h2><table id="27d8e11f-9262-80df-9bd1-eaf3cafd5d4e" class="simple-table"><thead class="simple-table-header"><tr id="27d8e11f-9262-8026-bdc9-c24fb1f9b951"><th id="LexI" class="simple-table-header-color simple-table-header" style="width:195px">Code</th><th id="~Ks_" class="simple-table-header-color simple-table-header" style="width:195px">Name</th><th id="Dx~?" class="simple-table-header-color simple-table-header" style="width:195px">When to use (Key Points)</th><th id="?==z" class="simple-table-header-color simple-table-header" style="width:195px">Related Response Headers (Key)</th></tr></thead><tbody><tr id="27d8e11f-9262-80f2-afc9-c13d2b13d866"><td id="LexI" class="" style="width:195px"><strong>500</strong></td><td id="~Ks_" class="" style="width:195px">Internal Server Error</td><td id="Dx~?" class="" style="width:195px">Internal server exception (general).</td><td id="?==z" class="" style="width:195px">—</td></tr><tr id="27d8e11f-9262-802c-abc6-ec27bdc4ace5"><td id="LexI" class="" style="width:195px"><strong>502</strong></td><td id="~Ks_" class="" style="width:195px">Bad Gateway</td><td id="Dx~?" class="" style="width:195px">Upstream/Gateway error.</td><td id="?==z" class="" style="width:195px">—</td></tr><tr id="27d8e11f-9262-8003-a3fe-dbd911a0f5f1"><td id="LexI" class="" style="width:195px"><strong>503</strong></td><td id="~Ks_" class="" style="width:195px">Service Unavailable</td><td id="Dx~?" class="" style="width:195px"><strong>Temporarily unavailable</strong> due to overload/maintenance.</td><td id="?==z" class="" style="width:195px"><code>Retry-After</code>(seconds/date)</td></tr><tr id="27d8e11f-9262-8000-921d-d17a6ba9ee9c"><td id="LexI" class="" style="width:195px"><strong>504</strong></td><td id="~Ks_" class="" style="width:195px">Gateway Timeout</td><td id="Dx~?" class="" style="width:195px">Upstream timeout.</td><td id="?==z" class="" style="width:195px">—</td></tr></tbody></table><hr id="27d8e11f-9262-80d5-aa20-feebdcef6c11"/><h2 id="27d8e11f-9262-809d-b273-e207fe76fc0b" class="">3) Frequently Used Response Headers</h2><ul id="27d8e11f-9262-8032-9585-e82951cc683d" class="bulleted-list"><li style="list-style-type:disc"><strong>Content/Representation</strong><ul id="27d8e11f-9262-8025-82b3-e06d39183115" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Type</code>, <code>Content-Length</code>, <code>Content-Encoding</code>, <code>Content-Language</code></li></ul></li></ul><ul id="27d8e11f-9262-80f7-950b-f56589709564" class="bulleted-list"><li style="list-style-type:disc"><strong>Caching/Conditional</strong><ul id="27d8e11f-9262-803f-8737-fa9ab4d6e7fa" class="bulleted-list"><li style="list-style-type:circle"><code>ETag</code>, <code>Last-Modified</code>, <code>Cache-Control</code>, <code>Expires</code>, <code>Vary</code></li></ul></li></ul><ul id="27d8e11f-9262-8069-8826-e4af4299725f" class="bulleted-list"><li style="list-style-type:disc"><strong>Navigation</strong><ul id="27d8e11f-9262-80ec-a4b7-dc6009eed14f" class="bulleted-list"><li style="list-style-type:circle"><code>Location</code>(creation/redirect), <code>Link</code>(pagination, etc.),<code>Content-Range/Accept-Ranges</code></li></ul></li></ul><ul id="27d8e11f-9262-80eb-aa09-dbbb5cbe61c6" class="bulleted-list"><li style="list-style-type:disc"><strong>Authentication/Session</strong><ul id="27d8e11f-9262-80ee-8f49-d1e6e59889c4" class="bulleted-list"><li style="list-style-type:circle"><code>WWW-Authenticate</code>(for 401), <code>Set-Cookie</code>, <code>Clear-Site-Data</code></li></ul></li></ul><ul id="27d8e11f-9262-805d-995b-d9f67737815b" class="bulleted-list"><li style="list-style-type:disc"><strong>Rate Limiting (Conventional)</strong><ul id="27d8e11f-9262-8046-8fe6-cd7a6355c5e2" class="bulleted-list"><li style="list-style-type:circle"><code>RateLimit-Limit</code>, <code>RateLimit-Remaining</code>, <code>RateLimit-Reset</code> or <code>X-RateLimit-*</code></li></ul></li></ul><ul id="27d8e11f-9262-80df-81aa-c80fc7767c1d" class="bulleted-list"><li style="list-style-type:disc"><strong>CORS</strong><ul id="27d8e11f-9262-807f-ad2e-f199106f47f3" class="bulleted-list"><li style="list-style-type:circle"><code>Access-Control-Allow-*</code>, <code>Access-Control-Expose-Headers</code></li></ul></li></ul><ul id="27d8e11f-9262-8030-8b2c-e8106e0fccea" class="bulleted-list"><li style="list-style-type:disc"><strong>Reliability/Directives</strong><ul id="27d8e11f-9262-804b-8dd9-d39419161a9f" class="bulleted-list"><li style="list-style-type:circle"><code>Retry-After</code>(for 429/503/202), <code>Preference-Applied</code>(response to <code>Prefer</code>)</li></ul></li></ul><hr id="27d8e11f-9262-8044-8dbf-cbf5d17c09d7"/><h2 id="27d8e11f-9262-807d-a1a6-fa6a8b4e95d0" class="">4) Success Response Examples</h2><h3 id="27d8e11f-9262-80db-8c74-de5b17318ddc" class="">4-1) 200 OK (JSON)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80ef-a473-d17e2e8739ee" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+ETag: &quot;e7a9-abc123&quot;
+Cache-Control: max-age=60
+Vary: Accept, Accept-Encoding
+
+BODY
+{
+  &quot;id&quot;: 101,
+  &quot;title&quot;: &quot;Do programming assignment&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;,
+  &quot;done&quot;: false
+}
+
+</code></pre><h3 id="27d8e11f-9262-8035-a380-f474f15a198c" class="">4-2) 201 Created (+ Location)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8005-800c-e7fc63dadf32" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 201 Created
+Content-Type: application/json; charset=utf-8
+Location: &lt;https://api.example.com/todos/101&gt;
+
+BODY
+{
+  &quot;id&quot;: 101,
+  &quot;title&quot;: &quot;Do programming assignment&quot;,
+  &quot;dueDate&quot;: &quot;2025-10-05&quot;
+}
+</code></pre><h3 id="27d8e11f-9262-800b-9af4-c0d052596701" class="">4-3) 202 Accepted (Asynchronous task accepted)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8072-b36d-d6b9595e8538" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 202 Accepted
+Content-Type: application/json; charset=utf-8
+Location: &lt;https://api.example.com/jobs/7f9a&gt;
+Retry-After: 10
+Preference-Applied: respond-async
+
+BODY
+{ &quot;jobId&quot;: &quot;7f9a&quot;, &quot;status&quot;: &quot;queued&quot; }
+</code></pre><h3 id="27d8e11f-9262-8041-b4e3-ef5e815fa5c1" class="">4-4) 204 No Content (No body)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80bf-9358-ef4e52fffd3f" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 204 No Content
+
+BODY
+# None
+</code></pre><h3 id="27d8e11f-9262-80ce-be27-c9b971795dcd" class="">4-5) 206 Partial Content (Range response)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8034-b398-deeb67946721" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 206 Partial Content
+Content-Type: video/mp4
+Accept-Ranges: bytes
+Content-Range: bytes 0-1048575/7340032
+Content-Length: 1048576
+
+BODY
+&lt;bytes from 0 to 1,048,575&gt;
+</code></pre><hr id="27d8e11f-9262-809c-9817-d6628645e422"/><h2 id="27d8e11f-9262-809e-996b-c390461729ec" class="">5) Redirection</h2><h3 id="27d8e11f-9262-80e6-a00e-fbfab010dc17" class="">5-1) 302 Found</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8068-a827-d8ab3eabef0a" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 302 Found
+Location: &lt;https://api.example.com/login&gt;
+
+BODY
+# None
+</code></pre><h3 id="27d8e11f-9262-80f1-8b84-ed3f5711a7b6" class="">5-2) 308 Permanent Redirect (Method preserving)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80e1-b451-edcee758e1f4" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 308 Permanent Redirect
+Location: &lt;https://api.new-example.com/v2/todos&gt;
+
+BODY
+# None
+</code></pre><hr id="27d8e11f-9262-803b-8791-cbd6f8fb235b"/><h2 id="27d8e11f-9262-80d9-8d50-d42bdeb54057" class="">6) Authentication/Authorization Errors</h2><h3 id="27d8e11f-9262-8002-b73f-e564cd615288" class="">6-1) 401 Unauthorized (+ WWW-Authenticate)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80a1-a2c2-d3656255d91b" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer realm=&quot;api&quot;, error=&quot;invalid_token&quot;, error_description=&quot;expired&quot;
+
+BODY
+{
+  &quot;type&quot;: &quot;about:blank&quot;,
+  &quot;title&quot;: &quot;Unauthorized&quot;,
+  &quot;detail&quot;: &quot;Access token expired.&quot;
+}
+</code></pre><h3 id="27d8e11f-9262-80db-bd6f-ef081f3a676a" class="">6-2) 403 Forbidden</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-806c-afe1-f422b8052123" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 403 Forbidden
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;error&quot;: &quot;forbidden&quot;, &quot;message&quot;: &quot;You do not have permission.&quot; }
+</code></pre><hr id="27d8e11f-9262-804a-b42f-dc0d91f748d4"/><h2 id="27d8e11f-9262-8077-9c69-e796dc7bd4ab" class="">7) Conditional/Cache Related Responses</h2><h3 id="27d8e11f-9262-809d-b601-d73f4537fc5d" class="">7-1) 304 Not Modified (No body)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80fb-8dc5-e159a517292b" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 304 Not Modified
+ETag: &quot;e7a9-abc123&quot;
+Cache-Control: max-age=600
+
+BODY
+# None
+</code></pre><h3 id="27d8e11f-9262-80e4-9f88-c58fb18f979e" class="">7-2) 412 Precondition Failed (If-Match mismatch)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8072-b07e-c1e5df4e3554" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 412 Precondition Failed
+Content-Type: application/json; charset=utf-8
+ETag: &quot;b13c-77df29&quot;   # Current server ETag
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/errors/precondition-failed&gt;&quot;,
+  &quot;title&quot;: &quot;Precondition Failed&quot;,
+  &quot;detail&quot;: &quot;ETag mismatch.&quot;
+}
+
+</code></pre><hr id="27d8e11f-9262-80e3-a7a1-cb674267d0bc"/><h2 id="27d8e11f-9262-8090-b34a-d742df9b204c" class="">8) Request Format/Content Issues</h2><h3 id="27d8e11f-9262-8034-a03c-f32e68cb4c1b" class="">8-1) 400 Bad Request (Schema validation failed)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-801e-b02e-e6c00be683cb" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 400 Bad Request
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/validation-error&gt;&quot;,
+  &quot;title&quot;: &quot;Invalid Request&quot;,
+  &quot;detail&quot;: &quot;Field &#x27;dueDate&#x27; must be an ISO-8601 date.&quot;,
+  &quot;errors&quot;: { &quot;dueDate&quot;: [&quot;invalid-format&quot;] }
+}
+
+</code></pre><h3 id="27d8e11f-9262-8056-8c2c-c73cb2e033a2" class="">8-2) 406 Not Acceptable (Negotiation failed)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-802c-bce5-fa67462fe2d9" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 406 Not Acceptable
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;error&quot;: &quot;not_acceptable&quot;, &quot;supported&quot;: [&quot;application/json&quot;, &quot;text/csv&quot;] }
+
+</code></pre><h3 id="27d8e11f-9262-801a-b34e-d3fda94a25a8" class="">8-3) 415 Unsupported Media Type (Request Content-Type not supported)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80a8-964c-e0b30d96fb16" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 415 Unsupported Media Type
+Accept-Post: application/json, application/x-www-form-urlencoded
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;error&quot;: &quot;unsupported_media_type&quot;, &quot;message&quot;: &quot;Use application/json.&quot; }
+
+</code></pre><hr id="27d8e11f-9262-80d4-a189-ffdb095ebdb6"/><h2 id="27d8e11f-9262-80e7-9984-f44824028eae" class="">9) Rate Limiting/Server Overload</h2><h3 id="27d8e11f-9262-80fe-b2f9-c7f0c9960e4b" class="">9-1) 429 Too Many Requests</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8076-aea0-d5f481411b15" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 429 Too Many Requests
+Content-Type: application/json; charset=utf-8
+Retry-After: 30
+RateLimit-Limit: 100
+RateLimit-Remaining: 0
+RateLimit-Reset: 1732992000
+
+BODY
+{ &quot;error&quot;: &quot;rate_limited&quot;, &quot;retryAfterSeconds&quot;: 30 }
+
+</code></pre><h3 id="27d8e11f-9262-800c-87e5-f8a6fcde23b3" class="">9-2) 503 Service Unavailable (Temporary outage)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80d9-ab4c-dce45b31be71" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 503 Service Unavailable
+Retry-After: 120
+
+BODY
+{ &quot;error&quot;: &quot;service_unavailable&quot;, &quot;message&quot;: &quot;Maintenance in progress.&quot; }
+
+</code></pre><hr id="27d8e11f-9262-805e-8719-fcb84011001c"/><h2 id="27d8e11f-9262-8051-8ed5-f84c7456beb9" class="">10) CORS Response (when request comes from a browser)</h2><h3 id="27d8e11f-9262-808e-8ccd-d52e9b8b2bcb" class="">10-1) Preflight Response (OPTIONS)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8073-bc37-d17fd878b557" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: &lt;https://app.example.com&gt;
+Access-Control-Allow-Methods: GET, POST, PATCH, DELETE
+Access-Control-Allow-Headers: authorization, content-type
+Access-Control-Max-Age: 600
+
+BODY
+# None
+
+</code></pre><h3 id="27d8e11f-9262-804d-9936-c267d7f996af" class="">10-2) Actual Request Response (Exposing headers)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-804c-8749-c961638ee75a" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Access-Control-Allow-Origin: &lt;https://app.example.com&gt;
+Access-Control-Expose-Headers: ETag, Location
+
+BODY
+{ &quot;ok&quot;: true }
+
+</code></pre><hr id="27d8e11f-9262-8055-aba4-d0afa62da2fa"/><h2 id="27d8e11f-9262-80ed-8c7e-c4f7a72c845a" class="">11) Pagination Response</h2><h3 id="27d8e11f-9262-80e9-98cc-f3b79cc7f1ec" class="">11-1) Link Header-based</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8003-9cf0-dbc94fc26547" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Link: &lt;https://api.example.com/todos?page=3&amp;per_page=20&gt;; rel=&quot;next&quot;,
+      &lt;https://api.example.com/todos?page=1&amp;per_page=20&gt;; rel=&quot;prev&quot;
+
+BODY
+[ { &quot;id&quot;: 81, ... }, { &quot;id&quot;: 100, ... } ]
+
+</code></pre><h3 id="27d8e11f-9262-8013-979a-c1d379b9a005" class="">11-2) Range-Unit based (item range)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-807a-83a9-d91805a20fb1" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 206 Partial Content
+Content-Type: application/json; charset=utf-8
+Range-Unit: items
+Content-Range: items 0-49/240
+
+BODY
+[ { &quot;id&quot;: 1, ... }, { &quot;id&quot;: 50, ... } ]
+
+</code></pre><hr id="27d8e11f-9262-803d-807f-c7ed902947ef"/><h2 id="27d8e11f-9262-8051-846d-e236eb39262d" class="">12) Setting Cookies (Security flags example)</h2><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80f3-a113-daf6d6c55b40" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Set-Cookie: sid=abc123; Path=/; Secure; HttpOnly; SameSite=Lax
+Content-Type: application/json; charset=utf-8
+
+BODY
+{ &quot;message&quot;: &quot;signed in&quot; }
+
+</code></pre><hr id="27d8e11f-9262-8036-a9f8-caa2aec21200"/><h2 id="27d8e11f-9262-807c-99c2-cd05b6365411" class="">13) Compressed/Streaming Response</h2><h3 id="27d8e11f-9262-805f-b75d-f06742476f35" class="">13-1) gzip compression</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-807f-af20-f3418dd504c5" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Encoding: gzip
+Vary: Accept-Encoding
+
+BODY
+&lt;gzip compressed body&gt;
+
+</code></pre><h3 id="27d8e11f-9262-8058-b866-ea485c18b068" class="">13-2) chunked transfer (HTTP/1.1)</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8030-98ba-ce00f9338661" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json
+Transfer-Encoding: chunked
+
+BODY
+1E
+{&quot;event&quot;:&quot;start&quot;,&quot;ts&quot;:1696060800}
+0
+
+</code></pre><hr id="27d8e11f-9262-801e-b25f-faf992b4a35f"/><h2 id="27d8e11f-9262-8031-b2af-cc01270cd937" class="">14) Best Practices!</h2><ul id="27d8e11f-9262-8038-9015-e60717cc46b8" class="bulleted-list"><li style="list-style-type:disc"><strong>Content Contract:</strong> Always use the correct <code>Content-Type</code> (response format), and <code>charset=utf-8</code> when necessary.</li></ul><ul id="27d8e11f-9262-800a-8d7e-ed77487b28e9" class="bulleted-list"><li style="list-style-type:disc"><strong>Caching/Conditionals:</strong> Whenever possible, issue an <code>ETag</code> or <code>Last-Modified</code> → allows clients to re-validate with <code>If-*</code> headers.</li></ul><ul id="27d8e11f-9262-8024-b301-e2bc0ac7c29b" class="bulleted-list"><li style="list-style-type:disc"><strong>Resource Creation:</strong> Use <code>201 Created</code> with an <strong>accurate </strong><code><strong>Location</strong></code> header.</li></ul><ul id="27d8e11f-9262-805f-be06-c0a97359c6a7" class="bulleted-list"><li style="list-style-type:disc"><strong>Consistent Error Format:</strong> Use <code>application/problem+json</code> or a team-standard error schema.</li></ul><ul id="27d8e11f-9262-8084-b7c4-e83d599f09f2" class="bulleted-list"><li style="list-style-type:disc"><strong>Rate Limiting:</strong> With 429, provide remaining limits/retry timings via headers.</li></ul><ul id="27d8e11f-9262-80e4-9e4a-e508fb81ba15" class="bulleted-list"><li style="list-style-type:disc"><strong>CORS</strong>: Allow only the necessary minimum origins, expose headers that clients need to read with <code>Expose-Headers</code>.</li></ul><ul id="27d8e11f-9262-80ae-b208-c12b5441dab6" class="bulleted-list"><li style="list-style-type:disc"><strong>Security:</strong> Session cookies should be <code>Secure/HttpOnly/SameSite</code>; sensitive information should only be in the body.</li></ul><hr id="27d8e11f-9262-8047-b923-c9a68a604c33"/><h2 id="27d8e11f-9262-80bc-a42d-ccb71085c5e7" class="">15) Response Format Standardization</h2><h3 id="27d8e11f-9262-80be-9538-dfaf220c967f" class="">15.1 Specification</h3><ul id="27d8e11f-9262-806f-9f65-e287818f63ae" class="bulleted-list"><li style="list-style-type:disc"><strong>Envelope</strong>(recommended): Wrap all successful responses in the common format below.<ul id="27d8e11f-9262-8095-b882-f8f882eae902" class="bulleted-list"><li style="list-style-type:circle"><code>data</code>: The actual payload (can be an object/array/primitive).</li></ul><ul id="27d8e11f-9262-80ae-a142-f8e4418bcedc" class="bulleted-list"><li style="list-style-type:circle"><code>meta</code>: Additional information (paging, trace ID, processing time, etc.).</li></ul><ul id="27d8e11f-9262-80ef-a030-c9b50afa10f2" class="bulleted-list"><li style="list-style-type:circle"><code>links</code>: HATEOAS/navigation links (optional).</li></ul></li></ul><ul id="27d8e11f-9262-8010-819b-eaac1da6ae33" class="bulleted-list"><li style="list-style-type:disc"><strong>Time/Numbers</strong><ul id="27d8e11f-9262-8094-8ed0-c3550895e541" class="bulleted-list"><li style="list-style-type:circle">Time should be <strong>UTC ISO-8601</strong> (<code>YYYY-MM-DDTHH:mm:ssZ</code>).</li></ul><ul id="27d8e11f-9262-8086-a61c-c2f2e10eaf1a" class="bulleted-list"><li style="list-style-type:circle">Monetary values as <strong>integer in the smallest unit</strong> (e.g., KRW in won, USD in cents) + specify currency code.</li></ul></li></ul><ul id="27d8e11f-9262-8059-be61-c787dde38cce" class="bulleted-list"><li style="list-style-type:disc"><strong>Naming:</strong> <code>camelCase</code> (recommended) or team standard. Maintain <strong>consistency</strong> throughout the documentation.</li></ul><ul id="27d8e11f-9262-80e6-80d1-e34ad3d3868a" class="bulleted-list"><li style="list-style-type:disc"><strong>Null/Empty:</strong> Differentiate between <code>non-existent (null)</code> and empty values (<code>&quot;&quot;</code>/<code>[]</code>).</li></ul><ul id="27d8e11f-9262-802a-8ffc-cad5914db9fd" class="bulleted-list"><li style="list-style-type:disc"><strong>Sorting:</strong> Specify a default sort order for lists (e.g., <code>createdAt</code>).</li></ul><h3 id="27d8e11f-9262-804a-8ec9-fbc2005935bf" class="">15.2 Single/List Success Examples</h3><h3 id="27d8e11f-9262-803a-add9-d7a1f4a24976" class="">(A) Single Item</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8030-bf2b-f39fef21af5f" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+ETag: &quot;e7a9-abc123&quot;
+
+BODY
+{
+  &quot;data&quot;: {
+    &quot;id&quot;: 101,
+    &quot;title&quot;: &quot;Do programming assignment&quot;,
+    &quot;dueDate&quot;: &quot;2025-10-05&quot;,
+    &quot;done&quot;: false
+  },
+  &quot;meta&quot;: {
+    &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;,
+    &quot;servedAt&quot;: &quot;2025-09-30T12:34:56Z&quot;
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos/101&gt;&quot;
+  }
+}
+
+</code></pre><h3 id="27d8e11f-9262-8034-8c44-e8f273afea40" class="">(B) List</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80eb-a6bb-c4fc70141926" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+BODY
+{
+  &quot;data&quot;: [
+    { &quot;id&quot;: 101, &quot;title&quot;: &quot;A&quot;, &quot;done&quot;: false },
+    { &quot;id&quot;: 102, &quot;title&quot;: &quot;B&quot;, &quot;done&quot;: true  }
+  ],
+  &quot;meta&quot;: {
+    &quot;total&quot;: 240,
+    &quot;page&quot;: 2,
+    &quot;perPage&quot;: 50,
+    &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos?page=2&amp;perPage=50&gt;&quot;,
+    &quot;next&quot;: &quot;&lt;https://api.example.com/todos?page=3&amp;perPage=50&gt;&quot;,
+    &quot;prev&quot;: &quot;&lt;https://api.example.com/todos?page=1&amp;perPage=50&gt;&quot;
+  }
+}
+
+</code></pre><h3 id="27d8e11f-9262-8024-af00-e5060cf139e7" class="">15.3 Implementation Checklist</h3><ul id="27d8e11f-9262-80a0-b543-cf5dec48d42c" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Include <code>data</code> in all success responses (empty results as <code>data: []</code> or <code>data: null</code>).</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80d5-b362-de3bdd775673" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Provide <code>meta.requestId</code> (or header <code>X-Request-ID</code>) for tracing.</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-8014-aa7f-c670e70ce713" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Reflect sorting/filtering/paging rules in <code>meta/links</code>.</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80d9-af5c-e3dc275e5f20" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">For large collections, apply a default <code>limit/perPage</code> and set an upper bound.</span><div class="indented"></div></li></ul><hr id="27d8e11f-9262-8032-a92e-c5e9b5526264"/><h2 id="27d8e11f-9262-8098-9d88-cb2a4f3cd744" class="">16) Error Format Standardization (Problem Details)</h2><h3 id="27d8e11f-9262-8069-899c-db273b3b9979" class="">16.1 Specification</h3><ul id="27d8e11f-9262-8020-8b7d-d142e856fb22" class="bulleted-list"><li style="list-style-type:disc">Use the standard media type <code><strong>application/problem+json</strong></code> (RFC 9457).</li></ul><ul id="27d8e11f-9262-801d-b22e-e7f0d0da2860" class="bulleted-list"><li style="list-style-type:disc">Common fields:<ul id="27d8e11f-9262-8009-9cab-c407d80ade15" class="bulleted-list"><li style="list-style-type:circle"><code>type</code> (a URL or <code>&quot;about:blank&quot;</code>), <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code>.</li></ul></li></ul><ul id="27d8e11f-9262-8038-94b3-c802d6f31290" class="bulleted-list"><li style="list-style-type:disc">Extension fields:<ul id="27d8e11f-9262-8024-beee-f6f08a745807" class="bulleted-list"><li style="list-style-type:circle"><code>errors</code> (map of field-specific errors), <code>requestId</code>, <code>hint</code>, <code>docs</code>.</li></ul></li></ul><h3 id="27d8e11f-9262-80ed-9adf-fbc1b03ed2fd" class="">16.2 Validation Error (400) Example</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8014-8b5d-f488f5070493" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 400 Bad Request
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/validation-error&gt;&quot;,
+  &quot;title&quot;: &quot;Invalid Request&quot;,
+  &quot;status&quot;: 400,
+  &quot;detail&quot;: &quot;One or more fields are invalid.&quot;,
+  &quot;errors&quot;: {
+    &quot;dueDate&quot;: [&quot;must be an ISO-8601 date&quot;]
+  },
+  &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;,
+  &quot;instance&quot;: &quot;/todos&quot;
+}
+
+</code></pre><h3 id="27d8e11f-9262-8065-9eed-c295b5f72901" class="">16.3 Authentication Error (401) Example</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8018-a2bb-d5006ee48376" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer realm=&quot;api&quot;, error=&quot;invalid_token&quot;, error_description=&quot;expired&quot;
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/auth&gt;&quot;,
+  &quot;title&quot;: &quot;Unauthorized&quot;,
+  &quot;status&quot;: 401,
+  &quot;detail&quot;: &quot;Access token expired.&quot;,
+  &quot;requestId&quot;: &quot;8d1d8a30-2a2b-4a1a-9e4e-1dbb6a3d7c01&quot;
+}
+
+</code></pre><h3 id="27d8e11f-9262-8059-adcf-c9152ad893a6" class="">16.4 Concurrency Conflict (412) Example</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80c2-9220-df61e2947fdf" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 412 Precondition Failed
+ETag: &quot;b13c-77df29&quot;
+Content-Type: application/problem+json
+
+BODY
+{
+  &quot;type&quot;: &quot;&lt;https://example.com/problems/precondition-failed&gt;&quot;,
+  &quot;title&quot;: &quot;Precondition Failed&quot;,
+  &quot;status&quot;: 412,
+  &quot;detail&quot;: &quot;ETag mismatch.&quot;,
+  &quot;hint&quot;: &quot;Refetch the resource and retry with the latest ETag.&quot;
+}
+
+</code></pre><h3 id="27d8e11f-9262-803f-96b9-da5ebf78a8f7" class="">16.5 Implementation Checklist</h3><ul id="27d8e11f-9262-80fa-a887-d6e7b5bea463" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">All non-2xx responses use <code>application/problem+json</code>.</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-807e-aee9-dceb5612817e" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Maintain an error code mapping table (HTTP ↔ domain codes).</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80ea-929a-f70f13d8078c" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Provide field errors as <code>errors.{field}:[…]</code> array.</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80ad-8f55-c807ee0fbf13" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Include <code>requestId</code> for linking logs/traces.</span><div class="indented"></div></li></ul><hr id="27d8e11f-9262-80fe-8c99-d35df25559fb"/><h2 id="27d8e11f-9262-8040-94bb-cbcc23590dab" class="">17) Pagination</h2><h3 id="27d8e11f-9262-80ca-872b-f1a5c95c7007" class="">17.1 Specification (Choose one, do not mix)</h3><h3 id="27d8e11f-9262-80d8-9e48-e2a7ec4a3046" class="">(A) <strong>Query Parameter Page-based</strong></h3><ul id="27d8e11f-9262-800a-a8d5-db99c1e0da4f" class="bulleted-list"><li style="list-style-type:disc">Request: <code>?page=2&amp;perPage=50&amp;sort=-createdAt</code></li></ul><ul id="27d8e11f-9262-800c-98f0-f1d498c50982" class="bulleted-list"><li style="list-style-type:disc">Response: <code>data</code> array + <code>meta.total/page/perPage</code> + <code>links.self/next/prev</code></li></ul><ul id="27d8e11f-9262-80ee-b223-d8c9b0230a2e" class="bulleted-list"><li style="list-style-type:disc">Pros: Simple/intuitive.</li></ul><ul id="27d8e11f-9262-803c-96bb-ebe866ebf9aa" class="bulleted-list"><li style="list-style-type:disc">Cons: Cost of calculating <strong>dynamic </strong><code><strong>total</strong></code>.</li></ul><h3 id="27d8e11f-9262-808f-a956-c160fbc7e85a" class="">Request/Response Example</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8052-a56c-e7eadd0389c4" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /todos?page=2&amp;perPage=50&amp;sort=-createdAt HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+BODY
+# None
+
+</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-8047-8b62-efd7108332e5" class="code code-wrap"><code class="language-Java" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Link: &lt;https://api.example.com/todos?page=3&amp;perPage=50&gt;; rel=&quot;next&quot;,
+      &lt;https://api.example.com/todos?page=1&amp;perPage=50&gt;; rel=&quot;prev&quot;
+
+BODY
+{
+  &quot;data&quot;: [ /* 50 items */ ],
+  &quot;meta&quot;: {
+    &quot;total&quot;: 240,
+    &quot;page&quot;: 2,
+    &quot;perPage&quot;: 50
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos?page=2&amp;perPage=50&gt;&quot;,
+    &quot;next&quot;: &quot;&lt;https://api.example.com/todos?page=3&amp;perPage=50&gt;&quot;,
+    &quot;prev&quot;: &quot;&lt;https://api.example.com/todos?page=1&amp;perPage=50&gt;&quot;
+  }
+}
+</code></pre><h3 id="27d8e11f-9262-80f5-a3db-c8107c79e51b" class="">(B) <strong>Cursor-based (cursor/token)</strong></h3><ul id="27d8e11f-9262-80ba-8d71-e125b9c9d4f9" class="bulleted-list"><li style="list-style-type:disc">Request: <code>?limit=50&amp;cursor=&lt;opaqueToken&gt;</code> (no <code>cursor</code> for the first page)</li></ul><ul id="27d8e11f-9262-80ea-9360-fffee2897a42" class="bulleted-list"><li style="list-style-type:disc">Response: <code>meta.nextCursor</code> (if present, there is a next page), <code>meta.hasMore</code> (optional)</li></ul><ul id="27d8e11f-9262-80d0-9050-d15ff3a8e405" class="bulleted-list"><li style="list-style-type:disc">Pros: Robust for <strong>large-scale/real-time</strong> changing data, stable scanning.</li></ul><ul id="27d8e11f-9262-809d-9dfd-ed56ecbf9b16" class="bulleted-list"><li style="list-style-type:disc">Cons: Higher implementation complexity, difficult to access random pages.</li></ul><h3 id="27d8e11f-9262-80a6-be2d-cb913c829125" class="">Request/Response Example</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80a1-b295-e11022b0d1b3" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /todos?limit=50&amp;cursor=eyJpZCI6MTAxLCJjcmVhdGVkQXQiOiIyMDI1LTA5LTMwVDEyOjM0OjU2WiJ9 HTTP/1.1
+Host: api.example.com
+Accept: application/json
+
+BODY
+# None
+</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-800a-9e5d-da918f973d91" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+BODY
+{
+  &quot;data&quot;: [ /* 50 items */ ],
+  &quot;meta&quot;: {
+    &quot;limit&quot;: 50,
+    &quot;nextCursor&quot;: &quot;eyJpZCI6MTAyLCJjcmVhdGVkQXQiOiIyMDI1LTA5LTMwVDEyOjM1OjEwWiJ9&quot;,
+    &quot;hasMore&quot;: true
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;&lt;https://api.example.com/todos?limit=50&amp;cursor=&gt;...&quot;,
+    &quot;next&quot;: &quot;&lt;https://api.example.com/todos?limit=50&amp;cursor=eyJpZCI6MTAy&gt;...&quot;
+  }
+}
+
+</code></pre><h3 id="27d8e11f-9262-80f5-8e7a-fe825f39270a" class="">17.2 Range-Unit based (Alternative)</h3><ul id="27d8e11f-9262-80b3-ab7d-d0d4eb34b5a5" class="bulleted-list"><li style="list-style-type:disc">Request Header:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="27d8e11f-9262-80b0-8384-fea7e14a6e42" class="code code-wrap"><code class="language-JavaScript" style="white-space:pre-wrap;word-break:break-all">HEAD
+GET /todos HTTP/1.1
+Host: api.example.com
+Range-Unit: items
+Range: items=0-49
+
+</code></pre></li></ul><ul id="27d8e11f-9262-8052-abe5-f25cdf9cb6aa" class="bulleted-list"><li style="list-style-type:disc">Response Header: <code>206 Partial Content</code> + <code>Content-Range: items 0-49/240</code></li></ul><h3 id="27d8e11f-9262-80db-a90f-d95758d45d09" class="">17.3 Implementation Checklist</h3><ul id="27d8e11f-9262-80f9-831b-c2d3e1ddf4d2" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Set a default <code>perPage/limit</code> and a maximum upper bound (e.g., default 50, max 200).</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80c1-a466-d26caef616e8" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Define conventions for sorting fields/directions (e.g., <code>sort=-createdAt</code>).</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-8050-8ede-efa25abde22f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">For page-based, document if <code>total</code> calculation is expensive, consider <strong>deferred calculation</strong> or <strong>estimates</strong>.</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80ab-ab2f-e222cfffbbd9" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">For cursor-based, make <code>nextCursor</code> an <strong>opaque token</strong> (do not expose internal schema).</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-80a5-9c8b-c80e013b1864" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Provide both <code>Link</code> header and <code>links</code> object <strong>simultaneously</strong> (client&#x27;s choice).</span><div class="indented"></div></li></ul><ul id="27d8e11f-9262-8060-a64c-ed5d2d5fbf80" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Empty result: <code>data:</code> <code>[]</code>, <code>meta.total: 0</code> or <code>hasMore: false</code>.</span><div class="indented"></div></li></ul></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
