@@ -1,0 +1,999 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>07-00. 객체지향 디자인패턴?</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 2750mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2838e11f-9262-80dc-b59c-c14d82225767" class="page sans"><header><h1 class="page-title">07-00. 객체지향 디자인패턴?</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">1. 객체지향 패러다임 (Object-Oriented Paradigm)</summary><div class="indented"><hr id="2838e11f-9262-8076-a7aa-d23b2e72f52e"/><h2 id="2838e11f-9262-801e-b067-fac65cbf8a3b" class="">1.1 객체지향이란 무엇인가?</h2><blockquote id="2838e11f-9262-8031-96ca-fb2cc3b2e7c2" class="">객체지향(Object-Oriented)이란 “데이터와 그 데이터를 처리하는 행위를 하나의 단위(객체)”로 묶어 사고하는 프로그래밍 패러다임으로, 프로그래밍 기법 중 하나임.</blockquote><h3 id="2838e11f-9262-80c5-b204-f5deb8bc8eb9" class="">* 핵심 개념</h3><ul id="2838e11f-9262-8059-9e92-c300cf364f85" class="bulleted-list"><li style="list-style-type:disc"><strong>절차지향(Procedural)</strong> 프로그래밍이 “함수의 순서와 흐름” 중심이라면, <strong>객체지향(Object-Oriented)</strong> 프로그래밍은 “객체 간의 상호작용” 중심으로 볼 수 있음!</li></ul><ul id="2838e11f-9262-80ba-8e2a-c1376cc79173" class="bulleted-list"><li style="list-style-type:disc">프로그램의 구성 요소를 <strong>“객체(Object)”</strong> 로 보고, 각 객체가 데이터를 보유하고, 메서드를 통해 서로 메시지를 주고받으며 동작하도록 설계하는 방식!</li></ul><ul id="2838e11f-9262-80f7-9d54-eea9ea7767a7" class="bulleted-list"><li style="list-style-type:disc">객체는 현실 세계의 개념을 소프트웨어 안으로 모델링한 것이라 할 수 있음 → 설계 매우 중요!</li></ul><p id="2838e11f-9262-80e7-b8fd-db81024be440" class="">
+</p><h3 id="2838e11f-9262-80d3-9f4f-c9496251307c" class="">⚙️ 예시</h3><table id="2838e11f-9262-80c0-8c47-d963c4540e20" class="simple-table"><thead class="simple-table-header"><tr id="2838e11f-9262-80d4-a470-e700ef958aba"><th id="qULC" class="simple-table-header-color simple-table-header">개념</th><th id="jElr" class="simple-table-header-color simple-table-header">현실 세계 예시</th><th id="mWFo" class="simple-table-header-color simple-table-header">코드 표현</th></tr></thead><tbody><tr id="2838e11f-9262-804a-bd8f-e5763b40c529"><td id="qULC" class="">객체(Object)</td><td id="jElr" class="">자동차</td><td id="mWFo" class=""><code>Car</code> 클래스의 인스턴스</td></tr><tr id="2838e11f-9262-8008-8fb5-cf535d5de76d"><td id="qULC" class="">속성(Attribute)</td><td id="jElr" class="">자동차의 색상, 속도</td><td id="mWFo" class=""><code>color</code>, <code>speed</code></td></tr><tr id="2838e11f-9262-807a-8620-f49f5c792abe"><td id="qULC" class="">행동(Method)</td><td id="jElr" class="">가속하기, 멈추기</td><td id="mWFo" class=""><code>accelerate()</code>, <code>stop()</code></td></tr></tbody></table><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2838e11f-9262-8018-bd14-fc81b79ab169" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">class Car:
+    def __init__(self, color):
+        self.color = color
+        self.speed = 0
+
+    def accelerate(self):
+        self.speed += 10
+
+    def stop(self):
+        self.speed = 0</code></pre><p id="2838e11f-9262-804d-9356-e595ce284512" class="">→ 이렇게 객체가 자신의 데이터(<code>speed</code>, <code>color</code>)와 행위(<code>accelerate</code>, <code>stop</code>)를 함께 가지고 있는 것이 바로 <strong>객체지향의 핵심으로 볼 수 있음!</strong></p><hr id="2838e11f-9262-802f-85eb-f837cf7b8b21"/><h2 id="2838e11f-9262-80e4-bfdb-ca5a095c62e3" class="">1.2 객체지향의 4대 특성</h2><blockquote id="2838e11f-9262-8043-8b20-f07753031f43" class="">객체지향의 4대 특성은 캡슐화, 추상화, 상속, 다형성으로, 이 네 가지 개념이 <strong>객체지향 설계의 기초이자 유연한 소프트웨어를 만드는 핵심 원리</strong>로 볼 수 있음.</blockquote><hr id="2838e11f-9262-807a-a0ca-c3aa14f339ea"/><h3 id="2838e11f-9262-805a-8438-ea83458a6c73" class="">(1) 캡슐화 (Encapsulation)</h3><blockquote id="2838e11f-9262-8016-8adb-ee2586a191b8" class="">객체 내부의 속성과 기능을 감추고, 외부에서는 정해진 인터페이스만 사용하도록 하는 것.</blockquote><ul id="2838e11f-9262-804a-85af-d9664756ff6c" class="bulleted-list"><li style="list-style-type:disc">데이터를 <strong>은닉(data hiding)</strong> 하여 외부에서 직접 접근하지 못하게 함.</li></ul><ul id="2838e11f-9262-80f0-a9bc-f41370f46e37" class="bulleted-list"><li style="list-style-type:disc">외부와 내부의 <strong>결합도를 낮추고</strong>, 내부 구현 변경 시 외부에 미치는 영향을 최소화함.</li></ul><ul id="2838e11f-9262-80b4-9810-fca27fd882dc" class="bulleted-list"><li style="list-style-type:disc">접근 제어자(<code>private</code>, <code>protected</code>, <code>public</code>)로 구현.</li></ul><h3 id="2838e11f-9262-80c8-9355-e5f03c334e7e" class=""> * 장점</h3><ul id="2838e11f-9262-80db-b189-db2ea8ae3d93" class="bulleted-list"><li style="list-style-type:disc">데이터 보호</li></ul><ul id="2838e11f-9262-8032-9f9e-f22d39363f52" class="bulleted-list"><li style="list-style-type:disc">유지보수성 향상</li></ul><ul id="2838e11f-9262-80eb-9ccb-f22b6853832b" class="bulleted-list"><li style="list-style-type:disc">코드 안정성 증가</li></ul><ul id="2838e11f-9262-80b9-80e3-e6384cf623ff" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>예시 (Python)</strong></mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2838e11f-9262-8017-9850-f44ab15c2a94" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # private 변수
+
+    def deposit(self, amount):
+        self.__balance += amount
+
+    def withdraw(self, amount):
+        if self.__balance &gt;= amount:
+            self.__balance -= amount
+        else:
+            print(&quot;잔액 부족&quot;)
+
+    def get_balance(self):
+        return self.__balance</code></pre><blockquote id="2838e11f-9262-80ab-94d5-fe732b24d989" class="">외부에서 멤버변수인 <mark class="highlight-red"><mark class="highlight-orange_background">__balance</mark></mark>에 직접 접근할 수 없고, 반드시 deposit() / withdraw() 메서드를 통해서만 조작 가능함</blockquote><hr id="2838e11f-9262-809b-a38c-ea71a38d2879"/><h3 id="2838e11f-9262-805b-9907-c33645978e53" class="">(2) 추상화 (Abstraction)</h3><blockquote id="2838e11f-9262-806a-a4e8-cf9a87be8bff" class="">복잡한 시스템에서 중요한 부분만 드러내고 불필요한 세부사항은 감추는 방식.</blockquote><ul id="2838e11f-9262-8043-9f33-df8899141a33" class="bulleted-list"><li style="list-style-type:disc">사용자는 “무엇을 할 수 있는가(What)”에 집중하고,<br/>구현자는 “어떻게 동작하는가(How)”에 집중하는 전략!</li></ul><ul id="2838e11f-9262-8053-b467-c0259fb7bd14" class="bulleted-list"><li style="list-style-type:disc">인터페이스(<code>interface</code>)나 추상 클래스(<code>abstract class</code>)로 표현 가능.</li></ul><ul id="2838e11f-9262-802f-bfab-c51f55576d77" class="bulleted-list"><li style="list-style-type:disc">현실의 복잡한 개념을 단순화하여 모델링할 수 있음.</li></ul><ul id="2838e11f-9262-80bf-a160-cbde9c395194" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background">예시</mark></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2838e11f-9262-80c6-848c-f6e5da1afa24" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">from abc import ABC, abstractmethod
+
+class Payment(ABC):
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class CreditCardPayment(Payment):
+    def pay(self, amount):
+        print(f&quot;{amount}원을 신용카드로 결제했습니다.&quot;)
+
+class PayPalPayment(Payment):
+    def pay(self, amount):
+        print(f&quot;{amount}원을 PayPal로 결제했습니다.&quot;)</code></pre><blockquote id="2838e11f-9262-80ab-be14-dfbdffee61a4" class="">사용자 입장에서는 “결제(pay)”라는 추상적 행위만 알고, 구체적인 결제 방식은 각 클래스에서 다르게 정의됨.</blockquote><hr id="2838e11f-9262-808d-bd05-f3c03121c129"/><h3 id="2838e11f-9262-80ba-805a-d0baa7dd69cc" class="">(3) 상속 (Inheritance)</h3><blockquote id="2838e11f-9262-80ac-8714-f6cb72ab89d2" class="">기존 클래스의 속성과 기능을 확장하거나 재사용하기 위한 메커니즘.</blockquote><ul id="2838e11f-9262-8023-bcde-e3549be8eccf" class="bulleted-list"><li style="list-style-type:disc"><strong>“is-a” 관계</strong>를 표현 (예: Dog is an Animal)</li></ul><ul id="2838e11f-9262-807e-a200-c2535cfc30dc" class="bulleted-list"><li style="list-style-type:disc">코드 중복 제거, 공통 로직 재사용 가능</li></ul><ul id="2838e11f-9262-8008-b884-f07ae0f2f2b9" class="bulleted-list"><li style="list-style-type:disc">단일 상속만 지원하는 언어도 있고, 다중 상속을 지원하는 언어도 있음</li></ul><ul id="2838e11f-9262-8039-8b7a-ef3c05d2fab3" class="bulleted-list"><li style="list-style-type:disc"><strong>주의:</strong> 과도한 상속 구조는 유지보수 복잡도를 높임</li></ul><h3 id="2838e11f-9262-804b-ba2a-f4215bc6aa04" class="">* 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2838e11f-9262-8024-bab4-de7d347f8b5b" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">class Animal:
+    def speak(self):
+        print(&quot;소리를 냅니다.&quot;)
+
+class Dog(Animal):
+    def speak(self):
+        print(&quot;멍멍!&quot;)
+
+dog = Dog()
+dog.speak()  # 출력: 멍멍!</code></pre><blockquote id="2838e11f-9262-80ee-b386-c317779f483d" class="">Dog 클래스는 Animal 클래스를 상속받고, 기능을 재정의(override)하여 구체적인 행동을 구현.</blockquote><hr id="2838e11f-9262-8044-8e3d-fec11ea30a9c"/><h3 id="2838e11f-9262-80f9-9477-fc294df18d2a" class="">(4) 다형성 (Polymorphism)</h3><blockquote id="2838e11f-9262-8054-a622-f8f53ecce540" class="">하나의 인터페이스나 메서드가 여러 형태로 동작할 수 있는 성질.</blockquote><ul id="2838e11f-9262-80cb-958c-c072e2390062" class="bulleted-list"><li style="list-style-type:disc">상속 관계에서 동일한 메서드 이름이지만, 실제 동작은 객체의 구체적 타입에 따라 달라짐.</li></ul><ul id="2838e11f-9262-807e-9a1d-c7b2e366a42b" class="bulleted-list"><li style="list-style-type:disc"><strong>동적 바인딩 (Dynamic Binding)</strong> 을 통해 런타임에 메서드가 결정됨.</li></ul><ul id="2838e11f-9262-80eb-9e88-fec4b96cedcf" class="bulleted-list"><li style="list-style-type:disc">오버라이딩(Overriding)과 오버로딩(Overloading)을 통해 구현.</li></ul><h3 id="2838e11f-9262-8007-bba8-ed9f6a48e4d1" class="">* 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2838e11f-9262-8042-9a5c-fc77f4421d59" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">class Animal:
+    def speak(self):
+        print(&quot;소리를 냅니다.&quot;)
+
+class Cat(Animal):
+    def speak(self):
+        print(&quot;야옹!&quot;)
+
+class Cow(Animal):
+    def speak(self):
+        print(&quot;음메!&quot;)
+
+animals = [Cat(), Cow()]
+for a in animals:
+    a.speak()  # 각 객체에 맞는 동작 수행</code></pre><blockquote id="2838e11f-9262-80bc-8126-d160c29cea9d" class="">a.speak()는 동일한 호출이지만, 실제로는 각 객체의 타입에 따라 다르게 동작하며, 이것이 다형성의 핵심으로 볼 수 있음!</blockquote><hr id="2838e11f-9262-80ee-92ce-cbff8c631da6"/><h2 id="2838e11f-9262-8052-9c2d-de345ac2f26d" class="">1.3 객체지향 분석 / 설계 / 프로그래밍 (OOA / OOD / OOP)</h2><blockquote id="2838e11f-9262-8022-b6e6-e8a6e73abdd7" class="">객체지향 접근법은 단순히 “코딩 스타일”이 아니라,<br/>분석(Analysis) → 설계(Design) → 프로그래밍(Programming) 의 세 단계를 모두 포함하는 개념!</blockquote><h3 id="2838e11f-9262-80be-81f7-c16f5df57e8f" class="">① 객체지향 분석 (Object-Oriented Analysis, OOA)</h3><ul id="2838e11f-9262-8006-ad90-fc3e5c110fdf" class="bulleted-list"><li style="list-style-type:disc">현실 세계의 문제를 <strong>객체와 관계</strong>로 식별</li></ul><ul id="2838e11f-9262-80e1-81ce-f8de3c41c8fb" class="bulleted-list"><li style="list-style-type:disc">각 객체의 <strong>책임(responsibility)</strong> 과 <strong>협력(collaboration)</strong> 을 정의</li></ul><blockquote id="2838e11f-9262-8046-8820-ccaba96345b0" class="">예: “학생은 강의를 수강한다” → 학생 객체, 강의 객체, “수강” 관계로 모델링</blockquote><h3 id="2838e11f-9262-80f8-8644-fa1a8104940e" class="">② 객체지향 설계 (Object-Oriented Design, OOD)</h3><ul id="2838e11f-9262-8051-8f85-c8f3911bbdf2" class="bulleted-list"><li style="list-style-type:disc">분석 결과를 코드로 옮길 수 있도록 <strong>클래스, 인터페이스, 상호작용 구조</strong>를 구체화</li></ul><ul id="2838e11f-9262-804d-9276-d189e615c02a" class="bulleted-list"><li style="list-style-type:disc">SOLID 원칙, 디자인 패턴 등을 고려해 설계</li></ul><blockquote id="2838e11f-9262-8084-aa12-e0beee9a6aa5" class="">예: “학생” 클래스가 “강의” 클래스의 메서드를 호출하도록 설계</blockquote><h3 id="2838e11f-9262-80ed-b127-c4b4dea70468" class="">③ 객체지향 프로그래밍 (Object-Oriented Programming, OOP)</h3><ul id="2838e11f-9262-8056-ad77-da73ace27899" class="bulleted-list"><li style="list-style-type:disc">실제 코드로 구현하는 단계</li></ul><ul id="2838e11f-9262-80ea-b375-f6eb13aa5117" class="bulleted-list"><li style="list-style-type:disc">클래스, 메서드, 인터페이스를 정의하고 시스템 전체를 통합</li></ul><blockquote id="2838e11f-9262-80bb-986f-f3ab5d4a6a94" class="">예: Python, Java, C++ 등에서 실제 코드 작성</blockquote><hr id="2838e11f-9262-804d-8f29-fd239896f90a"/><h2 id="2838e11f-9262-8073-afa5-e571d12c07da" class="">1.4 왜 객체지향이 중요한가?</h2><blockquote id="2838e11f-9262-80d0-908b-dfb3b29b4f35" class=""><mark class="highlight-orange_background">“좋은 객체지향 설계는 변경에 유연한 소프트웨어를 만든다.”</mark></blockquote><ol type="1" id="2838e11f-9262-80ec-900e-d845e48f4607" class="numbered-list" start="1"><li><strong>복잡성 관리</strong><ul id="2838e11f-9262-8099-aea0-dcd15a697093" class="bulleted-list"><li style="list-style-type:disc">시스템을 작은 객체 단위로 분리 → 이해하기 쉬움</li></ul></li></ol><ol type="1" id="2838e11f-9262-8094-b00b-f7184a220a68" class="numbered-list" start="2"><li><strong>유지보수성 향상</strong><ul id="2838e11f-9262-8053-b5d3-d5e0e2e1efb7" class="bulleted-list"><li style="list-style-type:disc">내부 구현을 바꿔도 외부에 영향이 적음</li></ul></li></ol><ol type="1" id="2838e11f-9262-80e1-be69-c9bcff00ad28" class="numbered-list" start="3"><li><strong>재사용성 증대</strong><ul id="2838e11f-9262-809a-b058-f0668b0d0635" class="bulleted-list"><li style="list-style-type:disc">상속, 조합을 통해 기존 코드 활용</li></ul></li></ol><ol type="1" id="2838e11f-9262-809d-9775-dbf715a38d0b" class="numbered-list" start="4"><li><strong>확장 용이성</strong><ul id="2838e11f-9262-8078-b2f3-da768b88fdc4" class="bulleted-list"><li style="list-style-type:disc">새로운 기능 추가 시 기존 구조를 최소한으로 수정</li></ul></li></ol><h3 id="2838e11f-9262-809c-9e7e-c63a07cd7685" class="">* 주의할 점</h3><ul id="2838e11f-9262-8000-9887-e795960fd2b8" class="bulleted-list"><li style="list-style-type:disc">객체지향은 만능은 아님..!</li></ul><ul id="2838e11f-9262-806e-b294-dfdf0d2ddf8b" class="bulleted-list"><li style="list-style-type:disc">지나친 상속이나 과도한 추상화는 오히려 복잡성을 높일 수 있음!</li></ul><ul id="2838e11f-9262-80a9-8a2e-cbaaf5dff037" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red">객체 간의 </mark><mark class="highlight-red"><strong>결합도(coupling)</strong></mark><mark class="highlight-red"> 를 낮추고, </mark><mark class="highlight-red"><strong>응집도(cohesion)</strong></mark><mark class="highlight-red"> 를 높이는 것이 핵심..!</mark></li></ul><hr id="2838e11f-9262-80dd-b936-dddb68ec5d39"/><h3 id="2838e11f-9262-80ea-a423-fec2986c8871" class="">핵심 정리 요약</h3><table id="2838e11f-9262-805c-ab5e-dba5b7f1fdf9" class="simple-table"><thead class="simple-table-header"><tr id="2838e11f-9262-8043-9ac4-e9298721c9e2"><th id="i:pt" class="simple-table-header-color simple-table-header">개념</th><th id="{}xP" class="simple-table-header-color simple-table-header">의미</th><th id="\Sqn" class="simple-table-header-color simple-table-header">장점</th><th id="c[AH" class="simple-table-header-color simple-table-header">대표 예시</th></tr></thead><tbody><tr id="2838e11f-9262-809f-8baa-ddc1a29578a2"><td id="i:pt" class=""><strong>캡슐화</strong></td><td id="{}xP" class="">내부 구현을 숨기고, 인터페이스만 공개</td><td id="\Sqn" class="">변경에 유연</td><td id="c[AH" class="">접근제한자</td></tr><tr id="2838e11f-9262-80e5-8e91-f68d83db2d4a"><td id="i:pt" class=""><strong>추상화</strong></td><td id="{}xP" class="">불필요한 세부사항 제거, 본질적 개념만 표현</td><td id="\Sqn" class="">복잡성 감소</td><td id="c[AH" class="">인터페이스, 추상클래스</td></tr><tr id="2838e11f-9262-8079-9241-f9963e934ba2"><td id="i:pt" class=""><strong>상속</strong></td><td id="{}xP" class="">기존 클래스 확장 및 재사용</td><td id="\Sqn" class="">코드 재사용</td><td id="c[AH" class="">부모-자식 클래스</td></tr><tr id="2838e11f-9262-80fc-8e7f-f6301c499d9d"><td id="i:pt" class=""><strong>다형성</strong></td><td id="{}xP" class="">동일한 메시지에 다른 동작</td><td id="\Sqn" class="">유연성 증가</td><td id="c[AH" class="">메서드 오버라이딩</td></tr></tbody></table><hr id="2838e11f-9262-8076-a8ed-c8676c379f80"/><p id="2848e11f-9262-806d-a654-ff99c2994408" class="">
+</p><p id="2848e11f-9262-8045-b47b-d6972a15e22f" class="">
+</p></div></details><p id="2848e11f-9262-8047-819c-e15e7a947789" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">2. 객체지향과 디자인패턴</summary><div class="indented"><h2 id="2848e11f-9262-8032-ba40-ed5bd8ec25d7" class="">2.1 디자인 패턴이란 무엇인가?</h2><blockquote id="2848e11f-9262-800a-8091-ccc3725e68b2" class="">디자인 패턴(Design Pattern) 이란, “<mark class="highlight-orange"><mark class="highlight-gray_background"><strong>객체지향 설계에서 반복적으로 등장하는 문제를 해결하기 위한 검증된 설계 해법(Reusable Solution)</strong></mark></mark>”을 의미함.</blockquote><ul id="2848e11f-9262-80ce-b688-fa8eb3432af6" class="bulleted-list"><li style="list-style-type:disc">즉, 개발자들이 수십 년 동안 다양한 소프트웨어 설계 경험을 통해 축적한 <strong>‘좋은 설계 방법’의 정형화된 결과물</strong>이라 할 수 있음.</li></ul><ul id="2848e11f-9262-8013-89d4-f01c7c0da09a" class="bulleted-list"><li style="list-style-type:disc">패턴은 <strong>구현 코드가 아니라 설계의 아이디어</strong>이므로, 언어나 기술에 관계없이 적용 가능함.</li></ul><ul id="2848e11f-9262-800c-b6ea-c39cc32c9c2f" class="bulleted-list"><li style="list-style-type:disc">객체지향의 <mark class="highlight-orange"><strong>유연성(Flexibility)</strong></mark> 과 <mark class="highlight-orange"><strong>재사용성(Reusability)</strong></mark> 을 실제로 실현하기 위한 구체적인 실천 도구임.</li></ul><blockquote id="2848e11f-9262-80a6-b077-dfa57df37443" class="">쉽게 말해, “<mark class="highlight-gray_background"><strong>문제를 해결하는 방법을 매번 새로 생각하지 않고, 이미 검증된 구조를 활용하자!</strong></mark>”는 것.</blockquote><hr id="2848e11f-9262-802c-b6eb-eee7811dadc4"/><h2 id="2848e11f-9262-809c-bd32-f09b014db748" class="">2.2 왜 디자인 패턴을 배워야 하는가?</h2><h3 id="2848e11f-9262-802f-beb7-ecbf9d091c68" class=""><mark class="highlight-gray_background">(1) 재사용 가능한 설계 지식 축적</mark></h3><ul id="2848e11f-9262-8039-8ab6-c13dee64cc11" class="bulleted-list"><li style="list-style-type:disc">모든 문제를 처음부터 새롭게 설계할 필요가 없음.</li></ul><ul id="2848e11f-9262-8065-a7d4-f80caa9f1099" class="bulleted-list"><li style="list-style-type:disc">이미 검증된 구조를 참고하면 개발 속도와 품질이 향상됨.</li></ul><p id="2848e11f-9262-8075-a461-f3706948a567" class="">
+</p><h3 id="2848e11f-9262-802b-a070-d1d2fd57293f" class=""><mark class="highlight-gray_background">(2) 유지보수성과 확장성 향상</mark></h3><ul id="2848e11f-9262-806a-a216-d275d6ddfe0a" class="bulleted-list"><li style="list-style-type:disc">디자인 패턴을 적용하면 객체 간 결합도를 낮추고, 확장 시 기존 코드 변경을 최소화할 수 있음.</li></ul><ul id="2848e11f-9262-802d-bb83-fa4a8cc75fc2" class="bulleted-list"><li style="list-style-type:disc">즉, <strong>변경에 유연한 시스템</strong>을 만들 수 있음.</li></ul><p id="2848e11f-9262-8050-bc31-e89469351115" class="">
+</p><h3 id="2848e11f-9262-8048-95b0-fbaf273d2c1c" class=""><mark class="highlight-gray_background">(3) 의사소통의 표준화</mark></h3><ul id="2848e11f-9262-8001-8b97-c48b5cc5afb8" class="bulleted-list"><li style="list-style-type:disc">“이 부분은 팩토리 패턴으로 구현했어.”<br/>→ 한 문장으로도 구조를 이해할 수 있음.</li></ul><ul id="2848e11f-9262-80e7-ab05-eb50ad3f8cc9" class="bulleted-list"><li style="list-style-type:disc">개발자 간에 <strong>공통 언어(Common Vocabulary)</strong> 로 작동함.</li></ul><p id="2848e11f-9262-80f2-a335-d1f2579fd87a" class="">
+</p><h3 id="2848e11f-9262-805f-bdb2-e09a8d55d275" class=""><mark class="highlight-gray_background">(4) 객체지향 원리(SOLID)와의 연결</mark></h3><ul id="2848e11f-9262-804d-9cda-cc3248ac9f47" class="bulleted-list"><li style="list-style-type:disc">대부분의 디자인 패턴은 <strong>SOLID 원칙</strong>을 구체적으로 실천한 형태임.</li></ul><ul id="2848e11f-9262-8057-bae7-cba845ba1705" class="bulleted-list"><li style="list-style-type:disc">예를 들어, “전략 패턴(Strategy Pattern)”은 <strong>개방-폐쇄 원칙(OCP)</strong> 과 <strong>의존성 역전 원칙(DIP)</strong> 을 잘 반영한 패턴임.</li></ul><p id="2848e11f-9262-80b0-beaf-dc9b072ccbd8" class="">
+</p><hr id="2848e11f-9262-803e-ac42-eaa0a4927231"/><h2 id="2848e11f-9262-80c4-8c27-dd7259db1db3" class="">2.3 디자인 패턴의 분류</h2><blockquote id="2848e11f-9262-808a-b685-ea9c2b090d79" class="">디자인 패턴은 일반적으로 <mark class="highlight-orange"><strong>GoF(Gang of Four) 가 정리한 23가지 패턴</strong></mark>으로부터 출발함.<br/></blockquote><ul id="2848e11f-9262-80ab-981f-fbbc314a38e7" class="bulleted-list"><li style="list-style-type:disc">이들은 크게 세 가지 범주로 나눌 수 있음.</li></ul><table id="2848e11f-9262-8059-aab2-e7c4490d4c22" class="simple-table"><thead class="simple-table-header"><tr id="2848e11f-9262-8016-be64-e065497fcf0b"><th id="NRAO" class="simple-table-header-color simple-table-header">분류</th><th id="|g=X" class="simple-table-header-color simple-table-header">설명</th><th id="|n&gt;B" class="simple-table-header-color simple-table-header">대표 패턴</th></tr></thead><tbody><tr id="2848e11f-9262-80fd-82bd-e6065cb8d4e5"><td id="NRAO" class=""><strong>생성(Creational) 패턴</strong></td><td id="|g=X" class="">객체 생성 방식의 유연성을 높임</td><td id="|n&gt;B" class="">Singleton, Factory Method, Abstract Factory, Builder, Prototype</td></tr><tr id="2848e11f-9262-8080-a943-ee7ed7435223"><td id="NRAO" class=""><strong>구조(Structural) 패턴</strong></td><td id="|g=X" class="">클래스나 객체를 조합하여 더 큰 구조를 형성</td><td id="|n&gt;B" class="">Adapter, Bridge, Composite, Decorator, Facade, Proxy, Flyweight</td></tr><tr id="2848e11f-9262-80be-ad0b-ea1a053bcb94"><td id="NRAO" class=""><strong>행위(Behavioral) 패턴</strong></td><td id="|g=X" class="">객체 간의 상호작용과 책임 분배에 중점</td><td id="|n&gt;B" class="">Strategy, Observer, Command, State, Template Method, Chain of Responsibility</td></tr></tbody></table><hr id="2848e11f-9262-8031-9447-e21d0f37b685"/><h2 id="2848e11f-9262-80ff-8c49-ef4536c6273a" class="">2.4 대표적인 디자인 패턴 예시</h2><h3 id="2848e11f-9262-8067-8c5a-dd7d9f079f6a" class=""><mark class="highlight-orange">(1) 싱글톤 패턴 (Singleton Pattern)</mark></h3><blockquote id="2848e11f-9262-80ee-a618-e619ac53e7ba" class="">하나의 클래스에 대해 단 하나의 인스턴스만 존재하도록 보장하고, 그 인스턴스에 전역 접근점(Global Access Point) 을 제공하는 패턴.</blockquote><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2848e11f-9262-8048-82c9-ca916753cc49" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">class Singleton:
+    __instance = None
+
+    @staticmethod
+    def get_instance():
+        if Singleton.__instance is None:
+            Singleton.__instance = Singleton()
+        return Singleton.__instance
+
+s1 = Singleton.get_instance()
+s2 = Singleton.get_instance()
+print(s1 is s2)  # True</code></pre><ul id="2848e11f-9262-80ce-8a76-e16b9e2dbc85" class="bulleted-list"><li style="list-style-type:disc"><strong>장점:</strong> 공통 자원(로그, 설정 파일 등)에 일관된 접근 제공</li></ul><ul id="2848e11f-9262-8096-bc49-c44937e9823d" class="bulleted-list"><li style="list-style-type:disc"><strong>단점:</strong> 전역 상태 관리 시, 테스트 어려움 / 의존성 증가 가능</li></ul><hr id="2848e11f-9262-80f3-bc02-f749e90c2416"/><h3 id="2848e11f-9262-8016-980f-c77602db3cf1" class=""><mark class="highlight-orange">(2) 팩토리 메서드 패턴 (Factory Method Pattern)</mark></h3><blockquote id="2848e11f-9262-803e-90ad-c2aac9f63054" class="">객체 생성을 서브클래스에 위임함으로써, 객체 생성 코드와 사용 코드를 분리하는 패턴.</blockquote><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2848e11f-9262-8098-bff4-d367f14ec1c2" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">from abc import ABC, abstractmethod
+
+class Product(ABC):
+    @abstractmethod
+    def use(self):
+        pass
+
+class ConcreteProductA(Product):
+    def use(self):
+        print(&quot;Product A 사용&quot;)
+
+class Creator(ABC):
+    @abstractmethod
+    def create_product(self):
+        pass
+
+class ConcreteCreatorA(Creator):
+    def create_product(self):
+        return ConcreteProductA()
+
+creator = ConcreteCreatorA()
+product = creator.create_product()
+product.use()</code></pre><ul id="2848e11f-9262-808d-9ba2-d1a2a1ed0f8a" class="bulleted-list"><li style="list-style-type:disc"><strong>장점:</strong> 코드 수정 없이 새로운 제품 유형 추가 가능 → <strong>개방-폐쇄 원칙(OCP)</strong> 준수</li></ul><ul id="2848e11f-9262-80c2-a9e3-cc86677a16ee" class="bulleted-list"><li style="list-style-type:disc"><strong>활용 예:</strong> Django의 ORM, Spring Framework의 Bean Factory 등</li></ul><hr id="2848e11f-9262-801e-b782-e39fa8d673f2"/><h3 id="2848e11f-9262-80b0-a2b9-eee1fabf4a2f" class=""><mark class="highlight-orange">(3) 전략 패턴 (Strategy Pattern)</mark></h3><blockquote id="2848e11f-9262-8082-90fa-c4a900a4fbe4" class="">알고리즘 군을 정의하고, 각각을 캡슐화하여 런타임에 알고리즘을 교체할 수 있게 하는 패턴.</blockquote><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2848e11f-9262-8097-b14f-cb63c85269bb" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">class Strategy:
+    def execute(self, a, b):
+        pass
+
+class Add(Strategy):
+    def execute(self, a, b):
+        return a + b
+
+class Subtract(Strategy):
+    def execute(self, a, b):
+        return a - b
+
+class Context:
+    def __init__(self, strategy):
+        self.strategy = strategy
+
+    def operate(self, a, b):
+        return self.strategy.execute(a, b)
+
+context = Context(Add())
+print(context.operate(10, 5))  # 15
+
+context.strategy = Subtract()
+print(context.operate(10, 5))  # 5</code></pre><ul id="2848e11f-9262-80d9-81d5-fc8d0188fa1b" class="bulleted-list"><li style="list-style-type:disc"><strong>장점:</strong> 알고리즘 변경 시 코드 수정 최소화, 다형성 활용</li></ul><ul id="2848e11f-9262-80a9-b1f3-fd9abb680ed4" class="bulleted-list"><li style="list-style-type:disc"><strong>핵심 원리:</strong> “<mark class="highlight-gray_background">행위를 객체로 바꾸어, 변경에 닫히지 않고 확장에는 열려 있게 한다.</mark>”</li></ul><hr id="2848e11f-9262-8034-bdc0-c019880a813f"/><h2 id="2848e11f-9262-80a1-9729-e46dd0f6c141" class="">2.5 디자인 패턴의 핵심 포인트</h2><ol type="1" id="2848e11f-9262-8057-83ec-f1b80fdbd2f0" class="numbered-list" start="1"><li><mark class="highlight-orange"><mark class="highlight-gray_background"><strong>“패턴은 도구이지 규칙이 아니다.”</strong></mark></mark><ul id="2848e11f-9262-807f-bc0a-ea059d413897" class="bulleted-list"><li style="list-style-type:disc">무조건 패턴을 적용하는 것이 아니라, 상황에 맞게 선택하는 것이 중요함.</li></ul><ul id="2848e11f-9262-80f4-95d9-c1d8b41cdc33" class="bulleted-list"><li style="list-style-type:disc">과도한 패턴 사용은 오히려 설계를 복잡하게 함.</li></ul></li></ol><ol type="1" id="2848e11f-9262-808d-ab23-d46b18ffa7a6" class="numbered-list" start="2"><li><mark class="highlight-orange"><mark class="highlight-gray_background"><strong>“변화에 유연한 구조를 만드는 것이 목표다.”</strong></mark></mark><ul id="2848e11f-9262-801b-968b-eaf03e101720" class="bulleted-list"><li style="list-style-type:disc">디자인 패턴의 본질은 <strong>변경을 쉽게 하는 설계</strong>에 있음.</li></ul><ul id="2848e11f-9262-8055-bbdd-c6e2370fba5b" class="bulleted-list"><li style="list-style-type:disc">즉, <strong>“변경될 부분과 고정된 부분을 분리하는 것”</strong> 이 핵심 전략임.</li></ul></li></ol><ol type="1" id="2848e11f-9262-8018-9a29-c3477a449ef0" class="numbered-list" start="3"><li><mark class="highlight-orange"><mark class="highlight-gray_background"><strong>“패턴보다 원칙이 먼저다.”</strong></mark></mark><ul id="2848e11f-9262-807a-bd0f-ccd03229d6eb" class="bulleted-list"><li style="list-style-type:disc">SOLID 원칙을 이해하지 못한 채 패턴을 외우는 것은 의미가 없음.</li></ul><ul id="2848e11f-9262-80f1-908f-eadfd29da85b" class="bulleted-list"><li style="list-style-type:disc">패턴은 원칙의 구체적 구현일 뿐, 원리를 이해해야 제대로 활용 가능함.</li></ul></li></ol><ol type="1" id="2848e11f-9262-801d-9cec-df193ec04a43" class="numbered-list" start="4"><li><mark class="highlight-orange"><mark class="highlight-gray_background"><strong>“패턴은 경험을 코드화한 설계 지식이다.”</strong></mark></mark><ul id="2848e11f-9262-8015-af67-f77b5c37f855" class="bulleted-list"><li style="list-style-type:disc">패턴을 학습함으로써, 경험 많은 개발자들의 사고방식을 빠르게 습득할 수 있음.</li></ul><ul id="2848e11f-9262-8043-b4fd-dc4c718860f9" class="bulleted-list"><li style="list-style-type:disc">즉, <strong>소프트웨어 설계의 ‘언어’를 배운다</strong>는 점에서 가치가 큼.</li></ul></li></ol><hr id="2848e11f-9262-803e-9e78-e9ebac6d0571"/><h2 id="2848e11f-9262-8062-b959-f80b915b3938" class="">2.6 요약</h2><table id="2848e11f-9262-80bb-b202-e413adfe024e" class="simple-table"><thead class="simple-table-header"><tr id="2848e11f-9262-8072-9889-e24abc3773d3"><th id="MKdT" class="simple-table-header-color simple-table-header">구분</th><th id="_Y^N" class="simple-table-header-color simple-table-header">내용</th><th id="&lt;U@F" class="simple-table-header-color simple-table-header">예시</th></tr></thead><tbody><tr id="2848e11f-9262-80c0-b892-fa15d133e333"><td id="MKdT" class=""><strong>정의</strong></td><td id="_Y^N" class="">반복되는 설계 문제의 해결 방안</td><td id="&lt;U@F" class="">GoF 23 패턴</td></tr><tr id="2848e11f-9262-8061-8599-c880e3c407ae"><td id="MKdT" class=""><strong>목적</strong></td><td id="_Y^N" class="">코드 재사용성, 유지보수성, 확장성 향상</td><td id="&lt;U@F" class="">-</td></tr><tr id="2848e11f-9262-8027-a594-f740ecbeefb1"><td id="MKdT" class=""><strong>이점</strong></td><td id="_Y^N" class="">개발 효율성, 설계 표준화, 변경 유연성</td><td id="&lt;U@F" class="">-</td></tr><tr id="2848e11f-9262-807b-a178-fc035541c8e8"><td id="MKdT" class=""><strong>대표 패턴</strong></td><td id="_Y^N" class="">Singleton, Factory, Strategy, Observer, Decorator 등</td><td id="&lt;U@F" class="">Python, Java, C++ 등</td></tr><tr id="2848e11f-9262-80dc-8865-c20a07d94fcc"><td id="MKdT" class=""><strong>핵심 철학</strong></td><td id="_Y^N" class="">변경 가능한 부분을 캡슐화하고, 의존성을 최소화한다</td><td id="&lt;U@F" class="">SOLID 원칙 기반</td></tr></tbody></table><hr id="2848e11f-9262-8075-a2f5-f2042d95837e"/><blockquote id="2848e11f-9262-8044-8011-fc85b98e7ca2" class="">객체지향은 <mark class="highlight-gray_background">“사고 방식”</mark>이고, 디자인 패턴은 그 사고를 현실적으로 구현하기 위한 지침서로 볼 수 있음!<br/><br/>즉, 디자인 패턴을 학습한다는 것은 결국 <mark class="highlight-gray_background"><strong>유연하고 유지보수 가능한 객체지향 설계</strong></mark>를 할 수 있는 힘을 기르는 과정으로 볼 수 있음!!</blockquote></div></details><p id="2848e11f-9262-80a4-9200-fa0d6878af59" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
