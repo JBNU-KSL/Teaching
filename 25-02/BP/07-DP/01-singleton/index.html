@@ -1,0 +1,987 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>07-01. 싱글톤 패턴 (Singleton Pattern)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 2400mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2748e11f-9262-80b5-a3c6-dba58bea4056" class="page sans"><header><h1 class="page-title">07-01. 싱글톤 패턴 (Singleton Pattern)</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 패턴 개요</summary><div class="indented"><h3 id="2748e11f-9262-80fa-9ae9-d72b83a922c8" class="">1) 정의</h3><ul id="2748e11f-9262-8070-924d-d206b157b633" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>한 클래스의 인스턴스를 오직 하나만 생성</strong></mark>하고, 어디서든 그 <mark class="highlight-orange"><strong>유일한</strong></mark> 인스턴스에 접근할 수 있도록 보장하는 패턴.<ul id="2748e11f-9262-8070-8228-d31f4fb034fe" class="bulleted-list"><li style="list-style-type:circle"><strong>유일 인스턴스 보장</strong>: 어떤 클래스의 객체를 <strong>단 1개만</strong> 만들고, 어디서든 그 객체에 접근할 수 있는 전역 진입점 제공.</li></ul><ul id="2748e11f-9262-80e5-a24e-cc66c135c4ae" class="bulleted-list"><li style="list-style-type:circle"><strong>생성 통제</strong>: 생성자를 <code>private</code>으로 막고, <code>static</code> 메서드(예: <code>getInstance()</code>)로만 획득하게 함.</li></ul><ul id="2748e11f-9262-80df-922f-eb29f11fc5ed" class="bulleted-list"><li style="list-style-type:circle"><strong>TS vs Java</strong><ul id="2748e11f-9262-80ff-ac8f-c0bdd9063559" class="bulleted-list"><li style="list-style-type:square">Java는 멀티스레드 동시성 고려가 중요.</li></ul><ul id="2748e11f-9262-80e7-b5df-f3b71bededca" class="bulleted-list"><li style="list-style-type:square"><mark class="highlight-red_background">JS/TS는 기본이 단일 스레드 이벤트 루프이지만, </mark><mark class="highlight-red_background"><strong>Worker/프로세스/번들 중복 로드</strong></mark><mark class="highlight-red_background"> 환경에서는 다중 인스턴스가 생길 수 있어 설계 주의 필요.</mark></li></ul></li></ul></li></ul><h3 id="2748e11f-9262-8099-acca-d6eb684eadd3" class="">2) 목적 (언제 써야하는지?)</h3><ul id="2748e11f-9262-8085-8fdf-d0649e6fd936" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>프로그램 전역에서 하나만 있어야 하는 것</strong></mark><mark class="highlight-red_background">을 공유할 때</mark><ul id="2748e11f-9262-8001-af80-e5fa7396dbd3" class="bulleted-list"><li style="list-style-type:circle">예: 로거(Logger), 설정/환경(Config), DB 연결 풀, 전역 캐시, 테마/지역화, 텔레메트리/트레이싱, 이벤트 버스 등.</li></ul></li></ul><ul id="2748e11f-9262-80a4-b13d-c7c44cf78c8c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>상태·자원 관리</strong></mark><mark class="highlight-red_background">가 중앙집중적이어야 할 때</mark><ul id="2748e11f-9262-80bc-b396-d0d9943a73b5" class="bulleted-list"><li style="list-style-type:circle">비용이 큰 리소스(파일 핸들, 소켓, 브라우저 스토리지 래퍼 등)를 중복 생성하지 않도록.</li></ul></li></ul><h3 id="2748e11f-9262-805b-9692-c9e9107fcf02" class="">3) 특징 (장점·단점)</h3><ul id="2748e11f-9262-8048-89de-f63a4e2f0faa" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>장점</strong></mark><ul id="2748e11f-9262-80f7-8bc0-d5367accb447" class="bulleted-list"><li style="list-style-type:circle"><strong>생성 비용 절감</strong>: 비싼 객체를 한 번만 생성.</li></ul><ul id="2748e11f-9262-8062-a284-f6811cde84ee" class="bulleted-list"><li style="list-style-type:circle"><strong>전역 접근</strong>: 사용이 간단하고 코드량이 적음.</li></ul><ul id="2748e11f-9262-8032-814c-d82d5c5e44dd" class="bulleted-list"><li style="list-style-type:circle"><strong>수명 관리 단순화</strong>: 앱 라이프사이클과 함께 움직임.</li></ul></li></ul><ul id="2748e11f-9262-80fa-9707-e79a83c178e2" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>단점·주의</strong></mark><ul id="2748e11f-9262-8082-93c1-d6ed71f63694" class="bulleted-list"><li style="list-style-type:circle"><strong>테스트 어려움/결합 증가</strong>: 전역 상태라 목(Mock) 교체가 어렵고, 모듈 간 결합이 커짐.</li></ul><ul id="2748e11f-9262-805c-b07a-cc634c4611c6" class="bulleted-list"><li style="list-style-type:circle"><strong>은닉된 의존성</strong>: 어디서나 참조 가능 → 의존성 주입(Dependency Injection)과 상충.</li></ul><ul id="2748e11f-9262-8007-97e4-ed2c13730f88" class="bulleted-list"><li style="list-style-type:circle"><strong>초기화 순서/메모리 상주</strong>: Eager 방식은 <strong>사용하지 않아도</strong> 메모리를 차지.</li></ul><ul id="2748e11f-9262-80d0-83bb-fce4be011d16" class="bulleted-list"><li style="list-style-type:circle"><strong>환경 분리 이슈</strong>: HMR(핫 리로드), SSR/CSR 이원화, 여러 워커/프로세스 등에서는 “각 컨텍스트마다” 싱글톤이 따로 생길 수 있음.</li></ul></li></ul><p id="2748e11f-9262-806d-8d1f-c61184e7f3ab" class="">
+</p></div></details><hr id="2748e11f-9262-8023-b458-d365a7befd50"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 문제 상황</summary><div class="indented"><ul id="2748e11f-9262-8031-bd83-d2770b5d67b7" class="bulleted-list"><li style="list-style-type:disc">전역적으로 공유해야 하는 객체가 있음 (예: 데이터베이스 연결 관리 객체)</li></ul><ul id="2748e11f-9262-8077-8f10-ee61c7ee2fad" class="bulleted-list"><li style="list-style-type:disc">여러 개의 인스턴스를 만들면 불필요한 자원 낭비가 발생</li></ul><ul id="2748e11f-9262-8033-b6fb-e6519eb47701" class="bulleted-list"><li style="list-style-type:disc">하지만 전역 변수를 그대로 사용하면 캡슐화가 깨지고 유지보수가 어려워짐<div id="2748e11f-9262-800d-b665-cb2770da3c58" class="column-list"><div id="2748e11f-9262-8091-9a1f-d603424f90aa" style="width:50%" class="column"><figure id="2748e11f-9262-8076-a34e-f0351c6daac0" class="image"><a href="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image.png"><img style="width:303.9921875px" src="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image.png"/></a></figure></div><div id="2748e11f-9262-801e-8c63-ccaaac00edcf" style="width:50%" class="column"><figure id="2748e11f-9262-8035-bd84-cd2c8012b4c0" class="image"><a href="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image%201.png"><img style="width:303.984375px" src="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image%201.png"/></a></figure></div></div></li></ul><p id="2748e11f-9262-80bc-a356-e5853ed6c528" class="">
+</p></div></details><hr id="2748e11f-9262-8095-861a-e9c61e0ea1c4"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. TypeScript 코드 예제</summary><div class="indented"><figure id="2748e11f-9262-80be-a2c6-f3e928572241" class="image"><a href="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image%202.png"><img style="width:370.984375px" src="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image%202.png"/></a></figure><p id="2748e11f-9262-80fc-9883-f013163b85f9" class="">
+</p><h3 id="2748e11f-9262-80ba-8576-d657a1487ca8" class="">A. <strong>Eager Initialization</strong></h3><ul id="2748e11f-9262-80bb-8a81-d80c0dd24c8b" class="bulleted-list"><li style="list-style-type:disc"><strong>한 번만 미리 만들어두는 직관적이고 심플한 기법</strong><ul id="2748e11f-9262-80c7-a1db-eb9ad70cdce8" class="bulleted-list"><li style="list-style-type:circle">클래스가 처음 로드될 때 인스턴스를 즉시 생성하기 때문에 구현이 간단함.</li></ul></li></ul><ul id="2748e11f-9262-8030-91ee-f8cb61deaa4a" class="bulleted-list"><li style="list-style-type:disc"><code><strong>private static readonly</strong></code><strong> 로 구현</strong><ul id="2748e11f-9262-8013-920b-f06868d66358" class="bulleted-list"><li style="list-style-type:circle">TypeScript에서는 <code>final</code>이 없으므로 <code>readonly</code>를 사용해 재할당을 방지.</li></ul><ul id="2748e11f-9262-80c9-9eba-e804f0b3954c" class="bulleted-list"><li style="list-style-type:circle">따라서 <mark class="highlight-red_background"><strong>멀티 스레드 환경이 아니더라도 안전하게 단일 인스턴스를 보장 가능!</strong></mark></li></ul></li></ul><ul id="2748e11f-9262-80e1-944d-f71263909d59" class="bulleted-list"><li style="list-style-type:disc"><strong>메모리 상주 문제</strong><ul id="2748e11f-9262-80cb-8170-c0d908e64324" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red_background">정적(static) 멤버로 관리되기 때문에 실제로 사용하지 않더라도 메모리에 항상 올라가 있음.</mark></li></ul><ul id="2748e11f-9262-802c-bdd1-dbda908800b6" class="bulleted-list"><li style="list-style-type:circle">따라서 리소스가 큰 객체라면 공간 낭비가 발생할 수 있음.</li></ul></li></ul><ul id="2748e11f-9262-80cc-9ef7-d39a612b3869" class="bulleted-list"><li style="list-style-type:disc"><strong>예외 처리 불가</strong><p id="2748e11f-9262-80c7-8480-e1025f28140d" class="">인스턴스가 생성되는 시점에 에러 처리를 끼워 넣을 수 없다는 단점이 있음.</p></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-8047-9e92-c1686151214b" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 싱글톤 클래스 정의
+class Singleton {
+  private static readonly instance: Singleton = new Singleton();
+
+  private constructor() {}
+
+  public static getInstance(): Singleton {
+    return Singleton.instance;
+  }
+
+  // 테스트용 메서드
+  public sayHello(): void {
+    console.log(&quot;안녕하세요! 저는 싱글톤 인스턴스입니다 👋&quot;);
+  }
+}
+
+// ------------------ 사용 예시 ------------------
+
+// 1. 인스턴스 가져오기
+const s1 = Singleton.getInstance();
+const s2 = Singleton.getInstance();
+
+// 2. 메서드 호출
+s1.sayHello(); // 출력: 안녕하세요! 저는 싱글톤 인스턴스입니다 👋
+
+// 3. 같은 객체인지 확인
+console.log(s1 === s2); // true (항상 같은 인스턴스)</code></pre><p id="2748e11f-9262-80d2-b855-e14ea8d95fa6" class="">
+</p><h3 id="2748e11f-9262-8006-8603-e1012c5db5be" class="">B. <strong>Static block initialization</strong></h3><ul id="2748e11f-9262-80d0-84de-d7b514e83293" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>기본 개념</strong></mark><ul id="2748e11f-9262-80b7-b21a-d5cb4b2deb0f" class="bulleted-list"><li style="list-style-type:circle"><strong>정적(static) 블록</strong>은 클래스가 로딩될 때 단 한 번 실행되는 특별한 코드 블록.</li></ul><ul id="2748e11f-9262-80fa-be6d-d321dcf45271" class="bulleted-list"><li style="list-style-type:circle">Java에서는 이 블록 안에서 객체를 초기화하면서 예외 처리까지 넣을 수 있으며, TypeScript도 <strong>4.4 이상 버전</strong>부터 동일하게 <code>static { ... }</code> 블록을 지원함.</li></ul><ul id="2748e11f-9262-80e9-9892-c2da70650b05" class="bulleted-list"><li style="list-style-type:circle">따라서 <code>Singleton.instance</code>를 생성할 때 try/catch를 통해 안전하게 초기화할 수 있다는 특징이 있음.</li></ul></li></ul><ul id="2748e11f-9262-80a0-8f87-de9b3c6b723c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>예외 처리 가능</strong></mark><ul id="2748e11f-9262-808e-bb6e-e5bf276bbb23" class="bulleted-list"><li style="list-style-type:circle">Java에서는 <code>static block</code>을 이용해 인스턴스 생성 시 예외를 잡는 것이 가능.</li></ul><ul id="2748e11f-9262-800e-b6e3-f8195ae76197" class="bulleted-list"><li style="list-style-type:circle">TypeScript에는 <code>static block</code>이 없으므로, 대신 <strong>정적 초기화 함수</strong>나 <strong>즉시 실행 함수(IIFE)</strong> 를 활용해 예외 처리를 흉내내 비슷하게 구현 가능.</li></ul></li></ul><ul id="2748e11f-9262-80c1-802b-fe4e09a8c05f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>메모리 상주 문제 동일</strong></mark><ul id="2748e11f-9262-805d-b558-eab84f169a76" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red_background">정적(static) 멤버의 특성상, </mark><mark class="highlight-red_background"><strong>객체를 실제로 사용하지 않더라도 메모리에 항상 올라가 있다는 단점</strong></mark><mark class="highlight-red_background">은 여전히 존재!</mark></li></ul></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-807d-b6f7-e3322a46156d" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 싱글톤 클래스 정의
+class Singleton { // TS 4.4 이상
+  private static instance: Singleton;
+
+  private constructor() {}
+
+  static {
+    try {
+      Singleton.instance = new Singleton();
+      console.log(&quot;✅ 싱글톤 인스턴스가 정상적으로 생성되었습니다.&quot;);
+    } catch (error) {
+      throw new Error(&quot;싱글톤 객체 생성 오류&quot;);
+    }
+  }
+
+  public static getInstance(): Singleton {
+    return Singleton.instance;
+  }
+
+  // 테스트용 메서드
+  public greet(): void {
+    console.log(&quot;안녕하세요! 저는 static block으로 생성된 싱글톤입니다 👋&quot;);
+  }
+}
+
+// ------------------ 사용 예시 ------------------
+
+// 1. 인스턴스 가져오기
+const s1 = Singleton.getInstance();
+const s2 = Singleton.getInstance();
+
+// 2. 메서드 호출
+s1.greet(); // 출력: 안녕하세요! 저는 static block으로 생성된 싱글톤입니다 👋
+
+// 3. 같은 객체인지 확인
+console.log(s1 === s2); // true (항상 같은 인스턴스)</code></pre><p id="2748e11f-9262-80e2-9eff-c1a78a06f384" class="">
+</p><h3 id="2748e11f-9262-800c-90aa-d3ef4249a56d" class="">C. Lazy Initialization</h3><ul id="2748e11f-9262-8068-a114-f61dbbdef5bf" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>내부에서 생성 시점 관리</strong></mark>: 인스턴스가 필요할 때(<code>getInstance()</code>가 처음 호출될 때) 만들어서 반환.</li></ul><ul id="2748e11f-9262-80f9-882b-d016a21edf40" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>미사용 시 메모리 절약</strong></mark>: 사용 전까지는 생성하지 않으므로 eager 방식의 <mark class="highlight-red_background"><strong>“미사용 고정 메모리 점유”</strong></mark><mark class="highlight-red_background"> </mark>단점을 줄임.</li></ul><ul id="2748e11f-9262-80d3-a5d9-f23bdca68f28" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>스레드 세이프 이슈</strong></mark>:<ul id="2748e11f-9262-80a0-8da9-e5fb6985a6de" class="bulleted-list"><li style="list-style-type:circle"><strong>브라우저/일반 Node.js 런타임</strong>은 단일 스레드 이벤트 루프이므로, Java처럼 멀티 스레드 경쟁으로 인해 <strong>“두 번 생성”되는 문제가 보통 발생하지 않음!</strong></li></ul><ul id="2748e11f-9262-8071-9ca1-ce71e9cfd7c2" class="bulleted-list"><li style="list-style-type:circle">다만 <strong>Worker Threads / Web Workers</strong>처럼 프로세스/스레드를 명시적으로 나눠 상태를 공유하거나(예: <code>SharedArrayBuffer</code>), 번들/모듈이 <strong>중복 로드</strong>되는 특수 상황(잘못된 번들링, 테스트 격리 등)에서는 별개의 인스턴스가 생길 수 있으므로, 이런 시나리오는 패턴/구성의 문제로 보고 별도 대책이 필요함.</li></ul></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-80b9-bbf7-eeb013a30670" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class Singleton {
+  private static instance: Singleton | null = null;
+
+  private constructor() {}
+
+  public static getInstance(): Singleton {
+    if (Singleton.instance === null) {
+      Singleton.instance = new Singleton(); // 최초 1회만 생성
+    }
+    return Singleton.instance;
+  }
+
+  // 예시 메서드
+  public say(): void {
+    console.log(&quot;lazy로 생성된 싱글톤입니다 👋&quot;);
+  }
+}
+
+// 사용 예시
+const a = Singleton.getInstance();
+const b = Singleton.getInstance();
+console.log(a === b); // true
+a.say();</code></pre><ul id="2748e11f-9262-80e0-ad75-ed837117419a" class="bulleted-list"><li style="list-style-type:disc">다만, 비동기 초기화가 섞이거나(예: 첫 호출 시 외부 리소스 로드) 모듈 중복 로드 가능성을 조금이라도 줄이고 싶다면, <strong>간단한 </strong><mark class="highlight-orange"><strong>once 가드</strong></mark>를 둘 수 있음.<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-8031-b785-d71e476604b7" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class Singleton {
+  private static instance: Singleton | null = null;
+  private static creating = false;
+
+  private constructor() {}
+
+  public static getInstance(): Singleton {
+    if (Singleton.instance) return Singleton.instance;
+
+    if (!Singleton.creating) {
+      Singleton.creating = true;
+      Singleton.instance = new Singleton();
+      Singleton.creating = false;
+    }
+    return Singleton.instance!;
+  }
+}</code></pre><blockquote id="2748e11f-9262-8031-ae8e-f24845a34ac8" class="">주의: JS/TS의 일반 실행 환경에서는 위 같은 가드가 필요하지 않은 경우가 대부분임. 멀티 워커/중복 번들 같은 <strong>배포 구조</strong>에서 인스턴스가 여러 개 생기는 문제는 <mark class="highlight-orange"><strong>애플리케이션 구조 차원의 해결(전역 모듈 캐시 재사용, 싱글 엔트리포인트, DI 컨테이너 등)이 더 적합</strong></mark>할 수 있음.</blockquote></li></ul><p id="2748e11f-9262-8031-b9cb-fe07cca341c5" class="">
+</p><h3 id="2748e11f-9262-80ac-ac22-e966174f2231" class="">D. TS에서의 Singleton</h3><ul id="2748e11f-9262-8044-8624-dab5cce6d9ba" class="bulleted-list"><li style="list-style-type:disc">TS/ESM에서는 모듈이 <strong>한 번 로드되면 캐시</strong>되므로, 아래처럼 인스턴스를 모듈 단위로 만들어 export해도 사실상 싱글톤처럼 동작함! (TS만의 특징!)</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-80b5-b19e-e5767c4b3cb0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">class Service {
+  public ping() { return &quot;pong&quot;; }
+}
+
+export const service = new Service(); // 모듈 캐시로 사실상 싱글톤</code></pre><ul id="2748e11f-9262-8099-bc74-c59c628d5c0d" class="bulleted-list"><li style="list-style-type:disc">라이브러리/프레임워크에 따라 테스트 격리, HMR(핫 리로드) 등으로 <strong>모듈 캐시가 초기화</strong>될 수 있으니, 이런 환경에선 클래식 싱글톤 패턴이 더 명확할 수 있으며, 환경에 따라 적절한 구현 방법이 필요함!</li></ul><p id="2748e11f-9262-800e-be6c-ccbd966c7065" class="">
+</p></div></details><hr id="2748e11f-9262-8006-b90d-ebea9b17663e"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. Signleton 패턴을 사용했을 때의 장점</summary><div class="indented"><ul id="2748e11f-9262-8050-bc8d-e8a2fc03caac" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>자원 관리 효율성</strong></mark><ul id="2748e11f-9262-8060-904f-f1f234770e88" class="bulleted-list"><li style="list-style-type:circle">DB 연결, 파일 핸들러 등 무거운 자원을 한 번만 생성해 공유 가능</li></ul></li></ul><ul id="2748e11f-9262-8066-be60-cee8128e2d76" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>글로벌 접근 보장</strong></mark><ul id="2748e11f-9262-808a-948d-ee560aa7b05d" class="bulleted-list"><li style="list-style-type:circle">프로그램 어디서든 동일한 객체를 사용할 수 있음</li></ul></li></ul><ul id="2748e11f-9262-80cd-bc7f-d3e056d4d881" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>객체 생성 제어</strong></mark><ul id="2748e11f-9262-8037-851f-e4d79cd81ede" class="bulleted-list"><li style="list-style-type:circle">무분별한 인스턴스 생성을 방지 → 예측 가능한 구조 유지</li></ul></li></ul><ul id="2748e11f-9262-8041-9a46-e3ac6aee1ea5" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>코드 일관성 향상</strong></mark><ul id="2748e11f-9262-8025-b099-c5b322a886a5" class="bulleted-list"><li style="list-style-type:circle"><strong>같은 객체를 사용</strong>하므로 상태 관리가 일관적으로 유지됨</li></ul></li></ul></div></details><hr id="2748e11f-9262-8090-b9d4-fb9eda57b98d"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 실무 적용 사례</summary><div class="indented"><ul id="2748e11f-9262-80c2-aaab-fe953d608f37" class="bulleted-list"><li style="list-style-type:disc"><strong>웹 프론트엔드</strong><ul id="2748e11f-9262-80a4-9dff-cd213b869503" class="bulleted-list"><li style="list-style-type:circle">전역 상태 관리 (예: Redux store, 앱 설정, 다크 모드 토글 관리)<figure id="2748e11f-9262-800e-bf2c-e9f7c8ebcbba" class="image"><a href="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image%203.png"><img style="width:314.9921875px" src="07-01%20%EC%8B%B1%EA%B8%80%ED%86%A4%20%ED%8C%A8%ED%84%B4%20(Singleton%20Pattern)%202748e11f926280b5a3c6dba58bea4056/image%203.png"/></a></figure></li></ul></li></ul><ul id="2748e11f-9262-80a9-8361-e1acff9e2ecd" class="bulleted-list"><li style="list-style-type:disc"><strong>백엔드(Node.js)</strong><ul id="2748e11f-9262-806e-b82e-d3a347e5427a" class="bulleted-list"><li style="list-style-type:circle">데이터베이스 연결 풀 (DB Connection Pool)</li></ul><ul id="2748e11f-9262-806a-85c6-eddaaec27ad8" class="bulleted-list"><li style="list-style-type:circle">환경 설정(Configuration) 객체</li></ul><ul id="2748e11f-9262-804c-bbee-ffea3a6b5046" class="bulleted-list"><li style="list-style-type:circle">로그 관리(Logger)</li></ul></li></ul><ul id="2748e11f-9262-80ea-81e0-f92ec83c8f5d" class="bulleted-list"><li style="list-style-type:disc"><strong>게임 개발</strong><ul id="2748e11f-9262-8093-92d2-d224b3c4f3c5" class="bulleted-list"><li style="list-style-type:circle">게임 내 오디오 매니저, 리소스 관리자</li></ul><p id="2748e11f-9262-80da-b9cc-dba3646815c7" class="">
+</p></li></ul></div></details><hr id="2748e11f-9262-80aa-b4ac-c8b0530c6bc3"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">6. 정리</summary><div class="indented"><ul id="2748e11f-9262-8040-bf59-d8d5de34b108" class="bulleted-list"><li style="list-style-type:disc">싱글톤 패턴은 <strong>인스턴스를 하나만 생성하고 전역적으로 접근</strong> 가능하게 하는 패턴!</li></ul><ul id="2748e11f-9262-80ff-b03e-ffb012b6a82b" class="bulleted-list"><li style="list-style-type:disc">생성자를 <code>private</code>으로 막고, <code>static 메서드</code>를 통해 접근하도록 구현함</li></ul><ul id="2748e11f-9262-8035-a9f2-fea2f5c913b2" class="bulleted-list"><li style="list-style-type:disc">자원 낭비 방지, 일관된 상태 유지, 전역적 접근이 필요한 경우 유용함</li></ul><ul id="2748e11f-9262-8026-b1b5-fde726f11391" class="bulleted-list"><li style="list-style-type:disc"><strong>실무에서는 로거, DB 연결, 전역 설정 객체 등에서 많이 사용됨</strong></li></ul></div></details><p id="2748e11f-9262-804d-87c1-ca620164b84b" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
