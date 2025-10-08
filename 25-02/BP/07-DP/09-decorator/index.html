@@ -1,0 +1,1113 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>07-09. 데코레이터 (Decorator) 패턴</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 2800mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2748e11f-9262-809b-a13c-ef97c69a78e3" class="page sans"><header><h1 class="page-title">07-09. 데코레이터 (Decorator) 패턴</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 문제 상황</summary><div class="indented"><h3 id="2758e11f-9262-809d-b386-f28f414f1427" class="">상황 예시</h3><ul id="2758e11f-9262-801b-a22b-c723c6fe94f7" class="bulleted-list"><li style="list-style-type:disc">&quot;알림 시스템&quot;을 구현한다고 가정.</li></ul><ul id="2758e11f-9262-80c5-985d-e255117238d7" class="bulleted-list"><li style="list-style-type:disc">기본적으로 메시지를 콘솔에 출력하는 <code>Notifier</code> 클래스가 있다고 가정.</li></ul><ul id="2758e11f-9262-802e-83a6-dd2cc6778436" class="bulleted-list"><li style="list-style-type:disc">이후 이메일, SMS, 슬랙(Slack) 같은 다양한 채널에 알림을 보낼 수 있도록 확장하고 싶음.</li></ul><h3 id="2758e11f-9262-80ff-a410-d65df92dfe4b" class="">단순 구현의 문제점</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-80e5-8c06-c202124d9545" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// - 새 채널 추가 시: enum/if/생성자/서브클래스/조합 전부 수정 필요
+// - 조합 폭발: Email, SMS, Slack, Push가 생기면 2^n 조합 클래스가 늘어남
+// - 공통 로깅/포맷팅이 중복됨
+
+enum Channel {
+  Base = &quot;Base&quot;,
+  Email = &quot;Email&quot;,
+  SMS = &quot;SMS&quot;,
+  Slack = &quot;Slack&quot;,
+  Push = &quot;Push&quot;, // 🆕 신규 채널 추가했다고 가정
+}
+
+class Notifier {
+  constructor(
+    // ❌ 플래그/옵션 지옥: 조합이 늘수록 생성자가 비대해짐
+    private readonly useEmail: boolean = false,
+    private readonly useSMS: boolean = false,
+    private readonly useSlack: boolean = false,
+    private readonly usePush: boolean = false, // 🆕 추가
+  ) {}
+
+  // ❌ OCP 위반: 채널이 늘 때마다 메서드 본문을 계속 수정해야 함
+  send(message: string): void {
+    const formatted = `[${new Date().toISOString()}] ${message}`; // ❌ 중복될 공통 포맷팅
+
+    console.log(`기본 알림: ${formatted}`);
+
+    if (this.useEmail) {
+      // ❌ 채널별 분기 + 중복 로직
+      console.log(`[TRACK] sending via EMAIL`); // ❌ 중복 추적 로깅
+      console.log(`이메일 발송: ${formatted}`);
+    }
+
+    if (this.useSMS) {
+      console.log(`[TRACK] sending via SMS`);
+      console.log(`SMS 발송: ${formatted}`);
+    }
+
+    if (this.useSlack) {
+      console.log(`[TRACK] sending via SLACK`);
+      console.log(`Slack 발송: ${formatted}`);
+    }
+
+    if (this.usePush) { // 🆕 추가
+      console.log(`[TRACK] sending via PUSH`);
+      console.log(`푸시 발송: ${formatted}`);
+    }
+
+    // TODO: 채널이 더 생기면 여기 if 추가 (WhatsApp, Teams, KakaoTalk, ...)
+    // TODO: 재시도/에러처리/속도제한/템플릿 바인딩도 채널별로 분기 추가.. 지옥 시작
+  }
+}
+
+class EmailNotifier extends Notifier {
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via EMAIL`);
+    console.log(`이메일 발송: ${message}`);
+  }
+}
+
+class SMSNotifier extends Notifier {
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via SMS`);
+    console.log(`SMS 발송: ${message}`);
+  }
+}
+
+class SlackNotifier extends Notifier {
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via SLACK`);
+    console.log(`Slack 발송: ${message}`);
+  }
+}
+
+class PushNotifier extends Notifier { // 🆕 신규 채널 클래스
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via PUSH`);
+    console.log(`푸시 발송: ${message}`);
+  }
+}
+
+// ❌ 조합 클래스들: 채널 하나 추가될 때마다 전 조합이 재정의되어야 함
+class EmailAndSMSNotifier extends Notifier {
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via EMAIL`);
+    console.log(`이메일 발송: ${message}`);
+    console.log(`[TRACK] sending via SMS`);
+    console.log(`SMS 발송: ${message}`);
+  }
+}
+
+class EmailAndSlackNotifier extends Notifier {
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via EMAIL`);
+    console.log(`이메일 발송: ${message}`);
+    console.log(`[TRACK] sending via SLACK`);
+    console.log(`Slack 발송: ${message}`);
+  }
+}
+
+class SMSAndSlackNotifier extends Notifier {
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via SMS`);
+    console.log(`SMS 발송: ${message}`);
+    console.log(`[TRACK] sending via SLACK`);
+    console.log(`Slack 발송: ${message}`);
+  }
+}
+
+// 🆕 Push가 들어오자마자 아래와 같은 조합 클래스가 무한 증식:
+// Email+Push, SMS+Push, Slack+Push, Email+SMS+Push, Email+Slack+Push, ...
+class EmailSMSSlackNotifier extends Notifier {
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via EMAIL`);
+    console.log(`이메일 발송: ${message}`);
+    console.log(`[TRACK] sending via SMS`);
+    console.log(`SMS 발송: ${message}`);
+    console.log(`[TRACK] sending via SLACK`);
+    console.log(`Slack 발송: ${message}`);
+  }
+}
+
+class EmailSMSSlackPushNotifier extends Notifier { // 😱 4종 조합 예시
+  send(message: string): void {
+    super.send(message);
+    console.log(`[TRACK] sending via EMAIL`);  console.log(`이메일 발송: ${message}`);
+    console.log(`[TRACK] sending via SMS`);    console.log(`SMS 발송: ${message}`);
+    console.log(`[TRACK] sending via SLACK`);  console.log(`Slack 발송: ${message}`);
+    console.log(`[TRACK] sending via PUSH`);   console.log(`푸시 발송: ${message}`);
+  }
+}
+
+// ====== 사용 예시 (문제점 체감용) ======
+function demo() {
+  console.log(&quot;\n--- 플래그 기반 조합 (조건문 지옥) ---&quot;);
+  const n1 = new Notifier(true, true, false, true); // Email + SMS + Push
+  n1.send(&quot;재고 임계치 도달&quot;);
+
+  console.log(&quot;\n--- 조합 클래스 기반 (클래스 폭발) ---&quot;);
+  const n2 = new EmailSMSSlackPushNotifier();
+  n2.send(&quot;서버 장애 감지&quot;);
+
+  // 🧨 요구사항 변경: Slack 대신 Teams도 추가해달라?
+  // -&gt; enum 추가, if 추가, Push와의 모든 조합 클래스 추가, 로깅/포맷팅/에러처리 중복 수정...
+}
+
+demo();</code></pre><ul id="2758e11f-9262-80ea-b8bb-e6c0906144f3" class="bulleted-list"><li style="list-style-type:disc">새로운 조합(예: 이메일 + SMS + Slack)이 필요할 때마다 클래스를 새로 만들어야 함</li></ul><ul id="2758e11f-9262-80aa-9a69-d1e3d533fa3b" class="bulleted-list"><li style="list-style-type:disc"><strong>클래스 수 폭발 문제 발생</strong></li></ul><p id="2758e11f-9262-80d5-9d5f-e6c123b1cae8" class="">
+</p></div></details><hr id="2758e11f-9262-8025-a35c-fefa889e1a8f"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 패턴 개요</summary><div class="indented"><h3 id="2758e11f-9262-80bc-8b6c-eb05c4861486" class="">1) 정의</h3><ul id="2758e11f-9262-8036-9226-df6c2fc8e6d5" class="bulleted-list"><li style="list-style-type:disc">데코레이터 패턴(Decorator Pattern)은 <strong>객체에 새로운 기능을 동적으로 추가</strong>할 수 있도록 설계된 구조 패턴으로, 기존 클래스의 코드 변경 없이도 기능을 확장할 수 있는 방법을 제공할 수 있는 패턴!</li></ul><ul id="2758e11f-9262-808d-8e52-e144d29b5b28" class="bulleted-list"><li style="list-style-type:disc">상속을 사용하는 대신, 기존 객체를 감싸는(<code>wrapping</code>) 방식으로 기능을 확장할 수 있으며, 이때 원래 객체는 내부적으로 그대로 동작하고 외부에서는 새로운 기능이 추가된 것처럼 보임.</li></ul><ul id="2758e11f-9262-805e-acd3-f9a42933be71" class="bulleted-list"><li style="list-style-type:disc">핵심 아이디어: &quot;<mark class="highlight-gray_background"><strong>필요한 기능만 블록처럼 조합해서 붙이자</strong></mark>&quot;는 것을 기반으로 하여, 불필요한 기능까지 포함된 거대한 클래스 설계 대신, 작은 단위의 기능을 모듈화하여 조립할 수 있다는 장점을 지니고 있음!</li></ul><hr id="2758e11f-9262-80b0-bac9-ca1db25660b0"/><h3 id="2758e11f-9262-8005-ab4a-c10b9cdede23" class="">2) 목적</h3><ul id="2758e11f-9262-8045-aef9-da1962ee294e" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>기능 확장 시 유연성 확보</strong></mark><br/>→ 컴파일 시점에 새로운 클래스를 미리 정의하지 않고, <mark class="highlight-gray_background">런타임에 객체에 기능을 덧붙일 수 있음.</mark> 따라서 상황에 따라 기능을 선택적으로 적용할 수 있음.</li></ul><ul id="2758e11f-9262-80c4-acff-e736e6bb5f3b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>클래스 폭발 문제 방지</strong></mark><br/>→ 상속만으로 기능을 추가하면 가능한 기능 조합의 수만큼 서브클래스가 필요해짐. 데코레이터는 여러 기능을 독립된 클래스 단위로 나누어 필요할 때 조합하므로 이 문제를 방지함.</li></ul><ul id="2758e11f-9262-8053-865c-ec0ccd275001" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>단일 책임 원칙(Single Responsibility Principle, SRP) 준수</strong></mark><br/>→ 각 데코레이터는 하나의 특정 기능만 담당하도록 구성하여, 기능이 분리되어 있으므로 코드 수정·재사용·테스트가 쉬워지고, 유지보수성이 높아짐.</li></ul><hr id="2758e11f-9262-8048-b4e4-e0f6201f126d"/><h3 id="2758e11f-9262-8079-898e-cf3fbf701c00" class="">3) 특징</h3><ul id="2758e11f-9262-808e-9bff-f880991b4722" class="bulleted-list"><li style="list-style-type:disc"><strong>구성 요소</strong><ul id="2758e11f-9262-803e-9a18-f3862919aed4" class="bulleted-list"><li style="list-style-type:circle"><code>Component</code> : 공통 인터페이스. 기본 기능의 형태를 정의하며, 클라이언트는 이를 통해 객체를 다룸.</li></ul><ul id="2758e11f-9262-8091-8f5a-ce5751cc282d" class="bulleted-list"><li style="list-style-type:circle"><code>ConcreteComponent</code> : 실제 핵심 기능을 수행하는 객체로 데코레이터가 감싸는 대상이 됨.</li></ul><ul id="2758e11f-9262-8074-bfd4-c5295baa361b" class="bulleted-list"><li style="list-style-type:circle"><code>Decorator</code> : <code>Component</code>를 구현하고, 내부에 다른 <code>Component</code>를 포함하여 동작을 위임하도록 하며,  자체적으로는 새로운 기능을 정의하지 않음.</li></ul><ul id="2758e11f-9262-803f-98eb-ce8342925430" class="bulleted-list"><li style="list-style-type:circle"><code>ConcreteDecorator</code> : <code>Decorator</code>를 상속하여 구체적인 추가 기능을 구현하는 클래스. 예를 들어, 출력 결과에 새로운 동작을 덧붙일 수 있음.</li></ul></li></ul><ul id="2758e11f-9262-80a2-b44f-c2c3ffa200f3" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>상속 vs 조합</strong></mark><ul id="2758e11f-9262-8060-8b8f-e245ab3761aa" class="bulleted-list"><li style="list-style-type:circle">상속: 정적인 방식으로 기능을 확장할 수 있으나, 클래스 수가 기하급수적으로 늘어나 관리가 어려워짐.</li></ul><ul id="2758e11f-9262-8007-9fa8-f713c8100fe2" class="bulleted-list"><li style="list-style-type:circle">데코레이터: 객체 간 조합(Composition)으로 기능을 확장할 수 있으며, 원하는 기능만 선택적으로 덧붙일 수 있어 유연성이 큼.</li></ul></li></ul><ul id="2758e11f-9262-80eb-b106-fc6816a18457" class="bulleted-list"><li style="list-style-type:disc"><strong>런타임 유연성</strong><ul id="2758e11f-9262-8096-9bb4-ecb510a236d7" class="bulleted-list"><li style="list-style-type:circle">객체 실행 도중 원하는 만큼 기능을 덧붙일 수 있음. 예를 들어, 하나의 객체에 여러 데코레이터를 순차적으로 적용하여 기능을 겹겹이 쌓을 수 있음.</li></ul></li></ul></div></details><hr id="2758e11f-9262-806b-b6b7-c71dd36068d5"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. TypeScript 코드 예제</summary><div class="indented"><p id="2758e11f-9262-80f0-a588-c5f95ae318af" class="">
+</p><figure id="2758e11f-9262-80e3-87fc-e2c4d3add1fb" class="image"><a href="07-09%20%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0%20(Decorator)%20%ED%8C%A8%ED%84%B4%202748e11f9262809ba13cef97c69a78e3/uml.png"><img style="width:681.9765625px" src="07-09%20%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0%20(Decorator)%20%ED%8C%A8%ED%84%B4%202748e11f9262809ba13cef97c69a78e3/uml.png"/></a></figure><p id="2758e11f-9262-80bf-8785-fa601016c3e9" class="">
+</p><p id="2758e11f-9262-800a-b34f-edf43849d61e" class="">
+</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-8011-bcc3-e302c530d6f9" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 1. Component 인터페이스
+interface Notifier {
+  send(message: string): void;
+}
+
+// 2. Concrete Component (기본 기능)
+class BaseNotifier implements Notifier {
+  send(message: string): void {
+    console.log(`기본 알림: ${message}`);
+  }
+}
+
+// 3. Decorator 추상 클래스
+abstract class NotifierDecorator implements Notifier {
+  protected wrappee: Notifier;
+
+  constructor(notifier: Notifier) {
+    this.wrappee = notifier;
+  }
+
+  send(message: string): void {
+    this.wrappee.send(message); // 기존 기능 위임
+  }
+}
+
+// 4. 구체적인 데코레이터들
+class EmailNotifier extends NotifierDecorator {
+  send(message: string): void {
+    super.send(message);
+    console.log(`이메일 발송: ${message}`);
+  }
+}
+
+class SMSNotifier extends NotifierDecorator {
+  send(message: string): void {
+    super.send(message);
+    console.log(`SMS 발송: ${message}`);
+  }
+}
+
+class SlackNotifier extends NotifierDecorator {
+  send(message: string): void {
+    super.send(message);
+    console.log(`Slack 발송: ${message}`);
+  }
+}
+
+// ---------------- 사용 예시 ----------------
+let notifier: Notifier = new BaseNotifier();
+
+// 기능을 런타임에서 동적으로 조합
+notifier = new EmailNotifier(notifier);
+notifier = new SMSNotifier(notifier);
+notifier = new SlackNotifier(notifier);
+
+notifier.send(&quot;긴급 서버 장애 발생!&quot;);
+</code></pre><p id="2758e11f-9262-8096-8e88-d92e84dfaa2b" class="">출력 결과:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-8095-962a-c84bbfb223cb" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">기본 알림: 긴급 서버 장애 발생!
+이메일 발송: 긴급 서버 장애 발생!
+SMS 발송: 긴급 서버 장애 발생!
+Slack 발송: 긴급 서버 장애 발생!</code></pre></div></details><hr id="2758e11f-9262-80a2-9c44-c34dd71950e0"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. 이 패턴을 사용했을 때의 장점</summary><div class="indented"><ul id="2758e11f-9262-803d-9a7f-f407d503079e" class="bulleted-list"><li style="list-style-type:disc"><strong>조합 가능성</strong>: Email + SMS + Slack처럼 다양한 조합을 런타임에 결정 가능</li></ul><ul id="2758e11f-9262-807e-951e-d63231650b17" class="bulleted-list"><li style="list-style-type:disc"><strong>클래스 폭발 방지</strong>: 모든 조합을 위한 서브클래스를 만들 필요 없음</li></ul><ul id="2758e11f-9262-80ee-818e-d76289136377" class="bulleted-list"><li style="list-style-type:disc"><strong>OCP(개방-폐쇄 원칙) 충족</strong>: 기존 코드 수정 없이 새로운 기능을 데코레이터로 추가 가능</li></ul><ul id="2758e11f-9262-8093-9a53-cae51d0191fc" class="bulleted-list"><li style="list-style-type:disc"><strong>단일 책임 원칙 준수</strong>: 각 데코레이터는 자신의 기능만 담당</li></ul></div></details><hr id="2758e11f-9262-80c6-bc90-f5b72fb8c760"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 실무 적용 사례</summary><div class="indented"><ul id="2758e11f-9262-80b2-a7e1-c472cd2f9cd1" class="bulleted-list"><li style="list-style-type:disc"><strong>웹 프론트엔드</strong><ul id="2758e11f-9262-8013-8721-d5be4826faaf" class="bulleted-list"><li style="list-style-type:circle">React에서 HOC(Higher-Order Component) 패턴 → 컴포넌트를 감싸서 기능 추가</li></ul><ul id="2758e11f-9262-804d-b152-fa037ec2815b" class="bulleted-list"><li style="list-style-type:circle">예: <code>withAuth</code>, <code>withLogger</code> 등</li></ul></li></ul><ul id="2758e11f-9262-8067-82d7-fb441fe58b5f" class="bulleted-list"><li style="list-style-type:disc"><strong>백엔드</strong><ul id="2758e11f-9262-806c-9881-fa4416a481ee" class="bulleted-list"><li style="list-style-type:circle">Express.js 미들웨어 → 요청 객체(req)를 감싸면서 기능 추가</li></ul><ul id="2758e11f-9262-80aa-8881-f0c18ee8decc" class="bulleted-list"><li style="list-style-type:circle">예: 로깅, 인증, 캐싱</li></ul></li></ul><ul id="2758e11f-9262-8073-a278-dc041e050aac" class="bulleted-list"><li style="list-style-type:disc"><strong>데이터 처리</strong><ul id="2758e11f-9262-807d-bb0c-cccd13ba58bd" class="bulleted-list"><li style="list-style-type:circle">파일 I/O → 압축, 암호화, 버퍼링 기능을 데코레이터로 계층적으로 추가</li></ul></li></ul><ul id="2758e11f-9262-8064-b3f9-f3b7cec2ec5f" class="bulleted-list"><li style="list-style-type:disc"><strong>UI 컴포넌트</strong><ul id="2758e11f-9262-8014-b7c9-fe3f57e002b5" class="bulleted-list"><li style="list-style-type:circle">스크롤바, 테두리, 그림자 효과를 동적으로 조합</li></ul></li></ul><p id="2758e11f-9262-807a-91ec-ca30982b5920" class="">간단한 예시 (Express 미들웨어 유사 구조):</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-8015-b582-cadf3d1354af" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">function loggerMiddleware(req: string, next: () =&gt; void) {
+  console.log(&quot;요청 로그:&quot;, req);
+  next();
+}
+
+function authMiddleware(req: string, next: () =&gt; void) {
+  console.log(&quot;사용자 인증 확인:&quot;, req);
+  next();
+}
+
+function handler(req: string) {
+  console.log(&quot;최종 요청 처리:&quot;, req);
+}
+
+// 미들웨어 체이닝 (데코레이터와 유사)
+loggerMiddleware(&quot;GET /users&quot;, () =&gt; {
+  authMiddleware(&quot;GET /users&quot;, () =&gt; {
+    handler(&quot;GET /users&quot;);
+  });
+});
+</code></pre></div></details><hr id="2758e11f-9262-80c2-9006-f621cd77b8f8"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">6. 정리</summary><div class="indented"><ul id="2758e11f-9262-8070-965c-fbbe88b5b90a" class="bulleted-list"><li style="list-style-type:disc">데코레이터 패턴은 <strong>객체에 동적으로 기능을 추가하는 구조 패턴</strong></li></ul><ul id="2758e11f-9262-8024-a78f-e55fa193007a" class="bulleted-list"><li style="list-style-type:disc">상속 대신 객체 합성을 사용하여 <strong>클래스 폭발 문제를 방지</strong></li></ul><ul id="2758e11f-9262-806b-99b4-cf87b9132ae9" class="bulleted-list"><li style="list-style-type:disc">런타임에 유연하게 기능을 조합할 수 있음</li></ul><ul id="2758e11f-9262-8077-a612-f1c9ccf53d08" class="bulleted-list"><li style="list-style-type:disc">실무에서는 UI 확장, 미들웨어 체인, 데이터 스트림 처리 등에 활용됨</li></ul></div></details><ul id="2868e11f-9262-804b-9b56-e33997fdcb7f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>핵심 포인트:</strong></mark><ul id="2758e11f-9262-8031-ba94-f25da490ab02" class="bulleted-list"><li style="list-style-type:circle">&quot;상속 대신 합성&quot;</li></ul><ul id="2758e11f-9262-8017-b750-c99aeeebdba1" class="bulleted-list"><li style="list-style-type:circle">&quot;필요한 기능만 조합&quot;</li></ul><ul id="2758e11f-9262-806f-9572-f633ce8c63c7" class="bulleted-list"><li style="list-style-type:circle">&quot;OCP 준수&quot;</li></ul></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
