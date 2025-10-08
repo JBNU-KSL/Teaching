@@ -1,0 +1,1038 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>07-02. 팩토리 메서드 패턴 (Factory Method Pattern)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 2700mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2748e11f-9262-80e6-baf3-d5368310ec90" class="page sans"><header><h1 class="page-title">07-02. 팩토리 메서드 패턴 (Factory Method Pattern)</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 문제 상황</summary><div class="indented"><ul id="2748e11f-9262-80e3-a03d-de4cab9cfece" class="bulleted-list"><li style="list-style-type:disc">프로그래머가 특정 객체를 생성해야 하는 상황에서, 매번 <code>new</code> 키워드로 직접 인스턴스를 만들어 사용한다고 가정해보자.<ul id="2748e11f-9262-801f-8602-e7aa22bf364b" class="bulleted-list"><li style="list-style-type:circle">단순한 경우에는 문제 없음</li></ul><ul id="2748e11f-9262-8025-a424-d3963c504ab3" class="bulleted-list"><li style="list-style-type:circle">하지만 다양한 타입의 객체를 조건에 따라 생성해야 한다면?<ul id="2748e11f-9262-809b-baf4-d9c6a5064289" class="bulleted-list"><li style="list-style-type:square">예: 버튼 UI 컴포넌트를 OS 환경에 맞게 생성해야 함</li></ul><ul id="2748e11f-9262-8017-93ea-cc2aa0e8be7f" class="bulleted-list"><li style="list-style-type:square">Windows에서는 <code>WindowsButton</code> 객체, Mac에서는 <code>MacButton</code> 객체를 생성해야 함</li></ul></li></ul></li></ul><ul id="2748e11f-9262-80e6-b209-e380f898709b" class="bulleted-list"><li style="list-style-type:disc">이때 <strong>객체 생성 로직이 코드 곳곳에 흩어져 있다면 유지보수 어려움 발생!</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-800f-8944-c04ecea0d178" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 공통 인터페이스 (겉보기엔 좋아 보임)
+interface Button {
+  render(): void;
+}
+
+// 구체 구현들
+class WindowsButton implements Button {
+  render() { console.log(&quot;Rendering Windows button&quot;); }
+}
+class MacButton implements Button {
+  render() { console.log(&quot;Rendering Mac button&quot;); }
+}
+
+// 1) 화면 A - OS 분기 + 직접 생성
+function drawToolbar(os: &quot;Windows&quot; | &quot;Mac&quot;) {
+  let saveButton: Button;
+  if (os === &quot;Windows&quot;) {
+    saveButton = new WindowsButton();
+  } else {
+    saveButton = new MacButton();
+  }
+  saveButton.render();
+}
+
+// 2) 화면 B - 또다시 OS 분기 + 직접 생성 (중복)
+function drawSidebar(os: &quot;Windows&quot; | &quot;Mac&quot;) {
+  const buttons: Button[] = [];
+  if (os === &quot;Windows&quot;) {
+    buttons.push(new WindowsButton(), new WindowsButton());
+  } else {
+    buttons.push(new MacButton(), new MacButton());
+  }
+  buttons.forEach(b =&gt; b.render());
+}
+
+// 3) 다이얼로그 - 또 또 OS 분기 + 직접 생성 (더 많은 중복)
+function showConfirm(os: &quot;Windows&quot; | &quot;Mac&quot;) {
+  let ok: Button, cancel: Button;
+
+  if (os === &quot;Windows&quot;) {
+    ok = new WindowsButton();
+    cancel = new WindowsButton();
+  } else {
+    ok = new MacButton();
+    cancel = new MacButton();
+  }
+
+  ok.render();
+  cancel.render();
+}
+
+// 4) 앱 시작부 - 각 화면에서 OS 분기가 반복 호출됨
+function main() {
+  // 실제로는 프로세스/UA/환경변수 등으로 결정되겠지만 여기선 하드코딩
+  const os: &quot;Windows&quot; | &quot;Mac&quot; = &quot;Windows&quot;;
+
+  drawToolbar(os);
+  drawSidebar(os);
+  showConfirm(os);
+}
+
+main();</code></pre><h3 id="2748e11f-9262-809d-b187-d70310ca3a21" class="">왜 문제인가?</h3><ul id="2748e11f-9262-8019-af82-ed3aacc2a66a" class="bulleted-list"><li style="list-style-type:disc"><strong>생성 로직이 중복</strong>: <code>drawToolbar</code>, <code>drawSidebar</code>, <code>showConfirm</code> 등 여러 곳에서 <code>if (os) new ...</code>가 반복되고 있음.</li></ul><ul id="2748e11f-9262-80ef-b2b8-d63e92ee11af" class="bulleted-list"><li style="list-style-type:disc"><strong>확장에 취약(OCP 위반)</strong>: 새로운 OS(예: <code>LinuxButton</code>)가 추가되면 <strong>모든 화면 함수</strong>를 찾아 OS 분기와 <code>new</code>를 수정해야 함.<ul id="2748e11f-9262-8024-bc2b-d88300dae655" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red_background"><strong>OCP (Open-Closed Principle):</strong></mark> 기존의 코드를 변경하지 않으면서, 기능을 추가할 수 있도록 설계가 되어야 한다는 원칙</li></ul></li></ul><ul id="2748e11f-9262-8066-b2fa-e159e87a1fab" class="bulleted-list"><li style="list-style-type:disc"><strong>버그 유발 가능성 증가</strong>: 한곳만 수정하고 다른 곳을 놓치면 OS별 UI가 섞이거나 런타임 에러 발생.</li></ul><ul id="2748e11f-9262-8048-beea-d0dd15185fe4" class="bulleted-list"><li style="list-style-type:disc"><strong>테스트 어려움</strong>: 생성 로직이 흩어져 있어 모킹/대체 주입이 힘들고 테스트 코드가 중복됨.</li></ul><p id="2748e11f-9262-800c-88f3-d50f0fee9a60" class="">
+</p></div></details><hr id="2748e11f-9262-8085-a183-c93c59908449"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 패턴 개요</summary><div class="indented"><figure id="2748e11f-9262-808a-91d9-d69e0013c104" class="image"><a href="07-02%20%ED%8C%A9%ED%86%A0%EB%A6%AC%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%8C%A8%ED%84%B4%20(Factory%20Method%20Pattern)%202748e11f926280e6baf3d5368310ec90/image.png"><img style="width:681.9921875px" src="07-02%20%ED%8C%A9%ED%86%A0%EB%A6%AC%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%8C%A8%ED%84%B4%20(Factory%20Method%20Pattern)%202748e11f926280e6baf3d5368310ec90/image.png"/></a></figure><h3 id="2748e11f-9262-80a4-9c53-de56bf3603ac" class="">1) 정의(Definition)</h3><ul id="2748e11f-9262-8041-a7ed-f8d172f24d04" class="bulleted-list"><li style="list-style-type:disc">상위 타입(<strong>Creator</strong>)이 <mark class="highlight-red_background">“제품을 </mark><mark class="highlight-red_background"><strong>어떻게 사용할지</strong></mark><mark class="highlight-red_background">”</mark>에 대한 알고리즘(예: <code>someOperation</code>)은 갖되, <strong>무엇을 만들지는 모른 채</strong> <code>createProduct()</code>라는 <strong>공장 메서드</strong>만 선언하고, <strong>구체적인 생성 결정은 하위 클래스(ConcreteCreator)</strong>가 <code>createProduct()</code>를 <strong>오버라이드</strong>하여 담당하게 만드는 객체지향 패턴.</li></ul><ul id="2748e11f-9262-8072-80d1-f80c1c133dfc" class="bulleted-list"><li style="list-style-type:disc"><code>createProduct()</code>의 <strong>반환형은 제품 인터페이스/추상클래스(Product)</strong>이며, 실제 인스턴스화(<code>new</code>)는 <strong>콘크리트 크리에이터 내부</strong>로 <strong>국지화된다는 특징을 지니고 있음.</strong></li></ul><ul id="2748e11f-9262-80c7-a836-ee806adcb481" class="bulleted-list"><li style="list-style-type:disc">결과적으로 <strong>클라이언트와 상위 로직은 Product 인터페이스에만 의존</strong>하고, <mark class="highlight-red_background"><strong>구체 제품 클래스/생성 방식과는 분리</strong></mark><strong>된다는 특징을 지니고 있음.</strong></li></ul><ul id="2748e11f-9262-8023-a475-f04635b225ee" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>구분해야 할 것</strong></mark><ul id="2748e11f-9262-80e5-8801-dd2e7f3ff2d0" class="bulleted-list"><li style="list-style-type:circle"><strong>Simple Factory</strong>: 하나의 정적 메서드가 분기문으로 제품을 만드는 <mark class="highlight-red_background">“유틸성 공장”</mark>에 가깝고, <strong>상속에 의한 다형적 생성 확장 포인트가 없음</strong>.</li></ul><ul id="2748e11f-9262-804f-9167-c8ad5780db16" class="bulleted-list"><li style="list-style-type:circle"><strong>Abstract Factory</strong>: <mark class="highlight-red_background">“서로 호환되는 </mark><mark class="highlight-red_background"><strong>제품군</strong></mark><mark class="highlight-red_background">을 묶음으로 생성”하는 상위 개념.</mark> Factory Method는 그 내부에서 <strong>각 제품을 만드는 방법</strong>으로 자주 쓰임.</li></ul></li></ul><h3 id="2748e11f-9262-8067-a6b6-e877ed9ab955" class="">2) 목적(Purpose)</h3><ul id="2748e11f-9262-8061-ab3d-debf3c2170ba" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>생성 책임 분리 &amp; 캡슐화</strong></mark><ul id="2748e11f-9262-80b7-bdb3-eb9881698b95" class="bulleted-list"><li style="list-style-type:circle">객체 생성 로직을 상위 알고리즘과 분리해, 생성 변경이 사용 코드에 <strong>파급되지 않도록</strong> 할 수 있음.</li></ul></li></ul><ul id="2748e11f-9262-80ab-a8df-f52563d63fc7" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>확장에는 열려 있고 변경에는 닫힌 구조(OCP)</strong></mark><ul id="2748e11f-9262-80af-be28-f72b7c776e63" class="bulleted-list"><li style="list-style-type:circle">새로운 제품(ConcreteProduct)을 추가할 때 기존 상위/클라이언트 코드를 <strong>수정하지 않고</strong>, <strong>새로운 ConcreteCreator만 추가</strong>하여 확장할 수 있음.</li></ul></li></ul><ul id="2748e11f-9262-806f-a9eb-e4549cb8399f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>DIP(의존성 역전) 준수 &amp; 결합도 감소</strong></mark><ul id="2748e11f-9262-8058-b98f-f53625a8e3d3" class="bulleted-list"><li style="list-style-type:circle">고수준 모듈(비즈니스 로직)이 저수준 구현(구체 제품)에 직접 의존하지 않고, <strong>Product 추상화</strong>에 의존.</li></ul></li></ul><ul id="2748e11f-9262-80a9-91e1-d6ae2d25609e" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>테스트 용이성 향상</strong></mark><ul id="2748e11f-9262-8056-a7ce-e3fc08d545fb" class="bulleted-list"><li style="list-style-type:circle">테스트 시 <strong>테스트용 Creator/Mock Product</strong>를 주입해 동작만 검증할 수 있음 (생성 부작용/무거운 의존성 제거).</li></ul></li></ul><ul id="2748e11f-9262-80af-b9fc-fe0e4c66a0cd" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>제품 선택의 유연성</strong></mark><ul id="2748e11f-9262-803c-ae18-fb845e93cef9" class="bulleted-list"><li style="list-style-type:circle">런타임 구성(설정/DI/환경)에 따라 다른 Creator를 선택해 <strong>동적으로 제품을 교체</strong>할 수 있음.</li></ul></li></ul><ul id="2748e11f-9262-8070-8d2e-fd4867269567" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>재사용 가능한 상위 알고리즘 확보</strong></mark><ul id="2748e11f-9262-8003-832e-f5779a70b2e8" class="bulleted-list"><li style="list-style-type:circle"><code>someOperation()</code> 같은 상위 템플릿은 변하지 않고, 생성 훅만 바꿔 다양한 변형을 재사용 가능(Template Method와의 친연성).</li></ul></li></ul><h3 id="2748e11f-9262-8003-912f-eae100d88da8" class="">3) 특징(Characteristics)</h3><ul id="2748e11f-9262-808c-88fe-fed225e5193b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>역할 구조</strong></mark><ul id="2748e11f-9262-80ad-8d8c-e5a6b1e1c2c8" class="bulleted-list"><li style="list-style-type:circle"><strong>Product</strong>: 공통 인터페이스(행동 계약). 예: <code>doStuff()</code>.</li></ul><ul id="2748e11f-9262-805c-9015-c9ec5dd476ea" class="bulleted-list"><li style="list-style-type:circle"><strong>ConcreteProductX</strong>: 실제 제품 구현.</li></ul><ul id="2748e11f-9262-805a-adee-d1c129922f68" class="bulleted-list"><li style="list-style-type:circle"><strong>Creator(추상/기본 클래스)</strong>: 제품 <strong>사용 알고리즘</strong> 보유, <code>createProduct()</code>라는 <strong>훅(hook)</strong> 제공.</li></ul><ul id="2748e11f-9262-80aa-997b-e6c28e912e89" class="bulleted-list"><li style="list-style-type:circle"><strong>ConcreteCreatorX</strong>: 훅을 오버라이드하여 <strong>구체 생성</strong> 담당.</li></ul></li></ul><ul id="2748e11f-9262-8054-8047-dff0532504fa" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>동적 바인딩에 의한 생성 결정</strong></mark><ul id="2748e11f-9262-8015-a51a-e98c2e87d44f" class="bulleted-list"><li style="list-style-type:circle">상위 메서드 흐름(<code>someOperation</code>) 속에서 호출되는 <code>createProduct()</code>가 <strong>런타임에 선택된 하위 클래스 구현</strong>으로 연결되어, “무엇을 만들지”가 <strong>다형적으로</strong> 결정된다.</li></ul></li></ul><ul id="2748e11f-9262-803e-b54a-ef2373b5663b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><code><strong>new</strong></code></mark><mark class="highlight-orange"><strong>의 위치가 명확</strong></mark><ul id="2748e11f-9262-8078-8eb8-c874058f740e" class="bulleted-list"><li style="list-style-type:circle"><code>new</code>는 오직 <strong>ConcreteCreator 내부</strong>에 존재. 클라이언트/상위 로직/상위 Creator에는 등장하지 않는다(생성 책임의 단일화).</li></ul></li></ul><ul id="2748e11f-9262-809b-8d0c-d24a025c782b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>변형/확장 포인트</strong></mark><ul id="2748e11f-9262-8041-bfe2-ff55ee3fc401" class="bulleted-list"><li style="list-style-type:circle"><strong>파라메트릭 팩터리 메서드</strong>: <code>createProduct(type, config)</code>처럼 매개변수로 추가 분기를 줄 수 있으나, 분기가 과도하면 Simple Factory로 퇴화할 수 있음.</li></ul><ul id="2748e11f-9262-8094-9395-c1364c96ec91" class="bulleted-list"><li style="list-style-type:circle"><strong>기본 구현 제공</strong>: Creator가 기본 <code>createProduct()</code>를 제공하고 일부만 재정의하도록 할 수도 있음.</li></ul><ul id="2748e11f-9262-803a-82f5-f3033d5dfe36" class="bulleted-list"><li style="list-style-type:circle"><strong>캐싱/풀링/싱글턴 결합</strong>: 생성 비용이 큰 제품을 캐시/풀로 돌리거나 싱글턴 제품을 반환하도록 Creator에서 정책화 가능.</li></ul><p id="2748e11f-9262-804e-b1bc-dfb904960e5b" class="">
+</p><p id="2748e11f-9262-808b-9194-cf439eb39d27" class="">
+</p></li></ul></div></details><hr id="2748e11f-9262-80df-9d7d-da93aaa2e189"/><p id="2748e11f-9262-80e8-b2d7-f6ab4a5b345a" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. TypeScript 코드 예제</summary><div class="indented"><figure id="2748e11f-9262-8074-895a-e2bda4a9afaf" class="image"><a href="07-02%20%ED%8C%A9%ED%86%A0%EB%A6%AC%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%8C%A8%ED%84%B4%20(Factory%20Method%20Pattern)%202748e11f926280e6baf3d5368310ec90/factory_method_uml_v2.png.png"><img style="width:370.9921875px" src="07-02%20%ED%8C%A9%ED%86%A0%EB%A6%AC%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%8C%A8%ED%84%B4%20(Factory%20Method%20Pattern)%202748e11f926280e6baf3d5368310ec90/factory_method_uml_v2.png.png"/></a></figure><p id="2748e11f-9262-8035-8284-f25ee7d8de5d" class="">
+</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-8025-be5f-fd0e83f1e7b0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 1. Product 인터페이스 (버튼의 공통 인터페이스)
+interface Button {
+  render(): void
+  onClick(): void
+}
+
+// 2. 구체적인 Product 클래스들
+class WindowsButton implements Button {
+  render(): void {
+    console.log(&quot;윈도우 스타일 버튼 렌더링&quot;)
+  }
+  onClick(): void {
+    console.log(&quot;윈도우 버튼 클릭 이벤트 처리&quot;)
+  }
+}
+
+class MacButton implements Button {
+  render(): void {
+    console.log(&quot;맥 스타일 버튼 렌더링&quot;)
+  }
+  onClick(): void {
+    console.log(&quot;맥 버튼 클릭 이벤트 처리&quot;)
+  }
+}
+
+// 3. Creator 추상 클래스 (팩토리 메서드 정의)
+abstract class Dialog {
+  // 팩토리 메서드
+  abstract createButton(): Button
+
+  // 비즈니스 로직
+  renderDialog(): void {
+    const button = this.createButton()
+    button.render()
+    button.onClick()
+  }
+}
+
+// 4. 구체적인 Creator 클래스들
+class WindowsDialog extends Dialog {
+  createButton(): Button {
+    return new WindowsButton()
+  }
+}
+
+class MacDialog extends Dialog {
+  createButton(): Button {
+    return new MacButton()
+  }
+}
+
+// 5. 클라이언트 코드
+function clientApp(osType: string) {
+  let dialog: Dialog
+
+  if (osType === &quot;Windows&quot;) {
+    dialog = new WindowsDialog()
+  } else {
+    dialog = new MacDialog()
+  }
+
+  dialog.renderDialog()
+}
+
+// 실행 예시
+clientApp(&quot;Windows&quot;)
+// 출력: 윈도우 스타일 버튼 렌더링 / 윈도우 버튼 클릭 이벤트 처리
+
+clientApp(&quot;Mac&quot;)
+// 출력: 맥 스타일 버튼 렌더링 / 맥 버튼 클릭 이벤트 처리</code></pre><ul id="2748e11f-9262-8066-97cc-d8f207e384e3" class="bulleted-list"><li style="list-style-type:disc"><strong>Product 인터페이스 (</strong><code><strong>Button</strong></code><strong>)</strong><ul id="2748e11f-9262-805b-9065-f8635f6bc026" class="bulleted-list"><li style="list-style-type:circle">버튼이 공통적으로 가져야 할 동작(<code>render</code>, <code>onClick</code>)을 정의</li></ul></li></ul><ul id="2748e11f-9262-8015-bbfe-fcc888816fcb" class="bulleted-list"><li style="list-style-type:disc"><strong>구체적인 Product 클래스 (</strong><code><strong>WindowsButton</strong></code><strong>, </strong><code><strong>MacButton</strong></code><strong>)</strong><ul id="2748e11f-9262-803b-9423-e65bcc2b5c4f" class="bulleted-list"><li style="list-style-type:circle">각 OS 환경(Windows, Mac)에 맞는 버튼 동작을 구현</li></ul></li></ul><ul id="2748e11f-9262-8050-b35f-e0478a6063eb" class="bulleted-list"><li style="list-style-type:disc"><strong>Creator 추상 클래스 (</strong><code><strong>Dialog</strong></code><strong>)</strong><ul id="2748e11f-9262-803c-883e-e9c273db3650" class="bulleted-list"><li style="list-style-type:circle"><code>createButton()</code>이라는 <strong>팩토리 메서드</strong>를 정의하고, <code>renderDialog()</code>에서 버튼 생성 → 렌더링 → 클릭 처리 과정을 수행.</li></ul></li></ul><ul id="2748e11f-9262-800a-8608-e1b93cdb1a18" class="bulleted-list"><li style="list-style-type:disc"><strong>구체적인 Creator 클래스 (</strong><code><strong>WindowsDialog</strong></code><strong>, </strong><code><strong>MacDialog</strong></code><strong>)</strong><ul id="2748e11f-9262-8072-9f36-f71c695708a5" class="bulleted-list"><li style="list-style-type:circle">OS별로 어떤 버튼을 생성할지 결정합니다.</li></ul></li></ul><ul id="2748e11f-9262-8007-ab85-cbb13a4e72cd" class="bulleted-list"><li style="list-style-type:disc"><strong>클라이언트 코드 (</strong><code><strong>clientApp</strong></code><strong>)</strong><ul id="2748e11f-9262-806a-80ef-ef2201a826fc" class="bulleted-list"><li style="list-style-type:circle">OS 타입만 지정하면, 적절한 Dialog가 선택되어 버튼이 생성되고 동작합니다.</li></ul></li></ul><ul id="2748e11f-9262-805a-b280-d8af5bb3ac79" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>장점</strong></mark>: <mark class="highlight-red_background">객체 생성 코드(</mark><mark class="highlight-red_background"><code>new</code></mark><mark class="highlight-red_background">)가 분리되어 유지보수와 확장이 쉬워</mark>지고, <mark class="highlight-red_background">클라이언트는 구체적인 구현을 몰라도 일관되게 사용</mark>할 수 있음</li></ul><p id="2748e11f-9262-80a7-ab18-fb856fd4e731" class="">
+</p></div></details><hr id="2748e11f-9262-80c7-bf79-c99154e1c596"/><h2 id="2748e11f-9262-80ae-9f21-f8fa4077730c" class="">4. Factory Method Pattern을 사용했을 때의 장점</h2><h3 id="2748e11f-9262-80f1-a621-d627348e4e0d" class="">4-1) 코드 유지보수성 향상</h3><ul id="2748e11f-9262-80ad-a537-eda43b39ee01" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>생성 로직 집중화</strong></mark><ul id="2748e11f-9262-80c3-92bb-e267ee42efb4" class="bulleted-list"><li style="list-style-type:circle">여러 모듈에 흩어진 <code>new</code> 호출을 <strong>팩토리 메서드 한 곳</strong>으로 모아 관리할 수 있음.</li></ul><ul id="2748e11f-9262-80ce-a48a-e630fe72c166" class="bulleted-list"><li style="list-style-type:circle">생성 규칙 변경 시 <strong>단일 지점 수정</strong>으로 파급효과 최소화 가능!</li></ul></li></ul><ul id="2748e11f-9262-80ed-8b16-f271b66ac41b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>변경 이유 분리(SRP 충족)</strong></mark><ul id="2748e11f-9262-80e7-992c-db2bda453b66" class="bulleted-list"><li style="list-style-type:circle">비즈니스 로직과 “어떻게 만들 것인가”가 분리됨 → 각각 독립적으로 변경 가능.</li></ul></li></ul><ul id="2748e11f-9262-8039-bb84-fa061c371dea" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>일관된 후처리 적용 쉬움</strong></mark><ul id="2748e11f-9262-80aa-a63d-c2b8742921bf" class="bulleted-list"><li style="list-style-type:circle">Creator의 템플릿 메서드에서 공통 초기화, 검증, 로깅을 표준화 가능.</li></ul></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-80cf-b7c4-cf5994ca7ee4" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// Before: 생성이 군데군데 흩어져 있음
+// 주문, 환불, 정산 모듈이 각각 new ConsoleLogger()/new RemoteLogger() 사용 중임
+
+// After: 공통 Creator에서 일괄 관리됨
+abstract class LoggerCreator {
+  protected abstract createLogger(): Logger
+  logInfo(msg: string) {
+    const logger = this.createLogger()
+    // 공통 포맷/마스킹/트레이싱 등 한 곳에서 처리됨
+    logger.write(`[INFO] ${msg}`)
+  }
+}</code></pre><blockquote id="2748e11f-9262-805d-94e9-cea2e03f3eca" class=""><mark class="highlight-red_background"><strong>Factory method Pattern 적용 결과</strong></mark>: 규칙/후처리 변경 시 Creator만 고치면 전 구간에 반영 가능.</blockquote><hr id="2748e11f-9262-802c-acef-f06399011e50"/><h3 id="2748e11f-9262-807b-b17e-eb209c62d7fd" class="">4-2) 확장성 증가 (OCP 충족)</h3><ul id="2748e11f-9262-8027-b680-c3c88578c834" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>새 제품 추가 시 기존 코드 건드림 최소</strong></mark><ul id="2748e11f-9262-8094-9693-ce80843c8aab" class="bulleted-list"><li style="list-style-type:circle">새로운 <code>ConcreteProduct</code>와 이를 반환하는 <code>ConcreteCreator</code>(또는 레지스트리 등록)만 추가하면 됨!</li></ul></li></ul><ul id="2748e11f-9262-806a-bc23-db772e35de6d" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>기능 플러그인화 용이</strong></mark><ul id="2748e11f-9262-80ee-9bb4-c2b89924719d" class="bulleted-list"><li style="list-style-type:circle">외부 팀/서드파티가 구현을 <strong>독립적으로</strong> 배포하고, 시스템은 팩토리로 연결만 하면 됨!</li></ul></li></ul><ul id="2748e11f-9262-80df-b532-f81bf3268d64" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>런타임 선택/전환 가능</strong></mark><ul id="2748e11f-9262-8037-a1f6-f4b8c9324117" class="bulleted-list"><li style="list-style-type:circle">환경변수, 구성파일, AB 테스트에 따라 <strong>동적으로 제품 교체</strong> 가능</li></ul></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-8057-b714-ddd54afcb8cc" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 새 Provider 추가해도 기존 클라이언트 영향 거의 없음
+class S3Storage implements Storage { /* ... */ }
+class GCSStorage implements Storage { /* ... */ }
+
+class StorageCreator {
+  create(kind: &quot;s3&quot; | &quot;gcs&quot;): Storage {
+    if (kind === &quot;s3&quot;) return new S3Storage()
+    return new GCSStorage()
+  }
+}
+// → 새로운 AzureStorage 추가 시: 클래스 하나 + 분기/레지스트리 등록만 수행하면 됨</code></pre><hr id="2748e11f-9262-80ff-bbfa-f7bf6d170d24"/><h3 id="2748e11f-9262-8010-915b-c212c30ca6df" class="">4-3) 의존성 감소(DIP 충족)</h3><ul id="2748e11f-9262-80e0-8661-eb1c59e2c93e" class="bulleted-list"><li style="list-style-type:disc"><strong>구체 클래스 의존 제거</strong><ul id="2748e11f-9262-80c6-b342-f53a9db185a8" class="bulleted-list"><li style="list-style-type:circle">클라이언트는 <code>Button</code>, <code>Payment</code>, <code>Logger</code> 같은 <strong>상위 인터페이스</strong>에만 의존.</li></ul><ul id="2748e11f-9262-8066-bf87-cd3de6dbb5e1" class="bulleted-list"><li style="list-style-type:circle">컴파일/배포 단계에서 구체 구현 교체가 쉬움.</li></ul></li></ul><ul id="2748e11f-9262-8003-94ee-e51302c95914" class="bulleted-list"><li style="list-style-type:disc"><strong>테스트 대체 용이</strong><ul id="2748e11f-9262-8048-a850-d59f9a5b97b9" class="bulleted-list"><li style="list-style-type:circle">테스트 전용 <code>ConcreteCreator</code>로 <strong>페이크/스텁</strong>을 쉽게 주입 가능함 → 단위 테스트 간결해짐.</li></ul></li></ul><ul id="2748e11f-9262-8010-a305-d0e2efca416e" class="bulleted-list"><li style="list-style-type:disc"><strong>결합도↓ + 재사용성↑</strong><ul id="2748e11f-9262-80d3-b7da-e2f1c643a1d0" class="bulleted-list"><li style="list-style-type:circle">모듈 간 직접 <code>new</code> 참조 제거로 순환 의존/과도한 import 방지할 수 있음.</li></ul></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2748e11f-9262-80af-a609-c83cc72d0a18" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 테스트 친화적 구조
+class TestDialog extends Dialog {
+  protected createButton(): Button { return { render(){}, onClick(){ /* 호출 추적 */ } } }
+}
+// 클라이언트는 Button 인터페이스만 알면 되므로 테스트에서 손쉽게 가짜 주입됨</code></pre><blockquote id="2748e11f-9262-80f8-b8ca-dbc2dfffec0a" class=""><mark class="highlight-red_background"><strong>추가 이점</strong></mark><ul id="2748e11f-9262-806b-bbac-e829fe7fdc12" class="bulleted-list"><li style="list-style-type:disc">공통 정책(리트라이, 서킷브레이커, 메트릭 수집)을 Creator 한 곳에 삽입 가능함</li></ul><ul id="2748e11f-9262-80c1-86bd-d70f136adce6" class="bulleted-list"><li style="list-style-type:disc">생성 비용이 큰 경우 캐싱/플라이웨이트와 결합해 메모리/성능 최적화 가능함</li></ul></blockquote><hr id="2748e11f-9262-803e-b661-fed0b6069b7d"/><h2 id="2748e11f-9262-80a0-b03f-efd641403ff0" class="">5. 실무 적용 사례</h2><ul id="2748e11f-9262-80a9-b704-c0849f3c6151" class="bulleted-list"><li style="list-style-type:disc"><strong>UI 라이브러리</strong><ul id="2748e11f-9262-8015-b4d2-cfad0a122018" class="bulleted-list"><li style="list-style-type:circle">다양한 OS나 테마별 컴포넌트를 생성할 때 활용</li></ul></li></ul><ul id="2748e11f-9262-8075-8ed3-fa82176e5f74" class="bulleted-list"><li style="list-style-type:disc"><strong>DB 연결 객체 생성</strong><ul id="2748e11f-9262-80b5-bf98-d1cfdd04ea0c" class="bulleted-list"><li style="list-style-type:circle">MySQL, PostgreSQL, MongoDB 등 DB 엔진에 맞는 커넥션 객체 생성 시 사용</li></ul></li></ul><ul id="2748e11f-9262-8033-90ae-f94d8cd7f881" class="bulleted-list"><li style="list-style-type:disc"><strong>로깅 시스템</strong><ul id="2748e11f-9262-80a2-b53d-d7181d82e3d5" class="bulleted-list"><li style="list-style-type:circle">파일 로그, 콘솔 로그, 원격 서버 로그 등 다양한 로그 전략 선택적 생성</li></ul></li></ul><p id="2748e11f-9262-8007-b2af-f1ed72108e1d" class="">
+</p><hr id="2748e11f-9262-804d-82e6-cc700be8e8eb"/><h2 id="2748e11f-9262-8002-b56c-ed3144f8b218" class="">6. 정리</h2><ul id="2748e11f-9262-8040-8e35-c039b5919454" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-red_background"><strong>팩토리 메서드 패턴은 객체 생성 책임을 서브클래스로 위임하는 패턴!</strong></mark></mark></li></ul><ul id="2748e11f-9262-807f-9606-c4069f69ff6f" class="bulleted-list"><li style="list-style-type:disc"><code>new</code>를 직접 사용하는 대신, 팩토리 메서드를 통해 객체 생성</li></ul><ul id="2748e11f-9262-8015-86e0-c563ca42d81c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>OCP 원칙 준수</strong></mark>: 새로운 객체 타입 추가 시 기존 코드 최소 수정</li></ul><ul id="2748e11f-9262-803e-9b15-f8697597576b" class="bulleted-list"><li style="list-style-type:disc">주요 키워드:<ul id="2748e11f-9262-808d-945b-fd58410b57fb" class="bulleted-list"><li style="list-style-type:circle">Product, ConcreteProduct, Creator, ConcreteCreator</li></ul></li></ul><p id="2748e11f-9262-8028-8c95-cf8683147f11" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

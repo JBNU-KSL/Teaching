@@ -1,0 +1,940 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>07-06. 어댑터 (Adapter) 패턴</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 1700mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2748e11f-9262-803e-9165-e52c2525b633" class="page sans"><header><h1 class="page-title">07-06. 어댑터 (Adapter) 패턴</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 문제 상황</summary><div class="indented"><h3 id="2758e11f-9262-80af-8018-cfd628a079f6" class="">상황 설명</h3><ul id="2758e11f-9262-8088-b1b0-f8f1adc6903c" class="bulleted-list"><li style="list-style-type:disc">어떤 시스템에서 <mark class="highlight-red_background">&quot;새로운 결제 시스템 API&quot;를 도입</mark>하려고 가정해보자.</li></ul><ul id="2758e11f-9262-8055-89e2-e1c0c2ff2ea3" class="bulleted-list"><li style="list-style-type:disc">하지만 기존 코드(Client)는 <mark class="highlight-red_background">&quot;기존 결제 인터페이스&quot;</mark>만 사용하도록 작성되어 있음.</li></ul><h3 id="2758e11f-9262-8077-8539-cb2259df22cf" class="">문제 예시</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-80fd-bf1a-f29dd7f37329" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 기존 결제 시스템 인터페이스 (Client는 이걸 기대함)
+interface OldPaymentProcessor {
+  pay(amount: number): void;
+}
+
+// 새로운 결제 시스템 (서드파티 API)
+class NewPaymentGateway {
+  makePayment(value: number): void {
+    console.log(`${value}원을 새 결제 게이트웨이로 처리함`);
+  }
+}
+
+// 클라이언트 코드 (구 OldPaymentProcessor만 알고 있음)
+function processPayment(processor: OldPaymentProcessor, amount: number) {
+  processor.pay(amount);
+}
+
+// 현재 상태에서는 NewPaymentGateway를 바로 쓸 수 없음
+const newGateway = new NewPaymentGateway();
+// ❌ processPayment(newGateway, 1000); → 타입 불일치 에러 발생</code></pre></div></details><hr id="2758e11f-9262-8075-8372-fa42e70be16f"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 패턴 개요</summary><div class="indented"><h3 id="2758e11f-9262-8041-9518-c5693943bd8f" class="">1) 정의</h3><ul id="2758e11f-9262-8073-879d-ee4bebe211de" class="bulleted-list"><li style="list-style-type:disc">서로 호환되지 않는 <mark class="highlight-red_background"><strong>인터페이스(interface)</strong></mark>를 가진 객체들을 함께 동작시킬 수 있도록 <strong>중간 변환기(Wrapper)</strong> 역할을 하는 <strong>구조 패턴(Structural Pattern)</strong>. 즉, <mark class="highlight-red_background">클라이언트가 요구하는 인터페이스</mark>와 <mark class="highlight-red_background">실제 제공되는 인터페이스</mark> <mark class="highlight-orange">사이를 연결</mark>해주는 일종의 변환 계층을 제공함.<figure id="2758e11f-9262-8054-b854-f4d9296b6243" class="image"><a href="07-06%20%EC%96%B4%EB%8C%91%ED%84%B0%20(Adapter)%20%ED%8C%A8%ED%84%B4%202748e11f9262803e9165e52c2525b633/image.png"><img style="width:653.9921875px" src="07-06%20%EC%96%B4%EB%8C%91%ED%84%B0%20(Adapter)%20%ED%8C%A8%ED%84%B4%202748e11f9262803e9165e52c2525b633/image.png"/></a></figure></li></ul><ul id="2758e11f-9262-80a9-8baa-e3b90c832259" class="bulleted-list"><li style="list-style-type:disc">기존 코드를 직접 수정하지 않고, 새로운 인터페이스를 기존 코드와 연결해주는 <mark class="highlight-red_background"><strong>다리(Bridge)</strong></mark><mark class="highlight-red_background"> 역할을 수행</mark>. 이때 Adapter는 기존 코드의 안정성을 유지하면서도 확장 가능성을 제공함.</li></ul><ul id="2758e11f-9262-8088-a064-f0034168ca9c" class="bulleted-list"><li style="list-style-type:disc">흔히 &quot;콘센트 어댑터&quot;에 비유할 수 있으며, 예를 들어, 110V 전기 제품을 220V 소켓에서 사용할 수 있도록 변환하는 장치처럼, <mark class="highlight-red_background"><strong>서로 다른 규격을 가진 두 요소를 매끄럽게 연결하는 것이 목적</strong></mark>.</li></ul><h3 id="2758e11f-9262-800c-85ef-e553a66eb516" class="">2) 목적</h3><ul id="2758e11f-9262-80dd-be3f-c05e121d9ed7" class="bulleted-list"><li style="list-style-type:disc"><strong>호환성 문제 해결</strong>: 기존 클래스와 새로운 클래스 간 인터페이스 불일치를 해소하여, 클라이언트는 변환 과정을 알 필요 없이 통일된 방식으로 객체를 사용할 수 있음.</li></ul><ul id="2758e11f-9262-8089-a685-e3a816b055d6" class="bulleted-list"><li style="list-style-type:disc"><strong>재사용성 증가</strong>: 이미 존재하는 코드를 변경하지 않고, 새로운 요구사항에 맞춰 활용 가능하므로 레거시 시스템이나 외부 라이브러리도 쉽게 재사용할 수 있음.</li></ul><ul id="2758e11f-9262-80d6-9fc0-e4aea8752884" class="bulleted-list"><li style="list-style-type:disc"><strong>OCP(Open-Closed Principle, 개방-폐쇄 원칙) 준수</strong>: 기존 클래스는 수정(폐쇄)하지 않고, 새로운 어댑터 클래스를 정의하여 기능을 확장(개방)함으로써 유지보수성과 확장성을 동시에 확보할 수 있음.</li></ul><h3 id="2758e11f-9262-803c-b302-ed51011bcecd" class="">3) 특징</h3><ul id="2758e11f-9262-8010-acd8-f613a6a02380" class="bulleted-list"><li style="list-style-type:disc"><strong>구성 요소</strong><ul id="2758e11f-9262-8023-bfb4-cff319a68ec5" class="bulleted-list"><li style="list-style-type:circle"><code>Target</code>: 클라이언트가 기대하는 인터페이스. 클라이언트 코드는 오직 Target 인터페이스에만 의존하므로, Adapter가 뒤에서 어떤 변환을 수행하는지는 알 필요 없음.</li></ul><ul id="2758e11f-9262-80a2-8992-f7c5b2665dff" class="bulleted-list"><li style="list-style-type:circle"><code>Adaptee</code>: 기존 클래스. 클라이언트가 직접 사용하기에는 인터페이스가 맞지 않는 객체를 의미함.</li></ul><ul id="2758e11f-9262-80f9-b068-dc842dac74e7" class="bulleted-list"><li style="list-style-type:circle"><code>Adapter</code>: Target 인터페이스를 구현하고, 내부적으로 Adaptee의 메서드를 호출해 변환을 담당함. 따라서 클라이언트는 Adaptee의 복잡한 구현 세부사항을 알지 않고도 서비스를 이용할 수 있음.</li></ul></li></ul><ul id="2758e11f-9262-8091-a7ab-c73f73578234" class="bulleted-list"><li style="list-style-type:disc"><strong>적용 상황</strong><ul id="2758e11f-9262-808d-b8c5-f82ee7f3273c" class="bulleted-list"><li style="list-style-type:circle">기존 시스템과 새로운 모듈을 통합해야 하는 경우. 예를 들어, 기존 레거시 API와 신규 서비스 API 간 연결.</li></ul><ul id="2758e11f-9262-80de-99a0-e8beb03ce5a4" class="bulleted-list"><li style="list-style-type:circle">서드파티 라이브러리의 인터페이스가 클라이언트 요구와 다를 때. 즉, 라이브러리를 직접 수정하지 않고도 원하는 방식으로 활용 가능함.</li></ul><ul id="2758e11f-9262-8034-b9bc-e813a76fdbe8" class="bulleted-list"><li style="list-style-type:circle">레거시 코드와 현대식 코드(예: <code>REST ↔ gRPC</code>, <code>콜백(callback) ↔ Promise</code>)를 연결해야 할 때 유용함. 이는 서로 다른 프로그래밍 패러다임을 매끄럽게 이어주는 전형적 활용 사례임.</li></ul></li></ul><ul id="2758e11f-9262-8032-bd04-fb75aa975bd7" class="bulleted-list"><li style="list-style-type:disc"><strong>장점</strong><ul id="2758e11f-9262-8038-847e-ff150a3b41c5" class="bulleted-list"><li style="list-style-type:circle">기존 코드를 전혀 수정하지 않음 → 안정성 보장 및 기존 시스템에 대한 신뢰 유지.</li></ul><ul id="2758e11f-9262-8033-a525-cbfce90453b9" class="bulleted-list"><li style="list-style-type:circle">서로 다른 인터페이스의 클래스들을 쉽게 연결할 수 있어 시스템 확장 시 유연성이 높음.</li></ul><ul id="2758e11f-9262-80fd-a26b-c4089791f868" class="bulleted-list"><li style="list-style-type:circle">점진적인 시스템 교체 가능. 즉, 기존 기능은 그대로 두면서 새로운 기능을 추가해도 클라이언트 코드는 영향을 받지 않음.</li></ul></li></ul></div></details><hr id="2758e11f-9262-804e-ba08-fcf94f9d039b"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. TypeScript 코드 예제</summary><div class="indented"><figure id="2758e11f-9262-80f5-899a-d64fb8daf70f" class="image"><a href="07-06%20%EC%96%B4%EB%8C%91%ED%84%B0%20(Adapter)%20%ED%8C%A8%ED%84%B4%202748e11f9262803e9165e52c2525b633/adapter_uml.png.png"><img style="width:545.984375px" src="07-06%20%EC%96%B4%EB%8C%91%ED%84%B0%20(Adapter)%20%ED%8C%A8%ED%84%B4%202748e11f9262803e9165e52c2525b633/adapter_uml.png.png"/></a></figure><p id="2758e11f-9262-80a0-a7fb-c5ea9e1f2295" class="">
+</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-80a5-ab3e-c81c4a204041" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 1. Target 인터페이스 (클라이언트 기대 인터페이스)
+interface OldPaymentProcessor {
+  pay(amount: number): void;
+}
+
+// 2. Adaptee (새로운 클래스, 호환 불가)
+class NewPaymentGateway {
+  makePayment(value: number): void {
+    console.log(`${value}원을 새 결제 게이트웨이로 처리함`);
+  }
+}
+
+// 3. Adapter (Target 인터페이스 구현 + Adaptee를 내부에서 호출)
+class PaymentAdapter implements OldPaymentProcessor {
+  private gateway: NewPaymentGateway;
+
+  constructor(gateway: NewPaymentGateway) {
+    this.gateway = gateway;
+  }
+
+  pay(amount: number): void {
+    // 내부적으로 새로운 API 호출
+    this.gateway.makePayment(amount);
+  }
+}
+
+// 4. 클라이언트 코드
+function processPayment(processor: OldPaymentProcessor, amount: number) {
+  processor.pay(amount);
+}
+
+// 5. 실행 예시
+const newGateway = new NewPaymentGateway();
+const adapter = new PaymentAdapter(newGateway);
+
+// 클라이언트는 여전히 OldPaymentProcessor 인터페이스만 사용
+processPayment(adapter, 5000);
+// 출력: 5000원을 새 결제 게이트웨이로 처리함</code></pre></div></details><hr id="2758e11f-9262-80cb-b555-ffcf25a2f447"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. 이 패턴을 사용했을 때의 장점</summary><div class="indented"><ul id="2758e11f-9262-8090-9a44-f9a9ae40a86a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>코드 유지보수성</strong></mark><ul id="2758e11f-9262-80c6-bef9-c03d6c7a1748" class="bulleted-list"><li style="list-style-type:circle">기존 클라이언트 코드를 수정할 필요가 없음.</li></ul><ul id="2758e11f-9262-8038-b3a2-f1abf6d538ca" class="bulleted-list"><li style="list-style-type:circle">클라이언트는 항상 <code>Target</code> 인터페이스에만 의존하므로, 내부적으로 어떤 <code>Adaptee</code>가 연결되든지 동일한 방식으로 동작.</li></ul><ul id="2758e11f-9262-8034-a8b1-ffcea34ac723" class="bulleted-list"><li style="list-style-type:circle">이로 인해 코드 변경 범위가 최소화되고, 오류 발생 가능성도 줄어듦.</li></ul></li></ul><ul id="2758e11f-9262-80e8-8e0b-cad3dc647c95" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>재사용성</strong></mark><ul id="2758e11f-9262-80d4-b569-f2fb3608ff25" class="bulleted-list"><li style="list-style-type:circle">레거시 코드와 최신 코드를 동시에 활용할 수 있음.</li></ul><ul id="2758e11f-9262-80a2-a2be-eacde0378b15" class="bulleted-list"><li style="list-style-type:circle">기존에 작성된 클래스는 인터페이스가 다르더라도 <code>Adapter</code>를 통해 그대로 재사용 가능하므로, 새로운 요구사항에 맞게 과거 자산을 낭비하지 않고 활용할 수 있음.</li></ul></li></ul><ul id="2758e11f-9262-8017-8b4a-fce4678adaa6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>확장성</strong></mark><mark class="highlight-red_background">: </mark><ul id="2758e11f-9262-804a-a396-f5c4e773958d" class="bulleted-list"><li style="list-style-type:circle">새로운 시스템이나 라이브러리가 추가되더라도 기존 구조를 건드릴 필요가 없음.</li></ul><ul id="2758e11f-9262-80ee-897c-f2928f26103a" class="bulleted-list"><li style="list-style-type:circle">단지 새로운 <code>Adapter</code> 클래스만 작성하면 되므로, 시스템 규모가 커져도 변경 비용이 적고 확장이 용이함.</li></ul></li></ul><ul id="2758e11f-9262-8036-b54a-c0f531719164" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>유연성</strong></mark><mark class="highlight-red_background">:</mark><ul id="2758e11f-9262-80ff-82e4-ebc3c518279d" class="bulleted-list"><li style="list-style-type:circle">하나의 <code>Target</code> 인터페이스에 대해 여러 종류의 <code>Adapter</code>를 구현할 수 있으므로, 다양한 서드파티 API를 동시에 지원할 수 있음.</li></ul><ul id="2758e11f-9262-8027-be5e-cb739d9cbdf0" class="bulleted-list"><li style="list-style-type:circle">즉, 클라이언트는 동일한 방식으로 호출하면서도, 내부적으로는 서로 다른 API나 프로토콜을 활용하는 유연한 구조를 가질 수 있음.</li></ul></li></ul></div></details><hr id="2758e11f-9262-800f-a751-de80f0fc066c"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 실무 적용 사례</summary><div class="indented"><ul id="2758e11f-9262-80be-9fd7-e30d117e3156" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>프론트엔드</strong></mark><ul id="2758e11f-9262-80f0-8b4f-d7a80fea250c" class="bulleted-list"><li style="list-style-type:circle">오래된 콜백 기반 API를 <code>Promise</code> 또는 <code>async/await</code> 스타일로 변환할 때</li></ul><ul id="2758e11f-9262-80a5-996d-cfffaf07c0f9" class="bulleted-list"><li style="list-style-type:circle">브라우저 API 간 호환 (예: 구형 이벤트 처리기를 현대 이벤트 시스템과 연결)</li></ul></li></ul><ul id="2758e11f-9262-8092-b0c7-c9c17d118ae6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>백엔드</strong></mark><ul id="2758e11f-9262-800b-917c-e2f79267f42e" class="bulleted-list"><li style="list-style-type:circle">서로 다른 DB 드라이버를 통합하는 공통 인터페이스 제공</li></ul><ul id="2758e11f-9262-8081-9458-f5af92abd771" class="bulleted-list"><li style="list-style-type:circle">REST API ↔ gRPC 변환기</li></ul></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-809b-b4ee-c4a7fd50d386" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// 예: 콜백 기반 API를 Promise로 감싸는 어댑터
+function callbackToPromise&lt;T&gt;(fn: (cb: (err: any, result: T) =&gt; void) =&gt; void): Promise&lt;T&gt; {
+  return new Promise((resolve, reject) =&gt; {
+    fn((err, result) =&gt; {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}</code></pre><ul id="2758e11f-9262-8057-9dc1-ec273419add2" class="bulleted-list"><li style="list-style-type:disc"><strong>외부 라이브러리</strong><ul id="2758e11f-9262-8091-b1d6-eaf01fc6153e" class="bulleted-list"><li style="list-style-type:circle">특정 로깅 라이브러리(winston, pino 등)를 프로젝트 표준 로깅 인터페이스에 맞추는 경우</li></ul></li></ul></div></details><hr id="2758e11f-9262-803c-9bf7-fde26c32a29f"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">6. 정리</summary><div class="indented"><ul id="2758e11f-9262-80b7-b6f4-f7425893211b" class="bulleted-list"><li style="list-style-type:disc">어댑터 패턴은 <strong>서로 다른 인터페이스를 연결해주는 변환기 역할</strong>을 하는 패턴!<ul id="2758e11f-9262-80e9-8c13-e49fbbb1bbe2" class="bulleted-list"><li style="list-style-type:circle">기존 코드를 수정하지 않고, 새로운 시스템이나 라이브러리를 안전하게 도입 가능</li></ul><ul id="2758e11f-9262-8002-91a5-dc51f6184b16" class="bulleted-list"><li style="list-style-type:circle"><strong>Target-Adapter-Adaptee</strong> 구조 이해가 핵심</li></ul><ul id="2758e11f-9262-8012-b7ec-dff136335cb5" class="bulleted-list"><li style="list-style-type:circle">실무에서는 <strong>레거시-신규 시스템 통합, API 변환, 서드파티 라이브러리 호환</strong> 등에서 자주 사용됨</li></ul></li></ul></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
