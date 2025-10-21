@@ -1,0 +1,968 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>07-12. 옵저버 (Observer) 패턴</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 1650mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2748e11f-9262-80d4-8c48-d50ded421a2a" class="page sans"><header><h1 class="page-title">07-12. 옵저버 (Observer) 패턴</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">1. 문제 상황</summary><div class="indented"><p id="2758e11f-9262-8054-b2f9-dd5c684086e7" class="">예를 들어, 주식 시장 모니터링 시스템을 구현한다고 가정</p><ul id="2758e11f-9262-80a4-a764-f9c642ecee90" class="bulleted-list"><li style="list-style-type:disc"><code>Stock</code> 객체(주체, Subject)가 주가 변동 상태를 보관</li></ul><ul id="2758e11f-9262-8050-92fa-c823a4aca4ae" class="bulleted-list"><li style="list-style-type:disc">여러 개의 <code>Display</code> 또는 <code>Alert</code> 모듈(옵저버, Observer)이 이 변화를 구독</li></ul><h3 id="2758e11f-9262-80c1-8974-e630905d4ee1" class="">문제점</h3><ul id="2758e11f-9262-80ff-b900-d0a94c4b966a" class="bulleted-list"><li style="list-style-type:disc">옵저버 패턴이 없을 경우, <code>Stock</code> 클래스가 직접 각 <code>Display</code>, <code>Alert</code>을 호출해야 함</li></ul><ul id="2758e11f-9262-803c-815f-d56d09cf152e" class="bulleted-list"><li style="list-style-type:disc">새로운 Observer가 추가되면 <code>Stock</code> 내부 코드를 수정해야 함 → <strong>OCP 위반</strong></li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-8014-a6a9-ffcc5f118773" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// ❌ 옵저버 패턴을 적용하지 않은 코드
+class Stock {
+  private price: number = 0;
+
+  setPrice(newPrice: number) {
+    this.price = newPrice;
+    // 직접 호출 (결합도 ↑)
+    console.log(`📈 새로운 주가: ${newPrice}`);
+    console.log(`📢 알림: 주가가 ${newPrice}로 변경됨`);
+  }
+}
+
+const s = new Stock();
+s.setPrice(100);
+// 새로운 Display나 Alert 추가 시 Stock 내부 수정 필요 → 유지보수 어려움
+</code></pre><p id="2758e11f-9262-800b-9eba-e186692dd315" class="">
+</p></div></details><hr id="2758e11f-9262-809a-9dc5-f800421f5981"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">2. 패턴 개요</summary><div class="indented"><h3 id="2758e11f-9262-801a-a356-e143abb9eedd" class="">1) 정의</h3><ul id="2758e11f-9262-8020-803c-e8f77351c662" class="bulleted-list"><li style="list-style-type:disc">옵저버 패턴(Observer Pattern)은 객체 간 <strong>일대다(One-to-Many) 관계</strong>를 정의하는 행위 패턴으로, 하나의 주체 객체(Subject)가 여러 객체(Observers)와 연결되어 있으며, 주체의 상태가 바뀌면 관련된 모든 옵저버에게 알림이 전달됨.</li></ul><ul id="2758e11f-9262-808c-a153-ef4d0ea817b6" class="bulleted-list"><li style="list-style-type:disc">특정 객체(Subject)의 상태가 변할 때, 그 객체에 의존하는 다른 객체들(Observers)에게 자동으로 알림이 전달되도록 설계됨. 이를 통해 상태 변경을 감지하는 로직을 개별 객체가 직접 구현하지 않아도 됨.</li></ul><ul id="2758e11f-9262-8027-b307-dbfe7bfa2f96" class="bulleted-list"><li style="list-style-type:disc"><code>Publish-Subscribe</code> 모델과 유사한 개념이며, 이벤트 기반 시스템의 기초 구조로 자주 활용됨. 다만 옵저버 패턴은 보통 Subject가 옵저버를 직접 관리하는 반면, Publish-Subscribe는 별도의 이벤트 채널 또는 브로커를 두는 경우가 많다는 차이가 있음.</li></ul><hr id="2758e11f-9262-80fa-b8b5-d9e563460aa3"/><h3 id="2758e11f-9262-80a3-b2e0-ec7671ad6a81" class="">2) 목적</h3><ul id="2758e11f-9262-8051-b80d-c0fffc607066" class="bulleted-list"><li style="list-style-type:disc"><strong>결합도 감소</strong>: 주체(Subject)는 옵저버가 누구인지, 어떤 구체적인 동작을 하는지 알 필요가 없음. 단순히 옵저버 목록을 관리하며, 상태 변화 시 알림만 발행함.</li></ul><ul id="2758e11f-9262-80a6-ab2f-cae4faf37129" class="bulleted-list"><li style="list-style-type:disc"><strong>자동 동기화</strong>: Subject의 상태 변경이 발생하면, 모든 Observer들에게 자동으로 반영됨. 이를 통해 여러 객체 간 상태 일관성을 유지할 수 있음.</li></ul><ul id="2758e11f-9262-803e-bfd5-c582d8bc89e0" class="bulleted-list"><li style="list-style-type:disc"><strong>확장성 확보</strong>: 새로운 Observer를 추가하더라도 기존 Subject 코드를 수정할 필요가 없음. 즉, <code>Open-Closed Principle</code>(개방-폐쇄 원칙)을 만족하는 설계가 가능함.</li></ul><hr id="2758e11f-9262-8051-8d7d-e4e8df50e01f"/><h3 id="2758e11f-9262-80a5-9668-c996bfb50e89" class="">3) 특징</h3><ul id="2758e11f-9262-8071-a83f-fd4bae4991fb" class="bulleted-list"><li style="list-style-type:disc">구조:<ul id="2758e11f-9262-80d0-9fd8-c4021d1c0f58" class="bulleted-list"><li style="list-style-type:circle"><code>Subject</code>: 상태를 보유하며, 옵저버 등록(add)/제거(remove)/알림(notify) 기능을 담당함. Observer에 대한 직접 의존성을 최소화하기 위해 보통 인터페이스 기반으로 정의됨.</li></ul><ul id="2758e11f-9262-8051-bb09-f953bed77748" class="bulleted-list"><li style="list-style-type:circle"><code>Observer</code>: Subject의 상태 변화를 감지해 <code>update()</code> 등의 메서드를 통해 필요한 행동을 수행함. 각 옵저버는 동일한 인터페이스를 구현하지만, 구체적인 동작은 다를 수 있음.</li></ul></li></ul><ul id="2758e11f-9262-80cd-894e-f7e0c78d5636" class="bulleted-list"><li style="list-style-type:disc">동작 원리:<ul id="2758e11f-9262-80fa-bc4e-c05994db37ce" class="bulleted-list"><li style="list-style-type:circle">Subject는 상태 변화 발생 시 내부적으로 <code>notify()</code> 메서드를 호출함.</li></ul><ul id="2758e11f-9262-8002-a4a9-fa2262d58264" class="bulleted-list"><li style="list-style-type:circle">이때 등록된 모든 Observer의 <code>update()</code> 메서드를 순차적으로 실행하여 이벤트를 전달함.</li></ul><ul id="2758e11f-9262-806f-b738-c4e16b99ce9e" class="bulleted-list"><li style="list-style-type:circle">호출 방식은 일반적으로 <strong>동기적</strong>이지만, 시스템에 따라 비동기 알림 방식으로 확장할 수 있음.</li></ul></li></ul><ul id="2758e11f-9262-8033-b37c-fe56360de6dc" class="bulleted-list"><li style="list-style-type:disc">느슨한 결합:<ul id="2758e11f-9262-80de-8e78-c48179412c15" class="bulleted-list"><li style="list-style-type:circle">Subject와 Observer는 <strong>서로 인터페이스(interface)만 알고 있으며</strong>, 구체적인 구현 클래스에 의존하지 않음. 따라서 양쪽이 독립적으로 변경될 수 있어 유지보수성과 재사용성이 높음.</li></ul></li></ul></div></details><hr id="2758e11f-9262-8063-8084-e967b0fa49c5"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">3. TypeScript 코드 예제</summary><div class="indented"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-80fb-8979-c035b1e1f30a" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">// Observer 인터페이스
+interface Observer {
+  update(price: number): void;
+}
+
+// Subject 인터페이스
+interface Subject {
+  register(observer: Observer): void;
+  unregister(observer: Observer): void;
+  notify(): void;
+}
+
+// Concrete Subject (주체)
+class Stock implements Subject {
+  private observers: Observer[] = [];
+  private price: number = 0;
+
+  register(observer: Observer): void {
+    this.observers.push(observer);
+  }
+
+  unregister(observer: Observer): void {
+    this.observers = this.observers.filter(o =&gt; o !== observer);
+  }
+
+  setPrice(newPrice: number): void {
+    this.price = newPrice;
+    this.notify(); // 상태 변화 시 자동 알림
+  }
+
+  notify(): void {
+    for (const observer of this.observers) {
+      observer.update(this.price);
+    }
+  }
+}
+
+// Concrete Observers (관찰자들)
+class PriceDisplay implements Observer {
+  update(price: number): void {
+    console.log(`📺 화면에 표시: 현재 주가 = ${price}`);
+  }
+}
+
+class PriceAlert implements Observer {
+  update(price: number): void {
+    if (price &gt; 100) {
+      console.log(`🚨 알림: 주가 ${price} 초과!`);
+    }
+  }
+}
+
+// 사용 예시
+const stock = new Stock();
+const display = new PriceDisplay();
+const alert = new PriceAlert();
+
+stock.register(display);
+stock.register(alert);
+
+stock.setPrice(90);  // 📺 화면에 표시: 현재 주가 = 90
+stock.setPrice(120); // 📺 + 🚨 알림 발생
+</code></pre></div></details><hr id="2758e11f-9262-8037-ac06-e2d52a4b9f8d"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">4. 이 패턴을 사용했을 때의 장점</summary><div class="indented"><ul id="2758e11f-9262-8058-96ce-f5a530c7e464" class="bulleted-list"><li style="list-style-type:disc"><strong>유지보수성 향상</strong><br/>Subject는 Observer가 몇 개 존재하는지, 어떤 동작을 하는지 몰라도 됨</li></ul><ul id="2758e11f-9262-80b4-b947-d25dcfd6cab8" class="bulleted-list"><li style="list-style-type:disc"><strong>확장성</strong><br/>새로운 Observer를 추가하더라도 기존 Subject 코드를 수정할 필요 없음</li></ul><ul id="2758e11f-9262-8022-b184-fda940f7f114" class="bulleted-list"><li style="list-style-type:disc"><strong>재사용성</strong><br/>Observer 객체들은 여러 Subject에 재사용 가능</li></ul><ul id="2758e11f-9262-8044-b5f1-eb21768561f7" class="bulleted-list"><li style="list-style-type:disc"><strong>OCP, DIP 원칙 준수</strong><br/>→ 개방-폐쇄 원칙 / 의존성 역전 원칙 충족</li></ul></div></details><hr id="2758e11f-9262-8042-9e2c-c6df51cb9dd9"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">5. 실무 적용 사례</summary><div class="indented"><h3 id="2758e11f-9262-801f-8ed7-c92d87e845fc" class="">1) 프론트엔드 (웹)</h3><ul id="2758e11f-9262-8067-82c5-d47d95e08682" class="bulleted-list"><li style="list-style-type:disc">이벤트 리스너 모델 (<code>addEventListener</code>)이 대표적인 옵저버 패턴 예시</li></ul><ul id="2758e11f-9262-80ed-8a44-fd5cd0131863" class="bulleted-list"><li style="list-style-type:disc">예: 버튼 클릭 이벤트에 여러 콜백 등록</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-808a-b630-e35249f93f4d" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;btn&quot;)?.addEventListener(&quot;click&quot;, () =&gt; {
+  console.log(&quot;👉 첫 번째 핸들러 실행&quot;);
+});
+
+document.getElementById(&quot;btn&quot;)?.addEventListener(&quot;click&quot;, () =&gt; {
+  console.log(&quot;👉 두 번째 핸들러 실행&quot;);
+});
+</code></pre><hr id="2758e11f-9262-80b6-a8f2-d8debab4e929"/><h3 id="2758e11f-9262-806f-9c2c-e3bd324d555f" class="">2) 백엔드 (Node.js)</h3><ul id="2758e11f-9262-803b-9ef9-ddb6a6db50f3" class="bulleted-list"><li style="list-style-type:disc">EventEmitter 클래스 (<code>on</code>, <code>emit</code>) 기반 구조가 옵저버 패턴</li></ul><ul id="2758e11f-9262-8028-a7bc-f83c2afd64eb" class="bulleted-list"><li style="list-style-type:disc">예: 채팅 서버에서 메시지 이벤트 브로드캐스팅</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2758e11f-9262-80ee-a622-cfbb026614a9" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">import { EventEmitter } from &quot;events&quot;;
+
+const chat = new EventEmitter();
+
+chat.on(&quot;message&quot;, (msg) =&gt; console.log(&quot;📩 메시지 수신:&quot;, msg));
+chat.on(&quot;message&quot;, (msg) =&gt; console.log(&quot;📢 브로드캐스트:&quot;, msg));
+
+chat.emit(&quot;message&quot;, &quot;안녕하세요!&quot;);
+</code></pre><hr id="2758e11f-9262-8080-9001-c3fa872fbddb"/><h3 id="2758e11f-9262-8025-9194-eef9831f9d9a" class="">3) 데이터 흐름 관리</h3><ul id="2758e11f-9262-801a-9160-f4a0c1812cdf" class="bulleted-list"><li style="list-style-type:disc">React의 상태 관리 (Redux, MobX 등)도 옵저버 패턴 개념 위에 구축됨</li></ul><ul id="2758e11f-9262-80a5-9165-f1ef20ac32df" class="bulleted-list"><li style="list-style-type:disc">상태 변화(Store update) → 자동으로 UI 리렌더링</li></ul></div></details><hr id="2758e11f-9262-80ad-94f1-c6763f073dae"/><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">6. 정리</summary><div class="indented"><ul id="2758e11f-9262-8020-b850-c7db864d15f1" class="bulleted-list"><li style="list-style-type:disc">옵저버 패턴은 <strong>일대다 관계를 정의해 상태 변화를 자동 전파</strong>하는 패턴임</li></ul><ul id="2758e11f-9262-80e8-ab7f-f70a014cd666" class="bulleted-list"><li style="list-style-type:disc">주체(Subject)는 옵저버의 구체 구현을 몰라도 됨 → 느슨한 결합 구조</li></ul><ul id="2758e11f-9262-8045-9872-e4edf091982e" class="bulleted-list"><li style="list-style-type:disc"><strong>장점</strong>: 유지보수성↑, 확장성↑, 코드 재사용성↑, OCP/DIP 원칙 준수</li></ul><ul id="2758e11f-9262-80a9-99af-ff6fd80ab55f" class="bulleted-list"><li style="list-style-type:disc"><strong>실무 활용</strong>: 이벤트 리스너, Pub-Sub 구조, UI 상태 관리, 알림 시스템</li></ul></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
