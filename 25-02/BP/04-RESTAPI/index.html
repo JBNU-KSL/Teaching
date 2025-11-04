@@ -1,0 +1,903 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>04. API와 활용</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 3000mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2a08e11f-9262-8030-9b01-e4f7855fc510" class="page sans"><header><h1 class="page-title">04. API와 활용</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>날짜</th><td></td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">A. REST API 개요</summary><div class="indented"><h2 id="2a08e11f-9262-8035-b7a9-d1885dd5bdb8" class="">1. 네트워크와 웹 기초</h2><h3 id="2a08e11f-9262-8076-a7ab-f0027cfb39a6" class=""><strong>1-1. 네트워크란?</strong></h3><figure id="2a08e11f-9262-80b1-9f0a-ca948a4b7616" class="image"><a href="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image.png"><img style="width:792.9921875px" src="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image.png"/></a></figure><ul id="2a08e11f-9262-8006-93a4-ca1e8b05ec81" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>네트워크(Network)</strong></mark>: <strong>여러 대의 컴퓨터가 서로 데이터를 주고받을 수 있도록 연결된 구조</strong>를 의미. 연결 방식에는 유선(케이블)과 무선(Wi-Fi 등)이 있으며, 모든 연결은 공통된 규약(프로토콜, Protocol)에 따라 이루어짐.</li></ul><ul id="2a08e11f-9262-8062-868d-cd49cad5ae86" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>인터넷(Internet)</strong></mark>: <strong>전 세계의 네트워크가 모여 형성된 초거대 네트워크로,</strong> 인터넷은 단일 시스템이 아니라 <mark class="highlight-red_background">수많은 작은 네트워크들이 표준 프로토콜(TCP/IP)을 기반으로 연결</mark>되어 형성되어 있음.</li></ul><blockquote id="2a08e11f-9262-80a8-ba71-d8e1d464318d" class="">우리가 웹사이트를 접속할 때, 사실은 <strong>브라우저(클라이언트)</strong>가 <strong>서버</strong>에게 <mark class="highlight-orange"><mark class="highlight-red_background">요청(Request)</mark></mark>을 보내고, 서버가 <mark class="highlight-orange"><mark class="highlight-red_background"><strong>응답(Response)</strong></mark></mark>을 돌려주는 과정으로 통신이 발생!</blockquote><p id="2a08e11f-9262-80f8-b662-f6d9ce4e6ca9" class="">
+</p><h3 id="2a08e11f-9262-80c5-bc0b-d6f529d6825c" class=""><strong>1-2. 클라이언트와 서버</strong></h3><figure id="2a08e11f-9262-806c-bcae-f6ea1a2c3442" class="image"><a href="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%201.png"><img style="width:792.984375px" src="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%201.png"/></a></figure><ul id="2a08e11f-9262-80b4-93c9-c73d9190773a" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>클라이언트(Client)</strong></mark><mark class="highlight-red_background">:</mark> <ul id="2a08e11f-9262-80c9-9dc7-fb085320ad40" class="bulleted-list"><li style="list-style-type:circle">서비스를 요청하는 주체. </li></ul><ul id="2a08e11f-9262-80f2-97f9-fda6888e899e" class="bulleted-list"><li style="list-style-type:circle">일반적으로 사용자가 직접 조작하는 프로그램 (예: <strong>웹 브라우저</strong>나 <strong>모바일 앱)</strong>.</li></ul><ul id="2a08e11f-9262-80a9-859e-e72ebf4f3be0" class="bulleted-list"><li style="list-style-type:circle">클라이언트는 <mark class="highlight-red_background"><strong>요청을 생성</strong></mark>하고 <mark class="highlight-red_background">서버로 전송하는 역할만 수행</mark>하며, 실제 데이터 저장이나 복잡한 연산은 하지 않음.</li></ul></li></ul><ul id="2a08e11f-9262-800b-a351-ea50cb7f72f0" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>서버(Server)</strong></mark><mark class="highlight-red_background">:</mark> <ul id="2a08e11f-9262-80f5-84c7-d0e136a7d54f" class="bulleted-list"><li style="list-style-type:circle"><strong>클라이언트가 보낸 요청을 처리하고 그 결과를 응답하는 주체.</strong></li></ul><ul id="2a08e11f-9262-8047-b4d7-c13f02ce0fdd" class="bulleted-list"><li style="list-style-type:circle">웹 서버(Web Server)는 정적 페이지나 API 응답을 제공하고, 데이터베이스 서버(Database Server)는 데이터를 저장·조회·갱신하는 역할을 수행.</li></ul><ul id="2a08e11f-9262-8040-bd59-e26ab93986d3" class="bulleted-list"><li style="list-style-type:circle">서버는 보통 여러 클라이언트로부터 동시에 요청을 받아야 하므로, 강력한 <mark class="highlight-red_background"><strong>병렬 처리와 자원 관리가 요구</strong></mark>됨.</li></ul></li></ul><p id="2a08e11f-9262-8040-8e1e-d25dfcf04c98" class="">
+</p><ul id="2a08e11f-9262-8043-88e2-e371e8af9210" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>실생활 비유</strong></mark><mark class="highlight-red_background">:</mark></li></ul><div id="2a08e11f-9262-80ab-b068-d461f279d823" class="column-list"><div id="2a08e11f-9262-802c-9c3d-f0f4f9ec7210" style="width:50%" class="column"><p id="2a08e11f-9262-8074-8d91-ef7e7e0c342d" class=""><div class="indented"><ul id="2a08e11f-9262-80c9-95ef-d355a41164f9" class="bulleted-list"><li style="list-style-type:disc"><strong>클라이언트</strong> = 식당의 손님 (서비스를 요청하는 주체)</li></ul><ul id="2a08e11f-9262-8006-a7e4-c3670893ffe3" class="bulleted-list"><li style="list-style-type:disc"><strong>서버</strong> = 요리사 (요청을 받아 조리·처리를 수행하는 주체)</li></ul><ul id="2a08e11f-9262-802e-91fa-e73e549cb89c" class="bulleted-list"><li style="list-style-type:disc"><strong>주문(요청) → 조리(처리) → 음식(응답)</strong>이라는 흐름으로 이해할 수 있으며, 이 과정에서 손님이 요리 과정을 직접 하지 않는 것처럼, 클라이언트는 내부 처리 과정을 알 필요 없이 <mark class="highlight-red_background"><strong>결과만 전달받음.</strong></mark></li></ul></div></p></div><div id="2a08e11f-9262-8072-839f-fdcb75b462d4" style="width:50%" class="column"><figure id="2a08e11f-9262-80fc-b809-fcb40c733d21" class="image"><a href="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%202.png"><img style="width:373.5px" src="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%202.png"/></a></figure></div></div><p id="2a08e11f-9262-806b-85b9-cb11dbe87afa" class="">
+</p><h3 id="2a08e11f-9262-80a9-a7fe-f08974ff0b53" class=""><strong>1-3. HTTP 프로토콜</strong></h3><ul id="2a08e11f-9262-808c-ad53-e38b4c21f0a6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-red_background"><strong>HTTP (HyperText Transfer Protocol)</strong></mark></mark><mark class="highlight-orange"><mark class="highlight-red_background">:</mark></mark> 웹에서 데이터를 주고받기 위한 대표적인 규칙. 요청과 응답이 모두 <strong>문자 메시지 형식</strong>으로 이루어지도록 하고, 클라이언트와 서버 간 통신의 기본 단위가 됨.<ul id="2a08e11f-9262-8020-a511-cea5e11e759f" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-orange"><strong>요청(Request)</strong></mark>에는 어떤 <strong>동작을 수행할지(예: 조회, 생성)</strong>와 대상 자원이 명시됨.</li></ul><ul id="2a08e11f-9262-8073-b0fd-dc900048c60e" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-orange"><strong>응답(Response)</strong></mark>에는 <strong>처리 결과</strong>와 <strong>상태 코드(Status Code)</strong>, 그리고 <strong>필요한 경우 데이터가 함께 포함</strong>됨.</li></ul><p id="2a08e11f-9262-804a-8e22-cb1ccb961b0a" class="">
+</p></li></ul><ul id="2a08e11f-9262-806d-950b-d82e0f1ed28c" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>HTTP 요청 예시:</strong></mark><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a08e11f-9262-80ac-be34-fc8dbeb310ba" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">GET /students/1 HTTP/1.1
+Host: example.com</code></pre><ul id="2a08e11f-9262-8022-b9e5-cf9bc6beddee" class="bulleted-list"><li style="list-style-type:circle"><code>GET</code>: 서버에게 데이터를 조회하겠다는 요청 메서드. 이 외에도 <code>POST</code>, <code>PUT</code>, <code>DELETE</code> 등 다양한 메서드가 존재.</li></ul><ul id="2a08e11f-9262-80d2-9ca4-f54b3e3bf4b5" class="bulleted-list"><li style="list-style-type:circle"><code>/students/1</code>: 서버 자원의 경로(URL Path)로, 여기서는 ID가 1인 학생 데이터를 요청하는 의미.</li></ul><ul id="2a08e11f-9262-8039-876b-ed4dc48f40ab" class="bulleted-list"><li style="list-style-type:circle"><code>HTTP/1.1</code>: 사용 중인 HTTP 버전. 현재는 1.1과 2가 널리 쓰이며, 최신 버전은 HTTP/3.</li></ul><ul id="2a08e11f-9262-80d7-b904-eab73ebdcefc" class="bulleted-list"><li style="list-style-type:circle"><code>Host: example.com</code>: 요청 대상 서버의 호스트명을 명시하도록 함. 여러 도메인을 같은 서버에서 운영할 수 있으므로 <mark class="highlight-red_background"><strong>반드시 포함</strong></mark>되어야 함.!</li></ul><p id="2a08e11f-9262-809a-9a33-fc52815af5d0" class="">
+</p></li></ul><ul id="2a08e11f-9262-8078-86a7-ffe2ea045eb3" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>HTTP 응답 예시:</strong></mark><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a08e11f-9262-80e4-86fd-e34d2008bd98" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  &quot;id&quot;: 1,
+  &quot;name&quot;: &quot;홍길동&quot;
+}</code></pre><ul id="2a08e11f-9262-800b-8cd9-c6c33e90c4ab" class="bulleted-list"><li style="list-style-type:circle"><code>HTTP/1.1 200 OK</code>: 응답 버전과 상태 코드로, <code>200 OK</code>는 요청이 정상적으로 처리되었음을 의미.</li></ul><ul id="2a08e11f-9262-80d3-a7dd-f2ec06fde4af" class="bulleted-list"><li style="list-style-type:circle"><code>Content-Type: application/json</code>: 응답 본문의 데이터 형식을 지정. 여기서는 JSON 형식의 데이터를 반환.</li></ul><ul id="2a08e11f-9262-806f-a708-fbc1c26cb106" class="bulleted-list"><li style="list-style-type:circle"><code>{ &quot;id&quot;: 1, &quot;name&quot;: &quot;홍길동&quot; }</code>: 실제 응답 데이터로, 클라이언트가 요청한 학생 정보가 JSON 객체 형태로 전달됨.</li></ul><p id="2a08e11f-9262-80dd-a415-ebf6e68ab92c" class="">
+</p></li></ul><ul id="2a08e11f-9262-803d-87be-d5bf984df126" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>위처럼, HTTP는 요청 메시지와 응답 메시지를 교환하는 단순한 구조를 가지며, 이 기본 원리를 확장한 것이 REST API 통신으로 볼 수 있음..!</strong></mark></li></ul><p id="2a08e11f-9262-80fe-826b-ebc7a014e450" class="">
+</p><h2 id="2a08e11f-9262-80d0-bf87-d4b65aa90b2c" class="">2. API란 무엇인가?</h2><figure id="2a08e11f-9262-8066-b599-ddae9514171f" class="image"><a href="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%203.png"><img style="width:792.9921875px" src="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%203.png"/></a></figure><ul id="2a08e11f-9262-8049-a341-e7b0a1a21607" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>API (Application Programming Interface)</strong></mark>: 애플리케이션(프로그램)과 애플리케이션이 서로 상호작용할 수 있도록 도와주는 <strong>약속(인터페이스)</strong>을 의미. 즉, API는 <mark class="highlight-red_background"><strong>특정 기능을 어떻게 호출하고 사용할 수 있는지를 정의한 규칙과 명세</strong></mark>임.</li></ul><ul id="2a08e11f-9262-8017-9692-f03909c4b9ce" class="bulleted-list"><li style="list-style-type:disc">프로그래머는 API를 사용해 복잡한 내부 동작을 몰라도, <mark class="highlight-red_background"><strong>정해진 방식대로 요청</strong></mark>을 보내고 <mark class="highlight-red_background"><strong>응답을 받으면 기능을 활용</strong></mark>할 수 있음. 예를 들어, 운영체제는 파일 열기/저장 API를 제공하고, 웹 서비스는 데이터 조회/등록 API를 제공.</li></ul><hr id="2a08e11f-9262-8023-b35d-f1eca8222277"/><h3 id="2a08e11f-9262-802e-882b-ccf9a73a9089" class=""><strong>2-1. 일상적 비유 예시</strong></h3><figure id="2a08e11f-9262-80f0-89d0-c33d06c78a38" class="image"><a href="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%204.png"><img style="width:792.9921875px" src="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%204.png"/></a></figure><ul id="2a08e11f-9262-808a-908c-f8d20870df1b" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>카페 주문 비유</strong></mark><mark class="highlight-red_background">:</mark><ul id="2a08e11f-9262-804f-8a40-e9eed199e65b" class="bulleted-list"><li style="list-style-type:circle">손님이 카페에서 &quot;아메리카노 주세요&quot;라고 말하면, 점원은 <mark class="highlight-red_background"><strong>메뉴판(규칙)</strong></mark>에 따라 주문을 이해하고, 커피를 만들어 손님에게 제공함.</li></ul><ul id="2a08e11f-9262-80a9-b2d4-df4f98b91bb3" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-red_background"><strong>손님은 커피 머신이 어떻게 작동하는지, 원두가 어디서 오는지는 알 필요 없음</strong></mark>. 메뉴판에 적힌 방식대로 주문만 하면 됨.</li></ul><ul id="2a08e11f-9262-8060-94ac-de8aa4e0e4f1" class="bulleted-list"><li style="list-style-type:circle">이때 <mark class="highlight-red_background"><strong>손님 = 클라이언트</strong></mark>, <mark class="highlight-red_background"><strong>점원 = 서버</strong></mark>, <mark class="highlight-red_background"><strong>메뉴판 = API</strong></mark>라고 볼 수 있음.</li></ul></li></ul><ul id="2a08e11f-9262-8070-9ec2-c1f4911338d8" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>API도 위와 같은 방식으로 동작! :</strong></mark><ul id="2a08e11f-9262-808c-9241-f3cb4c20c3f1" class="bulleted-list"><li style="list-style-type:circle">클라이언트는 API 문서에 정의된 규칙대로 요청을 보냄.</li></ul><ul id="2a08e11f-9262-80cc-85f2-d75e1c3ce11c" class="bulleted-list"><li style="list-style-type:circle">서버는 그 요청을 처리하고, 정해진 형식으로 응답을 반환함.</li></ul><ul id="2a08e11f-9262-8061-971b-ea59296b9357" class="bulleted-list"><li style="list-style-type:circle"><strong>규칙을 벗어난 요청은 처리되지 않고, 오류가 발생할 수 있음. (예: 잘못된 메뉴 주문 → &quot;그런 메뉴는 없습니다&quot;와 같은 응답)</strong></li></ul></li></ul><hr id="2a08e11f-9262-80f7-ad34-c70fbec4c1a7"/><ul id="2a08e11f-9262-80d8-bd93-c97866084ed8" class="bulleted-list"><li style="list-style-type:disc">정리하면, <strong>API는 프로그램 간 소통을 위한 공식적인 언어이자 메뉴판 같은 역할</strong>을 수행할 수 있으며, 이를 통해 <mark class="highlight-red_background"><strong>개발자는 내부 동작을 몰라도 필요한 기능을 쉽게 활용</strong></mark>할 수 있음.</li></ul><p id="2a08e11f-9262-809f-b9c3-f111470932d8" class="">
+</p><h3 id="2a08e11f-9262-80d4-a2bb-c038ea199b40" class="">2-2. 웹 API의 역할</h3><figure id="2a08e11f-9262-80d8-81e1-f9a52f62af7b" class="image"><a href="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%205.png"><img style="width:792.9921875px" src="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%205.png"/></a></figure><ul id="2a08e11f-9262-80f5-92b8-d2db2e17c6ed" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>서버와 데이터베이스안의 리소스에 접근</strong></mark><ul id="2a08e11f-9262-8037-96d1-f7e299c66d47" class="bulleted-list"><li style="list-style-type:circle">데이터베이스의 정보를 누구나 열람하면 곤란하기에, 필요에 의해서만 열람 가능.</li></ul><ul id="2a08e11f-9262-8023-b3c5-fb570bac9679" class="bulleted-list"><li style="list-style-type:circle">API는 접근 권한이 인가된 사람에게만 서버와 데이터베이스에 접근하도록 함.</li></ul></li></ul><ul id="2a08e11f-9262-8061-99af-d6717ef355b9" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-red_background"><strong>모든 요청과 응답을 표준화</strong></mark><ul id="2a08e11f-9262-8021-8b45-da9313785449" class="bulleted-list"><li style="list-style-type:circle">아이폰을 쓰던 갤럭시 폰을 사용하든 상관없이 동일한 API를 사용하기 때문에 클라이언트의 요청과 서버의 응답을 하나의 API로 표준화 할 수 있음.</li></ul></li></ul><ul id="2a08e11f-9262-80eb-bb7c-de7255171d00" class="bulleted-list"><li style="list-style-type:disc">REST API<ul id="2a08e11f-9262-80d0-819f-e70f3188b688" class="bulleted-list"><li style="list-style-type:circle">REST API(REpresentational State Transfer)는 웹상에서 사용되는 여러 리소스를 HTTP URI로 표현하고, 해당 <strong>리소스에 대한 행위를 HTTP Method로 정의</strong>하는 방식</li></ul><ul id="2a08e11f-9262-803f-9ed4-d0632a983d46" class="bulleted-list"><li style="list-style-type:circle">즉, <mark class="highlight-gray_background">리소스(HTTP URI로 정의됨)를 어떻게 하겠다(HTTP Method + Payload)</mark>를 구조적으로 깔끔하게 표현하는 방법</li></ul></li></ul><p id="2a08e11f-9262-80d3-aee5-e36e4f50faf2" class="">
+</p><p id="2a08e11f-9262-805b-86b9-c0aa9eabbdc4" class="">
+</p><h3 id="2a08e11f-9262-80a2-ba1c-e322a55b3b65" class="">2-3. REST API란?</h3><ul id="2a08e11f-9262-801d-9898-de5cdba94667" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>REST (Representational State Transfer)</strong></mark>: 2000년 로이 필딩(Roy Fielding)의 논문에서 제안된 <strong>웹 아키텍처 스타일</strong>. 단순히 프로토콜이 아니라, <mark class="highlight-gray_background"><strong>웹에서 자원을 어떻게 정의하고 접근할지에 대한 설계 규칙 집합</strong></mark>임.</li></ul><ul id="2a08e11f-9262-80d0-ba0b-c2217df5d6bd" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><strong>REST API</strong></mark><mark class="highlight-orange">:</mark> REST의 제약 조건을 충실히 따르는 API를 의미. 클라이언트는 <mark class="highlight-gray_background">요청(Request)</mark>을 통해 자원(Resource)을 조작하고, 서버는 그 결과를 <mark class="highlight-gray_background">응답(Response)</mark>으로 돌려주는 방식으로 동작함.</li></ul><hr id="2a08e11f-9262-80aa-9185-f59beef75314"/><ul id="2a08e11f-9262-80cd-a8fa-ff2b5adcfd4f" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-orange"><mark class="highlight-default_background"><strong>REST API의 핵심 제약 조건</strong></mark></mark><mark class="highlight-orange"><mark class="highlight-default_background">:</mark></mark><ul id="2a08e11f-9262-8032-8f25-cf8a80dee6d4" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>자원의 식별(URI 기반)</strong></mark><mark class="highlight-gray_background">:</mark> 모든 자원(Resource)은 고유한 URI (Uniform Resource Identifier)로 표현.<br/>예: <code>/students/1</code> → ID가 1인 학생이라는 자원을 의미.</li></ul><ul id="2a08e11f-9262-80ac-b112-e0e2791899a0" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>표현(Representation)을 통한 자원 조작</strong></mark>: 자원 자체가 아니라 자원의 **표현(JSON, XML 등)**을 주고받음. 같은 자원이라도 상황에 따라 다른 표현 형식으로 응답 가능.</li></ul><ul id="2a08e11f-9262-8002-b916-e1404642d7bd" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>무상태성(Stateless)</strong></mark>: 서버는 클라이언트의 상태를 저장하지 않음. 각 요청은 독립적으로 처리되며, 필요한 모든 정보는 요청 메시지 안에 포함되어야 함.</li></ul><ul id="2a08e11f-9262-8024-b841-e2ef476540e1" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>일관된 인터페이스(Uniform Interface)</strong></mark><mark class="highlight-gray_background">:</mark> HTTP 메서드와 상태 코드를 활용해 요청과 응답 형식을 표준화함.<ul id="2a08e11f-9262-801c-b2cf-f935cb35f85e" class="bulleted-list"><li style="list-style-type:square"><code>GET</code>: 자원 조회</li></ul><ul id="2a08e11f-9262-803c-a7cb-da590eb8201d" class="bulleted-list"><li style="list-style-type:square"><code>POST</code>: 자원 생성</li></ul><ul id="2a08e11f-9262-80e3-a456-e139cad131c0" class="bulleted-list"><li style="list-style-type:square"><code>PUT</code>: 자원 전체 수정</li></ul><ul id="2a08e11f-9262-802c-96a3-d0ca64d7c3f8" class="bulleted-list"><li style="list-style-type:square"><code>PATCH</code>: 자원 일부 수정</li></ul><ul id="2a08e11f-9262-806b-b16b-cf0835ab5207" class="bulleted-list"><li style="list-style-type:square"><code>DELETE</code>: 자원 삭제</li></ul></li></ul><ul id="2a08e11f-9262-806e-90fe-d199be579ee8" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>계층적 구조(Layered System)</strong></mark><mark class="highlight-gray_background">: </mark>클라이언트는 중간 서버(프록시, 로드 밸런서 등)의 존재를 알 필요가 없으며, 요청은 여러 계층을 거쳐도 동일하게 동작해야 함.</li></ul><ul id="2a08e11f-9262-804f-9f40-e11eb9bc3d6e" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>캐시 가능(Cacheable)</strong></mark><mark class="highlight-gray_background">: </mark>응답 결과는 캐싱할 수 있어야 하며, 이를 통해 서버 부하를 줄이고 성능을 향상시킴.</li></ul></li></ul><hr id="2a08e11f-9262-80f1-8c4c-f6249cd191fb"/><ul id="2a08e11f-9262-802d-9aba-f519d0fb4355" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>REST API의 특징</strong></mark><ul id="2a08e11f-9262-80b8-b01f-e3801708574a" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>균일한 인터페이스 (Uniform Interface)</strong></mark><ul id="2a08e11f-9262-8085-93b2-c66f0dc58bd0" class="bulleted-list"><li style="list-style-type:square">HTTP 표준 프로토콜을 따르는 플랫폼에서 사용 가능</li></ul><ul id="2a08e11f-9262-8039-8596-dfcf64299e44" class="bulleted-list"><li style="list-style-type:square">URI로 지정한 리소스에 대한 조작을 통일되고 한정적인 인터페이스로 수행</li></ul><ul id="2a08e11f-9262-80c3-83b6-c6e334feb3ef" class="bulleted-list"><li style="list-style-type:square">HTTP Method(GET, POST, PUT, DELETE)를 통해 리소스를 처리</li></ul></li></ul><ul id="2a08e11f-9262-8008-8a52-eb4cb64070b0" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>무상태성 (Stateless)</strong></mark><ul id="2a08e11f-9262-80b1-9e6f-fa2d375f0d83" class="bulleted-list"><li style="list-style-type:square">서버에 클라이언트의 상태 정보를 저장하지 않음</li></ul><ul id="2a08e11f-9262-809b-9b02-e40ea59b60d8" class="bulleted-list"><li style="list-style-type:square">각 요청에 필요한 모든 정보를 담아서 전송</li></ul><ul id="2a08e11f-9262-80d0-9f4f-e630deabdc2e" class="bulleted-list"><li style="list-style-type:square">서버는 각각의 요청을 완전히 별개의 것으로 인식하고 처리</li></ul></li></ul><ul id="2a08e11f-9262-8063-a40b-cdf79cfc79eb" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>캐시 가능 (Cacheable)</strong></mark><ul id="2a08e11f-9262-806b-be2d-ef827b542df2" class="bulleted-list"><li style="list-style-type:square">HTTP의 캐싱 기능을 적용할 수 있음</li></ul><ul id="2a08e11f-9262-80fa-ad12-fa21837e21cd" class="bulleted-list"><li style="list-style-type:square">캐시 사용을 통해 응답시간 향상 및 서버 부하 감소 가능</li></ul><ul id="2a08e11f-9262-8089-a18f-fcee8d303d99" class="bulleted-list"><li style="list-style-type:square">GET 요청은 캐시가 가능하지만, POST 요청은 캐시가 불가능</li></ul></li></ul><ul id="2a08e11f-9262-8085-9efa-f43c57e19135" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>계층화 시스템 (Layered System)</strong></mark><ul id="2a08e11f-9262-8095-88e3-ef0fc9518ec9" class="bulleted-list"><li style="list-style-type:square">클라이언트는 서버에 직접 연결되었는지, 중간 서버를 통해 연결되었는지 알 수 없음</li></ul><ul id="2a08e11f-9262-806e-bc0c-e3b70fb5023b" class="bulleted-list"><li style="list-style-type:square">중간에 프록시, 게이트웨이 같은 중간 매체를 사용할 수 있음</li></ul><ul id="2a08e11f-9262-8031-a215-f7ac0cdf397f" class="bulleted-list"><li style="list-style-type:square">보안, 로드 밸런싱, 암호화, 사용자 인증 등을 추가할 수 있음</li></ul></li></ul><ul id="2a08e11f-9262-8068-99e6-c794ab1d641d" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>자체 표현 구조 (Self-descriptiveness)</strong></mark><ul id="2a08e11f-9262-8038-a26a-dc00290178cf" class="bulleted-list"><li style="list-style-type:square">REST API 메시지만 보고도 이해할 수 있는 자체 표현 구조</li></ul><ul id="2a08e11f-9262-8029-8451-cf0a23468ac6" class="bulleted-list"><li style="list-style-type:square">JSON을 이용한 메시지 포맷 사용</li></ul><ul id="2a08e11f-9262-800e-8d7b-daafd66255a5" class="bulleted-list"><li style="list-style-type:square">URI만 보고도 어떤 정보를 제공하는지 알 수 있음</li></ul></li></ul><ul id="2a08e11f-9262-802e-892e-c76ababff6ac" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background"><strong>클라이언트서버 구조 (Client-Server Architecture)</strong></mark><ul id="2a08e11f-9262-8078-b386-d480759b2cf9" class="bulleted-list"><li style="list-style-type:square">클라이언트와 서버가 독립적으로 분리되어 있음</li></ul><ul id="2a08e11f-9262-807a-876e-fac5a3878304" class="bulleted-list"><li style="list-style-type:square">서버는 API를 제공하고, 클라이언트는 사용자 인증이나 컨텍스트(세션, 로그인 정보)를 직접 관리</li></ul><ul id="2a08e11f-9262-80b3-bf84-faa066eccde1" class="bulleted-list"><li style="list-style-type:square">서로 간의 의존성이 줄어듦</li></ul><p id="2a08e11f-9262-8060-8b37-c22f2cf48a15" class="">
+</p></li></ul></li></ul><ul id="2a08e11f-9262-80f4-bd6b-daab0802276d" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>REST API의 장점</strong></mark><mark class="highlight-gray_background">:</mark><ul id="2a08e11f-9262-80dc-9055-cbe0ef271c95" class="bulleted-list"><li style="list-style-type:circle">직관적이고 간단한 구조로, 별도의 인프라 구축이 필요 없음</li></ul><ul id="2a08e11f-9262-8089-951d-ea2751b14692" class="bulleted-list"><li style="list-style-type:circle">HTTP 프로토콜을 사용하므로 REST API 사용을 위한 인프라를 따로 구축할 필요가 없음</li></ul><ul id="2a08e11f-9262-80ae-9f49-e1d24e2fcdb8" class="bulleted-list"><li style="list-style-type:circle">HTTP 표준 프로토콜을 따르는 모든 플랫폼에서 사용 가능</li></ul><ul id="2a08e11f-9262-8040-8092-d03e49a3b57e" class="bulleted-list"><li style="list-style-type:circle">서버와 클라이언트의 역할을 명확하게 분리할 수 있음</li></ul><ul id="2a08e11f-9262-8062-b36b-e1562ca86c3d" class="bulleted-list"><li style="list-style-type:circle">REST API 메시지가 의도하는 바를 명확하게 나타내므로 의도를 쉽게 파악할 수 있음</li></ul><ul id="2a08e11f-9262-8057-91e8-dd8e0130762f" class="bulleted-list"><li style="list-style-type:circle">여러 가지 서비스 디자인에서 생길 수 있는 문제를 최소화함</li></ul><ul id="2a08e11f-9262-8048-8954-fb1cccb25230" class="bulleted-list"><li style="list-style-type:circle">서버와 클라이언트가 독립적으로 진화할 수 있음</li></ul><p id="2a08e11f-9262-802b-9199-d5a4dfbd06cb" class="">
+</p></li></ul><ul id="2a08e11f-9262-807e-b0a3-ec7ea64d6063" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>REST API의 단점</strong></mark><mark class="highlight-gray_background">:</mark><ul id="2a08e11f-9262-800a-8668-fa4da5cea4c1" class="bulleted-list"><li style="list-style-type:circle">표준이 존재하지 않아 정의가 필요함</li></ul><ul id="2a08e11f-9262-8016-95e2-ca04ffadf8ca" class="bulleted-list"><li style="list-style-type:circle">HTTP Method 형태가 제한적임 (GET, POST, PUT, DELETE 등)</li></ul><ul id="2a08e11f-9262-8005-90a8-d846a55a2d0a" class="bulleted-list"><li style="list-style-type:circle">구형 브라우저에서 PUT, DELETE를 사용하지 못하는 경우가 있음</li></ul><ul id="2a08e11f-9262-80d6-b834-d18e7c9732bf" class="bulleted-list"><li style="list-style-type:circle">관련 도구들이 부족할 수 있음</li></ul><ul id="2a08e11f-9262-803f-8475-e1705553e7d7" class="bulleted-list"><li style="list-style-type:circle">구축한 API에 대한 문서화가 필요하며, 관리가 어려울 수 있음</li></ul><ul id="2a08e11f-9262-807a-bf77-d2ac7fd45af3" class="bulleted-list"><li style="list-style-type:circle">클라이언트가 원하는 정확한 데이터를 호출하기 위해서는 여러 번의 요청이 필요할 수 있음</li></ul><ul id="2a08e11f-9262-80ff-a4d3-e7cda456ee6d" class="bulleted-list"><li style="list-style-type:circle">RESTful API 설계의 어려움이 있음 (API 버전 관리, 네이밍 등)</li></ul><ul id="2a08e11f-9262-80d1-abd4-cd9e245c3d65" class="bulleted-list"><li style="list-style-type:circle">대규모 데이터 전송 시 처리 방법 제한적</li></ul><ul id="2a08e11f-9262-809c-a4cf-d111482ed03a" class="bulleted-list"><li style="list-style-type:circle">표준이 없어 관리가 어려울 수 있음</li></ul><p id="2a08e11f-9262-804c-af22-db3b8f5bddd7" class="">
+</p></li></ul><hr id="2a08e11f-9262-80a9-a633-c5e7cbfe8238"/><p id="2a08e11f-9262-80c4-a320-dc59cc94738b" class="">정리하면, <strong>REST API는 웹의 자원을 URI로 정의하고, HTTP 메서드를 통해 표준화된 방식으로 자원을 다루는 API</strong>라고 할 수 있으며, 이것이 오늘날 가장 널리 쓰이는 웹 API 형식임.</p><p id="2a08e11f-9262-80a0-b95a-c1ce8a19f318" class="">
+</p><p id="2a08e11f-9262-80dd-ba5c-f6a8e441c8b2" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">B. REST API</summary><div class="indented"><h2 id="2a08e11f-9262-80d2-b9b8-dcfd8b9c4bb1" class="">1. REST API의 구성 요소</h2><h3 id="2a08e11f-9262-808b-8cb3-f32f3277e708" class=""><strong>1-1. 자원(Resource)</strong></h3><ul id="2a08e11f-9262-80f2-85d9-db5515108f30" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background">API가 다루는 </mark><mark class="highlight-gray_background"><strong>대상</strong></mark><mark class="highlight-gray_background">을 의미.</mark><ul id="2a08e11f-9262-80d3-9bd7-cd508e3218c0" class="bulleted-list"><li style="list-style-type:circle"><mark class="highlight-gray_background">예: 학생, 게시글, 주문과 같은 </mark><mark class="highlight-gray_background"><strong>명사형 개체</strong></mark></li></ul></li></ul><ul id="2a08e11f-9262-809d-b256-e97cd5b702c6" class="bulleted-list"><li style="list-style-type:disc">자원은 URI(Uniform Resource Identifier)로 <strong>식별</strong>함.<ul id="2a08e11f-9262-8024-b1f1-d4a240bc926d" class="bulleted-list"><li style="list-style-type:circle">예: <code>/students</code>, <code>/students/1</code>, <code>/orders/2024-09-01</code> </li></ul></li></ul><ul id="2a08e11f-9262-80d8-9628-de93803cf1b6" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>컬렉션/개별 자원</strong></mark><mark class="highlight-gray_background"> 구분 필요</mark>: <ul id="2a08e11f-9262-800a-a2a4-ff0969aabd4c" class="bulleted-list"><li style="list-style-type:circle"><code>/posts</code>(컬렉션) ↔ <code>/posts/10</code>(개별).</li></ul><ul id="2a08e11f-9262-802c-ae3a-d98c1561564f" class="bulleted-list"><li style="list-style-type:circle">하위 관계는 <code>/students/1/courses</code>처럼 계층적으로 표현하도록 함.</li></ul></li></ul><ul id="2a08e11f-9262-8020-acf5-c704a93ee27c" class="bulleted-list"><li style="list-style-type:disc">URI는 <strong>행위가 아닌 대상</strong>만 표현함(명사 사용). 소문자·복수형·하이픈 권장. <ul id="2a08e11f-9262-80f1-8abe-ded1d81f9bf3" class="bulleted-list"><li style="list-style-type:circle">예: <code>/createStudent</code>(지양) → <code>/students</code>(선호).</li></ul></li></ul><ul id="2a08e11f-9262-80b4-8ba9-d719d438fd34" class="bulleted-list"><li style="list-style-type:disc"><strong>조회 조건·페이징·정렬</strong>은 쿼리 파라미터로 분리함.<ul id="2a08e11f-9262-80f4-831e-f0ff90d577ad" class="bulleted-list"><li style="list-style-type:circle">예: <code>/students?major=cs&amp;page=2&amp;size=20&amp;sort=name,asc</code>.</li></ul></li></ul><ul id="2a08e11f-9262-8001-8821-e8307f8dba7c" class="bulleted-list"><li style="list-style-type:disc"><strong>자원의 상태(state)는 서버가 보관하고, 클라이언트는 상태의 표현(representation)을 주고받음.</strong></li></ul><p id="2a08e11f-9262-802f-8f4f-cdc7a3fbf658" class="">
+</p><h3 id="2a08e11f-9262-8048-9d0d-cd9236373a5e" class=""><strong>1-2. 행위(Method)</strong></h3><ul id="2a08e11f-9262-80d5-9448-e458caf67c27" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background">자원에 대해 </mark><mark class="highlight-gray_background"><strong>무엇을 할지</strong></mark><mark class="highlight-gray_background">를 나타내는 </mark><mark class="highlight-gray_background"><strong>HTTP 메서드!</strong></mark><ul id="2a08e11f-9262-800c-9403-c982e97c6f5d" class="bulleted-list"><li style="list-style-type:circle"><code>GET</code>: <mark class="highlight-gray_background"><strong>조회</strong></mark>. 안전(safe)·<strong>멱등(idempotent)</strong>. 본문 없이 헤더·쿼리로만 의미 전달.</li></ul><ul id="2a08e11f-9262-806e-bcff-ea7b9859dbbe" class="bulleted-list"><li style="list-style-type:circle"><code>POST</code>: <mark class="highlight-gray_background"><strong>생성</strong></mark><mark class="highlight-gray_background"> 또는 컬렉션에 </mark><mark class="highlight-gray_background"><strong>하위 자원 추가</strong></mark>. 비멱등. 성공 시 보통 <code>201 Created</code>와 <code>Location</code> 헤더 반환.</li></ul><ul id="2a08e11f-9262-8025-bfbc-d847788abf94" class="bulleted-list"><li style="list-style-type:circle"><code>PUT</code>: <mark class="highlight-gray_background"><strong>전체 교체</strong></mark>(대표 케이스). 멱등. 누락 필드는 삭제로 간주될 수 있음.</li></ul><ul id="2a08e11f-9262-80aa-b381-ceabe1aa8407" class="bulleted-list"><li style="list-style-type:circle"><code>PATCH</code>: <mark class="highlight-gray_background"><strong>부분 수정</strong></mark>. 일반적으로 비멱등(설계에 따라 멱등 가능). 수정 범위를 본문으로 명시.</li></ul><ul id="2a08e11f-9262-80f5-943f-d4dc6567a82a" class="bulleted-list"><li style="list-style-type:circle"><code>DELETE</code>: <mark class="highlight-gray_background"><strong>삭제</strong></mark>. 멱등. 이미 삭제된 자원에 대해 재요청해도 결과는 동일해야 함.</li></ul><figure id="2a08e11f-9262-803f-a31d-fe510d58ef62" class="image"><a href="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%206.png"><img style="width:672px" src="04%20API%EC%99%80%20%ED%99%9C%EC%9A%A9/image%206.png"/></a></figure></li></ul><ul id="2a08e11f-9262-80d9-916a-c03ed592da40" class="bulleted-list"><li style="list-style-type:disc">참고 메서드: <code>HEAD</code>(본문 없이 헤더만), <code>OPTIONS</code>(서버가 지원하는 메서드 확인).</li></ul><ul id="2a08e11f-9262-808c-a7ae-d181e752d165" class="bulleted-list"><li style="list-style-type:disc">메서드에 따른 <strong>대표 상태 코드</strong>:<code>GET</code> → <code>200 OK</code> / 없으면 <code>404 Not FoundPOST</code> → <code>201 Created</code>(+ <code>Location</code>)<code>PUT</code>/<code>PATCH</code> → <code>200 OK</code> 또는 본문 없으면 <code>204 No ContentDELETE</code> → <code>204 No Content</code></li></ul><p id="2a08e11f-9262-8008-a867-fa4703bc6041" class="">
+</p><h3 id="2a08e11f-9262-80d0-b477-d5fbf0748fde" class=""><strong>1-3. 표현(Representation)</strong></h3><ul id="2a08e11f-9262-801e-87dc-fe30803ca951" class="bulleted-list"><li style="list-style-type:disc"><mark class="highlight-gray_background"><strong>자원의 상태를 어떤 형식으로 전달할지를 의미.</strong></mark></li></ul><ul id="2a08e11f-9262-8084-9ed8-dd822f18676d" class="bulleted-list"><li style="list-style-type:disc">본문 형식은 주로 <strong>JSON</strong> 사용하나, 경우에 따라 XML/CSV/바이너리 등 사용 가능.</li></ul><ul id="2a08e11f-9262-80ee-a622-d91350a1855a" class="bulleted-list"><li style="list-style-type:disc"><strong>콘텐츠 협상(Content Negotiation)</strong>: 클라이언트는 <code>Accept</code>로 원하는 형식 표시, 서버는 <code>Content-Type</code>으로 실제 형식 선언. 예: <code>Accept: application/json</code>, <code>Content-Type: application/json</code>.</li></ul><ul id="2a08e11f-9262-808d-9749-e62ee7d6c671" class="bulleted-list"><li style="list-style-type:disc">표현은 자기 기술적(self-descriptive)이어야 함. 필드 의미가 명확하고, 필요한 링크(예: <code>self</code>, <code>next</code>)나 메타데이터(페이지 정보 등)를 포함할 수 있음.</li></ul><ul id="2a08e11f-9262-80c1-9d02-ddc1b20e39d3" class="bulleted-list"><li style="list-style-type:disc">오류는 일관된 형식으로 반환하는 것이 바람직함. 예: <code>status</code>, <code>code</code>, <code>message</code>, <code>details</code> 필드 구성 제안.</li></ul><p id="2a08e11f-9262-80d2-ad83-feac50203a77" class="">
+</p><h3 id="2a08e11f-9262-8019-b74a-e874a320286a" class=""><mark class="highlight-gray_background">1-4. </mark><mark class="highlight-gray_background"><strong>REST API 요청/응답 구조</strong></mark></h3><ul id="2a08e11f-9262-803e-a944-ebe3631dd28f" class="bulleted-list"><li style="list-style-type:disc"><strong>요청(Request)</strong> = <code>메서드</code> + <code>URI</code> + <code>헤더</code> + <code>본문(선택)</code><ul id="2a08e11f-9262-809d-bc88-e4d05cd72b05" class="bulleted-list"><li style="list-style-type:circle">인증·인가: <code>Authorization</code> 헤더 사용(JWT/Bearer 등).</li></ul><ul id="2a08e11f-9262-800f-a87c-eebc0a0a1f54" class="bulleted-list"><li style="list-style-type:circle">본문 전송 시 <code>Content-Type</code> 필수. 클라이언트 수용 형식은 <code>Accept</code>로 명시.</li></ul><ul id="2a08e11f-9262-806f-a6af-d9fd514411b7" class="bulleted-list"><li style="list-style-type:circle">캐시·조건부 요청: <code>If-None-Match</code>(ETag), <code>If-Modified-Since</code> 활용.</li></ul></li></ul><ul id="2a08e11f-9262-804e-9f12-f2d12a9e6c6d" class="bulleted-list"><li style="list-style-type:disc"><strong>응답(Response)</strong> = <code>상태 코드</code> + <code>헤더</code> + <code>본문(선택)</code><ul id="2a08e11f-9262-8052-b1aa-f59d3ce463a2" class="bulleted-list"><li style="list-style-type:circle">성공: <code>200/201/204</code> 중심. 생성 시 <code>Location</code>으로 새 자원 URI 제공.</li></ul><ul id="2a08e11f-9262-800d-ae17-f7b2cb6f3682" class="bulleted-list"><li style="list-style-type:circle">오류: <code>4xx</code>(클라이언트 오류), <code>5xx</code>(서버 오류). 가능하면 원인과 수정 방법을 본문에 명확히 기술.</li></ul><ul id="2a08e11f-9262-8048-b852-c8c407bb5afe" class="bulleted-list"><li style="list-style-type:circle">캐시·버전 관리: <code>ETag</code>, <code>Cache-Control</code>, 필요 시 경로 버전(<code>/v1</code>) 또는 헤더 버전 전략 사용.</li></ul></li></ul><p id="2a08e11f-9262-8070-930a-f9fa25e5f4a8" class="">
+</p><p id="2a08e11f-9262-80a3-9ec3-d9567f1d155d" class=""> </p><h2 id="2a08e11f-9262-80a6-a91c-c7a1b3c64212" class="">3. REST API 설계 방식</h2><ul id="2a08e11f-9262-80b0-a52a-ce2dd322eb0e" class="bulleted-list"><li style="list-style-type:disc">리소스에 대한 행위는 HTTP Method(POST, GET, PUT, DELETE)로 표현</li></ul><ul id="2a08e11f-9262-80ff-a998-f36878c52820" class="bulleted-list"><li style="list-style-type:disc">/(슬래시)는 계층 관계를 나타낼때 사용</li></ul><ul id="2a08e11f-9262-80dd-a674-e71a8262b945" class="bulleted-list"><li style="list-style-type:disc">URI 마지막 문자에 /(슬래시)를 사용하지 않음</li></ul><ul id="2a08e11f-9262-806e-a080-eb346cdc1d65" class="bulleted-list"><li style="list-style-type:disc">URI에 _(underscore)는 사용하지 않도록 함. 또한 영어 대문자보다는 소문자 사용을 권장</li></ul><ul id="2a08e11f-9262-802e-a2f8-d9639e0de630" class="bulleted-list"><li style="list-style-type:disc">그리고 가독성을 위해서 긴 단어는 잘 사용하지 않음</li></ul><ul id="2a08e11f-9262-8063-a141-c33e70564f8c" class="bulleted-list"><li style="list-style-type:disc">URI에 동사는 GET, POST와 같은 HTTP Method를 표현하기 때문에 동사가 아니라 명사를 사용 권장.</li></ul><ul id="2a08e11f-9262-800f-8768-de5beef0cecf" class="bulleted-list"><li style="list-style-type:disc">URI에 파일의 확장자(예를들어 .json , .JPGE)를 포함 시키지 않음.</li></ul><ul id="2a08e11f-9262-8032-8535-f24b72efecb6" class="bulleted-list"><li style="list-style-type:disc">self-descriptiveness: RESTful API는 그 자체만으로도 API의 목적이 무엇인지 쉽게 알 수 있게 설계.</li></ul></div></details><p id="2a08e11f-9262-806f-a17b-f1382a53389a" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
