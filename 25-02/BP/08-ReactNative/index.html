@@ -1,0 +1,930 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>08. React Native</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+
+/* summary 태그의 기본 리스트 마커와 화살표를 제거 */
+summary {
+  list-style: none; /* 일부 브라우저 */
+}
+
+summary::-webkit-details-marker {
+  display: none; /* 크롬, 사파리 */
+}
+
+summary::marker {
+  content: none; /* 파이어폭스 등 */
+}
+
+/* 'properties' 클래스를 가진 요소는 화면에 표시하지 않음 */
+.properties {
+  display: none;
+}
+
+@media print {
+
+  @page:first {
+    size: 210mm 170mm;
+    margin: 20mm;
+  }
+
+  @page {
+    size: 210mm 1500mm;
+    margin: 20mm;
+  }
+
+  /* 인쇄 시 배경색과 이미지를 정확하게 출력하도록 설정 */
+  html, body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /*
+  헤더 영역: 페이지 중앙에 제목을 정렬
+  - min-height: @page 여백을 고려한 최소 높이 설정
+  - display: flex를 이용해 내용(제목)을 가로, 세로 중앙에 배치
+  */
+  header {
+    min-height: calc(100vh - 36mm);
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /*
+  'page-title' 클래스 스타일 (본문 타이틀)
+  - 글꼴 스타일: 굵기, 행간, 자간 설정
+  - 반응형 크기: 18pt~26pt 사이에서 뷰포트 너비에 따라 크기 조절
+  - break-after: page: 이 요소 다음에 페이지를 강제로 나눔
+  */
+  .page-title {
+    margin: 0;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: clamp(18pt, 3.6vw, 26pt);
+    letter-spacing: .01em;
+    position: relative;
+    padding: 2.4rem 0;
+    break-after: page;
+  }
+
+  /* 'page-title' 위에 큰 제목 추가 */
+  .page-title::before {
+    content: "초급프로젝트 (25-02)\A"; /* \A로 줄 바꿈 */
+    white-space: pre-line;
+    display: block;
+    font-weight: 900;
+    font-size: clamp(34pt, 7vw, 36pt);
+    letter-spacing: .02em;
+    margin-bottom: .65em;
+  }
+
+  /*
+  페이지 하단에 저자 정보 추가
+  - content: 이경수, 소속 학과, 연구실 정보
+  - position: absolute로 페이지 하단 중앙에 배치
+  */
+  body::after {
+	  content: "이경수 교수\A전북대학교 컴퓨터인공지능학부\AMedical AI & Computational Science (MacsLAB)";
+    white-space: pre-line;
+    position: absolute;
+    bottom: 1.5cm;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11pt;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /*
+  사용자 정의 변수 (CSS Custom Properties)
+  - --logo-w: 로고 너비/높이
+  - --gap-r: 로고 오른쪽 여백
+  - --line-t: 상단 라인 색상
+  - --line-b: 하단 라인 색상
+  */
+  :root {
+    --logo-w: 20mm;
+    --gap-r: 0mm;
+    --line-t: #B0411D;
+    --line-b: #7A1B7A;
+  }
+
+  summary {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 3.5svw !important;
+    font-weight: 1000;
+    letter-spacing: .02em;
+
+    background:
+      linear-gradient(var(--line-t), var(--line-t)) 40% top /
+      calc(100% - 30%) 4px no-repeat,
+      linear-gradient(var(--line-b), var(--line-b)) 60% bottom /
+      calc(70%) 4px no-repeat;
+
+    padding: 5mm 0;
+    margin-top: 1500mm;
+  }
+
+  /* 'summary' 오른쪽에 로고 이미지 추가 */
+  summary::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://jbnu.macs.or.kr/media/icon_hu006eacee63deb1d8999057a3cbfdb748_78083_192x192_fill_lanczos_center_3.png")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 왼쪽에 로고 이미지 추가 */
+  summary::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: calc(var(--logo-w) - 10px);
+    height: calc(var(--logo-w) - 10px);
+    background: url("https://yt3.ggpht.com/Ll7MRIxPn0zlTjxx_Jzzjv8MmxWWzJQYXRqnKtyxq81a2g0BbVCKIfL4IiHukmdXevzosjQM_Q=s68-c-k-c0x00ffffff-no-rj")
+      center/contain no-repeat;
+  }
+
+  /* 'summary' 다음 요소와의 간격 보장 */
+  summary + * {
+    margin-top: 15mm !important;
+  }
+
+  details:nth-of-type(n+2) summary {
+  	margin-top: 150px !important;
+	}
+	
+}
+
+	
+</style></head><body><article id="2b68e11f-9262-8059-ab28-daba39e696d8" class="page sans"><header><h1 class="page-title">08. React Native</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>날짜</th><td></td></tr></tbody></table></header><div class="page-body"><p id="2b68e11f-9262-80c8-afd1-d9e397cb7306" class="">
+</p><h1 id="2b68e11f-9262-80e5-8cbb-ccd46b778215" class="">1. Introduction</h1><p id="2b68e11f-9262-8074-b823-e6bf38bcac0a" class="">
+</p><h3 id="2b68e11f-9262-8044-8902-c8996cf4fc9e" class="">A. Installing Requirement</h3><ul id="2b68e11f-9262-8007-be52-f34a7c6ca13e" class="bulleted-list"><li style="list-style-type:disc">React native 앱은 js로만 이루어지지 않음</li></ul><ul id="2b68e11f-9262-80a7-b7b4-cbbfaf426006" class="bulleted-list"><li style="list-style-type:disc">앱에서 코드는 상대적으로 중요하지 않은 부분임</li></ul><ul id="2b68e11f-9262-8092-8583-d44a080a2123" class="bulleted-list"><li style="list-style-type:disc">React native 앱에서 가장 중요한 부분은 Bridge를 통해서 코드가 운영체제와 통신을 할 수 있도록 하는 것</li></ul><ul id="2b68e11f-9262-80af-b2f9-c60c8af97f10" class="bulleted-list"><li style="list-style-type:disc">즉 React native 앱을 다운 받을 때 js코드만 받는 것이 아닌 모든 기본시설이 있는 앱을 다운 받는 것</li></ul><ul id="2b68e11f-9262-8028-9b4d-def872795954" class="bulleted-list"><li style="list-style-type:disc">&gt;&gt; 그렇기에 Xcode와 java가 필요한 것</li></ul><p id="2b68e11f-9262-8027-aa89-c36732a9b04c" class=""><div class="indented"><figure id="2b68e11f-9262-807c-8781-f9793307e381" class="image"><a href="08%20React%20Native/image.png"><img style="width:549.984375px" src="08%20React%20Native/image.png"/></a></figure></div></p><p id="2b68e11f-9262-8098-95bf-f8a0f73a2213" class="">
+</p><ul id="2b68e11f-9262-8044-b0c9-d457863e8829" class="bulleted-list"><li style="list-style-type:disc">JS와 markup/styling을 제외하고 핸드폰에 설치할 앱은 기본시설을 모두 가짐</li></ul><ul id="2b68e11f-9262-8006-8531-ff654496714a" class="bulleted-list"><li style="list-style-type:disc">&gt;그래서 컴퓨터와 핸드폰의 앱을 연결시켜서 코드를 전송시킴 (즉 컴파일할 필요 없음!)</li></ul><p id="2b68e11f-9262-80b2-a28a-e23edf49b22d" class="">
+</p><h3 id="2b68e11f-9262-8004-a76d-e79410add881" class="">B. React Native의 동작 과정</h3><figure id="2b68e11f-9262-803e-9e83-de9588eec0bc" class="image"><a href="08%20React%20Native/image%201.png"><img style="width:575.9921875px" src="08%20React%20Native/image%201.png"/></a></figure><ul id="2b68e11f-9262-80d2-b89d-d82a177a30b8" class="bulleted-list"><li style="list-style-type:disc">ReactJS 웹사이트를 만들 때는 HTML을 만들고 ReactJS로 이동해서 브라우저가 실행됨</li></ul><ul id="2b68e11f-9262-80a4-88f5-e42096b364ac" class="bulleted-list"><li style="list-style-type:disc">React Native는 브라우저가 없음, Native는 인터페이스로 코드와 운영체제 사이 번역기 같은 존재임</li></ul><ul id="2b68e11f-9262-80fa-94da-c0c015ba3953" class="bulleted-list"><li style="list-style-type:disc">React Native는 운영체제(ios&amp;안드로이드)에게 버튼을 표시해달라는 요청을 함</li></ul><ul id="2b68e11f-9262-808e-90df-fa4f883696d3" class="bulleted-list"><li style="list-style-type:disc">버튼을 만드는 것은 운영체제의 역할이기에 ios와 안드로이드가 달리 표시됨</li></ul><ul id="2b68e11f-9262-80a5-8e07-d223c222fd83" class="bulleted-list"><li style="list-style-type:disc">React Native는 버튼을 만들지 않음, 그저 버튼을 만들어달라고 운영체제에게 메세지를 보낼 뿐</li></ul><p id="2b68e11f-9262-80d8-a47d-e6d47b61ab53" class=""><div class="indented"><figure id="2b68e11f-9262-8021-a92e-eee7f0ccd8ba" class="image"><a href="08%20React%20Native/image%202.png"><img style="width:549.984375px" src="08%20React%20Native/image%202.png"/></a></figure></div></p><p id="2b68e11f-9262-80db-a80f-c6a9b620d6ef" class="">
+</p><ul id="2b68e11f-9262-80e2-becf-f93579b7157b" class="bulleted-list"><li style="list-style-type:disc">native와 bridge 부분에서 우리는 그 어떤 코드도 작성할 필요 없음! 우리는 JS부분만 코드 작성!</li></ul><ul id="2b68e11f-9262-80c3-a435-ea95fdda7ab9" class="bulleted-list"><li style="list-style-type:disc"><strong>동작과정:</strong><ul id="2b68e11f-9262-80fa-9444-f5e3ef4d57b1" class="bulleted-list"><li style="list-style-type:circle">이벤트(ex. 버튼을 누른다)가 발생하면 native(운영체제)에서 기록함(화면 어디에서 event가 발생했나?, 눌려진 시간이 어느 정도인가?)</li></ul><ul id="2b68e11f-9262-8093-b0de-f184817e32be" class="bulleted-list"><li style="list-style-type:circle">-&gt; 그러면 native는 그 정보를 가지고 JSON 메세지를 생성함</li></ul><ul id="2b68e11f-9262-806d-b82e-c603ad5b4e22" class="bulleted-list"><li style="list-style-type:circle">-&gt; 우리의 코드는 그 메세지를 받게됨</li></ul><ul id="2b68e11f-9262-80b5-9c92-f6aed02e0d8e" class="bulleted-list"><li style="list-style-type:circle">-&gt; JS는 이벤트가 발생할 때 실행할 동작(코드)을 운영체제에 보냄</li></ul><ul id="2b68e11f-9262-807e-ae4f-ccfb85c7e7ce" class="bulleted-list"><li style="list-style-type:circle">-&gt; native에서 메세지를 받아서 UI를 업데이트함</li></ul></li></ul><p id="2b68e11f-9262-8013-8dc5-ed0b56a31472" class="">
+</p><p id="2b68e11f-9262-8030-9455-c584d69b8a5c" class="">
+</p><h1 id="2b68e11f-9262-80c5-a9c0-e5084bd52f23" class="">2. Rule of Native</h1><h3 id="2b68e11f-9262-803c-b5b2-c732d3193592" class="">A.  native는 웹사이트가 아님, 즉 HTML이 아니기에 div는 사용할 수 없음!</h3><p id="2b68e11f-9262-80fc-9676-dfb118052ed4" class="">
+</p><ul id="2b68e11f-9262-8037-be54-e92b790ad314" class="bulleted-list"><li style="list-style-type:disc">대신 View를 사용하여, 항상 import를 해줘야함!</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b68e11f-9262-80d3-8997-c7b2a61ebc4a" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">import { StyleSheet, Text, View } from &#x27;react-native&#x27;;</code></pre><ul id="2b68e11f-9262-80be-a46f-dcc2fb28ee1f" class="bulleted-list"><li style="list-style-type:disc">React Native에 있는 모든 text는 text component 에 들어가야함! span, p 같은 것 사용불가</li></ul><ul id="2b68e11f-9262-8080-bc97-f2abaeac6a82" class="bulleted-list"><li style="list-style-type:disc">View 내 style이 존재, 그런데 웹에서 사용하던 style 일부 사용 불가(CSS의 98% 사용 가능)</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b68e11f-9262-8018-a10a-e5510b66ae00" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: &#x27;#fff&#x27;,
+    alignItems: &#x27;center&#x27;,
+    justifyContent: &#x27;center&#x27;,
+  },
+});</code></pre><ul id="2b68e11f-9262-80b3-8720-ca3838695854" class="bulleted-list"><li style="list-style-type:disc">StyleSheet.create는 객체를 생성하는데 사용!</li></ul><ul id="2b68e11f-9262-80b4-8e74-d6f2846df13e" class="bulleted-list"><li style="list-style-type:disc">StyleSheet.create를 사용하는 이유는 좋은 자동완성 기능을 제공하기 때문</li></ul><p id="2b68e11f-9262-804f-a221-e4aaa661b595" class="">
+</p><h3 id="2b68e11f-9262-8022-92a4-ca17dbaad427" class="">B. React Native Packages</h3><ul id="2b68e11f-9262-8095-995d-c6212194f25a" class="bulleted-list"><li style="list-style-type:disc"><a href="https://reactnative.dev/">https://reactnative.dev/</a> </li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b68e11f-9262-8022-9661-cec6ceb7b186" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">import { StatusBar } from &#x27;expo-status-bar&#x27;;
+import { StyleSheet, Text, View } from &#x27;react-native&#x27;;</code></pre><ul id="2b68e11f-9262-8049-8e63-ea38f521543a" class="bulleted-list"><li style="list-style-type:disc">다른 컴포넌트와 다르게 따로 import 해서 사용하며, 과거에는 현재보다 많은 컴포넌트 존재. </li></ul><ul id="2b68e11f-9262-804d-b938-fbe371e2c61b" class="bulleted-list"><li style="list-style-type:disc">하지만 몇몇 컴포넌트는 정돈되지 않아서 수 많은 버그 발생 -&gt; 컴포넌트를 중요한 기능만 남겨둠</li></ul><p id="2b68e11f-9262-8010-a893-c0fc6aa2e0a5" class="">
+</p><h3 id="2b68e11f-9262-8079-84bd-ec24f64cd20a" class="">C. <strong>Component vs API</strong></h3><ul id="2b68e11f-9262-80fb-818b-d1f75f81b386" class="bulleted-list"><li style="list-style-type:disc">컴포넌트는 화면에 렌더링할 항목 (return 안에 있는 코드들을 렌더링함)</li></ul><ul id="2b68e11f-9262-80e2-b161-fb1980b7fa13" class="bulleted-list"><li style="list-style-type:disc">API는 자바스크립트 코드, 즉 운영체제와 소통하는 역할</li></ul><ul id="2b68e11f-9262-808b-9615-d06a0e46af30" class="bulleted-list"><li style="list-style-type:disc">&gt; 요점은 컴포넌트와 API를 이용해서 폰과 앱이 작동하는 방식을 변경할 수 있다는 것</li></ul><ul id="2b68e11f-9262-8026-a1e5-f4a59dc9260c" class="bulleted-list"><li style="list-style-type:disc">사라진 컴포넌트를 사용하기 위해서 <a href="https://reactnative.dev/">React Native</a>에서 찾아보면 커뮤니티 패키지를 사용하라고 알려줌</li></ul><ul id="2b68e11f-9262-8019-aa77-c1275f979cee" class="bulleted-list"><li style="list-style-type:disc"><a href="https://reactnative.directory/">React Native Directory</a> 커뮤니티 패키지에는 API와 third-party package 가 존재</li></ul><ul id="2b68e11f-9262-800a-8d07-f215c22c4243" class="bulleted-list"><li style="list-style-type:disc">(third-party package는 기본 API이외에 기업들이 만든 API, 많은 옵션을 제공, 하지만 만약에 문제가 존재한다면 커뮤니티가 고쳐지길 기다려야함<del>(만든 사람이 바쁠수도 있다)(커뮤니티에 의존하는 문제)</del>)</li></ul><ul id="2b68e11f-9262-80f7-ab3d-e0443edb9f40" class="bulleted-list"><li style="list-style-type:disc">Expo는 React Native가 지원하지 않는 몇몇 package가 매우 중요하다는 것을 깨닫고, 자체적으로 packages와 API를 만들기 시작함 -&gt; <a href="https://docs.expo.dev/versions/latest/">Expo SDK</a> 에서 찾을 수 있음</li></ul><ul id="2b68e11f-9262-80ee-99a9-cd426013ca75" class="bulleted-list"><li style="list-style-type:disc">&gt; 그래서 &#x27;expo-status-bar&#x27;가 존재했던 것</li></ul><ul id="2b68e11f-9262-8077-815e-ddd4d6aba81a" class="bulleted-list"><li style="list-style-type:disc">React Native가 제공하는 API를 일부 수정해서 커뮤니티에 제공한 것(함수 이름이 다르다거나 차이점 존재)</li></ul><ul id="2b68e11f-9262-8063-919a-f8bb9557debf" class="bulleted-list"><li style="list-style-type:disc">Expo에는 수많은 유용한 패키지가 존재함(지문인식, 구글로그인 등등등)</li></ul><p id="2b68e11f-9262-8081-bc82-fc07d5ec2e49" class="">
+</p><h3 id="2b68e11f-9262-801a-9591-cd43ba86dd50" class="">D. Layouts</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b68e11f-9262-8060-a99f-e710100f7ec3" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">//레이아웃을 배우기 위한 기본 설정
+import React from &quot;react&quot;;
+import { View } from &quot;react-native&quot;;
+
+export default function App(){
+  return (
+    &lt;View&gt;
+      &lt;View&gt;&lt;/View&gt;
+    &lt;/View&gt;
+  );
+}</code></pre><p id="2b68e11f-9262-80c7-addc-f8982b5d7ece" class="">
+</p><p id="2b68e11f-9262-807d-a1c8-d2055a3bd2d1" class=""><strong>FlexBox?</strong></p><ul id="2b68e11f-9262-8032-a4d3-dd650055959a" class="bulleted-list"><li style="list-style-type:disc">유동적으로 각 요소들을 배치하는 기법(다양한 전자기기는 각 화면 크기가 다른데, 각 화면에 맞는 배치를 일일히 계산할 필요 없이 Flexbox로 구현 가능)</li></ul><ul id="2b68e11f-9262-8029-90b5-d45d85f92c1d" class="bulleted-list"><li style="list-style-type:disc">웹에서는 flexbox를 적용하고 싶은 요소의 부모요소(flex container)에 다음 속성 추가<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b68e11f-9262-807c-ada7-e25365d8d6c0" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">display : flex;</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b68e11f-9262-802a-970d-fb8455148b69" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">import React from &quot;react&quot;;
+import { View } from &quot;react-native&quot;;
+
+export default function App(){
+  return (
+    &lt;View&gt;
+      &lt;View style={{width:100,height:100, backgroundColor:&quot;tomato&quot;}}&gt;&lt;/View&gt;
+      &lt;View style={{width:100,height:100, backgroundColor:&quot;teal&quot;}}&gt;&lt;/View&gt;
+      &lt;View style={{width:100,height:100, backgroundColor:&quot;orange&quot;}}&gt;&lt;/View&gt;
+    &lt;/View&gt;
+  );
+}</code></pre></li></ul><ul id="2b68e11f-9262-801a-934c-d2a2c903a549" class="bulleted-list"><li style="list-style-type:disc"><strong>웹과의 차이점</strong><ul id="2b68e11f-9262-8064-a56f-f0593f1dea6d" class="bulleted-list"><li style="list-style-type:circle">View에 flexContainer가 되라고 말할 필요가 없음</li></ul><ul id="2b68e11f-9262-800a-a4ea-eee3356fea2c" class="bulleted-list"><li style="list-style-type:circle">기본적으로 모든 View는 flexContainer임</li></ul><ul id="2b68e11f-9262-80bb-a508-daf726adb847" class="bulleted-list"><li style="list-style-type:circle">웹과 다르게 모바일에서는 기본값이 Column임(웹에서는 Row). 물론 원하는 경우 가로로 사용 가능 &lt;View style={{flexDirection:&quot;row&quot;}}&gt;</li></ul><ul id="2b68e11f-9262-809f-b775-e5e3cfe1cf03" class="bulleted-list"><li style="list-style-type:circle">만약 오버플로우가 발생하여 요소들이 화면 바깥으로 나가도 현재 상태에서는 스크롤할 수 없음!</li></ul></li></ul><p id="2b68e11f-9262-803e-805b-e0fece425013" class="">
+</p><h3 id="2b68e11f-9262-809a-a631-fbb67b3e6c17" class="">E. 반응형 디자인</h3><ul id="2b68e11f-9262-80b3-acf4-d1866e1936bc" class="bulleted-list"><li style="list-style-type:disc">앱을 보는 화면은 매우 크기가 다양하기에 너비와 높이에 기반하여 레이아웃을 만들지 않음 (width, height, px단위 사용 X)</li></ul><ul id="2b68e11f-9262-80dd-84fc-ca9f6a00089d" class="bulleted-list"><li style="list-style-type:disc">React Native에서는 비율로 레이아웃을 분배함<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2b68e11f-9262-8033-ade8-d14bd2b80c89" class="code code-wrap"><code class="language-TypeScript" style="white-space:pre-wrap;word-break:break-all">import React from &quot;react&quot;;
+import { View } from &quot;react-native&quot;;
+
+export default function App(){
+  return (
+    &lt;View style={{flex:1}}&gt;
+      &lt;View style={{flex:1,backgroundColor:&quot;tomato&quot;}}&gt;&lt;/View&gt;
+      &lt;View style={{flex:2,backgroundColor:&quot;teal&quot;}}&gt;&lt;/View&gt;
+      &lt;View style={{flex:1,backgroundColor:&quot;orange&quot;}}&gt;&lt;/View&gt;
+    &lt;/View&gt;
+  );
+}</code></pre><p id="2b68e11f-9262-80f3-8192-e9ac6945088f" class="">
+</p></li></ul><p id="2b68e11f-9262-80d4-9aff-c930ea7b4afa" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
