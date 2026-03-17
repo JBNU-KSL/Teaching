@@ -343,7 +343,7 @@
       </div>
       <table>
         <thead>
-          <tr><th>관점</th><th>학생이 배우는 내용</th><th>강의에서의 의미</th></tr>
+          <tr><th>관점</th><th>학생이 배우는 내용</th><th>의미</th></tr>
         </thead>
         <tbody>
           <tr><td>데이터 관점</td><td>데이터 유형, 메타데이터, 품질 확인 방법</td><td>데이터 읽기 능력 형성</td></tr>
@@ -391,7 +391,6 @@
           <tr><td>표준데이터셋</td><td>표준 컬럼 기반 데이터</td><td>기관 비교, 지역 비교, 통합 분석</td><td>비교 가능한 공통 구조</td><td>컬럼 의미 해석 필요성</td></tr>
         </tbody>
       </table>
-      <div class="callout">강의 구성 원칙: 파일데이터로 데이터 읽기 경험 확보 후 오픈API로 서비스 구현 경험 확장 방식</div>
     </section>
 
     <section class="slide">
@@ -471,7 +470,7 @@
       <h2>활용신청과 인증키 발급 절차</h2>
       <table>
         <thead>
-          <tr><th>단계</th><th>학생 수행 내용</th><th>강의 포인트</th></tr>
+          <tr><th>단계</th><th>수행 내용</th><th>주요 포인트</th></tr>
         </thead>
         <tbody>
           <tr><td>회원가입</td><td>포털 계정 생성</td><td>실습 준비 단계</td></tr>
@@ -518,7 +517,7 @@
           </ul>
         </div>
       </div>
-      <p class="muted">강의 핵심 역량: API 문서를 코드보다 먼저 읽는 능력</p>
+      <p class="muted">핵심 역량: API 문서를 코드보다 먼저 읽는 능력</p>
     </section>
 
     <section class="slide">
@@ -756,12 +755,12 @@ df.to_sql("streetlamp", conn, if_exists="replace", index=False)</code></pre>
         <div><strong>입출력 명시</strong> : 어떤 파일을 만들고 어떤 기능을 구현할지 선명하게 제시하는 방식</div>
         <div><strong>제약 조건 명시</strong> : UI 스타일, 환경변수명, 테이블명, 예외 처리, 주석 방식 등을 명시하는 방식</div>
       </div>
-      <div class="callout warn">강의 포인트: 좋은 프롬프트의 핵심은 길이가 아니라 요구사항의 구조화 수준</div>
+      <div class="callout warn">좋은 프롬프트의 핵심은 길이가 아니라 요구사항의 구조화 수준</div>
     </section>
 
     <section class="slide">
       <span class="kicker">Part 15 · Prompt Example</span>
-      <h2>강의 시연용 바이브 코딩 프롬프트 예시</h2>
+      <h2>바이브 코딩 프롬프트 예시</h2>
       <pre><code>전주시 가로등 정보 서비스를 활용한 Streamlit 앱을 Python으로 만들어줘.
 
 기술 스택:
@@ -796,7 +795,7 @@ df.to_sql("streetlamp", conn, if_exists="replace", index=False)</code></pre>
           </ul>
         </div>
         <div class="card">
-          <h3>강의 설명 포인트</h3>
+          <h3>핵심 포인트</h3>
           <ul>
             <li>모호한 표현보다 구체적 기능 열거 방식</li>
             <li>테이블명과 파일명까지 지정하는 재현성 확보 방식</li>
@@ -844,25 +843,6 @@ df.to_sql("streetlamp", conn, if_exists="replace", index=False)</code></pre>
           <p>인증키 설정과 실행 순서를 재현 가능한 형태로 정리한 안내 문서</p>
         </div>
       </div>
-    </section>
-
-    <section class="slide">
-      <span class="kicker">Part 18 · Teaching Plan</span>
-      <h2>강의 운영 흐름</h2>
-      <table>
-        <thead>
-          <tr><th>시간</th><th>학습 내용</th><th>핵심 산출물</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>0-15분</td><td>공공데이터포털 개요와 데이터 유형 설명</td><td>포털 구조 이해</td></tr>
-          <tr><td>15-30분</td><td>전주 사례 데이터 탐색과 상세 페이지 판독</td><td>요청변수와 응답항목 정리</td></tr>
-          <tr><td>30-50분</td><td>Python 요청 코드 작성과 XML 파싱</td><td>DataFrame 생성</td></tr>
-          <tr><td>50-80분</td><td>Streamlit 앱 기본 구조 구현</td><td>검색·지도·테이블 동작</td></tr>
-          <tr><td>80-100분</td><td>지표, 다운로드, 오류 처리 기능 추가</td><td>미니 데이터 서비스 완성</td></tr>
-          <tr><td>100분 이후</td><td>주제 확장과 프로젝트 아이디어 설계</td><td>팀 프로젝트 방향</td></tr>
-        </tbody>
-      </table>
-      <div class="callout warn">실습 안정성 확보 요소: 사전 계정 준비, 인증키 발급 안내, 네트워크 상태 점검, 대체 시연 데이터 준비</div>
     </section>
 
     <section class="slide">
