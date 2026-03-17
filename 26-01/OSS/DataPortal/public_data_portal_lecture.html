@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>공공데이터포털 활용과 Streamlit 실습</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <style>
+    :root {
+      --bg: #d7dde5;
+      --paper: #ffffff;
+      --ink: #18212c;
+      --ink-soft: #465467;
+      --line: #c9d3df;
+      --brand: #005a9c;
+      --brand-2: #007f73;
+      --brand-soft: #eef6fc;
+      --accent: #a54b12;
+      --accent-soft: #fff3ea;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+      --shadow: 0 10px 24px rgba(20, 31, 50, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      background: linear-gradient(180deg, #d5dbe4 0%, #e8edf3 100%);
+      color: var(--ink);
+      line-height: 1.72;
+    }
+
+    .deck {
+      width: min(1680px, 100%);
+      margin: 32px auto 120px;
+      padding: 0 18px;
+      display: grid;
+      gap: 28px;
+      justify-items: center;
+    }
+
+    .slide {
+      position: relative;
+      width: 100%;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 44px 56px 62px;
+      overflow: hidden;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 7px;
+      background: linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 55%, #5ca96b 100%);
+    }
+
+    .slide-number {
+      position: absolute;
+      right: 18px;
+      bottom: 14px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: #355274;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(240, 248, 255, 0.92);
+      border: 1px solid #c6d8eb;
+    }
+
+    .present-controls {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.82);
+      color: #f8fafc;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+      backdrop-filter: blur(6px);
+    }
+
+    .present-toggle {
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.09);
+      color: #f8fafc;
+      padding: 5px 11px;
+      font-family: var(--sans);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .present-status {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      opacity: 0.78;
+    }
+
+    body.presentation-mode {
+      overflow: hidden;
+      background: #0f172a;
+    }
+
+    body.presentation-mode .deck {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: block;
+    }
+
+    body.presentation-mode .slide {
+      display: none;
+      width: 100vw;
+      min-height: 100vh;
+      height: 100vh;
+      border: 0;
+      box-shadow: none;
+      padding: 26px 32px 70px;
+      overflow: auto;
+    }
+
+    body.presentation-mode .slide.active-slide {
+      display: block;
+    }
+
+    h1, h2, h3 { margin: 0 0 12px; line-height: 1.22; }
+    h1 { font-size: clamp(2.5rem, 5vw, 4.4rem); letter-spacing: -0.04em; }
+    h2 { font-size: clamp(1.7rem, 2.6vw, 2.45rem); letter-spacing: -0.03em; }
+    h3 { font-size: 1.08rem; }
+    p, li { font-size: 1rem; color: var(--ink-soft); }
+    strong { color: var(--ink); }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.94em;
+      background: #edf3fa;
+      color: #15436a;
+      padding: 0.08em 0.36em;
+      border-radius: 6px;
+    }
+
+    pre {
+      margin: 14px 0;
+      padding: 16px 18px;
+      border-radius: 12px;
+      background: #0f172a;
+      color: #e5edf8;
+      overflow: auto;
+      border: 1px solid #243247;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .title-slide {
+      min-height: 76vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background:
+        radial-gradient(circle at top right, rgba(0, 90, 156, 0.18), transparent 26%),
+        radial-gradient(circle at bottom left, rgba(0, 127, 115, 0.18), transparent 28%),
+        linear-gradient(180deg, #f4f7fb 0%, #eef3f8 100%);
+    }
+
+    .title-tag {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid #c8d7ea;
+      color: var(--brand);
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+
+    .title-slide .subtitle { font-size: clamp(1.05rem, 2vw, 1.3rem); color: #36506f; margin-bottom: 14px; }
+    .title-slide .meta { font-size: 1rem; color: #51657c; }
+
+    .kicker {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--brand);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.86rem;
+    }
+
+    .lead { font-size: 1.04rem; color: #31455d; }
+    .cols-2, .cols-3 { display: grid; gap: 18px; align-items: start; margin: 16px 0; }
+    .cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      background: linear-gradient(180deg, #fbfdff 0%, #f6f9fc 100%);
+      border: 1px solid #d6e0eb;
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+    }
+
+    .callout {
+      border-left: 5px solid var(--brand);
+      background: var(--brand-soft);
+      padding: 14px 18px;
+      margin: 14px 0;
+      color: #284565;
+    }
+
+    .warn { border-left-color: var(--accent); background: var(--accent-soft); color: #6f3818; }
+
+    .big-points { display: grid; gap: 12px; margin-top: 18px; }
+    .big-points div {
+      border: 1px solid #d8e2ee;
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: #fbfdff;
+    }
+
+    ul { margin: 10px 0 0 1.1em; padding: 0; }
+    li + li { margin-top: 8px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      border: 1px solid #d4dee9;
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf4fb;
+      color: #193a5e;
+      font-weight: 800;
+    }
+
+    .muted { color: #66788d; font-size: 0.93rem; }
+    .figure-caption { margin-top: 8px; color: #5e7084; font-size: 0.92rem; }
+    .flow-svg, .arch-svg { width: 100%; border: 1px solid #d7e1ec; border-radius: 16px; background: #fcfeff; margin-top: 14px; }
+    .tag {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #edf5ff;
+      color: #164674;
+      border: 1px solid #c9dbef;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 980px) {
+      .slide { padding: 34px 24px 58px; }
+      .cols-2, .cols-3 { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .deck { margin: 0; padding: 0; gap: 0; }
+      .slide { box-shadow: none; page-break-after: always; break-after: page; border: 1px solid #b7c7d7; }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+      .present-controls { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="present-controls">
+    <button class="present-toggle" id="presentToggle" type="button">Present</button>
+    <span class="present-status" id="presentStatus">Scroll mode</span>
+  </div>
+
+  <main class="deck">
+    <section class="slide title-slide">
+      <div>
+        <div class="title-tag">OPEN DATA PORTAL · PYTHON · STREAMLIT</div>
+        <h1>공공데이터포털 활용과<br>데이터 서비스 제작</h1>
+        <p class="subtitle">데이터 탐색, 활용신청, API 문서 해석, Python 처리, Streamlit 시각화의 통합 흐름</p>
+        <p class="meta">오픈소스소프트웨어 강의자료</p>
+        <p class="meta">실습 예시: 전북특별자치도 전주시 가로등 정보 서비스</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1 · Orientation</span>
+      <h2>공공데이터포털 학습 의의</h2>
+      <p class="lead">공공데이터포털 기반 학습의 핵심 의미는 실제 행정 데이터를 활용한 문제 정의, 데이터 해석, 서비스 구현의 통합 경험</p>
+      <div class="big-points">
+        <div><strong>현실 문제 기반 데이터 학습 환경</strong> : 교통, 안전, 복지, 문화, 환경, 행정 분야의 실제 데이터 기반 프로젝트 설계 가능성</div>
+        <div><strong>출처가 분명한 공공 데이터 자원</strong> : 제공기관, 갱신주기, 관리부서, 이용 조건 확인이 가능한 신뢰성 높은 데이터 환경</div>
+        <div><strong>파일데이터와 오픈API의 동시 경험 가능성</strong> : 정적 데이터 분석과 동적 데이터 서비스 구현을 함께 다룰 수 있는 교육 구조</div>
+        <div><strong>오픈소스 도구와의 높은 결합성</strong> : Python, pandas, requests, folium, Streamlit, GitHub와 자연스럽게 연결되는 실습 구조</div>
+      </div>
+      <div class="callout">핵심 메시지: 공공데이터포털 학습의 목적은 데이터 다운로드 자체가 아니라 데이터를 설명 가능한 서비스로 전환하는 역량 형성</div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2 · Definition</span>
+      <h2>공공데이터포털 개요</h2>
+      <div class="cols-2">
+        <div class="card">
+          <h3>포털의 기본 성격</h3>
+          <ul>
+            <li>공공기관이 개방한 데이터를 통합 제공하는 국가 차원의 데이터 허브</li>
+            <li>데이터 검색, 미리보기, 다운로드, 활용신청, 오픈API 문서 제공 기능의 통합 플랫폼</li>
+            <li>행정안전부와 한국지능정보사회진흥원 중심 운영 체계</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>수업과의 연결 지점</h3>
+          <ul>
+            <li>데이터 기반 문제 정의 훈련</li>
+            <li>문서 해석 능력 훈련</li>
+            <li>실제 외부 API 연동 경험</li>
+            <li>데이터 서비스 프로토타이핑 경험</li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr><th>관점</th><th>학생이 배우는 내용</th><th>강의에서의 의미</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>데이터 관점</td><td>데이터 유형, 메타데이터, 품질 확인 방법</td><td>데이터 읽기 능력 형성</td></tr>
+          <tr><td>개발 관점</td><td>API 호출, 응답 파싱, 예외 처리</td><td>실전 프로그래밍 경험</td></tr>
+          <tr><td>서비스 관점</td><td>검색, 필터, 시각화, 다운로드 기능 설계</td><td>사용자 중심 설계 경험</td></tr>
+          <tr><td>사회적 관점</td><td>공공 문제 해석, 정보 접근성, 데이터 활용 윤리</td><td>공공성 이해 확대</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3 · Reason</span>
+      <h2>공공데이터포털 활용 이유</h2>
+      <div class="cols-3">
+        <div class="card">
+          <h3>수업 소재 측면</h3>
+          <p>학생이 체감 가능한 지역 문제, 생활 문제, 행정 문제와 직접 연결되는 주제 자원</p>
+        </div>
+        <div class="card">
+          <h3>기술 학습 측면</h3>
+          <p>단순 문법 연습을 넘어 외부 데이터 소스 연결, 구조 해석, 시각화까지 이어지는 실전형 학습 구조</p>
+        </div>
+        <div class="card">
+          <h3>프로젝트 측면</h3>
+          <p>학기 프로젝트, 팀 프로젝트, 캡스톤 아이디어로 확장 가능한 주제 다양성</p>
+        </div>
+      </div>
+      <div class="big-points">
+        <div><strong>이론과 실습의 연결성</strong> : 데이터 구조, 네트워크 요청, JSON/XML, 예외 처리, 사용자 인터페이스를 하나의 사례로 묶을 수 있는 연결성</div>
+        <div><strong>재현 가능한 실습 구조</strong> : 동일 포털, 동일 문서, 동일 엔드포인트 기반의 반복 가능한 실습 환경</div>
+        <div><strong>공공성 기반 스토리텔링 가능성</strong> : 단순 시각화보다 서비스의 필요성과 사용자를 설명하기 쉬운 프로젝트 환경</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 4 · Data Types</span>
+      <h2>공공데이터포털 데이터 유형 분류</h2>
+      <table>
+        <thead>
+          <tr><th>유형</th><th>형태</th><th>적합한 수업 활동</th><th>주요 장점</th><th>유의점</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>파일데이터</td><td>CSV, XLSX, ZIP 등</td><td>EDA, 정제, 기본 시각화</td><td>진입장벽이 낮은 데이터 형태</td><td>실시간성 제한 가능성</td></tr>
+          <tr><td>오픈API</td><td>REST, XML, JSON 등</td><td>검색 서비스, 대시보드, 앱 제작</td><td>동적 호출과 사용자 입력 연결 가능성</td><td>인증키와 문서 해석 필요성</td></tr>
+          <tr><td>표준데이터셋</td><td>표준 컬럼 기반 데이터</td><td>기관 비교, 지역 비교, 통합 분석</td><td>비교 가능한 공통 구조</td><td>컬럼 의미 해석 필요성</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">강의 구성 원칙: 파일데이터로 데이터 읽기 경험 확보 후 오픈API로 서비스 구현 경험 확장 방식</div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 5 · Search</span>
+      <h2>데이터 탐색 절차</h2>
+      <svg class="flow-svg" viewBox="0 0 1200 248" role="img" aria-label="데이터 탐색 절차">
+        <rect x="34" y="70" width="170" height="104" rx="18" fill="#eef5fd" stroke="#93b5db"/>
+        <text x="119" y="110" text-anchor="middle" font-size="27" font-weight="700" fill="#1e4775">검색</text>
+        <text x="119" y="140" text-anchor="middle" font-size="17" fill="#35587e">키워드 입력</text>
+        <rect x="246" y="70" width="180" height="104" rx="18" fill="#eefaf7" stroke="#93cfbf"/>
+        <text x="336" y="110" text-anchor="middle" font-size="27" font-weight="700" fill="#1e635a">선별</text>
+        <text x="336" y="140" text-anchor="middle" font-size="17" fill="#2f665f">기관·유형 확인</text>
+        <rect x="468" y="70" width="180" height="104" rx="18" fill="#fff6ea" stroke="#e0bd95"/>
+        <text x="558" y="110" text-anchor="middle" font-size="27" font-weight="700" fill="#7a4f20">판독</text>
+        <text x="558" y="140" text-anchor="middle" font-size="17" fill="#865f35">설명·컬럼 확인</text>
+        <rect x="690" y="70" width="180" height="104" rx="18" fill="#f2efff" stroke="#c1b0ec"/>
+        <text x="780" y="110" text-anchor="middle" font-size="27" font-weight="700" fill="#4e368d">신청</text>
+        <text x="780" y="140" text-anchor="middle" font-size="17" fill="#5d4a92">활용신청 진행</text>
+        <rect x="912" y="70" width="246" height="104" rx="18" fill="#edf9ef" stroke="#98d3a2"/>
+        <text x="1035" y="110" text-anchor="middle" font-size="27" font-weight="700" fill="#266138">실습 연결</text>
+        <text x="1035" y="140" text-anchor="middle" font-size="17" fill="#367046">코드·시각화 구현</text>
+        <line x1="204" y1="122" x2="246" y2="122" stroke="#5a7391" stroke-width="4"/><polygon points="246,122 232,113 232,131" fill="#5a7391"/>
+        <line x1="426" y1="122" x2="468" y2="122" stroke="#5a7391" stroke-width="4"/><polygon points="468,122 454,113 454,131" fill="#5a7391"/>
+        <line x1="648" y1="122" x2="690" y2="122" stroke="#5a7391" stroke-width="4"/><polygon points="690,122 676,113 676,131" fill="#5a7391"/>
+        <line x1="870" y1="122" x2="912" y2="122" stroke="#5a7391" stroke-width="4"/><polygon points="912,122 898,113 898,131" fill="#5a7391"/>
+      </svg>
+      <div class="cols-2">
+        <div class="card">
+          <h3>검색어 설계 기준</h3>
+          <ul>
+            <li>지역명 + 주제 조합 방식</li>
+            <li>기관명 + 서비스명 조합 방식</li>
+            <li>행정 용어와 생활 용어 병행 방식</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>선별 기준</h3>
+          <ul>
+            <li>최종 수정일과 기준일 확인</li>
+            <li>제공기관과 관리부서 확인</li>
+            <li>오픈API 여부와 활용신청 가능 여부 확인</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6 · Reading Metadata</span>
+      <h2>데이터셋 상세 페이지 판독 요소</h2>
+      <div class="cols-2">
+        <div class="card">
+          <h3>반드시 확인할 메타데이터</h3>
+          <ul>
+            <li>제목과 설명</li>
+            <li>분류체계</li>
+            <li>제공기관과 관리부서</li>
+            <li>갱신주기와 데이터 기준일</li>
+            <li>이용허락 범위</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>개발자가 반드시 확인할 기술 정보</h3>
+          <ul>
+            <li>서비스 URL</li>
+            <li>요청변수 명세</li>
+            <li>응답 항목 명세</li>
+            <li>샘플 데이터</li>
+            <li>활용 가이드 문서 유무</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout warn">자주 발생하는 오류 원인: 제목만 보고 선택, 응답 구조 미확인, 데이터 기준일 미확인, 위치 좌표 유무 미확인, 인증 방식 미확인</div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 7 · Application</span>
+      <h2>활용신청과 인증키 발급 절차</h2>
+      <table>
+        <thead>
+          <tr><th>단계</th><th>학생 수행 내용</th><th>강의 포인트</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>회원가입</td><td>포털 계정 생성</td><td>실습 준비 단계</td></tr>
+          <tr><td>데이터 선택</td><td>사용할 API 또는 파일데이터 결정</td><td>주제 적합성 판단 단계</td></tr>
+          <tr><td>활용신청</td><td>오픈API 활용 목적 입력</td><td>서비스 기획 의도 정리 단계</td></tr>
+          <tr><td>승인 확인</td><td>즉시 승인 또는 승인 대기 확인</td><td>실습 일정 관리 포인트</td></tr>
+          <tr><td>인증키 발급</td><td>서비스 호출용 키 확보</td><td>환경변수 관리와 보안 포인트</td></tr>
+        </tbody>
+      </table>
+      <div class="big-points">
+        <div><strong>실습 운영상 중요 사항</strong> : 수업 전 인증키 발급 안내 또는 실습 계정 사전 준비 필요성</div>
+        <div><strong>보안 원칙</strong> : 인증키의 코드 하드코딩 금지, 환경변수 또는 비밀값 입력창 활용 방식</div>
+        <div><strong>재현성 원칙</strong> : API 키를 제외한 실행 절차와 의존성은 README에 명시하는 방식</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 8 · API Literacy</span>
+      <h2>오픈API 문서 해석 요소</h2>
+      <pre><code>Endpoint
+|- 인증 방식 확인
+|- 필수 파라미터 확인
+|- 선택 파라미터 확인
+|- 응답 구조 확인
+`- 오류 코드 확인</code></pre>
+      <div class="cols-2">
+        <div class="card">
+          <h3>필수 확인 항목</h3>
+          <ul>
+            <li>요청 주소</li>
+            <li>인증 파라미터명</li>
+            <li>페이지 관련 파라미터명</li>
+            <li>검색 조건 파라미터명</li>
+            <li>응답 코드와 메시지 항목명</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>수업에서 반드시 시연할 내용</h3>
+          <ul>
+            <li>Swagger 또는 상세기능 탭에서 파라미터 읽기</li>
+            <li>필수값 누락 시 오류 발생 사례</li>
+            <li>성공 코드와 실패 코드 비교 사례</li>
+            <li>응답 XML 또는 JSON에서 필요한 필드 추출 방식</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted">강의 핵심 역량: API 문서를 코드보다 먼저 읽는 능력</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 9 · Example</span>
+      <h2>실습 예시 데이터셋: 전북특별자치도 전주시 가로등 정보 서비스</h2>
+      <div class="cols-2">
+        <div class="card">
+          <h3>선정 이유</h3>
+          <ul>
+            <li>전주 지역 기반 사례 구성 가능성</li>
+            <li>공공 안전과 생활 인프라 주제 적합성</li>
+            <li>위도와 경도 포함 데이터의 지도 시각화 적합성</li>
+            <li>서비스형 앱 예제로 확장하기 쉬운 데이터 구조</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>공식 문서 기준 핵심 정보</h3>
+          <ul>
+            <li>서비스명: 전북특별자치도 전주시_가로등 정보 서비스</li>
+            <li>서비스 URL: <code>http://openapi.jeonju.go.kr/rest/streetlamp/getStreetlamp</code></li>
+            <li>인증 파라미터: <code>authApiKey</code></li>
+            <li>페이지 파라미터: <code>startPage</code>, <code>pageSize</code></li>
+            <li>검색 파라미터: <code>boxNm</code></li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr><th>응답 항목</th><th>의미</th><th>앱에서의 활용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>boxNm</code></td><td>분전함명</td><td>검색 키워드와 그룹화 기준</td></tr>
+          <tr><td><code>lampCnt</code></td><td>등 개수</td><td>지표 계산과 분포 분석</td></tr>
+          <tr><td><code>poleNum</code></td><td>등주번호</td><td>개별 위치 구분 값</td></tr>
+          <tr><td><code>posx</code>, <code>posy</code></td><td>경도, 위도</td><td>지도 시각화 기준</td></tr>
+          <tr><td><code>resultCode</code>, <code>resultMsg</code></td><td>요청 결과</td><td>오류 처리와 디버깅 기준</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 10 · Pipeline</span>
+      <h2>Python 처리와 데이터 파이프라인</h2>
+      <svg class="flow-svg" viewBox="0 0 1240 260" role="img" aria-label="Python과 SQLite 파이프라인">
+        <rect x="26" y="76" width="188" height="110" rx="18" fill="#eef5fd" stroke="#93b5db"/>
+        <text x="120" y="116" text-anchor="middle" font-size="27" font-weight="700" fill="#1e4775">수집</text>
+        <text x="120" y="148" text-anchor="middle" font-size="17" fill="#35587e">requests 호출</text>
+
+        <rect x="258" y="76" width="188" height="110" rx="18" fill="#eefaf7" stroke="#93cfbf"/>
+        <text x="352" y="116" text-anchor="middle" font-size="27" font-weight="700" fill="#1e635a">검증</text>
+        <text x="352" y="148" text-anchor="middle" font-size="17" fill="#2f665f">resultCode 확인</text>
+
+        <rect x="490" y="76" width="188" height="110" rx="18" fill="#fff6ea" stroke="#e0bd95"/>
+        <text x="584" y="116" text-anchor="middle" font-size="27" font-weight="700" fill="#7a4f20">파싱</text>
+        <text x="584" y="148" text-anchor="middle" font-size="17" fill="#865f35">XML 추출</text>
+
+        <rect x="722" y="76" width="188" height="110" rx="18" fill="#f2efff" stroke="#c1b0ec"/>
+        <text x="816" y="116" text-anchor="middle" font-size="27" font-weight="700" fill="#4e368d">정제</text>
+        <text x="816" y="148" text-anchor="middle" font-size="17" fill="#5d4a92">DataFrame 변환</text>
+
+        <rect x="954" y="76" width="256" height="110" rx="18" fill="#edf9ef" stroke="#98d3a2"/>
+        <text x="1082" y="116" text-anchor="middle" font-size="27" font-weight="700" fill="#266138">저장 및 서비스</text>
+        <text x="1082" y="148" text-anchor="middle" font-size="17" fill="#367046">SQLite 저장 후 Streamlit 제공</text>
+
+        <line x1="214" y1="132" x2="258" y2="132" stroke="#5a7391" stroke-width="4"/><polygon points="258,132 244,123 244,141" fill="#5a7391"/>
+        <line x1="446" y1="132" x2="490" y2="132" stroke="#5a7391" stroke-width="4"/><polygon points="490,132 476,123 476,141" fill="#5a7391"/>
+        <line x1="678" y1="132" x2="722" y2="132" stroke="#5a7391" stroke-width="4"/><polygon points="722,132 708,123 708,141" fill="#5a7391"/>
+        <line x1="910" y1="132" x2="954" y2="132" stroke="#5a7391" stroke-width="4"/><polygon points="954,132 940,123 940,141" fill="#5a7391"/>
+      </svg>
+      <pre><code>import os
+import requests
+import xml.etree.ElementTree as ET
+import pandas as pd
+import sqlite3
+
+url = "http://openapi.jeonju.go.kr/rest/streetlamp/getStreetlamp"
+params = {
+    "authApiKey": os.environ["JEONJU_API_KEY"],
+    "startPage": 1,
+    "pageSize": 50,
+}
+
+response = requests.get(url, params=params, timeout=30)
+root = ET.fromstring(response.text)
+result_code = root.findtext(".//resultCode")
+result_msg = root.findtext(".//resultMsg")
+
+conn = sqlite3.connect("jeonju_lights.db")
+df.to_sql("streetlamp", conn, if_exists="replace", index=False)</code></pre>
+      <p class="muted">설명 포인트: 외부 데이터 수집, 구조 해석, 정제, 로컬 데이터베이스 저장, UI 연결의 순차적 파이프라인</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 11 · Architecture</span>
+      <h2>Streamlit + Python + SQLite 전체 구조도</h2>
+      <svg class="arch-svg" viewBox="0 0 1320 430" role="img" aria-label="Streamlit Python SQLite 전체 구조도">
+        <rect x="40" y="134" width="210" height="140" rx="20" fill="#eef5fd" stroke="#8fb4da"/>
+        <text x="145" y="176" text-anchor="middle" font-size="30" font-weight="700" fill="#1d4774">공공데이터포털</text>
+        <text x="145" y="210" text-anchor="middle" font-size="18" fill="#3c5f84">OpenAPI 문서</text>
+        <text x="145" y="236" text-anchor="middle" font-size="18" fill="#3c5f84">전주시 가로등 정보</text>
+
+        <rect x="300" y="76" width="270" height="256" rx="20" fill="#fff4ea" stroke="#ddb58b"/>
+        <text x="435" y="120" text-anchor="middle" font-size="30" font-weight="700" fill="#7b4a1d">Python 수집 계층</text>
+        <text x="435" y="158" text-anchor="middle" font-size="18" fill="#875a34">requests 호출</text>
+        <text x="435" y="184" text-anchor="middle" font-size="18" fill="#875a34">XML 파싱</text>
+        <text x="435" y="210" text-anchor="middle" font-size="18" fill="#875a34">예외 처리</text>
+        <text x="435" y="236" text-anchor="middle" font-size="18" fill="#875a34">pandas 정제</text>
+        <text x="435" y="262" text-anchor="middle" font-size="18" fill="#875a34">정기 갱신 스크립트</text>
+
+        <rect x="620" y="134" width="230" height="140" rx="20" fill="#f2efff" stroke="#c1b0ec"/>
+        <text x="735" y="176" text-anchor="middle" font-size="30" font-weight="700" fill="#523991">SQLite</text>
+        <text x="735" y="210" text-anchor="middle" font-size="18" fill="#664ea1">streetlamp 테이블</text>
+        <text x="735" y="236" text-anchor="middle" font-size="18" fill="#664ea1">로컬 캐시와 조회용 저장소</text>
+
+        <rect x="900" y="76" width="270" height="256" rx="20" fill="#edf9ef" stroke="#93cf9d"/>
+        <text x="1035" y="120" text-anchor="middle" font-size="30" font-weight="700" fill="#2b6b3c">Streamlit 서비스 계층</text>
+        <text x="1035" y="158" text-anchor="middle" font-size="18" fill="#427951">SQLite 조회</text>
+        <text x="1035" y="184" text-anchor="middle" font-size="18" fill="#427951">검색과 필터</text>
+        <text x="1035" y="210" text-anchor="middle" font-size="18" fill="#427951">지표와 차트</text>
+        <text x="1035" y="236" text-anchor="middle" font-size="18" fill="#427951">지도와 테이블</text>
+        <text x="1035" y="262" text-anchor="middle" font-size="18" fill="#427951">CSV 다운로드</text>
+
+        <rect x="1220" y="134" width="70" height="140" rx="20" fill="#e9f3ff" stroke="#a9c4e3"/>
+        <text x="1255" y="178" text-anchor="middle" font-size="24" font-weight="700" fill="#32567f">학</text>
+        <text x="1255" y="210" text-anchor="middle" font-size="24" font-weight="700" fill="#32567f">생</text>
+        <text x="1255" y="242" text-anchor="middle" font-size="24" font-weight="700" fill="#32567f">사</text>
+        <text x="1255" y="274" text-anchor="middle" font-size="24" font-weight="700" fill="#32567f">용</text>
+
+        <line x1="250" y1="204" x2="300" y2="204" stroke="#5f7898" stroke-width="4"/><polygon points="300,204 285,195 285,213" fill="#5f7898"/>
+        <line x1="570" y1="204" x2="620" y2="204" stroke="#5f7898" stroke-width="4"/><polygon points="620,204 605,195 605,213" fill="#5f7898"/>
+        <line x1="850" y1="204" x2="900" y2="204" stroke="#5f7898" stroke-width="4"/><polygon points="900,204 885,195 885,213" fill="#5f7898"/>
+        <line x1="1170" y1="204" x2="1220" y2="204" stroke="#5f7898" stroke-width="4"/><polygon points="1220,204 1205,195 1205,213" fill="#5f7898"/>
+
+        <path d="M1035,332 C1035,370 735,386 435,332" fill="none" stroke="#8fa6c1" stroke-width="3" stroke-dasharray="10 8"/>
+        <text x="732" y="404" text-anchor="middle" font-size="17" fill="#56718e">필요 시 Python 갱신 스크립트 재실행 구조</text>
+      </svg>
+      <table>
+        <thead>
+          <tr><th>계층</th><th>역할</th><th>수업 설명 포인트</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>공공데이터포털</td><td>원천 데이터와 문서 제공</td><td>API 문서 읽기와 파라미터 해석의 출발점</td></tr>
+          <tr><td>Python 수집 계층</td><td>수집, 파싱, 정제, 저장</td><td>백엔드 로직과 데이터 엔지니어링의 기초 구조</td></tr>
+          <tr><td>SQLite</td><td>로컬 저장과 빠른 재조회</td><td>반복 API 호출 감소, 오프라인 실습 안정성 확보</td></tr>
+          <tr><td>Streamlit 서비스 계층</td><td>조회, 분석, 시각화, 다운로드</td><td>사용자 인터페이스와 데이터 서비스 구현 구조</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">구조 설계 원칙: 수집과 저장은 Python 계층 담당, 조회와 표현은 Streamlit 계층 담당, SQLite는 두 계층 사이의 완충 저장소 역할</div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 12 · SQLite</span>
+      <h2>SQLite를 수업에 넣는 이유</h2>
+      <div class="cols-2">
+        <div class="card">
+          <h3>학습 측면 장점</h3>
+          <ul>
+            <li>설치와 실행 부담이 낮은 로컬 데이터베이스</li>
+            <li>CSV 수준을 넘어선 테이블 기반 데이터 관리 경험</li>
+            <li>SQL 조회와 Python 분석의 연결 경험</li>
+            <li>데이터 저장과 서비스 조회 분리 경험</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>실습 운영 측면 장점</h3>
+          <ul>
+            <li>API 호출 실패 시에도 저장된 데이터 기반 시연 가능성</li>
+            <li>반복 호출 감소를 통한 속도 개선 효과</li>
+            <li>학생별 로컬 실습 환경 구성 용이성</li>
+            <li>추가 테이블과 로그 테이블 확장 용이성</li>
+          </ul>
+        </div>
+      </div>
+      <pre><code>CREATE TABLE streetlamp (
+    seq INTEGER,
+    boxNm TEXT,
+    lampCnt INTEGER,
+    poleNum TEXT,
+    posx REAL,
+    posy REAL,
+    baseDate TEXT,
+    collected_at TEXT
+);</code></pre>
+      <p class="muted">권장 설명 방식: API는 원천 데이터 공급자, SQLite는 수업용 저장소, Streamlit은 서비스 화면이라는 역할 구분 방식</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 13 · App Design</span>
+      <h2>앱 기능 구성안</h2>
+      <div class="cols-3">
+        <div class="card">
+          <h3>입력 영역</h3>
+          <ul>
+            <li>인증키 입력</li>
+            <li>페이지 크기 선택</li>
+            <li>분전함명 검색</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>출력 영역</h3>
+          <ul>
+            <li>총 가로등 수 지표</li>
+            <li>분전함별 집계 차트</li>
+            <li>지도 기반 위치 시각화</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>학습 영역</h3>
+          <ul>
+            <li>원본 응답 확인 패널</li>
+            <li>CSV 다운로드 기능</li>
+            <li>오류 메시지 확인 기능</li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr><th>기능</th><th>사용 목적</th><th>수업 효과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>사이드바 입력</td><td>파라미터 변경</td><td>API 문서와 UI의 연결 이해</td></tr>
+          <tr><td>지표 카드</td><td>요약 정보 전달</td><td>원시 데이터를 서비스 지표로 전환하는 경험</td></tr>
+          <tr><td>지도</td><td>위치 정보 전달</td><td>공간 데이터 해석 경험</td></tr>
+          <tr><td>원본 응답 패널</td><td>디버깅과 학습</td><td>응답 구조 읽기 훈련</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 14 · Vibe Coding</span>
+      <h2>바이브 코딩 프롬프트 설계 원칙</h2>
+      <div class="big-points">
+        <div><strong>역할 부여</strong> : 어떤 개발자 역할로 응답해야 하는지 먼저 지정하는 방식</div>
+        <div><strong>기술 스택 명시</strong> : Streamlit, Python, SQLite, requests, pandas 등 사용 기술을 구체화하는 방식</div>
+        <div><strong>입출력 명시</strong> : 어떤 파일을 만들고 어떤 기능을 구현할지 선명하게 제시하는 방식</div>
+        <div><strong>제약 조건 명시</strong> : UI 스타일, 환경변수명, 테이블명, 예외 처리, 주석 방식 등을 명시하는 방식</div>
+      </div>
+      <div class="callout warn">강의 포인트: 좋은 프롬프트의 핵심은 길이가 아니라 요구사항의 구조화 수준</div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 15 · Prompt Example</span>
+      <h2>강의 시연용 바이브 코딩 프롬프트 예시</h2>
+      <pre><code>전주시 가로등 정보 서비스를 활용한 Streamlit 앱을 Python으로 만들어줘.
+
+기술 스택:
+- Python
+- Streamlit
+- SQLite
+- requests
+- pandas
+
+요구사항:
+- 공공데이터포털의 전주시 가로등 정보 서비스 API를 사용
+- 환경변수 이름은 JEONJU_API_KEY 사용
+- API에서 받은 XML 데이터를 파싱해서 pandas DataFrame으로 변환
+- SQLite 데이터베이스 파일 이름은 jeonju_lights.db 사용
+- streetlamp 테이블 생성 후 데이터 저장
+- Streamlit 화면에서 분전함명 검색, 건수 지표, 지도 시각화, 테이블 조회, CSV 다운로드 기능 제공
+- API 오류 시 resultCode와 resultMsg를 사용자에게 보여주는 구조
+- 코드 파일은 app.py 하나로 먼저 작성
+- 초보 학생이 읽을 수 있게 함수 단위로 나누고 주석은 최소한으로 작성
+
+출력 형식:
+- 실행 가능한 전체 코드
+- 필요한 pip 패키지 목록
+- 실행 방법 설명</code></pre>
+      <div class="cols-2">
+        <div class="card">
+          <h3>이 프롬프트의 장점</h3>
+          <ul>
+            <li>기술 스택과 출력물이 명확한 구조</li>
+            <li>저장소와 UI 요구사항이 동시에 포함된 구조</li>
+            <li>학생 수준을 고려한 난이도 제어 구조</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>강의 설명 포인트</h3>
+          <ul>
+            <li>모호한 표현보다 구체적 기능 열거 방식</li>
+            <li>테이블명과 파일명까지 지정하는 재현성 확보 방식</li>
+            <li>오류 처리 요구를 먼저 넣는 안정성 확보 방식</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 16 · Prompt Upgrade</span>
+      <h2>프롬프트 고도화 방식</h2>
+      <table>
+        <thead>
+          <tr><th>초기 프롬프트</th><th>문제점</th><th>개선 방향</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>공공데이터포털로 앱 만들어줘</td><td>주제, 스택, 출력물 불명확성</td><td>지역, 데이터셋, 기술 스택, 기능 명시 방식</td></tr>
+          <tr><td>전주 데이터로 대시보드 만들어줘</td><td>저장 구조와 오류 처리 부재</td><td>SQLite 저장, 예외 처리, 환경변수명 명시 방식</td></tr>
+          <tr><td>Streamlit 예제 코드 작성</td><td>학습 수준과 제약 조건 부재</td><td>초보자용, 함수 분리, 단일 파일 등 제약 추가 방식</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">바이브 코딩 실습 운영 방식: 1차 프롬프트 생성, 2차 수정 요청, 3차 오류 보정 요청의 반복 구조</div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 17 · Folder</span>
+      <h2>실습 예제 폴더 구조</h2>
+      <pre><code>DataPortal/
+|- public_data_portal_lecture.html
+`- examples/
+   `- hanam_crosswalk_dashboard/
+      |- app.py
+      |- jeonju_lights.db
+      |- README.md
+      `- requirements.txt</code></pre>
+      <p class="muted">폴더명은 기존 저장소 구조 유지 목적의 예외적 요소, 내부 예제 내용은 전주시 가로등 정보 서비스 기준 구성</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3><code>app.py</code></h3>
+          <p>요청, 파싱, 정제, 시각화까지 확인 가능한 핵심 실습 파일</p>
+        </div>
+        <div class="card">
+          <h3><code>README.md</code></h3>
+          <p>인증키 설정과 실행 순서를 재현 가능한 형태로 정리한 안내 문서</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 18 · Teaching Plan</span>
+      <h2>강의 운영 흐름</h2>
+      <table>
+        <thead>
+          <tr><th>시간</th><th>학습 내용</th><th>핵심 산출물</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0-15분</td><td>공공데이터포털 개요와 데이터 유형 설명</td><td>포털 구조 이해</td></tr>
+          <tr><td>15-30분</td><td>전주 사례 데이터 탐색과 상세 페이지 판독</td><td>요청변수와 응답항목 정리</td></tr>
+          <tr><td>30-50분</td><td>Python 요청 코드 작성과 XML 파싱</td><td>DataFrame 생성</td></tr>
+          <tr><td>50-80분</td><td>Streamlit 앱 기본 구조 구현</td><td>검색·지도·테이블 동작</td></tr>
+          <tr><td>80-100분</td><td>지표, 다운로드, 오류 처리 기능 추가</td><td>미니 데이터 서비스 완성</td></tr>
+          <tr><td>100분 이후</td><td>주제 확장과 프로젝트 아이디어 설계</td><td>팀 프로젝트 방향</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">실습 안정성 확보 요소: 사전 계정 준비, 인증키 발급 안내, 네트워크 상태 점검, 대체 시연 데이터 준비</div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 19 · Expansion</span>
+      <h2>확장 가능 주제</h2>
+      <div class="cols-2">
+        <div class="card">
+          <h3>주제 확장 방향</h3>
+          <ul>
+            <li>전주 교통 안전 인프라 탐색 서비스</li>
+            <li>전주 문화시설 위치 탐색 서비스</li>
+            <li>전주 생활 편의시설 비교 서비스</li>
+            <li>전주 환경 데이터 모니터링 서비스</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>기술 확장 방향</h3>
+          <ul>
+            <li>캐싱과 세션 상태 활용</li>
+            <li>지도 라이브러리 확장</li>
+            <li>다중 API 결합 구조</li>
+            <li>배포와 협업 구조 연결</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">최종 학습 목표: 공공데이터포털의 데이터를 읽고, 해석하고, 가공하고, 사용 가능한 인터페이스로 전환하는 역량 형성</div>
+    </section>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const presentToggle = document.getElementById("presentToggle");
+    const presentStatus = document.getElementById("presentStatus");
+    let currentSlide = 0;
+
+    slides.forEach((slide, index) => {
+      const number = document.createElement("div");
+      number.className = "slide-number";
+      number.textContent = `${index + 1} / ${slides.length}`;
+      slide.appendChild(number);
+    });
+
+    function syncPresentationView() {
+      const presentationMode = document.body.classList.contains("presentation-mode");
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("active-slide", presentationMode && index === currentSlide);
+      });
+      presentStatus.textContent = presentationMode ? `Slide ${currentSlide + 1}/${slides.length}` : "Scroll mode";
+    }
+
+    function setPresentationMode(enabled) {
+      document.body.classList.toggle("presentation-mode", enabled);
+      if (enabled) currentSlide = Math.min(currentSlide, slides.length - 1);
+      syncPresentationView();
+    }
+
+    presentToggle.addEventListener("click", () => {
+      setPresentationMode(!document.body.classList.contains("presentation-mode"));
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (!document.body.classList.contains("presentation-mode")) {
+        if (event.key === "p" || event.key === "P") {
+          event.preventDefault();
+          setPresentationMode(true);
+        }
+        return;
+      }
+      if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        currentSlide = Math.min(currentSlide + 1, slides.length - 1);
+        syncPresentationView();
+      } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) {
+        event.preventDefault();
+        currentSlide = Math.max(currentSlide - 1, 0);
+        syncPresentationView();
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        setPresentationMode(false);
+      }
+    });
+
+    syncPresentationView();
+  </script>
+</body>
+</html>

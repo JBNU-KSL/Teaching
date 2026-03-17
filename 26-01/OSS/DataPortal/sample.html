@@ -1,0 +1,3815 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Data Structure & ADT - 3시간 대학원 강의</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css">
+  <style>
+    :root {
+      --bg: #dddddd;
+      --paper: #ffffff;
+      --ink: #171a1f;
+      --ink-soft: #334155;
+      --line: #c8cdd6;
+      --brand: #0e5fa9;
+      --brand-soft: #eef5fd;
+      --accent-a: #bb3e03;
+      --accent-b: #7b1fa2;
+      --ok: #0f7b45;
+      --warn: #9a3412;
+      --code-bg: #111827;
+      --code-fg: #e7eefc;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+      --shadow: 0 6px 18px rgba(22, 34, 51, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      line-height: 1.75;
+      background: var(--bg);
+      font-weight: 450;
+    }
+
+    .deck {
+      width: min(1700px, 100%);
+      max-width: 1700px;
+      margin: 34px auto 132px;
+      padding: 0 clamp(12px, 2.2vw, 24px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+      justify-items: center;
+    }
+
+    .present-controls {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(17, 24, 39, 0.24);
+      color: #eef2ff;
+      border: 1px solid rgba(196, 206, 224, 0.15);
+      border-radius: 999px;
+      padding: 8px 12px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.14);
+      backdrop-filter: blur(4px);
+    }
+
+    .present-toggle {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      background: rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-family: var(--sans);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .present-toggle:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .present-status {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      opacity: 0.72;
+      white-space: nowrap;
+    }
+
+    .slide {
+      position: relative;
+      background: var(--paper);
+      border: 1px solid #bcc6d3;
+      border-radius: 4px;
+      box-shadow: 0 3px 8px rgba(21, 31, 45, 0.08);
+      padding: 48px 56px 64px;
+      aspect-ratio: auto;
+      min-height: 0;
+      height: auto;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: visible;
+      background-image: none;
+    }
+
+    body.presentation-mode {
+      overflow: hidden;
+      background: #0f172a;
+    }
+
+    body.presentation-mode .deck {
+      width: 100vw;
+      max-width: none;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: block;
+    }
+
+    body.presentation-mode .slide {
+      display: none;
+      width: 100vw;
+      max-width: none;
+      min-height: 100vh;
+      height: 100vh;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      padding: clamp(16px, 2.4vw, 28px) clamp(14px, 3vw, 34px) clamp(44px, 5vh, 66px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    body.presentation-mode .slide.active-slide {
+      display: block;
+    }
+
+    body.presentation-mode .slide::before,
+    body.presentation-mode .slide::after {
+      left: 12px;
+      right: 12px;
+    }
+
+    .slide table,
+    .slide pre,
+    .slide .formula,
+    .slide .infographic,
+    .slide .cols-2,
+    .slide .cols-3,
+    .slide .card {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .slide::before,
+    .slide::after {
+      display: none;
+    }
+
+    .slide > * {
+      position: relative;
+      z-index: 1;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .slide-number {
+      position: absolute;
+      right: 14px;
+      bottom: 10px;
+      z-index: 20;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: #355074;
+      background: rgba(245, 250, 255, 0.9);
+      border: 1px solid #c7d5e8;
+      border-radius: 999px;
+      padding: 2px 8px;
+      line-height: 1.2;
+      pointer-events: none;
+    }
+
+    .title-slide {
+      position: relative;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      min-height: 74vh;
+      overflow: hidden;
+      border: 1px solid #cfd5df;
+      box-shadow: 0 6px 14px rgba(30, 40, 56, 0.08);
+      background: linear-gradient(180deg, #f5f6f8 0%, #f3f4f6 100%);
+      padding-top: clamp(108px, 17vh, 188px);
+      padding-bottom: clamp(122px, 19vh, 208px);
+    }
+
+    .title-slide::before,
+    .title-slide::after {
+      display: none;
+    }
+
+    .title-slide .title-lines,
+    .title-slide .title-lines-bottom {
+      position: absolute;
+      left: clamp(22px, 9vw, 190px);
+      right: clamp(22px, 9vw, 190px);
+      height: 22px;
+      pointer-events: none;
+    }
+
+    .title-slide .title-lines {
+      top: 12px;
+    }
+
+    .title-slide .title-lines-bottom {
+      bottom: 10px;
+      transform: scaleY(-1);
+    }
+
+    .title-slide .title-lines .line-a,
+    .title-slide .title-lines .line-b,
+    .title-slide .title-lines-bottom .line-a,
+    .title-slide .title-lines-bottom .line-b {
+      display: block;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+    }
+
+    .title-slide .line-a {
+      background: #bb3e03;
+      margin-bottom: 12px;
+    }
+
+    .title-slide .line-b {
+      background: #8a0f83;
+    }
+
+    .title-slide .title-wrap {
+      position: relative;
+      width: min(1440px, 100%);
+      padding: 0 clamp(88px, 14vw, 260px);
+    }
+
+    .title-slide .title-watermark {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      width: min(36vw, 460px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      border: 5px solid rgba(38, 61, 92, 0.05);
+      color: rgba(31, 48, 71, 0.06);
+      display: grid;
+      place-items: center;
+      font-size: clamp(2.2rem, 4.8vw, 4.8rem);
+      font-weight: 820;
+      letter-spacing: 0.03em;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .title-slide .course,
+    .title-slide h1,
+    .title-slide .topic,
+    .title-slide .meta,
+    .title-slide .prof {
+      position: relative;
+      z-index: 1;
+    }
+
+    .title-slide .course {
+      margin: 0 0 56px;
+      font-size: clamp(1.05rem, 1.65vw, 1.36rem);
+      font-weight: 740;
+      color: #2a3340;
+      letter-spacing: 0.045em;
+    }
+
+    .title-slide h1 {
+      margin: 0 0 74px;
+      font-size: clamp(2.05rem, 4.7vw, 4.6rem);
+      line-height: 1.42;
+      color: #21242b;
+      letter-spacing: -0.018em;
+      text-wrap: balance;
+      text-align: center;
+    }
+
+    .title-slide .topic {
+      margin: 0 0 78px;
+      font-size: clamp(1.25rem, 2vw, 1.85rem);
+      font-weight: 560;
+      color: #2f343d;
+      line-height: 1.72;
+    }
+
+    .title-slide .meta {
+      margin: 0 0 42px;
+      font-size: clamp(1.62rem, 2.55vw, 2.25rem);
+      line-height: 1.42;
+      font-weight: 760;
+      color: #1f232a;
+    }
+
+    .title-slide .prof {
+      margin: 0;
+      font-size: clamp(1.26rem, 2vw, 1.82rem);
+      color: #2a2f37;
+      letter-spacing: 0.02em;
+      font-weight: 560;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: #1f2328;
+    }
+
+    h1 { font-size: clamp(2.2rem, 2.9vw, 3.2rem); font-weight: 850; text-align: center; margin-top: 12px; }
+    h2 { font-size: clamp(1.6rem, 2vw, 2.2rem); font-weight: 800; }
+    h3 { font-size: clamp(1.14rem, 1.45vw, 1.32rem); font-weight: 750; }
+    .slide h2 {
+      padding-bottom: 8px;
+      border-bottom: 2px solid #d6dde8;
+      margin-bottom: 14px;
+    }
+
+    p, li { font-size: 1.13rem; color: var(--ink); line-height: 1.74; }
+
+    p {
+      margin: 0 0 18px;
+      max-width: 92ch;
+    }
+
+    ul, ol {
+      margin: 12px 0 18px;
+      padding-left: 1.3em;
+    }
+    ul > li::marker, ol > li::marker {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .kicker {
+      display: inline-block;
+      background: #f2f4f8;
+      color: #1d3657;
+      border: 1px solid #cfd8e5;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.83rem;
+      padding: 4px 11px;
+      margin-bottom: 14px;
+    }
+
+    .muted { color: #42556f; }
+
+    .cols-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .cols-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .card {
+      border: 0;
+      border-left: 2px solid #d7e0ec;
+      background: transparent;
+      border-radius: 0;
+      padding: 2px 0 2px 12px;
+      box-shadow: none;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      color: #183a63;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .timeline .item {
+      border-left: 4px solid var(--brand);
+      padding: 10px 13px;
+      background: #f8fafd;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+      margin-top: 20px;
+      margin-bottom: 22px;
+      table-layout: fixed;
+      word-break: break-word;
+      background: #fff;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 14px 16px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #e7ebf1;
+      font-weight: 700;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: #f7f9fc;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.9em;
+      background: #edf3fb;
+      color: #10223e;
+      border-radius: 6px;
+      padding: 0.1em 0.35em;
+    }
+
+    pre {
+      margin: 14px 0 18px;
+      padding: 15px;
+      border-radius: 6px;
+      border: 1px solid #334761;
+      background: var(--code-bg);
+      color: var(--code-fg);
+      overflow: auto;
+      font-family: var(--mono);
+      font-size: 0.98rem;
+      line-height: 1.64;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    pre.editable-code {
+      border-color: #2f4f78;
+      box-shadow: inset 0 0 0 1px rgba(133, 170, 224, 0.35);
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr);
+      align-items: start;
+      column-gap: 0;
+      padding: 14px 14px 14px 0;
+      white-space: pre;
+      overflow-wrap: normal;
+      tab-size: 2;
+    }
+
+    pre.editable-code code {
+      display: block;
+      min-height: 1.8em;
+      outline: none;
+      caret-color: #f8fbff;
+      white-space: inherit;
+      line-height: 1.64;
+      padding: 0 0 0 10px;
+    }
+
+    .line-numbers {
+      position: static;
+      width: 46px;
+      padding: 0 8px 0 0;
+      border-right: 1px solid rgba(170, 192, 222, 0.35);
+      color: #8ea6cb;
+      font-family: var(--mono);
+      font-size: inherit;
+      line-height: 1.64;
+      text-align: right;
+      white-space: pre;
+      user-select: none;
+      pointer-events: none;
+      background: var(--code-bg);
+      z-index: 2;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      border-radius: 0;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    pre code.hljs {
+      background: transparent;
+      color: var(--code-fg);
+      padding: 0;
+    }
+
+    .formula {
+      border: 1px solid #d6deea;
+      background: #f7f9fc;
+      border-radius: 12px;
+      padding: 20px 22px;
+      font-family: var(--sans);
+      font-size: 1.02rem;
+      white-space: pre-line;
+      margin: 22px 0 26px;
+      line-height: 1.68;
+    }
+
+    .infographic {
+      display: block;
+      width: 100%;
+      border: 1px solid #d1d9e6;
+      border-radius: 12px;
+      background: #ffffff;
+      margin: 20px 0 10px;
+      box-shadow: 0 2px 8px rgba(28, 38, 53, 0.06);
+    }
+
+    .figure-caption {
+      margin: 0 0 20px;
+      font-size: 0.98rem;
+      color: #41526a;
+      line-height: 1.55;
+    }
+
+    button, select {
+      border: 1px solid #9ab4dc;
+      border-radius: 10px;
+      background: #fff;
+      color: #0f2741;
+      font: inherit;
+      padding: 8px 11px;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background: var(--brand);
+      color: #fff;
+      border-color: #0a4cb7;
+      font-weight: 700;
+    }
+
+    .inline-runner {
+      margin: 12px 0 20px;
+      border: 1px solid #d7deea;
+      border-radius: 4px;
+      background: #ffffff;
+      padding: 10px;
+    }
+
+    .inline-runner-head {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mini-run-btn {
+      font-size: 0.84rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #a8b7cf;
+      background: #f7f9fc;
+      color: #1f334f;
+    }
+
+    .inline-status {
+      font-size: 0.82rem;
+      color: #264b83;
+    }
+
+    .inline-output {
+      min-height: 46px;
+      border: 1px solid #d3dceb;
+      border-radius: 4px;
+      background: #0b1628;
+      color: #dbe7ff;
+      padding: 7px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-family: var(--mono);
+      font-size: 0.83rem;
+    }
+
+    svg, canvas, img, iframe {
+      max-width: 100%;
+    }
+
+    .katex-display {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 2px;
+    }
+
+    .danger { color: var(--warn); font-weight: 600; }
+
+    .footnote {
+      font-size: 0.86rem;
+      color: #516074;
+      margin-top: 10px;
+    }
+
+    /* Unified lecture template (all content slides) */
+    .slide:not(.title-slide) {
+      background: #f3f4f6;
+      border: 1px solid #cfd5df;
+      border-radius: 8px;
+      box-shadow: 0 6px 16px rgba(32, 41, 56, 0.08);
+      padding: 96px 52px 132px;
+    }
+
+    .slide:not(.title-slide)::before {
+      display: none;
+    }
+
+    .slide:not(.title-slide)::after {
+      display: none;
+    }
+
+    .slide:not(.title-slide) .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      background: transparent;
+      border: 0;
+      border-left: 6px solid #bb3e03;
+      border-radius: 0;
+      padding: 2px 0 2px 12px;
+      color: #374151;
+      font-size: 0.92rem;
+      font-weight: 760;
+      letter-spacing: 0.01em;
+    }
+
+    .slide:not(.title-slide) h2 {
+      text-align: center;
+      margin: 0 0 32px;
+      padding-bottom: 0;
+      border-bottom: 0;
+      font-size: clamp(1.95rem, 2.8vw, 3rem);
+      color: #20242c;
+      font-weight: 860;
+      letter-spacing: -0.02em;
+    }
+
+    .slide:not(.title-slide) h3 {
+      color: #1f2f45;
+      font-size: clamp(1.18rem, 1.55vw, 1.44rem);
+      margin-bottom: 8px;
+    }
+
+    .slide:not(.title-slide) p,
+    .slide:not(.title-slide) li {
+      font-size: 1.2rem;
+      line-height: 1.82;
+      color: #1f232a;
+    }
+
+    .slide:not(.title-slide) p {
+      margin: 0 0 22px;
+    }
+
+    .slide:not(.title-slide) ul,
+    .slide:not(.title-slide) ol {
+      margin-top: 16px;
+      margin-bottom: 24px;
+      padding-left: 1.25em;
+    }
+
+    .cols-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .cols-2.example-stack {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .cols-2.example-stack .card {
+      width: 100%;
+    }
+
+    .cols-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .slide:not(.title-slide) .card {
+      border: 1px solid #d6dbe3;
+      border-left: 0;
+      border-radius: 14px;
+      background: #f8fafc;
+      padding: 26px 28px;
+      box-shadow: 0 2px 7px rgba(31, 39, 53, 0.08);
+    }
+
+    .slide:not(.title-slide) table {
+      border-radius: 12px;
+      overflow: hidden;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #f7f8fb;
+      margin-top: 20px;
+      margin-bottom: 24px;
+    }
+
+    .slide:not(.title-slide) th {
+      background: #e8ebf0;
+      color: #20252e;
+      font-size: 1.01rem;
+    }
+
+    .slide:not(.title-slide) td {
+      background: #fbfcff;
+      font-size: 0.98rem;
+    }
+
+    .slide-footer-note {
+      position: static;
+      margin: 22px 0 0;
+      text-align: center;
+      font-size: 1.02rem;
+      color: #1f232a;
+      letter-spacing: 0.01em;
+      pointer-events: none;
+    }
+
+    .slide-number {
+      right: 16px;
+      bottom: 14px;
+      font-size: 1.02rem;
+      color: #1f2329;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      line-height: 1;
+      font-weight: 630;
+    }
+
+    @media (max-width: 920px) {
+      .deck {
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: minmax(0, 1fr);
+        padding: 0 10px;
+      }
+
+      .slide {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding: 30px 22px 84px;
+        aspect-ratio: auto;
+        min-height: auto;
+        max-height: none;
+        overflow: visible;
+      }
+      .slide:not(.title-slide) {
+        background-size: calc(100% - 52px) 4px, calc(100% - 98px) 4px, auto;
+        padding: 76px 18px 96px;
+      }
+      .slide:not(.title-slide) h2 {
+        font-size: clamp(1.5rem, 5.8vw, 2.2rem);
+      }
+      .title-slide {
+        padding-top: 88px;
+        padding-bottom: 116px;
+      }
+      .title-slide .title-wrap {
+        padding: 0 clamp(18px, 7vw, 44px);
+      }
+      .title-slide .course {
+        margin-bottom: 26px;
+      }
+      .title-slide h1 {
+        margin-bottom: 34px;
+        font-size: clamp(1.9rem, 8.2vw, 2.8rem);
+      }
+      .title-slide .topic {
+        margin-bottom: 38px;
+        font-size: clamp(1rem, 3.9vw, 1.35rem);
+      }
+      .title-slide .meta {
+        margin-bottom: 20px;
+        font-size: clamp(1.12rem, 4.8vw, 1.68rem);
+      }
+      .title-slide .prof {
+        font-size: clamp(1rem, 4.4vw, 1.42rem);
+      }
+      .slide-footer-note {
+        font-size: 0.88rem;
+        margin-top: 18px;
+      }
+
+      pre {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      pre code {
+        white-space: inherit;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      pre.editable-code {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      pre.editable-code code {
+        padding-left: 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .line-numbers {
+        display: none;
+      }
+
+      .cols-2, .cols-3 { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      .deck {
+        margin: 12px auto 80px;
+        padding: 0 8px;
+        gap: 16px;
+      }
+
+      .slide {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+      }
+
+      .slide:not(.title-slide) {
+        padding: 70px 16px 84px;
+        border-radius: 6px;
+      }
+
+      .slide:not(.title-slide) p,
+      .slide:not(.title-slide) li {
+        font-size: 1rem;
+        line-height: 1.62;
+      }
+
+      .slide:not(.title-slide) h2 {
+        margin-bottom: 18px;
+      }
+
+      .slide:not(.title-slide) table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: normal;
+      }
+
+      .slide:not(.title-slide) th,
+      .slide:not(.title-slide) td {
+        min-width: 0;
+        padding: 10px 10px;
+        font-size: 0.84rem;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      pre {
+        font-size: 0.84rem;
+        line-height: 1.52;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      pre.editable-code {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      pre.editable-code code {
+        padding-left: 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .line-numbers {
+        display: none;
+      }
+
+      .slide:not(.title-slide) .card {
+        padding: 16px;
+      }
+
+      .inline-runner {
+        padding: 8px;
+      }
+
+      .inline-output {
+        font-size: 0.78rem;
+        overflow-x: auto;
+      }
+
+      .title-slide {
+        min-height: 68vh;
+        padding-top: 72px;
+        padding-bottom: 92px;
+      }
+
+      .title-slide .title-lines,
+      .title-slide .title-lines-bottom {
+        left: 14px;
+        right: 14px;
+      }
+
+      .title-slide .course {
+        margin-bottom: 20px;
+      }
+
+      .title-slide h1 {
+        margin-bottom: 26px;
+        line-height: 1.32;
+      }
+
+      .title-slide .topic {
+        margin-bottom: 26px;
+      }
+
+      .title-slide .meta {
+        margin-bottom: 14px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        margin: 0;
+        background: #fff !important;
+        color: #000;
+      }
+
+      .deck {
+        margin: 0;
+        padding: 0;
+        gap: 0;
+        max-width: 100%;
+      }
+
+      .slide {
+        border-radius: 0;
+        border: 1px solid #aeb9c8;
+        box-shadow: none;
+        aspect-ratio: auto;
+        min-height: auto;
+        max-height: none;
+        height: auto;
+        margin: 0;
+        padding: 12mm;
+        overflow: visible;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .slide::before, .slide::after { display: none !important; }
+
+      .slide:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+
+      button, select {
+        display: none !important;
+      }
+
+      textarea {
+        border: 1px solid #9ca9bc;
+        min-height: 120mm;
+      }
+
+      .inline-runner {
+        border: 1px solid #b6c4d9;
+        background: #fff;
+      }
+
+    }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="slide title-slide">
+      <div class="title-lines"><span class="line-a"></span><span class="line-b"></span></div>
+      <div class="title-lines-bottom"><span class="line-a"></span><span class="line-b"></span></div>
+      <div class="title-watermark">PYTHON</div>
+      <div class="title-wrap">
+        <p class="course">고급 파이썬 프로그래밍 및 자동화</p>
+        <h1>파이썬의 자료구조 심화</h1>
+        <p class="topic">객체 모델, 내부 의미론, 성능, 복사, 해시, 반복자</p>
+        <p class="meta">파이썬 자료구조 | 2주차</p>
+        <p class="prof">컴퓨터인공지능학부 | 이경수</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1 · Foundation</span>
+      <h2>자료구조와 ADT: 왜 분리해서 보나?</h2>
+      <p>Python 3.10의 built-in types 분류(수치형·시퀀스형·매핑형·집합형)를 기준으로 보면, 자료구조 선택은 단순 문법이 아니라 연산 의미를 선택하는 과정입니다. 또한 데이터 모델 관점에서 변수는 객체를 담는 상자가 아니라 이름 바인딩이므로, 같은 코드라도 참조 공유 여부에 따라 동작이 크게 달라집니다.</p>
+      <div class="formula">
+$$
+\text{ADT} = \langle \mathcal{S}, \mathcal{O}, \mathcal{I} \rangle
+$$
+\(\mathcal{S}\): 상태 공간, \(\mathcal{O}\): 연산 집합, \(\mathcal{I}\): 불변식
+      </div>
+      <svg class="infographic" viewBox="0 0 1080 210" role="img" aria-label="ADT에서 구현과 검증으로 이어지는 흐름도">
+        <rect x="36" y="56" width="220" height="98" rx="14" fill="#e9f2ff" stroke="#8fb1de"/>
+        <text x="146" y="96" text-anchor="middle" font-size="26" font-weight="700" fill="#1e3a66">Problem</text>
+        <text x="146" y="126" text-anchor="middle" font-size="17" fill="#31507b">요구사항/제약</text>
+
+        <rect x="300" y="56" width="220" height="98" rx="14" fill="#f0edff" stroke="#b1a2e8"/>
+        <text x="410" y="96" text-anchor="middle" font-size="26" font-weight="700" fill="#34225f">ADT</text>
+        <text x="410" y="126" text-anchor="middle" font-size="17" fill="#4b3c75">연산 계약</text>
+
+        <rect x="564" y="56" width="220" height="98" rx="14" fill="#ebf9f1" stroke="#95cfae"/>
+        <text x="674" y="96" text-anchor="middle" font-size="26" font-weight="700" fill="#18472f">Data Structure</text>
+        <text x="674" y="126" text-anchor="middle" font-size="17" fill="#2f6248">구현 선택</text>
+
+        <rect x="828" y="56" width="220" height="98" rx="14" fill="#fff2ea" stroke="#e0b193"/>
+        <text x="938" y="96" text-anchor="middle" font-size="26" font-weight="700" fill="#66321d">Validation</text>
+        <text x="938" y="126" text-anchor="middle" font-size="17" fill="#7a4630">정확성/성능 검증</text>
+
+        <line x1="256" y1="105" x2="300" y2="105" stroke="#466083" stroke-width="4"/>
+        <polygon points="300,105 286,97 286,113" fill="#466083"/>
+        <line x1="520" y1="105" x2="564" y2="105" stroke="#466083" stroke-width="4"/>
+        <polygon points="564,105 550,97 550,113" fill="#466083"/>
+        <line x1="784" y1="105" x2="828" y2="105" stroke="#466083" stroke-width="4"/>
+        <polygon points="828,105 814,97 814,113" fill="#466083"/>
+      </svg>
+      <p class="figure-caption">문제를 ADT로 추상화한 뒤, 구현 구조를 선택하고 정확성/복잡도/재현성을 검증합니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>ADT (추상 자료형)</h3>
+          <p>“무엇을 하는가”를 정의합니다. 예: Stack은 <code>push/pop</code>을 제공해야 한다.</p>
+        </div>
+        <div class="card">
+          <h3>Data Structure (구현)</h3>
+          <p>“어떻게 하는가”를 정의합니다. 예: Stack을 <code>list</code>로 구현할지 <code>deque</code>로 구현할지 선택한다.</p>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>문제</th><th>필요 ADT</th><th>Python 구현 후보</th><th>선택 기준</th></tr></thead>
+        <tbody>
+          <tr><td>최근 체크포인트 되돌리기</td><td>Stack</td><td><code>list</code></td><td>끝 연산 빈도, 단순성</td></tr>
+          <tr><td>학습 잡 스케줄링</td><td>Priority Queue</td><td><code>heapq</code></td><td>추출 최솟값 반복</td></tr>
+          <tr><td>토큰 ID 중복 제거</td><td>Set</td><td><code>set</code></td><td>멤버십 조회 성능</td></tr>
+          <tr><td>특징 캐시</td><td>Map</td><td><code>dict</code></td><td>평균 O(1) 조회</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1.1 · Theory</span>
+      <h2>복잡도 이론: 점근 표기와 비용 모델</h2>
+      <p>실행 시간은 기계/인터프리터/캐시 상태에 따라 달라지므로, 입력 크기 <code>n</code>에 대한 성장률로 알고리즘을 비교합니다. 자료구조 선택의 1차 기준은 상수항이 아니라 점근적 증가율입니다.</p>
+      <p>연구 코드에서 자주 혼동되는 지점은 “빠르다”의 의미입니다. 단일 입력의 절대 시간보다, 토큰 길이·배치 크기·스텝 수가 증가할 때 비용 곡선이 어떻게 변하는지가 더 중요합니다. 따라서 자료구조 비교는 동일한 연산 시퀀스와 동일한 입력 분포를 기준으로 점근 표기와 실측치를 함께 해석해야 합니다.</p>
+      <div class="formula">
+$$
+T(n)\in O(g(n))
+\iff \exists c>0,\ \exists n_0\ \text{s.t.}\ 0\le T(n)\le c\,g(n),\ \forall n\ge n_0
+$$
+      </div>
+      <table>
+        <thead><tr><th>표기</th><th>의미</th><th>해석</th></tr></thead>
+        <tbody>
+          <tr><td><code>O(g(n))</code></td><td>점근적 상한</td><td>최악/상한 관점에서 비용이 g(n)을 넘지 않음</td></tr>
+          <tr><td><code>Ω(g(n))</code></td><td>점근적 하한</td><td>최소한 g(n)만큼은 필요함</td></tr>
+          <tr><td><code>Θ(g(n))</code></td><td>점근적 동치</td><td>상한·하한이 같은 차수</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">예: <code>list.pop(0)</code>는 요소 시프트로 Θ(n), <code>dict.get</code>은 평균 Θ(1)입니다. 같은 Python 코드라도 자료구조가 바뀌면 차수가 바뀝니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1.2 · Amortized Analysis</span>
+      <h2>상환 분석: 왜 <code>append</code>는 평균적으로 O(1)인가?</h2>
+      <p>동적 배열(list)의 <code>append</code>는 개별 연산 기준으로는 최악 O(n)입니다. 그러나 연산열(sequence) 전체를 보면 총비용이 선형이므로 연산당 평균 비용은 상수입니다. 상환 분석은 바로 이 “연산열 수준 보장”을 제공하는 도구입니다.</p>
+      <p>분석 모델을 명확히 두겠습니다. 현재 길이를 <code>m</code>, 용량을 <code>c</code>라 하면, <code>m &lt; c</code>인 append 비용은 1(쓰기), <code>m = c</code>이면 새 배열 할당 + 기존 원소 <code>m</code>개 복사 + 쓰기 1로 <code>m+1</code>입니다. 성장 정책은 <code>c' = 2c</code>로 가정합니다.</p>
+      <svg viewBox="0 0 860 210" width="100%" role="img" aria-label="동적 배열 append 상환 분석 도식" style="border:1px solid #c8d1de;border-radius:6px;background:#fff;margin:10px 0 8px;">
+        <text x="24" y="28" font-size="14" fill="#1f2f47" font-family="Pretendard">append 비용 흐름 (n 증가)</text>
+        <line x1="40" y1="168" x2="820" y2="168" stroke="#8ea2c1"/>
+        <line x1="40" y1="40" x2="40" y2="168" stroke="#8ea2c1"/>
+        <text x="790" y="187" font-size="12" fill="#40536f" font-family="Pretendard">연산 순서</text>
+        <text x="8" y="45" font-size="12" fill="#40536f" font-family="Pretendard">비용</text>
+
+        <rect x="70" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="104" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="138" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="172" y="86" width="18" height="82" fill="#e96969"/>
+        <rect x="206" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="240" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="274" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="308" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="342" y="54" width="18" height="114" fill="#e96969"/>
+        <rect x="376" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="410" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="444" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="478" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="512" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="546" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="580" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="614" y="28" width="18" height="140" fill="#e96969"/>
+        <rect x="648" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="682" y="148" width="18" height="20" fill="#6fa3ff"/>
+        <rect x="716" y="148" width="18" height="20" fill="#6fa3ff"/>
+
+        <rect x="708" y="50" width="14" height="14" fill="#6fa3ff"/>
+        <text x="726" y="62" font-size="12" fill="#243851" font-family="Pretendard">일반 append (남는 슬롯 사용): O(1)</text>
+        <rect x="708" y="74" width="14" height="14" fill="#e96969"/>
+        <text x="726" y="86" font-size="12" fill="#243851" font-family="Pretendard">resize + 복사 발생: O(n)</text>
+      </svg>
+      <div class="formula">
+$$
+\text{if }c_t = 2^t,\ \sum_{j=0}^{t-1}c_j = 2^t-1
+\Rightarrow \text{total copy work before capacity }2^t\text{ is }<2^t
+$$
+      </div>
+      <table>
+        <thead><tr><th>분석 축</th><th>핵심 결론</th></tr></thead>
+        <tbody>
+          <tr><td>Worst-case per op</td><td>재할당 시점의 append는 O(n)</td></tr>
+          <tr><td>Total cost over n appends</td><td>쓰기는 n, 누적 복사는 2n 미만, 따라서 총 O(n)</td></tr>
+          <tr><td>Amortized cost</td><td>총 O(n)/n = O(1)</td></tr>
+          <tr><td>시스템 관점</td><td>지연 스파이크는 존재하지만 장기 처리량(throughput)은 선형적으로 안정</td></tr>
+        </tbody>
+      </table>
+      <div class="cols-2">
+        <div class="card">
+          <h3>가정의 역할</h3>
+          <p>상환 O(1)은 “증가율이 1보다 큰 상수배 성장”과 “복사 비용이 원소 수에 비례”라는 모델 위에서 성립합니다. 성장 정책이 선형 증가이면 상환 O(1)이 깨집니다.</p>
+        </div>
+        <div class="card">
+          <h3>설계 시사점</h3>
+          <p><code>append</code> 중심 배치 누적에는 list가 유리합니다. 반면 앞단 삭제/삽입이 주연산이면 상환 분석 대상이 달라지므로 <code>deque</code>로 구조를 분리해야 합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1.2.1 · Proof</span>
+      <h2>상환 O(1)의 엄밀한 증명: Aggregate / Accounting / Potential</h2>
+      <p><strong>정리(Theorem).</strong> 빈 동적 배열에 대해, 용량이 가득 찰 때마다 2배로 확장한다고 하자. n번의 <code>append</code> 총비용은 O(n)이며, 따라서 상환 비용은 O(1)이다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>1) Aggregate Method</h3>
+          <div class="formula">
+$$
+T(n)=n+\sum_{j=0}^{k-1}2^j,\ \text{where }2^k \le n < 2^{k+1}
+$$
+$$
+T(n) \le n + (2^k-1) < n+n = 2n
+$$
+          </div>
+          <p>여기서 첫 항 <code>n</code>은 각 append의 쓰기 비용, 두 번째 항은 재할당 시 누적 복사 비용입니다. 결과적으로 <code>T(n)/n &lt; 2</code>이므로 상환 비용은 상수입니다.</p>
+        </div>
+        <div class="card">
+          <h3>2) Accounting Method</h3>
+          <p>각 append에 크레딧 3을 부과합니다. 실제 쓰기에 1을 즉시 지불하고 2를 적립합니다. 재할당 시 복사되는 각 원소는 과거에 적립한 크레딧 1개로 복사비를 지불할 수 있습니다.</p>
+          <p>모든 원소는 다음 재할당까지 충분한 크레딧을 보유하므로 적자가 발생하지 않습니다. 따라서 상환 비용은 상수(여기서는 3)로 상계됩니다.</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3>3) Potential Method</h3>
+        <p>잠재함수를 <code>\Phi = 2m - c</code>로 둡니다(<code>m</code>: 길이, <code>c</code>: 용량). 항상 <code>\Phi \ge 0</code> (충분히 큰 단계에서)이며, 상환비용을 <code>\hat{c}_i = c_i + \Phi_i - \Phi_{i-1}</code>로 둡니다.</p>
+        <div class="formula">
+$$
+\text{non-resize: }c_i=1,\ \Delta\Phi=2 \Rightarrow \hat{c}_i=3
+$$
+$$
+\text{resize at }m=c:\ c_i=m+1,\ \Delta\Phi=2-m \Rightarrow \hat{c}_i=3
+$$
+$$
+\therefore\ \forall i,\ \hat{c}_i \le 3 \Rightarrow \sum_{i=1}^n c_i \le \sum_{i=1}^n \hat{c}_i = O(n)
+$$
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>정책 변화</th><th>상환 결과</th><th>해석</th></tr></thead>
+        <tbody>
+          <tr><td>확장비율 r &gt; 1 상수</td><td>append 상환 O(1)</td><td>기하급수 확장으로 재할당 횟수 로그 수준</td></tr>
+          <tr><td>확장비율 r = 1 + 1/k 형태(거의 선형)</td><td>상환 비용 증가 가능</td><td>복사 누적이 선형보다 크게 증가할 수 있음</td></tr>
+          <tr><td>축소 정책까지 포함</td><td>thrashing 가능성 검토 필요</td><td>히스테리시스(예: 1/4 이하에서 축소) 필요</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1.3 · Hash Table Math</span>
+      <h2>해시 테이블 이론: 로드 팩터와 기대 비용</h2>
+      <p>딕셔너리의 평균 O(1)은 “무조건”이 아니라 해시 함수 분산성과 적절한 리사이즈 정책에 의존합니다.</p>
+      <p>핵심은 균등 해싱 가정입니다. 키가 버킷에 균일하게 분포된다는 가정이 깨지면 탐색 길이가 길어지고, 평균 O(1) 근사도 약해집니다. 따라서 키 설계(불변성, 동등성, 해시 일관성)는 단순 구현 문제가 아니라 성능 보장의 전제 조건입니다.</p>
+      <div class="formula">
+$$
+\alpha=\frac{n}{m},\quad
+\mathbb{E}[\text{lookup}] \approx O(1+\alpha)
+$$
+      </div>
+      <svg viewBox="0 0 760 170" width="100%" role="img" aria-label="해시 테이블 도식" style="border:1px solid #c8d1de;border-radius:4px;background:#fff;margin:8px 0 4px;">
+        <text x="18" y="28" font-size="14" fill="#1f2f47" font-family="Pretendard">keys</text>
+        <rect x="18" y="40" width="90" height="26" fill="#eef3fb" stroke="#9fb1cd"/>
+        <text x="30" y="58" font-size="13" fill="#1f2f47" font-family="JetBrains Mono">"name"</text>
+        <rect x="18" y="74" width="90" height="26" fill="#eef3fb" stroke="#9fb1cd"/>
+        <text x="33" y="92" font-size="13" fill="#1f2f47" font-family="JetBrains Mono">"id"</text>
+        <rect x="18" y="108" width="90" height="26" fill="#eef3fb" stroke="#9fb1cd"/>
+        <text x="38" y="126" font-size="13" fill="#1f2f47" font-family="JetBrains Mono">42</text>
+        <text x="145" y="28" font-size="14" fill="#1f2f47" font-family="Pretendard">hash(key) mod m</text>
+        <line x1="110" y1="53" x2="230" y2="53" stroke="#3a4f70" marker-end="url(#arr)"/>
+        <line x1="110" y1="87" x2="230" y2="87" stroke="#3a4f70" marker-end="url(#arr)"/>
+        <line x1="110" y1="121" x2="230" y2="121" stroke="#3a4f70" marker-end="url(#arr)"/>
+        <rect x="240" y="36" width="120" height="110" fill="#f8fbff" stroke="#9fb1cd"/>
+        <line x1="240" y1="63" x2="360" y2="63" stroke="#c3cfde"/>
+        <line x1="240" y1="90" x2="360" y2="90" stroke="#c3cfde"/>
+        <line x1="240" y1="117" x2="360" y2="117" stroke="#c3cfde"/>
+        <text x="248" y="55" font-size="12" fill="#2a3f5c" font-family="JetBrains Mono">bucket[0]</text>
+        <text x="248" y="82" font-size="12" fill="#2a3f5c" font-family="JetBrains Mono">bucket[1]</text>
+        <text x="248" y="109" font-size="12" fill="#2a3f5c" font-family="JetBrains Mono">bucket[2]</text>
+        <text x="248" y="136" font-size="12" fill="#2a3f5c" font-family="JetBrains Mono">bucket[3]</text>
+        <defs>
+          <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#3a4f70"></polygon>
+          </marker>
+        </defs>
+      </svg>
+      <table>
+        <thead><tr><th>상태</th><th>현상</th><th>영향</th></tr></thead>
+        <tbody>
+          <tr><td>α가 낮음</td><td>충돌 감소</td><td>조회/삽입이 안정적으로 빠름</td></tr>
+          <tr><td>α가 높음</td><td>충돌 증가</td><td>탐사 길이 증가, 캐시 비효율</td></tr>
+          <tr><td>리사이즈 발생</td><td>재해싱 비용</td><td>단기 스파이크, 장기 평균은 유지</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">“평균 O(1)” 표현은 가정(해시 분산/적대적 입력)을 함께 명시해야 의미가 정확해집니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1.4 · CPython Memory Model</span>
+      <h2>CPython 객체 모델과 메모리 오버헤드</h2>
+      <p>파이썬 컨테이너는 원시 값 배열이 아니라 <strong>객체 포인터 배열</strong>을 저장합니다. 따라서 “원소 수”뿐 아니라 “원소 객체 자체의 오버헤드”를 함께 고려해야 메모리 사용량을 정확히 예측할 수 있습니다.</p>
+      <p>메모리 해석 단위는 “값”보다 “객체 그래프”가 적합합니다. 예를 들어 같은 정수 10,000개라도 <code>list[int]</code>, <code>array</code>, <code>ndarray</code>는 저장 모델이 달라 캐시 지역성(locality)과 순회 처리량이 크게 달라집니다. 자료구조 선택은 시간복잡도뿐 아니라 메모리 계층 구조(L1/L2/cache miss)와도 직접 연결됩니다.</p>
+      <div class="formula">
+$$
+M_{\text{total}}
+\approx M_{\text{container-header}}
++ M_{\text{pointer-array}}
++ \sum_{i=1}^{n}\left(M_{\text{obj-header},i}+M_{\text{payload},i}\right)
+$$
+      </div>
+      <svg class="infographic" viewBox="0 0 1080 260" role="img" aria-label="CPython 컨테이너와 객체 포인터 구조">
+        <rect x="36" y="34" width="300" height="190" rx="14" fill="#eef4ff" stroke="#a8bbdf"/>
+        <text x="186" y="70" text-anchor="middle" font-size="22" font-weight="700" fill="#1f365c">list object</text>
+        <rect x="62" y="92" width="248" height="40" rx="8" fill="#fff" stroke="#c7d3e8"/>
+        <text x="186" y="118" text-anchor="middle" font-size="16" fill="#334b72">header: refcnt / type / size</text>
+        <rect x="62" y="142" width="58" height="56" rx="8" fill="#dde8fb" stroke="#b5c7e8"/>
+        <rect x="126" y="142" width="58" height="56" rx="8" fill="#dde8fb" stroke="#b5c7e8"/>
+        <rect x="190" y="142" width="58" height="56" rx="8" fill="#dde8fb" stroke="#b5c7e8"/>
+        <rect x="254" y="142" width="56" height="56" rx="8" fill="#dde8fb" stroke="#b5c7e8"/>
+        <text x="92" y="175" text-anchor="middle" font-size="14" fill="#35507a">ptr</text>
+        <text x="156" y="175" text-anchor="middle" font-size="14" fill="#35507a">ptr</text>
+        <text x="220" y="175" text-anchor="middle" font-size="14" fill="#35507a">ptr</text>
+        <text x="282" y="175" text-anchor="middle" font-size="14" fill="#35507a">...</text>
+
+        <rect x="444" y="34" width="188" height="92" rx="12" fill="#f8fbff" stroke="#a9bfdc"/>
+        <text x="538" y="70" text-anchor="middle" font-size="18" font-weight="700" fill="#203a63">PyLong #1</text>
+        <text x="538" y="98" text-anchor="middle" font-size="14" fill="#425f88">obj header + payload</text>
+        <rect x="664" y="34" width="188" height="92" rx="12" fill="#f8fbff" stroke="#a9bfdc"/>
+        <text x="758" y="70" text-anchor="middle" font-size="18" font-weight="700" fill="#203a63">PyLong #2</text>
+        <text x="758" y="98" text-anchor="middle" font-size="14" fill="#425f88">obj header + payload</text>
+        <rect x="884" y="34" width="160" height="92" rx="12" fill="#f8fbff" stroke="#a9bfdc"/>
+        <text x="964" y="70" text-anchor="middle" font-size="18" font-weight="700" fill="#203a63">...</text>
+
+        <line x1="91" y1="170" x2="444" y2="82" stroke="#607ca5" stroke-width="3"/>
+        <line x1="155" y1="170" x2="664" y2="82" stroke="#607ca5" stroke-width="3"/>
+        <line x1="219" y1="170" x2="884" y2="82" stroke="#607ca5" stroke-width="3"/>
+
+        <rect x="444" y="148" width="600" height="74" rx="12" fill="#fff4ea" stroke="#e2b99f"/>
+        <text x="744" y="180" text-anchor="middle" font-size="18" font-weight="700" fill="#7f4022">메모리 해석 포인트</text>
+        <text x="744" y="206" text-anchor="middle" font-size="15" fill="#7a4f35">컨테이너 비용 + 포인터 배열 + 원소 객체 헤더/페이로드를 함께 계산</text>
+      </svg>
+      <p class="figure-caption">list는 값을 직접 저장하지 않고 객체 참조를 저장합니다. 대규모 데이터에서는 이 계층 구조가 메모리와 캐시 효율을 결정합니다.</p>
+      <pre><code>import sys
+
+nums: list[int] = list(range(10_000))
+tu: tuple[int, ...] = tuple(range(10_000))
+st: set[int] = set(range(10_000))
+
+print("list bytes :", sys.getsizeof(nums))
+print("tuple bytes:", sys.getsizeof(tu))
+print("set bytes  :", sys.getsizeof(st))
+print("one int    :", sys.getsizeof(0))</code></pre>
+      <table>
+        <thead><tr><th>구조</th><th>메모리 특성</th><th>설계 시사점</th></tr></thead>
+        <tbody>
+          <tr><td>list</td><td>연속 포인터 배열 + 여유 용량</td><td>순차 접근/끝 삽입 유리</td></tr>
+          <tr><td>dict/set</td><td>해시 슬롯 + 엔트리 오버헤드 큼</td><td>속도는 빠르나 메모리 비용 큼</td></tr>
+          <tr><td>tuple</td><td>불변, 상대적으로 컴팩트</td><td>키/레코드 표현에 유리</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">수치 집약 루프는 Python 객체 컨테이너(list/dict/set) 안에서 직접 연산하기보다, 배열/텐서 표현으로 일찍 변환해 연산 경로를 분리하는 편이 유리합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 1.5 · Formal ADT Spec</span>
+      <h2>형식 명세를 먼저 정의하고 구현을 검증한다</h2>
+      <p>자료구조 구현 전에 연산 계약(pre/postcondition)과 불변식을 먼저 고정합니다. 구현은 이 계약을 보존하는지 검증 가능한 형태로 작성합니다.</p>
+      <div class="formula">
+$$
+\text{Stack ADT}:\ S=\text{sequence},\ 
+\operatorname{push}(x):S' = S\circ[x]
+$$
+$$
+\operatorname{pop}():\ |S|>0,\ \text{return }\operatorname{last}(S),\ 
+S'=\operatorname{prefix}(S,|S|-1)
+$$
+      </div>
+      <table>
+        <thead><tr><th>항목</th><th>명세 질문</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td>State</td><td>상태공간은 무엇인가?</td><td>Stack: sequence, Set: unique elements</td></tr>
+          <tr><td>Operation</td><td>입력/출력 계약은?</td><td><code>pop(): T</code>, <code>contains(x): bool</code></td></tr>
+          <tr><td>Precondition</td><td>호출 가능 조건은?</td><td><code>pop</code>는 non-empty</td></tr>
+          <tr><td>Invariant</td><td>항상 유지할 성질은?</td><td>LIFO, uniqueness, ordering policy</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2 · List as Mutable Sequence</span>
+      <h2>List = mutable sequence of object references</h2>
+      <pre><code>a: list[int] = [10, 20, 30, 40]
+print(a[0], a[-1])
+a[1] = 25
+del a[2]
+a.append(99)
+a.extend([100, 101])
+print(a)</code></pre>
+      <p>리스트는 <strong>순서가 있는 가변 시퀀스</strong>이므로, “위치 기반 접근”이 핵심입니다. 수학적으로는 함수 <code>f: {0,...,n-1} → ObjectRef</code> 로 모델링할 수 있고, 인덱스 연산은 <code>f(i)</code> 조회에 해당합니다.</p>
+      <div class="formula">
+$$
+\text{update at }i:\quad f'(j)=
+\begin{cases}
+x & (j=i) \\
+f(j) & (j\neq i)
+\end{cases}
+$$
+      </div>
+      <p>리스트를 “작은 배열”로 보는 관점이 중요합니다. 앞쪽 삽입/삭제는 내부 시프트를 유발하고, 슬라이싱은 복사를 유발합니다. 즉, 리스트는 범용 컨테이너지만 모든 연산에 균등하게 좋은 자료구조는 아니며, 연산 패턴(앞/뒤/중간, 조회/갱신 비율)에 따라 선택되어야 합니다. 시퀀스 배치 구성, 길이별 버킷팅, 샘플 셔플 버퍼처럼 순서 중심 연산에서는 list가 기준 구조가 됩니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>기본 성질</h3>
+          <ul>
+            <li>음수 인덱스: 뒤에서 접근</li>
+            <li>슬라이싱은 새 리스트 생성</li>
+            <li><code>append</code>와 <code>extend</code> 의미 차이</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>자주 생기는 오류</h3>
+          <ul>
+            <li><code>[[0]*3]*4</code>의 참조 공유 버그</li>
+            <li><code>remove</code> 반복 중 인덱스 꼬임</li>
+            <li><code>pop(0)</code>를 큐처럼 사용 (비효율)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="formula">
+$$
+k=j-i,\quad
+\text{time}(a[i:j])=\Theta(k),\quad
+\text{space}(a[i:j])=\Theta(k)
+$$
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.1 · Internal Representation & Cost Model</span>
+      <h2>동적 배열로서의 list: 저장 모델과 비용</h2>
+      <p>리스트는 C 레벨에서 동적 배열로 구현되며, 배열에는 객체 자체가 아니라 객체 참조가 저장됩니다.</p>
+      <div class="formula">
+$$
+T_{\text{insert at }i}(n)=\Theta(n-i),\qquad
+T_{\text{delete at }i}(n)=\Theta(n-i)
+$$
+      </div>
+      <p>이 설계 덕분에 리스트는 이질적인 타입을 한 컨테이너에 담을 수 있습니다. 반면 참조 간접(indirection)과 객체 헤더 오버헤드가 존재하므로, 대규모 수치 계산에서는 메모리 지역성(locality)과 캐시 효율이 병목이 될 수 있습니다. 따라서 수치 집약 작업에서는 배열 라이브러리와의 역할 분리가 필요합니다.</p>
+      <div class="formula">$$\text{amortized append} = O(1)\quad(\text{occasional resize} + \text{frequent constant-time writes})$$</div>
+      <table>
+        <thead><tr><th>연산</th><th>복잡도</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><code>a[i]</code></td><td>O(1)</td><td>오프셋 계산으로 즉시 접근</td></tr>
+          <tr><td><code>append(x)</code></td><td>Amortized O(1)</td><td>오버할당으로 재할당 빈도 감소</td></tr>
+          <tr><td><code>insert(0,x)</code></td><td>O(n)</td><td>전체 시프트</td></tr>
+          <tr><td><code>pop(0)</code></td><td>O(n)</td><td>앞 원소 제거 후 당김</td></tr>
+          <tr><td><code>sort()</code></td><td>O(n log n)</td><td>Timsort(부분 정렬 데이터에 강함)</td></tr>
+        </tbody>
+      </table>
+      <pre><code># 미니배치 누적: 끝 append 중심(list 적합)
+batches: list[list[int]] = []
+for step in range(1000):
+    batch_ids: list[int] = [step * 32 + i for i in range(32)]
+    batches.append(batch_ids)      # amortized O(1)
+
+# 앞 삽입/삭제가 필요하면 deque로 분리하는 것이 안전
+# (예: 실시간 샘플 큐, window popleft)
+print(len(batches), batches[0][:3], batches[-1][-3:])</code></pre>
+      <pre><code># list 연산 패턴별 시간 측정(간단 데모)
+import timeit
+
+setup = "a = list(range(50_000))"
+t_append = timeit.timeit("a.append(1); a.pop()", setup=setup, number=20_000)
+t_insert0 = timeit.timeit("a.insert(0, 1); a.pop(0)", setup=setup, number=20_000)
+print(f"append/pop: {t_append:.4f}s, insert(0)/pop(0): {t_insert0:.4f}s")</code></pre>
+      <p class="muted">연구 데이터 전처리에서 수백만 건 반복 처리 시, 이 차이가 전체 파이프라인 시간을 좌우합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.2 · List API Semantics</span>
+      <h2>Core Operations and In-Place Semantics</h2>
+      <p>list는 단순 함수 모음이 아니라 상태 전이 시스템입니다. 각 메서드는 “상태를 바꾸는가(in-place)”, “새 객체를 반환하는가”, “비용이 어디서 발생하는가”를 함께 봐야 합니다.</p>
+      <pre><code>x: list[int] = [3, 1, 2]
+y = x.sort()          # in-place
+z = sorted(x)         # new list
+print(x, y, z)        # [1,2,3], None, [1,2,3]
+
+a: list[int] = [1, 2]
+a.append([3, 4])      # [1,2,[3,4]]
+b: list[int] = [1, 2]
+b.extend([3, 4])      # [1,2,3,4]
+print(a, b)</code></pre>
+      <table>
+        <thead><tr><th>기능군</th><th>메서드</th><th>반환</th><th>핵심 의미/비용</th></tr></thead>
+        <tbody>
+          <tr><td>구조 변경</td><td><code>append</code>, <code>extend</code>, <code>insert</code>, <code>pop</code>, <code>remove</code>, <code>clear</code></td><td>대부분 <code>None</code></td><td>in-place mutation, 위치에 따라 O(1)~O(n)</td></tr>
+          <tr><td>조회</td><td><code>index</code>, <code>count</code></td><td>int</td><td>선형 탐색 O(n), 실패 시 <code>ValueError</code> 가능</td></tr>
+          <tr><td>복사/변환</td><td><code>copy</code>, <code>list(a)</code>, <code>a[:]</code></td><td>new list</td><td>얕은 복사(shallow), 중첩 원소 참조는 공유 가능</td></tr>
+          <tr><td>순서 조작</td><td><code>reverse</code>, <code>sort</code>, <code>sorted</code></td><td><code>sort/reverse</code>=None</td><td><code>sort</code>는 stable + in-place, <code>sorted</code>는 새 리스트</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">연산마다 `state mutation 여부`, `반환 객체`, `복잡도`를 같이 표기하면 코드 리뷰에서 대부분의 list 버그를 사전에 제거할 수 있습니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.2.1 · Mutate / Return / Fail Contract</span>
+      <h2>List 연산을 읽는 공통 질문 3개</h2>
+      <p>list API는 기능별 암기보다, 모든 호출에서 같은 3개 질문으로 해석합니다: (1) 원본 상태를 바꾸는가, (2) 반환값은 무엇인가, (3) 실패 시 어떤 예외가 발생하는가.</p>
+      <table>
+        <thead><tr><th>연산</th><th>Mutate?</th><th>Return</th><th>Fail mode</th><th>딥러닝 파이프라인 의미</th></tr></thead>
+        <tbody>
+          <tr><td><code>append(x)</code></td><td>Yes</td><td><code>None</code></td><td>거의 없음</td><td>배치/로그 누적 버퍼</td></tr>
+          <tr><td><code>pop()</code></td><td>Yes</td><td>원소</td><td>빈 list면 <code>IndexError</code></td><td>큐/스택 소비 로직</td></tr>
+          <tr><td><code>remove(x)</code></td><td>Yes</td><td><code>None</code></td><td>없으면 <code>ValueError</code></td><td>필터링 파이프라인 오류 표면화</td></tr>
+          <tr><td><code>index(x)</code></td><td>No</td><td><code>int</code></td><td>없으면 <code>ValueError</code></td><td>레이블 위치 검색</td></tr>
+          <tr><td><code>copy()</code></td><td>No</td><td>new list</td><td>없음</td><td>실험 설정 분기 전 shallow 복제</td></tr>
+          <tr><td><code>sort()</code></td><td>Yes</td><td><code>None</code></td><td>키 비교 불가면 <code>TypeError</code></td><td>랭킹 순서 고정(원본 변경)</td></tr>
+          <tr><td><code>sorted(xs)</code></td><td>No</td><td>new list</td><td>키 비교 불가면 <code>TypeError</code></td><td>원본 보존형 분석 파이프라인</td></tr>
+        </tbody>
+      </table>
+      <pre><code>scores: list[float] = [0.73, 0.91, 0.84]
+alias = scores
+sorted_scores = sorted(scores)  # new list
+scores.sort()                   # in-place mutation
+print(alias is scores, alias, sorted_scores)</code></pre>
+      <p class="muted">list 버그의 상당수는 값 계산보다 상태 변화(in-place)와 반환값(<code>None</code>)의 혼동에서 발생합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.3 · Indexing & Slicing</span>
+      <h2>Indexing & Slice Semantics: 경계조건, clipping, 상태변화</h2>
+      <p>단일 인덱스와 슬라이스는 실패 동작이 다릅니다. 단일 인덱스는 범위를 벗어나면 예외가 나지만, 슬라이스는 범위를 자동 clipping해 빈 리스트를 포함한 결과를 돌려줄 수 있습니다.</p>
+      <pre><code>arr: list[int] = [0, 1, 2, 3, 4, 5, 6]
+print(arr[100:200])   # []  (slice clipping)
+# print(arr[100])     # IndexError
+
+print(arr[1:6:2])     # [1, 3, 5]
+print(arr[::-1])      # 역순 복사
+
+arr[2:5] = [20, 30]   # 길이 변경 가능
+del arr[1:3]          # arr[1:3] = [] 와 동치
+print(arr)</code></pre>
+      <div class="formula">
+$$
+a[i:j:s]\ \text{creates a new list},\quad
+\text{time/space}=\Theta(k)\ \text{where }k=\left\lceil\frac{j-i}{s}\right\rceil
+$$
+      </div>
+      <table>
+        <thead><tr><th>주제</th><th>정확한 의미</th><th>버그 포인트</th></tr></thead>
+        <tbody>
+          <tr><td>단일 인덱스</td><td><code>a[i]</code>는 하나의 원소 접근</td><td>범위 밖이면 <code>IndexError</code></td></tr>
+          <tr><td>슬라이스</td><td><code>a[i:j]</code>는 반열린 구간 [i, j)</td><td>범위 밖이어도 clipping되어 예외가 안 날 수 있음</td></tr>
+          <tr><td>extended slice</td><td><code>a[i:j:s]</code>는 stride 선택</td><td><code>s &lt; 0</code>일 때 방향 해석 실수 빈번</td></tr>
+          <tr><td>슬라이스 대입</td><td>구간 교체로 길이 변화 가능</td><td>같은 객체 alias가 있으면 외부 상태도 변함</td></tr>
+          <tr><td>삭제 연산</td><td><code>del a[i:j]</code> == <code>a[i:j]=[]</code></td><td>인덱스 이동으로 후속 루프 로직 깨짐</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">slice는 view가 아니라 새 list(outer container)입니다. 다만 내부 원소가 mutable이면 참조 공유가 남습니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.3.1 · Slice Rulebook</span>
+      <h2>Slice semantics를 규칙으로 외우기</h2>
+      <p>슬라이스는 “부분 보기”가 아니라 “규칙 기반 복사/재조합”입니다. 단일 인덱스와 슬라이스의 실패 정책을 분리해서 기억하면 경계 버그가 크게 줄어듭니다.</p>
+      <table>
+        <thead><tr><th>규칙</th><th>의미</th><th>실패/주의</th></tr></thead>
+        <tbody>
+          <tr><td><code>a[i]</code></td><td>단일 원소 접근</td><td>범위를 벗어나면 <code>IndexError</code></td></tr>
+          <tr><td><code>a[i:j]</code></td><td>반열린 구간 복사 [i, j)</td><td>범위를 벗어나도 clipping</td></tr>
+          <tr><td><code>a[i:j:s]</code></td><td>stride 복사</td><td><code>s&lt;0</code>이면 역방향, <code>s=0</code>은 오류</td></tr>
+          <tr><td><code>a[::-1]</code></td><td>역순 새 리스트 생성</td><td>원본은 그대로 유지</td></tr>
+          <tr><td><code>a[i:j] = t</code></td><td>구간 교체</td><td>길이 변화 가능</td></tr>
+          <tr><td><code>a[i:j:s] = t</code></td><td>확장 슬라이스 교체</td><td><code>s!=1</code>이면 길이 일치 필요</td></tr>
+          <tr><td><code>del a[i:j]</code></td><td>구간 삭제</td><td>후속 인덱스가 당겨짐</td></tr>
+        </tbody>
+      </table>
+      <pre><code>arr = [0, 1, 2, 3, 4, 5, 6]
+print(arr[100:200])   # []
+print(arr[5:1:-2])    # [5, 3]
+
+arr[2:5] = [20, 30]
+print(arr)            # [0, 1, 20, 30, 5, 6]</code></pre>
+      <p class="muted">단일 인덱스는 strict, 슬라이스는 tolerant(clipping)입니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.4 · Aliasing, Repetition, and Shallow Copy</span>
+      <h2>왜 <code>[[0]*3]*4</code>가 깨지는가: 복사가 아니라 참조 반복</h2>
+      <p>list 의미론에서 가장 중요한 함정은 참조 공유(aliasing)입니다. <code>b=a</code>, <code>a[:]</code>, <code>list(a)</code>, <code>deepcopy(a)</code>는 겉보기는 비슷하지만 공유 수준이 다릅니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>반복 생성(aliasing) 버그</h3>
+          <pre><code>bad = [[0] * 3] * 4
+bad[0][0] = 1
+print(bad)  # 모든 행이 함께 변경
+
+good = [[0] * 3 for _ in range(4)]
+good[0][0] = 1
+print(good) # 첫 행만 변경</code></pre>
+        </div>
+        <div class="card">
+          <h3>shallow vs deep copy</h3>
+          <pre><code>import copy
+a = [[1], [2]]
+b = a          # alias
+c = a[:]       # shallow copy
+d = list(a)    # shallow copy
+e = copy.deepcopy(a)
+
+b[0].append(99)
+print(a, c, d, e)</code></pre>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>표현</th><th>outer container</th><th>inner elements</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td><code>b = a</code></td><td>공유</td><td>공유</td><td>동일 객체 alias</td></tr>
+          <tr><td><code>c = a[:]</code></td><td>새 객체</td><td>공유</td><td>shallow copy</td></tr>
+          <tr><td><code>c = list(a)</code></td><td>새 객체</td><td>공유</td><td>shallow copy</td></tr>
+          <tr><td><code>deepcopy(a)</code></td><td>새 객체</td><td>복제</td><td>중첩 구조 분리</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">list 슬라이스는 view가 아니라 shallow copy입니다. “새 리스트 생성”과 “내부 원소 공유”가 동시에 성립합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.5 · Comprehension and Materialization Strategy</span>
+      <h2>List Comprehension과 materialization 비용</h2>
+      <p>컴프리헨션의 핵심은 “짧게 쓰기”가 아니라 “단일 변환을 명확히 표현”하는 것입니다. 다단계 분기/예외/상태 업데이트가 들어가면 명명된 루프나 함수 분해가 더 안전합니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>권장 패턴</h3>
+          <pre><code>nums: list[int] = list(range(10))
+sq_even: list[int] = [x * x for x in nums if x % 2 == 0]
+pairs: list[tuple[int, int]] = [(i, i * i) for i in nums]
+print(sq_even[:3], pairs[:3])</code></pre>
+        </div>
+        <div class="card">
+          <h3>과도한 압축의 안티패턴</h3>
+          <pre><code># 조건/분기/예외가 겹치면 comprehension보다 분해가 낫다
+out: list[int] = []
+for x in nums:
+    if x % 2 == 0:
+        out.append(x * x)
+print(out[:3], len(out))</code></pre>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>상황</th><th>권장 표현</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>단일 단계 필터/매핑</td><td>list comprehension</td><td>의도 압축 + 리뷰 용이</td></tr>
+          <tr><td>다단계 분기/로깅/예외</td><td>for + 함수 분해</td><td>중간 상태 검증 가능</td></tr>
+          <tr><td>대용량 스트리밍</td><td>generator expression</td><td>메모리 피크 감소</td></tr>
+          <tr><td>다회 순회 필요</td><td>명시적 materialize(<code>list(...)</code>)</td><td>1회 소비 이슈 차단</td></tr>
+        </tbody>
+      </table>
+      <div class="formula">
+$$
+\text{Readability} \propto \frac{1}{\text{nesting depth}+\text{implicit state}}
+$$
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.5.1 · Comprehension vs Generator</span>
+      <h2>Eager list와 lazy generator를 언제 선택할 것인가</h2>
+      <p>표현식 선택은 문법 취향이 아니라 materialization 전략입니다. 학습 루프에서는 다회 순회/랜덤 접근 필요 여부가 결정 기준이 됩니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>List comprehension (eager)</h3>
+          <pre><code>tokens: list[str] = ["a", "bb", "ccc", "dddd"]
+lengths: list[int] = [len(t) for t in tokens]
+print(lengths[0], lengths[-1], len(lengths))</code></pre>
+          <ul>
+            <li>즉시 메모리 할당</li>
+            <li>재사용/인덱싱 가능</li>
+            <li>디버깅 출력이 쉬움</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Generator expression (lazy)</h3>
+          <pre><code>tokens: list[str] = ["a", "bb", "ccc", "dddd"]
+lengths_gen = (len(t) for t in tokens)
+print(next(lengths_gen), next(lengths_gen))
+print(list(lengths_gen))  # 남은 요소만 소비</code></pre>
+          <ul>
+            <li>메모리 피크 감소</li>
+            <li>1회 소비 semantics 주의</li>
+            <li>스트리밍 파이프라인에 적합</li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>요구사항</th><th>권장</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>반복적으로 재순회</td><td>list comprehension</td><td>소비 후에도 데이터 유지</td></tr>
+          <tr><td>메모리 제약 + 단일 통과</td><td>generator expression</td><td>지연 평가로 피크 메모리 감소</td></tr>
+          <tr><td>중간 상태 로깅/검증</td><td>명시적 for 루프</td><td>디버깅 가시성 향상</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.6 · Sorting and Ordering Contracts</span>
+      <h2><code>sort()</code> vs <code>sorted()</code>, stable sort, multi-key ranking</h2>
+      <p>정렬은 단순 출력 정리가 아니라 ordering contract를 명시하는 도구입니다. 특히 실험 랭킹/체크포인트 선택에서는 tie-break 기준을 코드로 고정해야 재현성이 확보됩니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>API 차이</h3>
+          <pre><code>xs: list[int] = [3, 1, 2]
+ys = sorted(xs)   # new list
+xs.sort()         # in-place
+print(xs, ys)</code></pre>
+        </div>
+        <div class="card">
+          <h3>stable sorting</h3>
+          <pre><code>items: list[tuple[str, int]] = [("b", 2), ("a", 2), ("c", 1)]
+items = sorted(items, key=lambda x: x[0])  # 보조 키
+items = sorted(items, key=lambda x: x[1])  # 주 키
+print(items)  # 안정 정렬로 보조 키 순서 유지</code></pre>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>항목</th><th><code>list.sort()</code></th><th><code>sorted(iterable)</code></th></tr></thead>
+        <tbody>
+          <tr><td>원본 변경</td><td>변경함(in-place)</td><td>변경 안 함</td></tr>
+          <tr><td>반환값</td><td><code>None</code></td><td>새 list</td></tr>
+          <tr><td>입력 타입</td><td>list 전용</td><td>임의 iterable</td></tr>
+          <tr><td>메모리</td><td>추가 list 없음</td><td>새 list 할당</td></tr>
+          <tr><td>선택 기준</td><td>원본 갱신 의도일 때</td><td>원본 보존/함수형 파이프라인일 때</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.6.1 · Stable Sort in Practice</span>
+      <h2>stable sort가 연구 코드에서 중요한 이유</h2>
+      <p>stable sort는 단순 구현 디테일이 아니라 순서 계약입니다. 동점 처리 규칙을 단계별 정렬로 고정할 수 있어 실험 결과와 보고서가 재현 가능해집니다.</p>
+      <pre><code>records: list[tuple[str, int]] = [("u2", 90), ("u1", 90), ("u3", 80)]
+records = sorted(records, key=lambda x: x[0])               # 보조 키(id)
+records = sorted(records, key=lambda x: x[1], reverse=True) # 주 키(score)
+print(records)</code></pre>
+      <table>
+        <thead><tr><th>상황</th><th>stable sort가 주는 이점</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td>동점 점수 랭킹</td><td>보조 키 순서 유지</td><td>tie-break를 코드에 명시</td></tr>
+          <tr><td>우선순위 큐 전처리</td><td>입력 순서 보존 가능</td><td>감사/디버깅 로그 해석 용이</td></tr>
+          <tr><td>반복 정렬 파이프라인</td><td>계층형 정렬 규칙 구성</td><td>보조 키 먼저, 주 키 나중에 적용</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">주의: <code>list.sort()</code>는 in-place이므로 alias가 있으면 외부에서도 순서 변화가 관측됩니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.7 · When Not to Use List</span>
+      <h2>언제 list를 버리고 다른 구조를 써야 하는가</h2>
+      <p>list의 한계를 명확히 인식해야 자료구조 선택이 닫힙니다. 핵심은 “지배 연산”입니다. 앞삭제, membership 대량 조회, top-k 유지는 list보다 다른 구조가 구조적으로 유리합니다.</p>
+      <table>
+        <thead><tr><th>워크로드</th><th>list 사용 시 문제</th><th>권장 구조</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>queue (앞삭제 반복)</td><td><code>pop(0)</code>가 O(n)</td><td><code>deque</code></td><td><code>popleft()</code> O(1)</td></tr>
+          <tr><td>대규모 membership</td><td><code>x in list</code> O(n)</td><td><code>set</code></td><td>평균 O(1)</td></tr>
+          <tr><td>key-value 상태 관리</td><td>인덱스 기반 검색 비용 큼</td><td><code>dict</code></td><td>평균 O(1) 조회/갱신</td></tr>
+          <tr><td>top-k 유지</td><td>반복 정렬 비용 큼</td><td><code>heapq</code></td><td>삽입/삭제 O(log n)</td></tr>
+        </tbody>
+      </table>
+      <pre><code>from collections import deque
+q = deque([1, 2, 3])
+q.popleft()   # queue workload
+
+seen: set[int] = {1, 2, 3}
+print(2 in seen)</code></pre>
+      <p class="muted"><code>list.pop(0)</code> vs <code>deque.popleft()</code> 벤치마크가 이 선택 기준의 실측 근거를 제공합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.7.1 · Decision Checklist</span>
+      <h2>list를 써야 할 때 / 쓰지 말아야 할 때</h2>
+      <div class="cols-2">
+        <div class="card">
+          <h3>list를 써도 되는 경우</h3>
+          <ul>
+            <li><code>append</code> 중심 버퍼</li>
+            <li>순차 접근/순회 중심 처리</li>
+            <li>인덱스 기반 갱신이 핵심</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>list를 버려야 하는 경우</h3>
+          <ul>
+            <li>앞삭제/앞삽입 반복: <code>deque</code></li>
+            <li>membership 대량 검사: <code>set</code></li>
+            <li>key-value 상태 관리: <code>dict</code></li>
+            <li>top-k/우선순위: <code>heapq</code></li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted">결론: list는 기본값이지만 만능값은 아닙니다. 지배 연산을 먼저 고르고 구조를 선택합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.8 · Tuple as Immutable Sequence</span>
+      <h2>List vs Tuple: mutability, intent signaling, key suitability</h2>
+      <p>tuple은 list의 축약 문법이 아니라 “변경 불가 계약”을 표현하는 시퀀스입니다. tuple 선택은 dict/set 키 설계와 copy 전략의 안정성에 직접 연결됩니다.</p>
+      <pre><code>shape: tuple[int, int, int, int] = (32, 3, 224, 224)
+batch_losses: list[float] = []
+for step in range(3):
+    batch_losses.append(step * 0.1)
+
+cache_key: tuple[str, int, float] = ("bert-base", 32, 3e-5)
+memo: dict[tuple[str, int, float], float] = {cache_key: 0.913}
+print(shape, batch_losses)
+print(memo[cache_key])</code></pre>
+      <table>
+        <thead><tr><th>항목</th><th><code>list</code></th><th><code>tuple</code></th><th>설계 시사점</th></tr></thead>
+        <tbody>
+          <tr><td>가변성</td><td>mutable</td><td>immutable</td><td>tuple은 상태 오염 방지에 유리</td></tr>
+          <tr><td>해시 가능성</td><td>불가</td><td>원소가 모두 hashable일 때 가능</td><td>dict/set key로 tuple 선호</td></tr>
+          <tr><td>의미 전달</td><td>변경 가능한 버퍼</td><td>고정 레코드/스냅샷</td><td>의도를 타입으로 드러냄</td></tr>
+          <tr><td>메모리</td><td>상대적으로 큼</td><td>상대적으로 컴팩트</td><td>읽기 중심 구조에서 tuple 우세</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">주의: <code>(1, [2, 3])</code>처럼 내부에 unhashable 원소가 있으면 tuple도 key로 사용할 수 없습니다. 단일 원소 tuple은 <code>("one",)</code>처럼 쉼표가 필요합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.8.1 · Immutable Record Choices</span>
+      <h2>Tuple vs namedtuple vs frozen dataclass</h2>
+      <p>불변 레코드를 표현할 때는 “짧은 키”와 “도메인 모델”을 분리해 선택해야 합니다. 키 캐시/인덱스는 tuple이 유리하고, 의미 필드가 중요한 설정 객체는 frozen dataclass가 유리합니다.</p>
+      <pre><code>from collections import namedtuple
+from dataclasses import dataclass
+
+Key = tuple[str, int, float]
+RunId = namedtuple("RunId", ["model", "seed"])
+
+@dataclass(frozen=True)
+class TrainConfig:
+    model: str
+    batch_size: int
+    lr: float
+
+run = RunId("bert-base", 42)
+cfg = TrainConfig("bert-base", 32, 3e-5)
+print(run.model, run.seed)
+print(cfg)</code></pre>
+      <table>
+        <thead><tr><th>표현</th><th>장점</th><th>약점</th><th>권장 사용</th></tr></thead>
+        <tbody>
+          <tr><td><code>tuple</code></td><td>가볍고 빠름, hash key 적합</td><td>필드 의미가 위치 의존</td><td>캐시 키, shape, 인덱스 키</td></tr>
+          <tr><td><code>namedtuple</code></td><td>필드명 제공 + 불변</td><td>복잡한 검증/메서드 확장 제한</td><td>읽기 중심 레코드</td></tr>
+          <tr><td><code>@dataclass(frozen=True)</code></td><td>명시적 필드, 타입/리팩터링 친화</td><td>상대적으로 무거움</td><td>설정 객체, 실험 메타데이터</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">선택 기준: 해시 키와 스냅샷은 tuple 계열, 도메인 의미와 유지보수성은 frozen dataclass로 분리합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.9 · Deque for Queue Workloads</span>
+      <h2><code>deque</code>: 양끝 연산 중심 ADT 구현</h2>
+      <p>deque는 queue/deque ADT를 구현할 때 list보다 의미와 비용이 모두 명확합니다. 핵심은 “앞삭제/앞삽입이 주연산인가”입니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>핵심 연산</h3>
+          <pre><code>from collections import deque
+
+q: deque[int] = deque([1, 2, 3])
+q.appendleft(0)
+q.append(4)
+print(q.popleft(), q.pop())   # 0, 4
+
+w: deque[int] = deque(maxlen=3)
+for x in [10, 11, 12, 13]:
+    w.append(x)
+print(list(w))                # [11, 12, 13]</code></pre>
+        </div>
+        <div class="card">
+          <h3>선택 기준</h3>
+          <ul>
+            <li>앞삭제/앞삽입 빈도가 높으면 deque</li>
+            <li>랜덤 인덱싱/중간 접근이 핵심이면 list</li>
+            <li><code>maxlen</code>은 고정 크기 최근성 버퍼에 유용</li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>연산</th><th>list</th><th>deque</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>append/pop (right)</td><td>O(1) amortized</td><td>O(1)</td><td>둘 다 양호</td></tr>
+          <tr><td>pop(0)/appendleft</td><td>O(n)</td><td>O(1)</td><td>queue에서는 deque 우세</td></tr>
+          <tr><td>랜덤 접근</td><td>O(1)</td><td>상대적으로 비효율</td><td>배열형 접근은 list 우세</td></tr>
+        </tbody>
+      </table>
+      <p class="muted"><code>list.pop(0)</code> vs <code>deque.popleft()</code> 벤치마크로 선택 기준을 실측 검증합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.10 · Heap-Based Priority Queue</span>
+      <h2><code>heapq</code>: root-min 보장과 tie-break 설계</h2>
+      <p>heap는 전체 정렬이 아니라 최소 원소 접근을 빠르게 하는 자료구조입니다. 우선순위 갱신/임의 삭제가 빈번하면 lazy deletion 또는 재삽입 전략이 필요합니다.</p>
+      <pre><code>import heapq
+from dataclasses import dataclass, field
+
+@dataclass(order=True)
+class Job:
+    priority: int
+    seq: int
+    name: str = field(compare=False)
+
+h: list[Job] = []
+heapq.heappush(h, Job(1, 0, "eval"))
+heapq.heappush(h, Job(1, 1, "train"))
+heapq.heappush(h, Job(0, 2, "warmup"))
+print(heapq.heappop(h))</code></pre>
+      <table>
+        <thead><tr><th>연산</th><th>복잡도</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td><code>heappush/heappop</code></td><td>O(log n)</td><td>Top 우선순위 유지</td></tr>
+          <tr><td><code>h[0]</code></td><td>O(1)</td><td>최솟값 peek</td></tr>
+          <tr><td>priority update</td><td>직접 지원 약함</td><td>재삽입 + stale 무시 전략</td></tr>
+          <tr><td>arbitrary delete</td><td>비효율적</td><td>빈번하면 다른 구조 검토</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.10.1 · Heap Contract</span>
+      <h2>heap은 정렬 구조가 아니라 우선순위 구조다</h2>
+      <p>heap은 전체 순서를 보장하지 않고 root-min 성질만 보장합니다. 따라서 “전체 정렬 결과”가 필요하면 sort, “반복 top-1/top-k 추출”이 필요하면 heap이 적합합니다.</p>
+      <pre><code>import heapq
+
+h: list[int] = [7, 3, 9, 1, 5]
+heapq.heapify(h)
+print(h)          # 내부 배열은 부분 순서만 만족
+print(h[0])       # 최소값만 즉시 보장</code></pre>
+      <table>
+        <thead><tr><th>요구사항</th><th>heap 적합성</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>최소값 반복 추출</td><td>높음</td><td><code>heappop</code> O(log n)</td></tr>
+          <tr><td>top-k 추출</td><td>높음</td><td><code>nlargest/nsmallest</code>로 확장 가능</td></tr>
+          <tr><td>전체 정렬 상태 유지</td><td>낮음</td><td>heap 내부 배열은 완전 정렬이 아님</td></tr>
+          <tr><td>임의 원소 업데이트/삭제</td><td>낮음</td><td>재삽입(lazy deletion) 또는 다른 구조 검토</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">tie-break가 필요하면 <code>(priority, seq, item)</code> 형태를 사용해 비교 가능성과 결정성을 함께 확보합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 2.11 · Ordered Array with Bisect</span>
+      <h2>Bisect: search는 O(log n), insertion은 O(n)</h2>
+      <p>bisect는 정렬 배열에서 경계를 빠르게 찾는 도구입니다. map 대체재가 아니라 ordered array discipline이며, 삽입 시 시프트 비용 O(n)을 항상 함께 계산해야 합니다.</p>
+      <pre><code>import bisect
+
+arr: list[int] = [10, 20, 20, 40, 50]
+print(bisect.bisect_left(arr, 20))   # 1
+print(bisect.bisect_right(arr, 20))  # 3
+bisect.insort(arr, 35)
+print(arr)</code></pre>
+      <pre><code># bisect의 검색/삽입 경향 시간 측정
+import timeit
+
+setup_search = "import bisect; arr = list(range(100_000)); x = 54_321"
+setup_insert = "import bisect; base = list(range(100_000)); x = 54_321"
+t_search = timeit.timeit("bisect.bisect_left(arr, x)", setup=setup_search, number=50_000)
+t_insert = timeit.timeit("arr = base.copy(); bisect.insort(arr, x)", setup=setup_insert, number=1_000)
+print(f"bisect_left(50k): {t_search:.4f}s, insort(1k): {t_insert:.4f}s")</code></pre>
+      <table>
+        <thead><tr><th>기법</th><th>복잡도</th><th>적합 시나리오</th></tr></thead>
+        <tbody>
+          <tr><td><code>bisect_left/right</code></td><td>O(log n)</td><td>정렬 배열의 lower/upper bound</td></tr>
+          <tr><td><code>insort</code></td><td>O(n)</td><td>소규모 온라인 정렬 유지</td></tr>
+          <tr><td>정렬+다중 질의</td><td>O(n log n)+q·O(log n)</td><td>배치 정렬 후 반복 조회</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">삽입이 잦은 대규모 온라인 워크로드에서는 heap/tree 계열이 더 유리할 수 있습니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3 · Hash Family (dict/set)</span>
+      <h2>딕셔너리 기본: 조회, 추가, 삭제, 안전 조회</h2>
+      <pre><code>d: dict[str, str] = {"sample_id": "seq_001", "label": "positive"}
+d["split"] = "train"
+print(d["sample_id"])            # KeyError 가능
+print(d.get("email"))       # None
+print(d.get("email", "N/A"))
+removed: str = d.pop("label")
+print(removed, d)</code></pre>
+      <p>딕셔너리는 키를 통해 접근하므로 인덱스 개념이 없습니다. 따라서 설계 관점에서 가장 중요한 질문은 “키가 없을 때 무엇이 정답인가?”입니다. 일부 파이프라인은 결측을 허용해야 하므로 기본값 정책이 필요하고, 일부 내부 프로토콜은 결측 자체를 버그로 간주해야 하므로 예외를 유지해야 합니다. 예를 들어 샘플 메타데이터, 체크포인트 상태, 옵티마이저 하이퍼파라미터는 키 누락 시 처리 정책이 서로 다릅니다.</p>
+      <div class="formula">
+$$
+\text{lookup}(k)=
+\begin{cases}
+v & (k\in K)\\
+\bot & (k\notin K,\ \text{with default/get})\\
+\text{KeyError} & (k\notin K,\ d[k]\ \text{access})
+\end{cases}
+$$
+      </div>
+      <table>
+        <thead><tr><th>메서드</th><th>의미</th><th>예외/반환</th></tr></thead>
+        <tbody>
+          <tr><td><code>d[k]</code></td><td>직접 조회</td><td>없으면 <code>KeyError</code></td></tr>
+          <tr><td><code>d.get(k,default)</code></td><td>안전 조회</td><td>없으면 default</td></tr>
+          <tr><td><code>d.pop(k,default)</code></td><td>조회 + 삭제</td><td>없으면 default</td></tr>
+          <tr><td><code>k in d</code></td><td>키 존재 검사</td><td>bool</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">Python 3.10에서는 일반 <code>dict</code>도 삽입 순서를 보존합니다. <code>OrderedDict</code>는 재배치/양끝 pop 등 order-sensitive 연산이 필요할 때만 선택합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.1 · Dict Internals</span>
+      <h2>딕셔너리 내부: 해시, 충돌, 키 설계</h2>
+      <p>딕셔너리는 해시 테이블입니다. 핵심은 <strong>좋은 키</strong>와 <strong>충돌 관리</strong>입니다.</p>
+      <p>평균 O(1)만 외우면 부족합니다. 충돌이 늘어나는 데이터 분포, 해시 일관성이 깨진 사용자 정의 객체, 과도한 리사이즈가 동시에 발생하면 tail latency가 크게 흔들립니다. 따라서 키 설계 단계에서 불변성·동등성·해시 일관성을 명시하고, 조회 실패 정책을 함께 문서화해야 합니다.</p>
+      <div class="formula">
+$$
+k_1 = k_2 \Rightarrow h(k_1)=h(k_2)\quad\text{(required)}
+$$
+$$
+h(k_1)=h(k_2) \not\Rightarrow k_1=k_2\quad\text{(collision allowed)}
+$$
+      </div>
+      <svg class="infographic" viewBox="0 0 1080 230" role="img" aria-label="딕셔너리 조회 경로와 충돌 처리 도식">
+        <rect x="34" y="46" width="220" height="82" rx="12" fill="#e9f2ff" stroke="#90afdb"/>
+        <text x="144" y="79" text-anchor="middle" font-size="22" font-weight="700" fill="#23426e">key</text>
+        <text x="144" y="107" text-anchor="middle" font-size="15" fill="#3f628f">immutable / hashable</text>
+
+        <rect x="302" y="46" width="220" height="82" rx="12" fill="#f0ecff" stroke="#b2a3e7"/>
+        <text x="412" y="79" text-anchor="middle" font-size="22" font-weight="700" fill="#3e2e69">hash(key)</text>
+        <text x="412" y="107" text-anchor="middle" font-size="15" fill="#5b4c86">slot index 계산</text>
+
+        <rect x="570" y="24" width="220" height="82" rx="12" fill="#ebf8ef" stroke="#9ccdb0"/>
+        <text x="680" y="57" text-anchor="middle" font-size="21" font-weight="700" fill="#1c4d33">hit</text>
+        <text x="680" y="84" text-anchor="middle" font-size="15" fill="#2e6a47">value 반환 O(1) avg</text>
+
+        <rect x="570" y="124" width="220" height="82" rx="12" fill="#fff2ea" stroke="#e2b49b"/>
+        <text x="680" y="157" text-anchor="middle" font-size="21" font-weight="700" fill="#7a3c20">collision</text>
+        <text x="680" y="184" text-anchor="middle" font-size="15" fill="#8a5a3d">probe / compare로 재탐색</text>
+
+        <rect x="838" y="74" width="206" height="96" rx="12" fill="#f8f9fc" stroke="#bcc8da"/>
+        <text x="941" y="109" text-anchor="middle" font-size="19" font-weight="700" fill="#28384f">lookup policy</text>
+        <text x="941" y="137" text-anchor="middle" font-size="14" fill="#445a78">strict: d[k] -> KeyError</text>
+        <text x="941" y="161" text-anchor="middle" font-size="14" fill="#445a78">safe: d.get(k, default)</text>
+
+        <line x1="254" y1="88" x2="302" y2="88" stroke="#4c678e" stroke-width="4"/>
+        <polygon points="302,88 288,80 288,96" fill="#4c678e"/>
+        <line x1="522" y1="88" x2="570" y2="65" stroke="#4c678e" stroke-width="4"/>
+        <polygon points="570,65 557,60 561,74" fill="#4c678e"/>
+        <line x1="522" y1="88" x2="570" y2="165" stroke="#4c678e" stroke-width="4"/>
+        <polygon points="570,165 557,158 558,173" fill="#4c678e"/>
+        <line x1="790" y1="65" x2="838" y2="109" stroke="#4c678e" stroke-width="4"/>
+        <polygon points="838,109 825,102 828,116" fill="#4c678e"/>
+        <line x1="790" y1="165" x2="838" y2="136" stroke="#4c678e" stroke-width="4"/>
+        <polygon points="838,136 824,133 831,147" fill="#4c678e"/>
+      </svg>
+      <p class="figure-caption">딕셔너리 성능은 키 설계 품질에 크게 의존합니다. 해시 충돌·조회 정책·키 불변성은 반드시 함께 설계해야 합니다.</p>
+      <pre><code># hashable 조건: 불변 + __hash__ 구현
+print(hash((1, 2, 3)))
+# print(hash([1, 2, 3]))  # TypeError
+
+# 사용자 정의 키
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Node:
+    id: int
+    label: str
+
+d: dict[Node, float] = {Node(1, "A"): 3.14}
+print(d[Node(1, "A")])</code></pre>
+      <pre><code># 실험 캐시 키 설계 예시 (튜플 키 권장)
+metrics_cache: dict[tuple[str, int, float], dict[str, float]] = {}
+cfg_key: tuple[str, int, float] = ("bert-base", 32, 3e-5)
+metrics_cache[cfg_key] = {"val_f1": 0.913, "val_loss": 0.224}
+
+# 키가 list면 TypeError, 가변 구조라 재현성 있는 조회가 어렵다.
+print(metrics_cache[cfg_key]["val_f1"])</code></pre>
+      <table>
+        <thead><tr><th>리스크</th><th>증상</th><th>예방 방법</th></tr></thead>
+        <tbody>
+          <tr><td>가변 객체 키 사용</td><td>삽입 후 조회 실패/불안정</td><td>키 타입은 불변 객체로 제한</td></tr>
+          <tr><td><code>__eq__</code>/<code>__hash__</code> 불일치</td><td>동등 객체가 다른 슬롯에 저장</td><td>동등성 계약을 테스트로 강제</td></tr>
+          <tr><td>적대적 충돌 분포</td><td>조회 지연 급증</td><td>키 정규화 + 분포 점검 벤치마크</td></tr>
+          <tr><td>누락 키 처리 정책 부재</td><td>간헐적 KeyError 또는 silent default</td><td><code>d[k]</code>/<code>get</code> 사용 정책 분리</td></tr>
+        </tbody>
+      </table>
+      <div class="formula">
+$$
+\text{Key design rule: immutable key } \land
+\left(a=b \Rightarrow h(a)=h(b)\right)
+$$
+\(\texttt{\_\_eq\_\_}\)와 \(\texttt{\_\_hash\_\_}\)는 항상 일관되게 설계
+      </div>
+      <p class="danger">주의: 가변 객체를 키로 사용하거나, hash/eq 불일치가 있으면 치명적 버그가 발생합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.2 · Dict as Hash Table Instance</span>
+      <h2>해시 테이블 이론에서 dict 설계 기준으로 연결하기</h2>
+      <p>평균 O(1)은 로드 팩터, 해시 분산, 키 불변성 가정을 만족할 때만 유지됩니다.</p>
+      <div class="formula">
+$$
+\alpha=\frac{n}{m},\quad
+\mathbb{E}[\text{lookup}] \approx O(1+\alpha)
+$$
+\(\alpha\) 증가, 키 분산 악화, hash/eq 불일치는 tail latency를 증가시킵니다.
+      </div>
+      <table>
+        <thead><tr><th>이론 가정</th><th>dict 설계 기준</th><th>실패 모드</th></tr></thead>
+        <tbody>
+          <tr><td>균등 해싱</td><td>키 정규화/키 타입 고정</td><td>충돌 집중으로 조회 지연</td></tr>
+          <tr><td>키 불변성</td><td>tuple/frozen dataclass 키 사용</td><td>삽입 후 조회 실패</td></tr>
+          <tr><td>동등성-해시 일치</td><td><code>__eq__</code>/<code>__hash__</code> 계약 테스트</td><td>동등 객체 중복 저장</td></tr>
+          <tr><td>적절한 리사이즈</td><td>대형 입력에서 벤치마크로 확인</td><td>간헐적 latency spike</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">dict는 “그냥 빠른 맵”이 아니라 가정 위에서 성능이 성립하는 해시 테이블 구현입니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.3 · Lookup Policies & Failure Modes</span>
+      <h2>딕셔너리 실패 모드: 조회 정책과 안전성</h2>
+      <p>딕셔너리는 키 기반 접근이 핵심이므로 “키가 없을 때의 정책”을 먼저 설계해야 합니다. 예외를 발생시킬지, 기본값을 줄지, 자동 생성할지를 합의하지 않으면 버그가 잠복합니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>조회 정책</h3>
+          <pre><code>d: dict[str, str] = {"sample_id": "seq_001", "label": "positive"}
+print(d["sample_id"])              # 강한 가정(없으면 오류)
+print(d.get("email"))         # None
+print(d.get("email", "N/A"))  # 기본값</code></pre>
+        </div>
+        <div class="card">
+          <h3>수정 정책</h3>
+          <pre><code>d: dict[str, str] = {"sample_id": "seq_001", "label": "positive"}
+d["split"] = "train"
+v: str = d.pop("label", "정보없음")
+d.setdefault("country", "KR")
+print(d, v)</code></pre>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>연산</th><th>시간복잡도(평균)</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><code>d[k]</code> 조회</td><td>O(1)</td><td>실패를 예외로 다루는 곳에서 사용</td></tr>
+          <tr><td><code>get</code></td><td>O(1)</td><td>유실 데이터가 자연스러운 파이프라인에 적합</td></tr>
+          <tr><td><code>setdefault</code></td><td>O(1)</td><td>그룹화/누적 패턴 간결화</td></tr>
+          <tr><td><code>pop</code></td><td>O(1)</td><td>소비(consumption) 모델에 적합</td></tr>
+        </tbody>
+      </table>
+      <p>외부 입력(JSON, 로그, CSV)에서 온 dict는 항상 <code>get</code> + 검증 단계를 거치고, 내부 프로토콜 dict는 <code>d[k]</code>로 즉시 예외를 발생시키는 방식이 디버깅에 유리합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.4 · Dict Views and Mutation Interaction</span>
+      <h2>dynamic view semantics: <code>keys/items/values</code>와 변경 상호작용</h2>
+      <p>dict view는 snapshot이 아니라 live view입니다. 순회 중 구조 변경이 섞이면 논리 오류 또는 런타임 오류가 발생할 수 있으므로 materialization 전략을 구분해야 합니다.</p>
+      <pre><code>d: dict[str, int] = {"a": 1, "b": 2, "c": 3}
+view = d.items()              # live view
+d["d"] = 4
+print(list(view))             # 변경 반영
+
+for k in list(d.keys()):      # snapshot 후 안전 삭제
+    if k == "b":
+        del d[k]
+print(d)</code></pre>
+      <table>
+        <thead><tr><th>표현</th><th>의미</th><th>적합한 사용</th></tr></thead>
+        <tbody>
+          <tr><td><code>d.items()</code></td><td>live view</td><td>읽기 중심 동적 관측</td></tr>
+          <tr><td><code>list(d.items())</code></td><td>snapshot copy</td><td>순회 중 구조 변경 필요 시</td></tr>
+          <tr><td><code>for k in d:</code></td><td>키 순회</td><td>변경 없는 조회 루프</td></tr>
+          <tr><td><code>for k in list(d):</code></td><td>복사 후 순회</td><td>삭제/삽입 동반 루프</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">dict는 insertion order를 보존하지만, view는 동적이며 set처럼 order-insensitive한 동치 개념과는 구분해서 이해해야 합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.4.1 · View vs Snapshot Rule</span>
+      <h2>dict view와 snapshot을 언제 선택할 것인가</h2>
+      <p><code>d.items()</code>는 live view, <code>list(d.items())</code>는 snapshot입니다. 순회 중 수정 가능성 여부에 따라 둘을 명시적으로 선택해야 재현 가능한 파이프라인이 됩니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>Live view</h3>
+          <pre><code>d: dict[str, int] = {"a": 1, "b": 2}
+view = d.items()
+d["c"] = 3
+print(list(view))  # 변경 반영</code></pre>
+          <p class="muted">모니터링/디버깅에 유리</p>
+        </div>
+        <div class="card">
+          <h3>Snapshot</h3>
+          <pre><code>d: dict[str, int] = {"a": 1, "b": 2}
+snap = list(d.items())
+d["c"] = 3
+print(snap)        # 기존 상태 유지</code></pre>
+          <p class="muted">재현 로그/안전 순회에 유리</p>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>상황</th><th>권장 표현</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>읽기 전용 관측</td><td><code>d.items()</code></td><td>최신 상태 반영</td></tr>
+          <tr><td>순회 중 삭제/삽입</td><td><code>list(d.items())</code></td><td>iteration 안정성 확보</td></tr>
+          <tr><td>실험 로그 직렬화</td><td>snapshot + 정렬</td><td>출력 재현성 보장</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.5 · Hash Map Design Patterns</span>
+      <h2>해시 기반 매핑 패턴: 집계, 병합, 계층 구성</h2>
+      <p>“연산은 비슷해도 의도는 다르다”는 점이 핵심입니다. <code>comprehension</code>은 결정 조건을 데이터 구조로 압축할 때, <code>defaultdict/Counter</code>는 누적·집계 로직의 조건 분기를 제거할 때, 병합 연산은 구성 계층(기본값/실험값/런타임값)을 합성할 때 가장 효과적입니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>dict comprehension</h3>
+          <pre><code>scores: dict[str, float] = {"exp_a": 0.91, "exp_b": 0.88, "exp_c": 0.74}
+level: dict[str, str] = {k: ("A" if v >= 0.90 else "B" if v >= 0.80 else "C")
+         for k, v in scores.items()}
+print(level)</code></pre>
+        </div>
+        <div class="card">
+          <h3>그룹화/카운트</h3>
+          <pre><code>from collections import defaultdict, Counter
+text = "graduate level data structure"
+freq: Counter[str] = Counter(text.split())
+
+bucket: defaultdict[str, list[int]] = defaultdict(list)
+for k, v in [("A", 1), ("A", 2), ("B", 3)]:
+    bucket[k].append(v)
+
+print(freq.most_common(5))
+print(dict(bucket))</code></pre>
+        </div>
+      </div>
+      <pre><code># merge 연산 (Python 3.9+)
+a: dict[str, int] = {"x": 1, "y": 2}
+b: dict[str, int] = {"y": 99, "z": 3}
+print(a | b)  # {'x':1, 'y':99, 'z':3}</code></pre>
+      <p class="muted">패턴 선택 기준: 1) 선언형 변환이면 comprehension, 2) 누적/집계면 defaultdict·Counter, 3) 계층형 조회 정책이면 ChainMap, 4) 단순 결과 병합이면 <code>|</code>.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.5.1 · Dict Family Guide</span>
+      <h2>dict family 선택 가이드: dict / OrderedDict / defaultdict / Counter / ChainMap</h2>
+      <p>모두 dict-like이지만 계약이 다릅니다. 핵심은 “없음 처리”, “순서 조작”, “빈도 모델”, “계층형 조회” 중 무엇을 주연산으로 두는가입니다.</p>
+      <table>
+        <thead><tr><th>구조</th><th>핵심 목적</th><th>대표 메서드/연산</th><th>언제 쓰는가</th><th>피해야 할 경우</th></tr></thead>
+        <tbody>
+          <tr><td><code>dict</code></td><td>기본 key-value 상태</td><td><code>get</code>, <code>pop</code>, <code>|</code></td><td>대부분의 일반 매핑</td><td>순서 재배치가 주연산일 때</td></tr>
+          <tr><td><code>OrderedDict</code></td><td>순서 조작</td><td><code>move_to_end</code>, <code>popitem(last=...)</code></td><td>LRU-like 정책, 양끝 pop 제어</td><td>단순 삽입 순서 보존만 필요할 때</td></tr>
+          <tr><td><code>defaultdict</code></td><td>없으면 기본 컨테이너 생성</td><td><code>defaultdict(list/int/set)</code></td><td>그룹화/누적 루프</td><td>키 누락을 버그로 잡아야 할 때</td></tr>
+          <tr><td><code>Counter</code></td><td>빈도(multiset) 모델</td><td><code>most_common</code>, <code>+</code>, <code>-</code></td><td>토큰/클래스 분포 분석, top-k 빈도</td><td>일반 상태 저장을 혼합할 때</td></tr>
+          <tr><td><code>ChainMap</code></td><td>계층형 조회 뷰</td><td><code>ChainMap(a,b,c)</code></td><td>runtime &gt; project &gt; default 우선순위</td><td>즉시 materialized merge가 필요할 때</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">이 구조들은 API가 유사해 보여도 실패 정책과 의미 계약이 다르므로, 데이터 모양이 아니라 연산 정책으로 선택합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.5.2 · Missing-Key Policy</span>
+      <h2><code>defaultdict</code> vs <code>setdefault</code></h2>
+      <p><code>setdefault</code>는 기본 dict에서 국소 패턴을 짧게 쓰는 도구이고, <code>defaultdict</code>는 자료구조 수준에서 누적/그룹화 의도를 선언하는 선택입니다.</p>
+      <pre><code>from collections import defaultdict
+
+pairs: list[tuple[str, int]] = [("train", 128), ("train", 256), ("val", 64)]
+
+g1: dict[str, list[int]] = {}
+for k, v in pairs:
+    g1.setdefault(k, []).append(v)
+
+g2: defaultdict[str, list[int]] = defaultdict(list)
+for k, v in pairs:
+    g2[k].append(v)
+
+print(g1)
+print(dict(g2))</code></pre>
+      <table>
+        <thead><tr><th>선택지</th><th>장점</th><th>주의</th></tr></thead>
+        <tbody>
+          <tr><td><code>setdefault</code></td><td>의존성 추가 없이 기존 dict에서 즉시 사용</td><td>루프가 길어지면 의도가 묻히기 쉬움</td></tr>
+          <tr><td><code>defaultdict</code></td><td>누적/그룹화 정책이 타입 선언에 드러남</td><td>키 누락을 예외로 감지하는 경로에는 부적합</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">정리: <code>setdefault</code>는 패턴, <code>defaultdict</code>는 구조 선택입니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.5.3 · Counter as Multiset</span>
+      <h2>Counter는 “빈도 dict”가 아니라 multiset이다</h2>
+      <p>Counter의 장점은 기본값 0과 연산 의미입니다. 단순 count dict보다 intent가 분명하고, top-k/비교/차집합 작업에서 코드가 짧고 안전해집니다.</p>
+      <pre><code>from collections import Counter
+
+tokens: list[str] = ["a", "b", "a", "c", "b", "a"]
+cnt = Counter(tokens)
+print(cnt)                 # Counter({'a': 3, 'b': 2, 'c': 1})
+print(cnt.most_common(2))  # [('a', 3), ('b', 2)]</code></pre>
+      <table>
+        <thead><tr><th>워크로드</th><th>일반 dict</th><th><code>Counter</code></th></tr></thead>
+        <tbody>
+          <tr><td>빈도 누적</td><td>초기화 분기 필요</td><td>0 기본값으로 즉시 누적</td></tr>
+          <tr><td>top-k 빈도</td><td>별도 정렬 코드 필요</td><td><code>most_common(k)</code> 지원</td></tr>
+          <tr><td>multiset 연산</td><td>직접 구현 필요</td><td><code>+</code>, <code>-</code>, <code>&amp;</code>, <code>|</code> 의미 제공</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">빈도 중심 workload에서는 dict보다 Counter가 설계 의도를 더 정확히 드러냅니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.5.4 · ChainMap for Layered Config</span>
+      <h2>ChainMap: merge 결과가 아니라 우선순위가 있는 조회 경로</h2>
+      <p><code>ChainMap</code>은 여러 dict를 복사 병합하지 않고 겹친 조회 뷰를 만듭니다. 설정 우선순위를 코드 구조로 남길 수 있어 실험 환경 관리에 유용합니다.</p>
+      <pre><code>from collections import ChainMap
+
+defaults = {"batch_size": 32, "lr": 1e-3}
+project  = {"lr": 5e-4}
+runtime  = {"device": "cuda"}
+
+cfg = ChainMap(runtime, project, defaults)
+print(cfg["lr"])          # 5e-4
+print(cfg["batch_size"])  # 32
+
+cfg["batch_size"] = 64    # 맨 앞(runtime)에 기록</code></pre>
+      <table>
+        <thead><tr><th>질문</th><th>ChainMap 답</th><th>판단 기준</th></tr></thead>
+        <tbody>
+          <tr><td>조회 우선순위</td><td>앞 dict부터 탐색</td><td><code>runtime &gt; project &gt; defaults</code> 명시 가능</td></tr>
+          <tr><td>메모리/복사 비용</td><td>materialize 없이 뷰 구성</td><td>큰 설정 dict 계층에 유리</td></tr>
+          <tr><td>수정 반영 위치</td><td>첫 dict에 기록</td><td>영구 병합이 필요하면 <code>|</code> 사용</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">ChainMap은 “병합 결과물”이 아니라 “lookup policy”를 표현하는 도구입니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.6 · Set Semantics and Reproducibility</span>
+      <h2>Set = membership-centric ADT, but order is not a contract</h2>
+      <p>set은 중복 제거/멤버십 검사에 최적화된 hash family 구조입니다. 반면 순서는 논리 계약이 아니므로 재현성 경로에서는 직접 출력 순서로 쓰면 위험합니다. set을 “키만 있는 dict”로 보면 설계가 명확해집니다.</p>
+      <pre><code>A: set[int] = {1, 2, 3, 4}
+B: set[int] = {3, 4, 5, 6}
+print("합집합:", A | B)
+print("교집합:", A & B)
+print("차집합:", A - B)
+
+tokens: list[str] = ["a", "b", "a", "c", "b"]
+print(list(set(tokens)))               # 순서 비보장
+print(list(dict.fromkeys(tokens)))     # 순서 유지 중복 제거
+
+vocab: set[str] = {"[PAD]", "[CLS]", "[SEP]"}
+stable_vocab: list[str] = sorted(vocab)  # 직렬화/로그는 정렬 후 고정</code></pre>
+      <div class="formula">
+$$
+J(A,B)=\frac{|A\cap B|}{|A\cup B|},\qquad
+|A\cup B|=|A|+|B|-|A\cap B|
+$$
+      </div>
+      <div class="formula">
+$$
+T_{\cap}(A,B)=\Theta(\min(|A|,|B|))\ \text{(avg hash lookup)}
+$$
+교집합/차집합은 작은 집합을 기준으로 순회하는 구현이 보통 유리합니다.
+      </div>
+      <table>
+        <thead><tr><th>워크로드</th><th>set 적합성</th><th>주의</th><th>검증 포인트</th></tr></thead>
+        <tbody>
+          <tr><td>membership 반복 검사</td><td>매우 높음 (avg O(1))</td><td>충돌 편향 입력 주의</td><td>입력 분포 바꿔도 지연 분포 유지 여부</td></tr>
+          <tr><td>중복 제거</td><td>높음</td><td>순서 보존이 필요하면 보완 필요</td><td><code>dict.fromkeys</code> 또는 정렬 후 출력</td></tr>
+          <tr><td>정렬/순위 출력</td><td>낮음</td><td>set 결과를 바로 보고용으로 쓰지 않기</td><td>직렬화 전 deterministic order 강제</td></tr>
+          <tr><td>실험 split leakage 검사</td><td>매우 높음</td><td>교집합 크기 로그 필수</td><td><code>len(train_ids & val_ids) == 0</code> assertion</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 3.6.1 · Set Failure Policy</span>
+      <h2><code>remove</code> vs <code>discard</code>: 실패 정책을 코드로 고정하기</h2>
+      <p>set은 membership 구조이므로, 삭제 실패를 “오류로 볼지” “무시할지”를 API 수준에서 선택할 수 있습니다. 데이터 정제 파이프라인에서는 이 정책을 명시해야 디버깅 비용이 줄어듭니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>Strict 삭제</h3>
+          <pre><code>seen: set[str] = {"a", "b"}
+seen.remove("a")      # OK
+print(seen)
+# seen.remove("x")    # KeyError</code></pre>
+          <p class="muted">누락 자체를 버그로 보는 경로</p>
+        </div>
+        <div class="card">
+          <h3>Tolerant 삭제</h3>
+          <pre><code>seen: set[str] = {"a", "b"}
+seen.discard("x")     # 조용히 통과
+print(seen)</code></pre>
+          <p class="muted">idempotent 정리 작업에 유리</p>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>연산</th><th>원소 없음</th><th>권장 맥락</th></tr></thead>
+        <tbody>
+          <tr><td><code>remove(x)</code></td><td><code>KeyError</code></td><td>강한 불변식 검사, 누락 탐지</td></tr>
+          <tr><td><code>discard(x)</code></td><td>무시</td><td>반복 정리/재시도 가능한 파이프라인</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">strict path와 tolerant path를 섞지 말고 함수 이름/문서에서 정책을 분리합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 4 · Selection &amp; Implementation</span>
+      <h2>선택 근거를 구현 계약으로 닫기</h2>
+      <p>selection framework는 구조군(list/dict/set/tuple/deque/heapq/bisect) 전반에 공통으로 적용하는 의사결정 기준입니다.</p>
+      <div class="formula">
+$$
+\text{Choose }D^\*=\arg\min_D \left(\sum_{op} w_{op}T_D(op) + \lambda M_D + \mu R_D + \nu G_D\right)
+$$
+\(R_D\): 실패 리스크, \(G_D\): 검증/가독성 비용
+      </div>
+      <table>
+        <thead><tr><th>시나리오</th><th>핵심 연산</th><th>우선 후보</th><th>근거</th></tr></thead>
+        <tbody>
+          <tr><td>미니배치 큐 처리</td><td>append + popleft</td><td>deque</td><td>양끝 연산 O(1)</td></tr>
+          <tr><td>실험 상태/메타 관리</td><td>get/set/del</td><td>dict</td><td>평균 O(1) 조회</td></tr>
+          <tr><td>중복 제거 + membership</td><td>contains/add</td><td>set</td><td>평균 O(1) membership</td></tr>
+          <tr><td>top-k 후보 유지</td><td>push/pop-min</td><td>heapq</td><td>O(log n)</td></tr>
+          <tr><td>정렬배열 경계 검색</td><td>left/right bound</td><td>bisect</td><td>검색 O(log n), 삽입 O(n)</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">보고서/논문에는 가중치(\(w,\lambda,\mu,\nu\))와 실패 정책 가정까지 명시해야 선택 근거가 재현됩니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 4.1 · Quantitative Decision Model</span>
+      <h2>워크로드 혼합과 break-even: 선택을 수식으로 닫기</h2>
+      <p>구조 선택은 “어떤 연산이 많은가”를 수치화해야 설득력이 생깁니다. workload mix와 입력 스케일을 식으로 두면 코드 리뷰/실험 보고서에서 선택 이유를 재현할 수 있습니다.</p>
+      <div class="formula">
+$$
+\mathbb{E}[T_D]=\sum_{op} p_{op}\,c_D(op),\qquad
+D^\*=\arg\min_D \mathbb{E}[T_D]
+$$
+\(p_{op}\): 연산 비율, \(c_D(op)\): 구조 \(D\)에서 연산 단가
+      </div>
+      <div class="formula">
+$$
+C_{\text{list-front-pop}}(n,m)=\sum_{k=0}^{m-1}(n-k)=mn-\frac{m(m-1)}{2},\qquad
+C_{\text{deque-left-pop}}(m)=\Theta(m)
+$$
+\(m=\rho n\)이면 list front-delete는 \(\Theta(n^2)\), deque는 \(\Theta(n)\)로 분리됩니다.
+      </div>
+      <table>
+        <thead><tr><th>분석 항목</th><th>수식</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td>혼합 비용</td><td><code>Σ p_op · c_D(op)</code></td><td>실제 파이프라인 연산 비율 반영</td></tr>
+          <tr><td>스케일 영향</td><td><code>m=ρn</code> 치환</td><td>입력 크기 증가에 대한 기울기 예측</td></tr>
+          <tr><td>선택 근거</td><td><code>argmin_D E[T_D]</code></td><td>“왜 이 구조인가”를 정량 근거로 고정</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">벤치마크 전에 비용 식을 먼저 세우고, 벤치마크는 식의 계수와 편차를 추정하는 절차로 사용합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 4.2 · ADT Mapping</span>
+      <h2>형식 명세를 구현 매핑으로 닫기</h2>
+      <p>명세 형식(State/Operation/Precondition/Invariant)을 실제 구현 선택으로 연결합니다. 아래 표는 “무엇을 빠르게 하려는가”와 함께 “어떻게 실패를 다룰 것인가”까지 포함합니다.</p>
+      <table>
+        <thead><tr><th>ADT</th><th>핵심 연산</th><th>표준 구현</th><th>불변식/실패 정책</th><th>적용 맥락</th></tr></thead>
+        <tbody>
+          <tr><td>Stack</td><td>push/pop/top</td><td><code>list</code></td><td>empty-pop 정책 고정, LIFO invariant 유지</td><td>백트래킹, Undo</td></tr>
+          <tr><td>Queue</td><td>enqueue/dequeue</td><td><code>collections.deque</code></td><td>FIFO invariant, 앞삭제 O(1) 보장</td><td>BFS, 스트리밍</td></tr>
+          <tr><td>Priority Queue</td><td>push/pop-min</td><td><code>heapq</code></td><td>heap property + tie-break 필드 명시</td><td>스케줄링, 최단경로</td></tr>
+          <tr><td>Ordered Map</td><td>탐색/순회</td><td><code>dict</code> + 정렬 키</td><td>missing-key 정책 + 순회 중 변경 금지</td><td>사전+정렬 출력</td></tr>
+          <tr><td>Membership Set</td><td>contains/add/remove</td><td><code>set</code></td><td>순서 비계약, 결과 직렬화 시 정렬</td><td>중복 제거, 방문 체크</td></tr>
+        </tbody>
+      </table>
+      <div class="cols-2">
+        <div class="card">
+          <h3>구조 선택 기준</h3>
+          <ul>
+            <li>핵심 연산의 호출 비율(조회/삽입/삭제)을 먼저 계량화</li>
+            <li>최악 시간보다 tail-latency 민감도(95/99 퍼센타일) 확인</li>
+            <li>복사 비용과 직렬화 비용까지 포함해 총비용 계산</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>주의</h3>
+          <ul>
+            <li><code>list.pop(0)</code>로 Queue 구현 금지 (O(n) 누적)</li>
+            <li>정렬 유지가 필요 없는데 Ordered 구조를 강제하지 않기</li>
+            <li>해시 키에 가변 객체 사용 시 논리 오류 가능</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 4.3 · Implementations</span>
+      <h2>명세를 파이썬 구현으로 옮기기: 예외 정책과 tie-break 기준</h2>
+      <pre><code>from dataclasses import dataclass, field
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
+
+class Stack(Generic[T]):
+    def __init__(self) -> None:
+        self._data: list[T] = []
+
+    def push(self, x: T) -> None:
+        self._data.append(x)
+
+    def pop(self) -> T:
+        if not self._data:
+            raise IndexError("pop from empty stack")
+        return self._data.pop()
+
+@dataclass(order=True)
+class Job:
+    priority: int
+    seq: int
+    name: str = field(compare=False)  # name은 정렬 비교에서 제외
+
+s = Stack[int]()
+s.push(10); s.push(20)
+print("stack pop:", s.pop())
+
+jobs: list[Job] = [Job(1, 0, "eval"), Job(1, 1, "train"), Job(0, 2, "warmup")]
+print(sorted(jobs))</code></pre>
+      <div class="cols-2">
+        <div class="card">
+          <h3>구현 불변조건</h3>
+          <ul>
+            <li>빈 구조에서 실패 정책은 항상 동일하게 유지</li>
+            <li>우선순위 큐 tie-break(예: <code>seq</code>)를 명시</li>
+            <li>정렬 기준 필드는 <code>compare</code> 정책으로 고정</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>딥러닝 맥락</h3>
+          <ul>
+            <li>작업 스케줄러(학습/평가/저장) 우선순위 큐</li>
+            <li>체크포인트 후보 정렬 시 tie-break 재현성 확보</li>
+            <li>데이터 파이프라인 경계 예외를 일관되게 기록</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 4.4 · Type Contracts</span>
+      <h2>Type Hint와 계약</h2>
+      <p>타입 힌트는 ADT 명세를 함수 경계에 고정하는 장치입니다. 구현 이후에 붙이는 주석이 아니라, 입력/출력 계약을 명시해 반례 공간을 줄이는 역할을 합니다.</p>
+      <div class="formula">
+$$
+f:\ \texttt{Sequence[T]} \to \texttt{Mapping[K,V]}
+$$
+구체 타입이 아니라 인터페이스 계약으로 설계하면 구현 교체 비용이 줄어듭니다.
+      </div>
+      <pre><code>from collections import defaultdict, deque
+from typing import TypedDict
+
+class BatchStat(TypedDict):
+    step: int
+    loss: float
+    token_count: int
+
+def summarize(stats: list[BatchStat]) -> dict[str, float]:
+    n = len(stats)
+    return {
+        "mean_loss": sum(s["loss"] for s in stats) / n,
+        "mean_tokens": sum(s["token_count"] for s in stats) / n,
+    }
+
+q: deque[int] = deque([1, 2, 3])
+groups: defaultdict[str, list[int]] = defaultdict(list)
+groups["train"].append(128)
+sample_stats: list[BatchStat] = [
+    {"step": 1, "loss": 0.9, "token_count": 128},
+    {"step": 2, "loss": 0.7, "token_count": 256},
+]
+print(summarize(sample_stats))
+print(list(q), dict(groups))</code></pre>
+      <table>
+        <thead><tr><th>계약 포인트</th><th>권장 표현</th><th>효과</th></tr></thead>
+        <tbody>
+          <tr><td>입출력 컨테이너</td><td><code>list[int]</code>, <code>dict[str, float]</code></td><td>함수 경계 오해 감소</td></tr>
+          <tr><td>구조화 dict</td><td><code>TypedDict</code></td><td>필드 누락/오타 조기 탐지</td></tr>
+          <tr><td>큐/그룹화 의도</td><td><code>deque</code>, <code>defaultdict</code></td><td>연산 의도와 자료구조가 일치</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 5 · Complexity &amp; Validation Lab</span>
+      <h2>실험으로 검증하는 성능: 이론 vs 실제</h2>
+      <p>같은 O-표기라도 데이터 크기와 연산 위치가 다르면 체감 속도는 크게 달라집니다. 아래 실험은 “앞쪽 삭제”라는 특정 연산이 구조 선택에 얼마나 큰 차이를 만드는지 보여줍니다.</p>
+      <p>성능 해석에서는 단일 평균값보다 입력 분포 변화에 대한 안정성을 봐야 합니다. 실험은 분포(최소/최대/분산)와 함께 보고하고, 코드 경로(연산 위치/캐시 워밍/객체 생성량)도 함께 기록해야 해석 오류를 줄일 수 있습니다.</p>
+      <pre><code>import time
+from collections import deque
+
+N: int = 80_000
+arr: list[int] = list(range(N))
+q: deque[int] = deque(range(N))
+
+start = time.perf_counter()
+for _ in range(15_000):
+    arr.pop(0)
+list_time: float = time.perf_counter() - start
+
+start = time.perf_counter()
+for _ in range(15_000):
+    q.popleft()
+deque_time: float = time.perf_counter() - start
+
+print(f"list.pop(0): {list_time:.4f}s")
+print(f"deque.popleft(): {deque_time:.4f}s")</code></pre>
+      <svg class="infographic" viewBox="0 0 1080 235" role="img" aria-label="list pop(0)와 deque popleft 성능 비교 막대 그래프">
+        <text x="34" y="34" font-size="19" font-weight="700" fill="#2a3e5f">측정 결과 시각화 예시 (상대 시간)</text>
+        <line x1="120" y1="188" x2="1010" y2="188" stroke="#95a8c4" stroke-width="2"/>
+        <line x1="120" y1="62" x2="120" y2="188" stroke="#95a8c4" stroke-width="2"/>
+
+        <rect x="180" y="96" width="540" height="44" rx="8" fill="#e57d54"/>
+        <text x="450" y="124" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">list.pop(0)</text>
+        <text x="734" y="124" font-size="15" fill="#6a3621">기준 1.0x</text>
+
+        <rect x="180" y="152" width="170" height="44" rx="8" fill="#5f9de3"/>
+        <text x="265" y="180" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">deque.popleft()</text>
+        <text x="364" y="180" font-size="15" fill="#2f527e">약 0.3x</text>
+
+        <text x="120" y="52" font-size="13" fill="#4b607f">느림</text>
+        <text x="980" y="208" font-size="13" fill="#4b607f">빠름</text>
+      </svg>
+      <p class="figure-caption">절대 시간값보다 연산 패턴별 상대 비용 차이를 읽는 것이 중요합니다. 앞삭제가 지배적이면 list 대신 deque가 구조적으로 유리합니다.</p>
+      <div class="formula">
+$$
+\text{Observed time} \approx f(n)\cdot c_{\text{impl}}\cdot c_{\text{hardware}}
+$$
+Big-O는 증가율을 설명하고, 실제 성능은 상수항/캐시/런타임 구현체 영향을 함께 측정해야 합니다.
+      </div>
+      <table>
+        <thead><tr><th>실험 결과</th><th>해석</th></tr></thead>
+        <tbody>
+          <tr><td><code>list.pop(0)</code> 증가폭</td><td>원소 시프트 때문에 N 증가 시 선형적으로 악화</td></tr>
+          <tr><td><code>deque.popleft()</code> 안정성</td><td>양끝 연산 O(1)이라 반복 횟수에 비례해 완만히 증가</td></tr>
+          <tr><td>실험 재현성</td><td>동일 입력 생성, warm-up, 반복 측정으로 편차 통제</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">이론은 증가율을 설명하고, 측정은 상수항과 시스템 효과를 포함합니다. 두 층위를 분리해 읽으면 해석 정확도가 올라갑니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 5.1 · Benchmark Methodology</span>
+      <h2>벤치마크 방법론: 통계적으로 해석 가능한 실험 설계</h2>
+      <p>벤치마크는 단일 평균값 대신 입력 크기 sweep·워크로드 혼합·warm-up 분리·메모리·tail latency를 함께 보고해야 합니다. 이 구성을 사용하면 이론 복잡도와 실측 곡선의 차이를 정량적으로 해석할 수 있습니다.</p>
+      <pre><code>import timeit
+import statistics as st
+from collections import deque
+
+sizes = [2_000, 10_000, 50_000]
+result: dict[int, dict[str, float]] = {}
+
+for n in sizes:
+    setup = f"from collections import deque; arr=list(range({n})); q=deque(range({n}))"
+    _ = timeit.repeat("arr[-1]", setup=setup, repeat=3, number=5000)  # warm-up
+
+    t_list = timeit.repeat("x=arr.pop(0); arr.insert(0,x)", setup=setup, repeat=12, number=1200)
+    t_deque = timeit.repeat("x=q.popleft(); q.appendleft(x)", setup=setup, repeat=12, number=1200)
+    ratio = st.mean(t_list) / st.mean(t_deque)
+    result[n] = {"list_mean": st.mean(t_list), "deque_mean": st.mean(t_deque), "speedup": ratio}
+
+print(result)</code></pre>
+      <div class="formula">
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i,\qquad
+s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}
+$$
+      </div>
+      <div class="formula">
+$$
+\text{Tail latency}_{95/99} = Q_{0.95/0.99}(T),\quad
+\text{report with mean/std and memory footprint}
+$$
+      </div>
+      <table>
+        <thead><tr><th>실험 원칙</th><th>검증 항목</th></tr></thead>
+        <tbody>
+          <tr><td>입력 크기 sweep</td><td>단일 n이 아니라 복수 n에서 기울기(증가율) 확인</td></tr>
+          <tr><td>워크로드 혼합</td><td>조회/삽입/삭제 비율을 실제 파이프라인과 맞춤</td></tr>
+          <tr><td>warm-up 분리</td><td>초기 캐시/런타임 효과를 본 측정에서 분리</td></tr>
+          <tr><td>평균 + 분산 + tail</td><td>mean/std와 p95/p99를 함께 보고해 안정성 평가</td></tr>
+          <tr><td>메모리/환경 기록</td><td>OS, Python 버전, CPU, 메모리 지표를 실험 로그에 고정</td></tr>
+          <tr><td>이론-실측 fitting</td><td>예상 복잡도 곡선과 측정값의 편차 원인 명시</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 5.2 · Complexity Curve Fitting</span>
+      <h2>측정 곡선을 복잡도 가설에 맞춰 해석하기</h2>
+      <p>벤치마크 결과는 표로 끝내지 않고, 성장률 가설(선형/로그선형/제곱)을 데이터에 피팅해 해석합니다. 이 과정으로 “속도 차이”를 “차수 차이”로 정량화할 수 있습니다.</p>
+      <div class="formula">
+$$
+\log t_i = a + b\log n_i + \varepsilon_i,\qquad
+\hat{b}=\frac{\operatorname{Cov}(\log n,\log t)}{\operatorname{Var}(\log n)}
+$$
+\(\hat{b}\)는 경험적 복잡도 지수(기울기)입니다.
+      </div>
+      <div class="formula">
+$$
+\text{if }m=\rho n:\quad
+T_{\text{list front-delete}}\propto n^2,\quad
+T_{\text{deque left-delete}}\propto n
+$$
+실험에서 \(\hat{b}_{list}\approx 2,\ \hat{b}_{deque}\approx 1\)이면 이론-실측이 정합적입니다.
+      </div>
+      <table>
+        <thead><tr><th>해석 단계</th><th>질문</th><th>출력</th></tr></thead>
+        <tbody>
+          <tr><td>기울기 추정</td><td><code>log t</code> vs <code>log n</code>의 slope는?</td><td>경험적 차수 \(\hat{b}\)</td></tr>
+          <tr><td>가설 비교</td><td>선형/제곱 중 무엇이 더 맞는가?</td><td>잔차/설명력 비교</td></tr>
+          <tr><td>스케일 해석</td><td>n이 10배 커질 때 시간은 몇 배인가?</td><td>스케일 업 리스크 예측</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">권장: 평균 시간만 보고 결론 내리지 말고, \(n\)-sweep + log-log slope를 함께 보고 선택 근거를 고정합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 5.3 · Multi-Workload Benchmark Cases</span>
+      <h2>자료구조별 실험 스펙트럼 확장: membership / priority / queue</h2>
+      <p>queue 한 사례만으로는 구조 선택 원칙이 닫히지 않습니다. membership 중심, priority 중심 workload까지 함께 측정해야 선택 프레임워크가 검증됩니다.</p>
+      <pre><code>import random, timeit, statistics as st, heapq
+
+N = 120_000
+xs = list(range(N))
+s = set(xs)
+queries = [random.randint(0, N - 1) for _ in range(30_000)]
+
+t_list = timeit.repeat("sum((q in xs) for q in queries)", globals=globals(), number=1, repeat=8)
+t_set = timeit.repeat("sum((q in s) for q in queries)", globals=globals(), number=1, repeat=8)
+print("membership speedup:", st.mean(t_list) / st.mean(t_set))
+
+arr = [random.random() for _ in range(N)]
+k = 128
+t_sort = timeit.repeat("sorted(arr)[-k:]", globals=globals(), number=1, repeat=8)
+t_heap = timeit.repeat("heapq.nlargest(k, arr)", globals=globals(), number=1, repeat=8)
+print("top-k speedup:", st.mean(t_sort) / st.mean(t_heap))</code></pre>
+      <table>
+        <thead><tr><th>실험 축</th><th>비교 구조</th><th>예상 복잡도</th><th>해석 포인트</th></tr></thead>
+        <tbody>
+          <tr><td>Queue front delete</td><td><code>list.pop(0)</code> vs <code>deque.popleft()</code></td><td>O(n) vs O(1)</td><td>N 증가 시 기울기 차이 확인</td></tr>
+          <tr><td>Membership lookup</td><td><code>list</code> vs <code>set</code></td><td>O(n) vs avg O(1)</td><td>질의 수가 늘수록 speedup 확대</td></tr>
+          <tr><td>Top-k extraction</td><td>full sort vs <code>heapq.nlargest</code></td><td>O(n log n) vs O(n log k)</td><td>k가 작을수록 heap 이점 확대</td></tr>
+          <tr><td>Tail stability</td><td>모든 구조</td><td>p95/p99</td><td>평균보다 tail latency로 시스템 리스크 판단</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">최종 보고서에는 Python 버전/CPU/메모리/반복 수/시드/입력 분포를 함께 기록해 재현성을 확보합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6 · Validation &amp; Semantic Hazards</span>
+      <h2>검증과 안정성: 실패 모드와 대응 원칙</h2>
+      <p>구조별 실패 모드와 검증 경로를 명시해야 합니다. 새 문법 추가보다 실패 경로를 고정하는 설계가 안정성에 직접적입니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>Hazard 1: aliasing</h3>
+          <pre><code>cfg = {"optim": {"lr": 1e-3}}
+trial = cfg.copy()          # shallow
+trial["optim"]["lr"] = 5e-4
+print(cfg["optim"]["lr"])   # 5e-4 (원본 오염)</code></pre>
+        </div>
+        <div class="card">
+          <h3>Hazard 2: key instability</h3>
+          <pre><code># list key는 불가, mutable key는 계약 위반
+cache: dict[tuple[str, int], float] = {}
+key = ("run_a", 64)
+cache[key] = 0.91
+print(cache[key])</code></pre>
+        </div>
+      </div>
+      <div class="cols-2">
+        <div class="card">
+          <h3>Hazard 3: mutation during iteration</h3>
+          <pre><code>d = {"a": 1, "b": 2, "c": 3}
+for k in list(d):           # snapshot 후 변경
+    if k == "b":
+        del d[k]
+print(d)</code></pre>
+        </div>
+        <div class="card">
+          <h3>Hazard 4: non-deterministic order</h3>
+          <pre><code>labels = {"dog", "cat", "bird"}
+print(sorted(labels))       # 직렬화/로그는 정렬 후 고정</code></pre>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>위험</th><th>주요 구조</th><th>실패 증상</th><th>검증 기준</th></tr></thead>
+        <tbody>
+          <tr><td>참조 공유(aliasing)</td><td>list/dict nested</td><td>실험 설정/캐시가 연쇄 오염</td><td>deepcopy 또는 immutable snapshot</td></tr>
+          <tr><td>키 계약 위반</td><td>dict/set</td><td>조회 실패, 충돌 지연 증가</td><td>immutable key + hash/eq 테스트</td></tr>
+          <tr><td>순회 중 변경</td><td>dict/list</td><td>런타임 오류/누락 처리</td><td>snapshot(list(...)) 후 변경</td></tr>
+          <tr><td>순서 비결정성</td><td>set</td><td>로그/직렬화 재현성 저하</td><td>sorted() 또는 deterministic pipeline</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">자료구조는 성능 도구이자 의미론 계약입니다. 검증 없는 선택은 재현성 결함으로 이어집니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.1 · Order, Snapshot, Reproducibility</span>
+      <h2>순서 계약과 재현성: list / dict / set / snapshot을 한 번에 정리</h2>
+      <p>후반부를 읽을 때는 “순서 계약”과 “변경 가시성”을 먼저 고정해야 합니다. 이 규칙을 먼저 두면 iterator/copy/concurrency 슬라이드가 하나의 안전성 체계로 연결됩니다.</p>
+      <table>
+        <thead><tr><th>구조/표현</th><th>순서 계약</th><th>변경 가시성</th><th>재현성 기준</th></tr></thead>
+        <tbody>
+          <tr><td><code>list</code></td><td>인덱스 순서 의미가 핵심</td><td>in-place 변경이 alias로 전파</td><td>정렬/tie-break 정책을 코드에 명시</td></tr>
+          <tr><td><code>dict</code></td><td>삽입 순서 보존(3.7+)</td><td><code>items()</code>는 live view</td><td>순회 중 변경 시 snapshot(<code>list(...)</code>)</td></tr>
+          <tr><td><code>set</code></td><td>순서 비계약</td><td>멤버십 중심 연산</td><td>직렬화/로그 전 <code>sorted()</code> 강제</td></tr>
+          <tr><td><code>list(d.items())</code></td><td>현재 상태의 스냅샷</td><td>이후 변경과 분리</td><td>실험 로그/감사 추적에 사용</td></tr>
+        </tbody>
+      </table>
+      <pre><code>d = {"a": 1, "b": 2}
+view = d.items()          # live
+snap = list(d.items())    # snapshot
+d["c"] = 3
+print(list(view))         # c 반영
+print(snap)               # 기존 상태 유지</code></pre>
+      <p class="muted">먼저 확인할 질문: “순서가 의미인가?”, “관측 시점이 중요한가?”, “변경이 전파되면 안 되는가?”</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.2 · Iterator & Data Alignment</span>
+      <h2>Iterator 소비와 <code>zip(strict=True)</code>: 조용한 정렬 불일치 차단</h2>
+      <p>연구 코드에서 재현성을 깨뜨리는 대표적 원인은 “데이터 길이 불일치를 조용히 통과시키는 것”입니다. iterator는 1회 소비되고, 기본 <code>zip</code>은 짧은 쪽에 맞춰 잘라내므로 정합성 체크를 명시적으로 넣어야 합니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>조용한 실패</h3>
+          <pre><code>features = [1, 2, 3]
+labels = ["A", "B"]       # 길이 불일치
+print(list(zip(features, labels)))
+# [(1, 'A'), (2, 'B')]  # 마지막 feature 유실</code></pre>
+        </div>
+        <div class="card">
+          <h3>엄격한 검증</h3>
+          <pre><code>features = [1, 2, 3]
+labels = ["A", "B"]
+
+try:
+    pairs = list(zip(features, labels, strict=True))
+except ValueError as e:
+    print("alignment error:", e)</code></pre>
+        </div>
+      </div>
+      <pre><code># iterator 1회 소비 주의
+it = iter([10, 20, 30])
+print(list(it))   # [10, 20, 30]
+print(list(it))   # []</code></pre>
+      <table>
+        <thead><tr><th>위험 패턴</th><th>증상</th><th>검증/대응</th></tr></thead>
+        <tbody>
+          <tr><td>기본 <code>zip</code> 길이 절단</td><td>라벨-피처 불일치가 잠복</td><td><code>zip(..., strict=True)</code> 사용</td></tr>
+          <tr><td>iterator 재사용</td><td>2회차에 빈 데이터</td><td>필요 시 <code>list(...)</code>로 명시적 materialize</td></tr>
+          <tr><td>generator 디버깅 출력</td><td>디버깅 후 본 연산에서 데이터 소실</td><td>디버깅 전후 소비 경로 분리</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.3 · Copy & Mutation Boundaries</span>
+      <h2>얕은/깊은 복사: 변경 경계를 코드로 고정하기</h2>
+      <div class="formula">
+$$
+\text{binding: }x\mapsto o,\ y\mapsto o\Rightarrow x,y\text{ share identity}
+$$
+$$
+\text{if }o\text{ is mutable},\ \Delta o\Rightarrow \Delta x\ \land\ \Delta y
+$$
+      </div>
+      <pre><code>import copy
+
+a: list[list[int]] = [[1, 2], [3, 4]]
+b: list[list[int]] = a[:]                # shallow copy
+c: list[list[int]] = copy.deepcopy(a)    # deep copy
+
+b[0].append(99)
+print("a:", a)  # a도 영향 받음
+print("c:", c)  # 영향 없음
+
+# immutable + tuple key
+cache: dict[tuple[str, int, float], str] = {}
+key: tuple[str, int, float] = ("run_42", 64, 0.001)
+cache[key] = "result"</code></pre>
+      <pre><code># 실험 설정 복사: 얕은 복사 오염 vs 깊은 복사 분리
+base_cfg: dict[str, object] = {
+    "model": "transformer",
+    "optim": {"lr": 1e-3, "weight_decay": 0.01},
+}
+trial_cfg = copy.deepcopy(base_cfg)
+trial_cfg["optim"]["lr"] = 5e-4
+print(base_cfg["optim"]["lr"], trial_cfg["optim"]["lr"])  # 1e-3, 5e-4</code></pre>
+      <p>얕은 복사는 “바깥 컨테이너만 새로 만들고 내부 객체 참조는 공유”합니다. 따라서 코드가 정상 동작하는 것처럼 보이다가, 후반 단계에서 내부 상태 오염이 발견되는 형태의 결함을 만들기 쉽습니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>성능 관점</h3>
+          <ul>
+            <li>깊은 복사는 안전하지만 비용이 큼</li>
+            <li>불변 객체 중심 설계는 디버깅/동시성에 유리</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>설계 관점</h3>
+          <ul>
+            <li>함수 경계에서 입력 변경 여부를 명시</li>
+            <li>공유 상태가 필요하면 문서화 + 테스트 강화</li>
+          </ul>
+        </div>
+      </div>
+      <pre><code># 함수 경계에서 변경 전파를 차단하는 최소 패턴
+def safe_transform(items: list[str]) -> list[str]:
+    local = items.copy()        # 1차원
+    local.append("new")
+    return local
+
+def safe_nested(cfg: dict[str, dict[str, float]]) -> dict[str, dict[str, float]]:
+    import copy
+    local = copy.deepcopy(cfg)  # 중첩 구조
+    local["optim"]["lr"] *= 10
+    return local
+
+base_items = ["a", "b"]
+base_cfg = {"optim": {"lr": 1e-3}}
+print(safe_transform(base_items), base_items)
+print(safe_nested(base_cfg), base_cfg)</code></pre>
+      <div class="formula">
+$$
+\text{shallow copy: }C' = [r_1,\dots,r_n],\quad r_i \text{ shared}
+$$
+$$
+\text{deep copy: }C' = [r'_1,\dots,r'_n],\quad r'_i \not\equiv r_i
+$$
+      </div>
+      <table>
+        <thead><tr><th>상황</th><th>적합 방식</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>1차원 list/dict</td><td><code>copy()</code> 또는 슬라이싱</td><td>상위 컨테이너만 분리하면 충분</td></tr>
+          <tr><td>중첩 구조(list 안 dict 등)</td><td><code>copy.deepcopy()</code></td><td>내부 객체 공유 차단</td></tr>
+          <tr><td>읽기 전용 전달</td><td>tuple/frozen dataclass</td><td>변경 자체를 구조적으로 방지</td></tr>
+          <tr><td>성능 민감 구간</td><td>선택적 복사(필요 필드만)</td><td>deepcopy 비용/지연 최소화</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">(1) 중첩 객체인가? (2) 함수가 입력을 변경하는가? (3) 복사 비용이 병목인가? 이 3가지를 먼저 판단한 뒤 복사 전략을 고릅니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.4 · Runtime Memory Management</span>
+      <h2>파이썬 메모리 관리: 참조 카운트 + 사이클 GC</h2>
+      <p>파이썬(CPython)은 기본적으로 참조 카운팅(reference counting)으로 객체 생명주기를 관리하고, 순환 참조는 세대별 가비지 컬렉터가 처리합니다.</p>
+      <p>메모리 점검 항목은 누수 징후, cycle 회수, 관측 포인트입니다.</p>
+      <p>이중 구조를 이해하면 메모리 누수 분석이 쉬워집니다. 단순 객체는 참조 카운트가 0이 되는 즉시 해제되지만, 순환 참조 구조는 카운트만으로 해제되지 않습니다. 따라서 장기 실행 프로세스에서는 cycle을 만들기 쉬운 객체 그래프를 점검하고, 필요 시 약한 참조 또는 명시적 해제 전략을 고려해야 합니다.</p>
+      <div class="formula">
+$$
+\text{alive}(o)\iff \operatorname{refcount}(o)>0,\qquad
+\text{cycle garbage requires tracing GC}
+$$
+      </div>
+      <pre><code>import gc
+
+class Node:
+    def __init__(self) -> None:
+        self.ref: Node | None = None
+
+a: Node = Node()
+b: Node = Node()
+a.ref = b; b.ref = a   # cycle
+
+del a; del b
+print("before collect:", gc.get_count())
+gc.collect()
+print("after collect:", gc.get_count())</code></pre>
+      <pre><code># 딥러닝 루프에서 그래프/텐서 참조 누수 방지 패턴
+loss_history: list[float] = []
+for step_loss in [0.92, 0.71, 0.55]:
+    # 실제 torch 코드에서는 loss.item() 값만 보관하는 습관이 중요
+    loss_history.append(float(step_loss))
+print(loss_history)</code></pre>
+      <p>메모리 관점에서 list/dict/set은 객체 참조를 저장하므로, 원소 수가 늘면 컨테이너 오버헤드 + 객체 오버헤드가 동시에 증가합니다. 대규모 파이프라인에서는 구조 선택뿐 아니라 데이터 표현(정수/문자열/객체)을 함께 설계해야 합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.5 · Logical Correctness</span>
+      <h2>논리적 정확성: 불변식(invariant)과 경계조건</h2>
+      <p>논리적 정확성 검증은 불변식을 명시하고 각 연산이 불변식을 보존하는지 점검하는 과정입니다. 동작 사례뿐 아니라 보존 조건을 함께 확인해야 정확성이 유지됩니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>예: Stack 불변식</h3>
+          <ul>
+            <li><code>size == len(data)</code></li>
+            <li>top은 마지막 삽입 원소</li>
+            <li>push/pop 후에도 LIFO 유지</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>검증 항목</h3>
+          <ul>
+            <li>빈 구조에서 연산 예외 처리</li>
+            <li>중복 키/누락 키 시 정책 일관성</li>
+            <li>얕은 복사/깊은 복사 부작용 여부</li>
+          </ul>
+        </div>
+      </div>
+      <div class="formula">
+$$
+\forall t\ge 0:\ I(S_t)\ \land\ \text{op preserves }I\ \Rightarrow\ I(S_{t+1})
+$$
+      </div>
+      <pre><code>def push(stack: list[int], x: int) -> None:
+    before = len(stack)
+    stack.append(x)
+    assert len(stack) == before + 1   # invariant check
+
+def pop_safe(stack: list[int]) -> int | None:
+    if not stack:
+        return None
+    return stack.pop()
+
+s: list[int] = []
+push(s, 10); push(s, 20)
+print(pop_safe(s), pop_safe(s), pop_safe(s))</code></pre>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.6 · Concurrency & Immutability</span>
+      <h2>동시성과 불변 데이터: 안전한 공유 상태 설계</h2>
+      <p>병렬/비동기 환경에서는 자료구조 선택이 곧 동시성 안전성입니다. 공유 상태를 줄이고 불변 구조를 우선하면 race condition 가능성이 크게 감소합니다. 데이터 로더 워커, 비동기 전처리 태스크, 추론 요청 큐를 동시에 사용할수록 이 원칙의 효과가 커집니다.</p>
+      <div class="cols-2">
+        <div class="card">
+          <h3>위험 패턴</h3>
+          <pre><code># 여러 스레드가 동일 dict를 갱신
+shared: dict[str, int] = {"count": 0}
+# lock 없이 read-modify-write 수행 시
+# 경쟁 상태 발생 가능
+print(shared)</code></pre>
+        </div>
+        <div class="card">
+          <h3>설계 패턴</h3>
+          <pre><code># 불변 튜플/사본 기반 업데이트
+cfg: tuple[str, int, float] = ("encoder_v2", 32, 1e-3)
+new_cfg: tuple[str, int, float] = (cfg[0], 64, cfg[2])  # 원본 보존
+print(cfg, new_cfg)</code></pre>
+        </div>
+      </div>
+      <pre><code># 워커별 로컬 누적으로 공유 상태 경쟁 회피
+worker_batches: list[list[int]] = [[1, 2], [3, 4], [5, 6]]
+local_counts: list[int] = []
+for batch in worker_batches:
+    local_counts.append(len(batch))  # 각 워커 로컬 계산
+global_count = sum(local_counts)     # 최종 단계에서만 병합
+print(global_count)</code></pre>
+      <table>
+        <thead><tr><th>공유 방식</th><th>장점</th><th>주의점</th></tr></thead>
+        <tbody>
+          <tr><td>가변 dict 직접 공유</td><td>구현 단순</td><td>read-modify-write 경쟁으로 상태 오염 가능</td></tr>
+          <tr><td>불변 tuple/dataclass 공유</td><td>레이스 위험 감소, 스냅샷 추적 용이</td><td>갱신 시 새 객체 생성 비용</td></tr>
+          <tr><td>복사 후 로컬 수정</td><td>모듈 경계 독립성 확보</td><td>깊은 복사 비용/지연 고려 필요</td></tr>
+          <tr><td>락/큐 기반 동기화</td><td>일관성 강제 가능</td><td>병렬성 감소 및 교착 상태 관리 필요</td></tr>
+        </tbody>
+      </table>
+      <svg class="infographic" viewBox="0 0 1080 245" role="img" aria-label="동시성에서 공유 상태와 불변 스냅샷 비교">
+        <rect x="36" y="30" width="490" height="182" rx="14" fill="#fff2ea" stroke="#e0b89f"/>
+        <text x="281" y="62" text-anchor="middle" font-size="19" font-weight="700" fill="#7a3f23">공유 가변 상태 (위험)</text>
+        <circle cx="160" cy="120" r="36" fill="#e57d54"/><text x="160" y="126" text-anchor="middle" font-size="14" fill="#fff">T1</text>
+        <circle cx="280" cy="120" r="36" fill="#e57d54"/><text x="280" y="126" text-anchor="middle" font-size="14" fill="#fff">T2</text>
+        <circle cx="400" cy="120" r="36" fill="#e57d54"/><text x="400" y="126" text-anchor="middle" font-size="14" fill="#fff">T3</text>
+        <rect x="192" y="150" width="176" height="44" rx="10" fill="#f8d8ca" stroke="#e39d7b"/>
+        <text x="280" y="178" text-anchor="middle" font-size="14" fill="#7a452a">shared dict</text>
+        <line x1="160" y1="154" x2="220" y2="176" stroke="#7f4a2f" stroke-width="3"/>
+        <line x1="280" y1="154" x2="280" y2="150" stroke="#7f4a2f" stroke-width="3"/>
+        <line x1="400" y1="154" x2="340" y2="176" stroke="#7f4a2f" stroke-width="3"/>
+
+        <rect x="554" y="30" width="490" height="182" rx="14" fill="#ebf8ef" stroke="#9fcfb3"/>
+        <text x="799" y="62" text-anchor="middle" font-size="19" font-weight="700" fill="#1f4f34">불변 스냅샷 + 메시지 전달 (권장)</text>
+        <circle cx="640" cy="120" r="34" fill="#5f9de3"/><text x="640" y="126" text-anchor="middle" font-size="14" fill="#fff">T1</text>
+        <circle cx="760" cy="120" r="34" fill="#5f9de3"/><text x="760" y="126" text-anchor="middle" font-size="14" fill="#fff">T2</text>
+        <circle cx="880" cy="120" r="34" fill="#5f9de3"/><text x="880" y="126" text-anchor="middle" font-size="14" fill="#fff">T3</text>
+        <rect x="708" y="150" width="184" height="44" rx="10" fill="#d8ebdf" stroke="#8fbe9f"/>
+        <text x="800" y="178" text-anchor="middle" font-size="14" fill="#2e684b">immutable snapshot</text>
+        <line x1="640" y1="154" x2="730" y2="176" stroke="#2f6b4c" stroke-width="3"/>
+        <line x1="760" y1="154" x2="780" y2="150" stroke="#2f6b4c" stroke-width="3"/>
+        <line x1="880" y1="154" x2="870" y2="150" stroke="#2f6b4c" stroke-width="3"/>
+      </svg>
+      <p class="figure-caption">동시성 안전성은 락 하나로 끝나지 않습니다. 공유 상태를 줄이고 immutable 스냅샷/메시지 전달 중심으로 구조를 바꾸는 것이 근본 해법입니다.</p>
+      <p class="muted">CPython GIL이 있다고 해서 논리적 race가 사라지지 않습니다. 연산의 원자성, 데이터 불변성, 동기화 경계를 별도로 설계해야 합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.7 · Testing Strategy</span>
+      <h2>자료구조 테스트 전략: 예제 기반 + 속성 기반</h2>
+      <p>자료구조 구현에서는 입력 몇 개로 끝나는 예제 테스트만으로는 불충분합니다. 랜덤/속성(property) 기반 테스트를 통해 불변식 위반 사례를 체계적으로 찾는 접근이 필요합니다. 특히 시드 고정 여부, 입력 순서 섞기, 배치 경계값(0/1/최대 길이) 검증을 함께 두어야 재현 가능한 결함 분석이 가능합니다.</p>
+      <pre><code># 예제 기반 테스트(핵심 시나리오)
+def test_stack_lifo() -> None:
+    s: list[int] = []
+    s.append(1); s.append(2)
+    assert s.pop() == 2
+    assert s.pop() == 1
+
+# 속성 기반 아이디어(의사코드):
+# 임의의 시퀀스 xs에 대해
+# push all xs 후 pop all 하면 reverse(xs)와 같아야 한다.
+test_stack_lifo()
+print("example test passed")</code></pre>
+      <pre><code># 실험 파이프라인에서 자주 쓰는 자료구조 불변식 테스트
+def test_label_index_bijection() -> None:
+    labels: list[str] = ["cat", "dog", "bird"]
+    to_id: dict[str, int] = {k: i for i, k in enumerate(labels)}
+    back: dict[int, str] = {i: k for k, i in to_id.items()}
+    assert len(to_id) == len(labels)
+    for k, i in to_id.items():
+        assert back[i] == k
+
+test_label_index_bijection()</code></pre>
+      <div class="formula">
+$$
+\text{Test confidence} = \text{example-based checks} + \text{property-based checks}
+$$
+예제 테스트는 명세 사례를, 속성 테스트는 반례 탐색을 담당하므로 두 축을 결합해야 신뢰도가 올라갑니다.
+      </div>
+      <div class="formula">
+$$
+\forall xs:\ \text{pop\_all}(\text{push\_all}(xs))=\operatorname{reverse}(xs)
+$$
+      </div>
+      <table>
+        <thead><tr><th>테스트 계층</th><th>무엇을 검증하나</th><th>권장 예시</th></tr></thead>
+        <tbody>
+          <tr><td>예제 기반(unit)</td><td>명세된 대표 시나리오</td><td>빈 구조 pop, 단일 원소 push/pop, 경계 인덱스 접근</td></tr>
+          <tr><td>속성 기반(property)</td><td>일반 법칙(invariant) 유지</td><td>LIFO/FIFO, 정렬 후 순서성, 집합 연산 항등식</td></tr>
+          <tr><td>메타모픽 테스트</td><td>입력 변환 전후 관계</td><td>중복 제거 후 재적용 idempotence, 순열 입력 동일 결과</td></tr>
+          <tr><td>성능 회귀 테스트</td><td>복잡도 가정의 실제 유지</td><td>입력 크기 증가 시 tail latency 급등 여부</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">테스트 기준은 객체 의미론(참조, 복사, iterator 소비, 상태 생명주기)과 직접 연결해 코드 리뷰 기준으로 사용합니다.</p>
+    </section>
+
+    <section class="slide">
+      <span class="kicker">Part 6.8 · Final Synthesis</span>
+      <h2>최종 종합: 선택, 순서, 복사, 실패 정책을 한 장으로 닫기</h2>
+      <table>
+        <thead><tr><th>질문</th><th>기본 선택</th><th>검증 기준</th></tr></thead>
+        <tbody>
+          <tr><td>연산 패턴이 무엇인가?</td><td>queue=deque, membership=set, top-k=heapq, key-value=dict</td><td>Part 5에서 size sweep + p95/p99로 검증</td></tr>
+          <tr><td>순서가 의미인가?</td><td>list/dict는 계약, set은 비계약</td><td>직렬화 전 정렬/안정 정렬/tie-break 명시</td></tr>
+          <tr><td>변경 전파를 허용할 것인가?</td><td>허용 안 하면 snapshot/deepcopy/immutable</td><td>aliasing 테스트 + 함수 경계 계약</td></tr>
+          <tr><td>키/조회 실패를 어떻게 다룰 것인가?</td><td><code>d[k]</code> vs <code>get</code>, <code>remove</code> vs <code>discard</code></td><td>strict/tolerant 정책을 API에서 분리</td></tr>
+        </tbody>
+      </table>
+      <pre><code># 자료구조 선택의 최소 의사결정 루프
+# 1) ADT/불변식 정의
+# 2) 지배 연산 기준으로 구조 선택
+# 3) 실패 정책/순서 계약 명시
+# 4) 벤치마크 + 테스트로 검증
+decision = {
+    "queue": "deque",
+    "membership": "set",
+    "priority": "heapq",
+    "mapping": "dict",
+}
+print(decision)</code></pre>
+      <p class="muted">자료구조 선택은 문법 선택이 아니라 의미론·비용·검증 계약을 동시에 설계하는 일입니다.</p>
+    </section>
+
+  </main>
+
+  <div class="present-controls" aria-label="발표 모드 제어">
+    <button id="presentToggle" class="present-toggle" type="button">발표 모드: OFF</button>
+    <span id="presentStatus" class="present-status">P 토글 · ←/→ 이동</span>
+  </div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>
+    const samples = {
+      beginner_ops: `# 기본: list/dict 핵심 연산
+nums: list[int] = [10, 20, 30]
+nums.append(40)
+nums.insert(1, 15)
+print("list:", nums)
+
+profile: dict[str, str | int] = {"sample_id": "seq_100", "split": "train"}
+profile["epoch"] = 2
+print("sample_id:", profile.get("sample_id"))
+print("email:", profile.get("email", "N/A"))`,
+
+      list_full_ops: `# 리스트: 연산 상세
+a: list[int] = [1, 2, 3]
+b: list[int] = [4, 5, 6]
+print("a+b:", a + b)
+print("a*2:", a * 2)
+
+a.append(7)
+a.extend([8, 9])
+a.insert(1, 100)
+print("after insert/append/extend:", a)
+
+print("pop():", a.pop())
+print("pop(0):", a.pop(0))
+print("count(2):", a.count(2))
+print("index(3):", a.index(3))
+
+a.remove(3)
+a.sort(reverse=True)
+print("sorted desc:", a)
+a.reverse()
+print("reversed:", a)`,
+
+      dict_full_ops: `# 딕셔너리: 연산 상세
+d: dict[str, str] = {"sample_id": "seq_001", "label": "positive", "split": "train"}
+print("keys:", list(d.keys()))
+print("values:", list(d.values()))
+print("items:", list(d.items()))
+
+print("sample_id:", d["sample_id"])
+print("email(get):", d.get("email"))
+print("email(default):", d.get("email", "정보없음"))
+
+d["email"] = "pey@example.com"
+d.update(optimizer="adamw")
+print("after update:", d)
+
+print("pop(label):", d.pop("label"))
+print("'sample_id' in d:", "sample_id" in d)
+print("'label' in d:", "label" in d)`,
+
+      set_tuple_ops: `# set/tuple: 연산
+A: set[int] = {1, 2, 3, 4}
+B: set[int] = {3, 4, 5}
+print("union:", A | B)
+print("intersection:", A & B)
+print("difference:", A - B)
+
+t: tuple[str, int, float] = ("encoder_v2", 32, 1e-3)
+name, batch, lr = t
+print("tuple unpack:", name, batch, lr)
+
+cache: dict[tuple[str, int, float], str] = {}
+cache[t] = "ok"
+print("cache[t]:", cache[t])`,
+
+      comp_suite: `# comprehension: 종합 실습
+nums: list[int] = list(range(1, 11))
+
+lc: list[int] = [x * x for x in nums if x % 2 == 0]
+dc: dict[int, str] = {x: ("even" if x % 2 == 0 else "odd") for x in nums}
+sc: set[int] = {x % 3 for x in nums}
+
+print("list comp:", lc)
+print("dict comp:", dc)
+print("set comp:", sc)`,
+
+      copy_pitfalls: `# 복사 모델: 주의 사례 실습
+import copy
+
+# 전제 1) 변수는 참조를 바인딩한다.
+# 전제 2) 가변 객체는 참조 공유 시 상태가 전파된다.
+
+print("[패턴1] list shallow copy vs deep copy")
+src = [[1, 2], [3, 4]]
+shallow: list[list[int]] = src.copy()
+deep: list[list[int]] = copy.deepcopy(src)
+shallow[0].append(99)
+print("src:", src)
+print("deep:", deep)
+
+print("\\n[패턴2] dict.copy() 중첩 공유")
+d1: dict[str, dict[str, float] | int] = {"cfg": {"lr": 0.001}, "epoch": 10}
+d2: dict[str, dict[str, float] | int] = d1.copy()
+d2["cfg"]["lr"] = 0.1
+print("d1:", d1)   # 원본도 바뀜
+print("d2:", d2)
+
+print("\\n[3] 안전한 함수 패턴")
+def train_config(base: dict[str, dict[str, float]]) -> dict[str, dict[str, float]]:
+    local: dict[str, dict[str, float]] = copy.deepcopy(base)
+    local["cfg"]["lr"] *= 10
+    return local
+
+base: dict[str, dict[str, float]] = {"cfg": {"lr": 0.001}}
+new_cfg: dict[str, dict[str, float]] = train_config(base)
+print("base:", base)
+print("new :", new_cfg)`,
+
+      syntax_catalog: `# 문법/함수: 예제 카탈로그
+print("[list]")
+a: list[int] = [1, 2, 3]
+a.append(4); a.extend([5, 6]); a.insert(0, 99)
+print(a, a.pop(), a.count(2), a.index(2))
+
+print("\\n[dict]")
+d: dict[str, str | int] = {"sample_id": "seq_010"}
+d["epoch"] = 30
+print(d.get("email", "N/A"), "sample_id" in d)
+print(list(d.keys()), list(d.values()), list(d.items()))
+
+print("\\n[set]")
+s: set[int] = {1, 2, 3}
+s.add(4); s.discard(100)
+print(s | {10}, s & {2, 4}, s - {1})
+
+print("\\n[tuple]")
+t: tuple[str, int, float] = ("cfg_v1", 32, 1e-3)
+name, batch, lr = t
+print(name, batch, lr)`,
+
+      typehint_ds: `# type hint: 자료구조
+from collections import deque, defaultdict
+from typing import TypedDict
+
+class RunStat(TypedDict):
+    id: int
+    run: str
+    scores: list[float]
+
+def summarize(runs: list[RunStat]) -> dict[str, float]:
+    result: dict[str, float] = {}
+    for u in runs:
+        result[u["run"]] = sum(u["scores"]) / len(u["scores"])
+    return result
+
+runs: list[RunStat] = [
+    {"id": 1, "run": "run_a", "scores": [0.90, 0.88]},
+    {"id": 2, "run": "run_b", "scores": [0.95, 0.92]},
+]
+
+q: deque[int] = deque([1, 2, 3])
+q.appendleft(0)
+
+g: defaultdict[str, list[int]] = defaultdict(list)
+for k, v in [("A", 1), ("A", 2), ("B", 3)]:
+    g[k].append(v)
+
+print("avg:", summarize(runs))
+print("queue:", list(q))
+print("groups:", dict(g))`,
+
+      intermediate_perf: `# 성능 실험: list.pop(0) vs deque.popleft
+import time
+from collections import deque
+
+N = 60_000
+arr: list[int] = list(range(N))
+q: deque[int] = deque(range(N))
+
+start = time.perf_counter()
+for _ in range(12_000):
+    arr.pop(0)
+list_t: float = time.perf_counter() - start
+
+start = time.perf_counter()
+for _ in range(12_000):
+    q.popleft()
+deque_t: float = time.perf_counter() - start
+
+print(f"list.pop(0): {list_t:.4f}s")
+print(f"deque.popleft(): {deque_t:.4f}s")`,
+
+      advanced_adt: `# ADT: 우선순위 큐 + 안정성
+import heapq
+from dataclasses import dataclass, field
+
+@dataclass(order=True)
+class Job:
+    priority: int
+    seq: int
+    task: str = field(compare=False)
+
+jobs: list[Job] = []
+seq: int = 0
+for p, t in [(2, "train"), (1, "eval"), (1, "deploy"), (3, "report")]:
+    heapq.heappush(jobs, Job(p, seq, t))
+    seq += 1
+
+while jobs:
+    j = heapq.heappop(jobs)
+    print(j.priority, j.seq, j.task)`,
+
+      advanced_hash: `# 해시 모델: dataclass frozen + hash 일관성
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Key:
+    id: int
+    tag: str
+
+d: dict[Key, int] = {Key(1, "A"): 100}
+print(d[Key(1, "A")])
+print("hash:", hash(Key(1, "A")))`,
+
+      advanced_bfs: `# 그래프: deque 기반 BFS
+from collections import deque
+
+graph: dict[str, list[str]] = {
+    "A": ["B", "C"],
+    "B": ["D", "E"],
+    "C": ["F"],
+    "D": [],
+    "E": ["F"],
+    "F": []
+}
+
+def bfs(g: dict[str, list[str]], start: str) -> list[str]:
+    q: deque[str]
+    seen: set[str]
+    q, seen = deque([start]), {start}
+    order: list[str] = []
+    while q:
+        v = q.popleft()
+        order.append(v)
+        for nxt in g[v]:
+            if nxt not in seen:
+                seen.add(nxt)
+                q.append(nxt)
+    return order
+
+print(bfs(graph, "A"))`,
+
+      advanced_topk: `# 우선순위: heap 기반 Top-K
+import heapq
+import random
+
+nums: list[int] = [random.randint(1, 1000) for _ in range(30)]
+print("원본:", nums)
+print("상위 5개:", heapq.nlargest(5, nums))
+print("하위 5개:", heapq.nsmallest(5, nums))`,
+
+      memory_gc: `# 메모리: reference count / gc
+import sys
+import gc
+
+class Node:
+    def __init__(self, name: str) -> None:
+        self.name = name
+        self.ref: Node | None = None
+
+a: Node = Node("a")
+b: Node = Node("b")
+a.ref = b
+b.ref = a
+
+print("refcount(a) ~", sys.getrefcount(a))
+print("refcount(b) ~", sys.getrefcount(b))
+
+del a
+del b
+collected: int = gc.collect()
+print("gc collected:", collected)`
+    };
+
+    let pyodide = null;
+    let pyodidePromise = null;
+    let pyodideScriptPromise = null;
+
+    async function ensurePyodideScript() {
+      if (window.loadPyodide) return;
+      if (!pyodideScriptPromise) {
+        pyodideScriptPromise = new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js";
+          script.async = true;
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error("pyodide.js 로드 실패"));
+          document.head.appendChild(script);
+        });
+      }
+      await pyodideScriptPromise;
+    }
+
+    async function ensurePyodide() {
+      if (pyodide) return pyodide;
+      if (!pyodidePromise) {
+        pyodidePromise = ensurePyodideScript()
+          .then(() => loadPyodide())
+          .then((runtime) => {
+            pyodide = runtime;
+            return pyodide;
+          });
+      }
+      return pyodidePromise;
+    }
+
+    async function runPythonSnippet(code) {
+      const runtime = await ensurePyodide();
+      const wrapped = `
+import sys, io, traceback
+_buf = io.StringIO()
+_old_out, _old_err = sys.stdout, sys.stderr
+sys.stdout = _buf
+sys.stderr = _buf
+try:
+${code.split("\n").map((line) => "    " + line).join("\n")}
+except Exception:
+    traceback.print_exc()
+finally:
+    sys.stdout = _old_out
+    sys.stderr = _old_err
+_buf.getvalue()
+`;
+      return runtime.runPythonAsync(wrapped);
+    }
+
+    function initSlideNumbers() {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      slides.forEach((slide, index) => {
+        if (!slide.id) slide.id = `slide-${index + 1}`;
+        if (slide.querySelector(".slide-number")) return;
+
+        if (!slide.classList.contains("title-slide") && !slide.querySelector(".slide-footer-note")) {
+          const footer = document.createElement("p");
+          footer.className = "slide-footer-note";
+          footer.textContent = "Medical AI & Computational Science (MACS lab), JBNU";
+          slide.appendChild(footer);
+        }
+
+        const num = document.createElement("span");
+        num.className = "slide-number";
+        num.textContent = `${index + 1}`;
+        slide.appendChild(num);
+      });
+    }
+
+    function initPresentationMode() {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const toggleBtn = document.getElementById("presentToggle");
+      const statusEl = document.getElementById("presentStatus");
+      if (!slides.length || !toggleBtn || !statusEl) return;
+
+      let enabled = false;
+      let currentIndex = 0;
+
+      const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+      function parseHashIndex() {
+        const m = (window.location.hash || "").match(/^#slide-(\d+)$/);
+        if (!m) return null;
+        const idx = Number(m[1]) - 1;
+        if (Number.isNaN(idx)) return null;
+        return clamp(idx, 0, slides.length - 1);
+      }
+
+      function findCurrentIndexFromViewport() {
+        let best = 0;
+        let bestDist = Number.POSITIVE_INFINITY;
+        slides.forEach((slide, idx) => {
+          const rect = slide.getBoundingClientRect();
+          const dist = Math.abs(rect.top);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = idx;
+          }
+        });
+        return best;
+      }
+
+      function updateHash(index) {
+        const nextHash = `#slide-${index + 1}`;
+        if (window.location.hash !== nextHash) {
+          history.replaceState(null, "", nextHash);
+        }
+      }
+
+      function render() {
+        slides.forEach((slide, idx) => {
+          slide.classList.toggle("active-slide", enabled && idx === currentIndex);
+        });
+        document.body.classList.toggle("presentation-mode", enabled);
+        toggleBtn.textContent = `발표 모드: ${enabled ? "ON" : "OFF"}`;
+        statusEl.textContent = enabled
+          ? `${currentIndex + 1} / ${slides.length} · ←/→ 이동 · Esc 종료`
+          : "P 토글 · ←/→ 이동";
+        if (enabled) updateHash(currentIndex);
+      }
+
+      function goTo(index, scrollWhenNormal = true) {
+        currentIndex = clamp(index, 0, slides.length - 1);
+        render();
+        if (!enabled && scrollWhenNormal) {
+          slides[currentIndex].scrollIntoView({ behavior: "smooth", block: "start" });
+          updateHash(currentIndex);
+        }
+      }
+
+      function setMode(nextEnabled) {
+        enabled = nextEnabled;
+        if (enabled) {
+          const hashIdx = parseHashIndex();
+          currentIndex = hashIdx ?? findCurrentIndexFromViewport();
+          window.scrollTo({ top: 0, behavior: "auto" });
+        }
+        render();
+        if (!enabled) {
+          slides[currentIndex].classList.remove("active-slide");
+          slides[currentIndex].scrollIntoView({ behavior: "smooth", block: "start" });
+          updateHash(currentIndex);
+        }
+      }
+
+      function isTypingContext(target) {
+        if (!target) return false;
+        return Boolean(
+          target.closest("input, textarea, select, button, [contenteditable], .mini-run-btn")
+        );
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        setMode(!enabled);
+      });
+
+      window.addEventListener("hashchange", () => {
+        const idx = parseHashIndex();
+        if (idx === null) return;
+        goTo(idx, !enabled);
+      });
+
+      window.addEventListener("keydown", (e) => {
+        if (isTypingContext(e.target)) return;
+        if ((e.key === "p" || e.key === "P") && !e.metaKey && !e.ctrlKey && !e.altKey) {
+          e.preventDefault();
+          setMode(!enabled);
+          return;
+        }
+        if (!enabled) return;
+        if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
+          e.preventDefault();
+          goTo(currentIndex + 1, false);
+        } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+          e.preventDefault();
+          goTo(currentIndex - 1, false);
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          goTo(0, false);
+        } else if (e.key === "End") {
+          e.preventDefault();
+          goTo(slides.length - 1, false);
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          setMode(false);
+        }
+      });
+
+      const initialHashIndex = parseHashIndex();
+      if (initialHashIndex !== null) currentIndex = initialHashIndex;
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("present") === "1") {
+        setMode(true);
+      } else {
+        render();
+      }
+    }
+
+    async function runInlineCode(codeText, inlineOutputEl, inlineStatusEl) {
+      inlineStatusEl.textContent = pyodide ? "실행 중..." : "Pyodide 로딩 중...";
+      inlineOutputEl.textContent = "";
+      try {
+        const result = await runPythonSnippet(codeText);
+        inlineOutputEl.textContent = result || "(출력 없음)";
+        inlineStatusEl.textContent = "실행 완료";
+      } catch (err) {
+        inlineOutputEl.textContent = String(err);
+        inlineStatusEl.textContent = "실행 실패";
+      }
+    }
+
+    function insertTextAtCursor(text) {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) return;
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      const node = document.createTextNode(text);
+      range.insertNode(node);
+      range.setStartAfter(node);
+      range.setEndAfter(node);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+    function normalizeCodeText(raw) {
+      return (raw || "").replace(/\u00a0/g, " ").replace(/\r\n?/g, "\n");
+    }
+
+    function getCodeText(codeEl) {
+      return normalizeCodeText(codeEl.textContent || "");
+    }
+
+    function highlightCodeBlock(codeEl) {
+      const plain = getCodeText(codeEl);
+      codeEl.classList.add("hljs", "language-python");
+      if (!window.hljs) {
+        codeEl.textContent = plain;
+        return;
+      }
+      const highlighted = window.hljs.highlight(plain, { language: "python" }).value;
+      codeEl.innerHTML = highlighted;
+    }
+
+    function updateLineNumbers(codeEl, lineEl) {
+      const text = getCodeText(codeEl);
+      const lineCount = Math.max(1, text.split("\n").length);
+      const nums = [];
+      for (let i = 1; i <= lineCount; i += 1) nums.push(String(i));
+      lineEl.textContent = nums.join("\n");
+    }
+
+    function normalizeExampleColumnLayout() {
+      const groups = Array.from(document.querySelectorAll(".slide .cols-2"));
+      groups.forEach((group) => {
+        const codeBlocks = group.querySelectorAll("pre");
+        const runners = group.querySelectorAll(".inline-runner");
+        if (codeBlocks.length >= 2 || (codeBlocks.length >= 1 && runners.length >= 1)) {
+          group.classList.add("example-stack");
+        }
+      });
+    }
+
+    function initEditableExamples() {
+      const blocks = Array.from(document.querySelectorAll(".slide pre > code"));
+      blocks.forEach((codeEl) => {
+        const pre = codeEl.closest("pre");
+        if (!pre) return;
+        pre.classList.add("editable-code");
+
+        const lineEl = document.createElement("div");
+        lineEl.className = "line-numbers";
+        pre.insertBefore(lineEl, codeEl);
+        updateLineNumbers(codeEl, lineEl);
+
+        // plaintext-only is supported in modern Chromium/WebKit, otherwise falls back to true.
+        codeEl.setAttribute("contenteditable", "plaintext-only");
+        codeEl.spellcheck = false;
+        codeEl.setAttribute("autocapitalize", "off");
+        codeEl.setAttribute("autocorrect", "off");
+        codeEl.setAttribute("data-gramm", "false");
+
+        const setPlainEditing = () => {
+          codeEl.textContent = getCodeText(codeEl);
+        };
+
+        codeEl.addEventListener("focus", () => {
+          setPlainEditing();
+          updateLineNumbers(codeEl, lineEl);
+        });
+
+        codeEl.addEventListener("blur", () => {
+          highlightCodeBlock(codeEl);
+          updateLineNumbers(codeEl, lineEl);
+        });
+
+        codeEl.addEventListener("keydown", (e) => {
+          if (e.key === "Tab") {
+            e.preventDefault();
+            insertTextAtCursor("  ");
+          }
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            insertTextAtCursor("\n");
+          }
+          if (e.key === "Enter" && e.shiftKey) {
+            e.preventDefault();
+            runDirectBtn.click();
+          }
+        });
+
+        codeEl.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const text = e.clipboardData?.getData("text/plain") || "";
+          insertTextAtCursor(text);
+        });
+
+        codeEl.addEventListener("input", () => {
+          updateLineNumbers(codeEl, lineEl);
+        });
+
+        const runner = document.createElement("div");
+        runner.className = "inline-runner";
+
+        const head = document.createElement("div");
+        head.className = "inline-runner-head";
+
+        const runDirectBtn = document.createElement("button");
+        runDirectBtn.type = "button";
+        runDirectBtn.className = "mini-run-btn";
+        runDirectBtn.textContent = "바로 실행";
+
+        const hint = document.createElement("span");
+        hint.className = "inline-status";
+        hint.textContent = "대기";
+
+        const inlineOutput = document.createElement("div");
+        inlineOutput.className = "inline-output";
+        inlineOutput.textContent = "(출력 대기 중)";
+
+        runDirectBtn.addEventListener("click", () => {
+          runInlineCode(getCodeText(codeEl), inlineOutput, hint);
+        });
+
+        head.appendChild(runDirectBtn);
+        head.appendChild(hint);
+        runner.appendChild(head);
+        runner.appendChild(inlineOutput);
+        pre.insertAdjacentElement("afterend", runner);
+
+        highlightCodeBlock(codeEl);
+        updateLineNumbers(codeEl, lineEl);
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "\\(", right: "\\)", display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    });
+
+    normalizeExampleColumnLayout();
+    initEditableExamples();
+    initSlideNumbers();
+    initPresentationMode();
+  </script>
+</body>
+</html>
